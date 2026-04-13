@@ -431,7 +431,7 @@ config.libs = [
         "thp",
         [
             Object(NonMatching, "thp/THPDec.c"),
-            Object(NonMatching, "thp/THPAudio.c"),
+            Object(MatchingFor("GSAE01"), "thp/THPAudio.c"),
         ],
     ),
     DolphinLib(
