@@ -8,6 +8,8 @@ typedef int s32;
 typedef float f32;
 
 #define SYNTH_MAX_VOICES 8
+#define SYNTH_CALLBACK_COUNT 0x140
+#define SYNTH_VOICE_NOTE_COUNT 0x10
 #define SYNTH_DELAY_BUCKET_COUNT 0x20
 #define SYNTH_DELAY_BUCKET_INVALID 0xFF
 
@@ -110,6 +112,7 @@ typedef struct SynthVoice {
 } SynthVoice;
 
 extern SynthDelayStorage gSynthDelayStorage;
+extern SynthCallbackLink gSynthCallbacks[SYNTH_CALLBACK_COUNT];
 extern u8 gSynthInitialized;
 extern u8 gSynthDelayBucketCursor;
 extern SynthCallbackLink* gSynthFreeCallbacks;
@@ -121,11 +124,13 @@ extern SynthFade gSynthFades[0x20];
 extern u32 gSynthFadeMask;
 
 extern SynthVoice gSynthVoices[SYNTH_MAX_VOICES];
+extern u16 gSynthVoiceNotes[SYNTH_MAX_VOICES][SYNTH_VOICE_NOTE_COUNT];
 extern SynthVoice* gSynthFreeVoices;
 extern SynthVoice* gSynthQueuedVoices;
 extern SynthVoice* gSynthAllocatedVoices;
 extern u32 gSynthNextHandle;
 
+void synthInitVoices(void);
 void synthRecycleVoiceCallbacks(SynthVoice* voice);
 SynthCallbackLink* synthAllocCallback(s32 id, u8 controllerIndex);
 s32 synthUpdateCallbacks(void);

@@ -23,6 +23,9 @@ audio/synth_handle.c:
 	extabindex  start:0x80005CF0 end:0x80005D14
 	.text       start:0x8026D7C4 end:0x8026DFE4
 
+audio/synth_init.c:
+	.text       start:0x8026FA70 end:0x8026FCA0
+
 audio/synth_delay.c:
 	extab       start:0x800056C0 end:0x800056E8
 	extabindex  start:0x80005DB0 end:0x80005DEC
