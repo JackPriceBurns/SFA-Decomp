@@ -10,6 +10,7 @@ Keep this light. The project is still in the "recover the game" phase, not the "
 - Other `resources/*` content should also be treated as rough shape data, not analysis.
 - `reference_projects/*` may exist in some checkouts to mine patterns, especially SDK code and common Nintendo/GameCube layouts. Do not edit anything in this folder, as it is reference code from other game decompilation efforts.
 - SDK files have already been added to this project, but they are from another game. We will need to assign our splits to use these files, update symbols, and possibly learn from `reference_projects/*` to drive our SDK files to matching.
+- `reference_projects/rena-tools*` may exist in some checkouts with Rena's SFA decomp projects, and may have some information that helps.
 
 ## What Progress Looks Like
 - Recover real functions, data, class boundaries, globals, vtables, and file structure.
@@ -53,7 +54,7 @@ This repo starts from very little. Expect to do naming, struct recovery, type cl
 ## Minimal Loop
 1. Pick a target with real leverage.
 2. Recover the surrounding dependency cluster, not just the leaf symbol.
-3. Build.
+3. Build with `ninja` (if anything goes wrong, consider running configure.py -v GSAE01). Always timeout ninja to 30s, it will never take longer, and sometimes bad linker changes can hang forever.
 4. Run objdiff and judge net progress.
 5. If stuck, change angle quickly: adjacent code, data, assets, references, or tooling.
 6. Commit real progress directly to the main working branch for this phase and push to main. No PR flow is required right now.
