@@ -20,7 +20,6 @@ extern const f32 lbl_803E846C;
 #define SYNTH_FADE_SCALE lbl_803E8430
 #define SYNTH_FADE_ONE lbl_803E8440
 #define SYNTH_FADE_TIME_SCALE lbl_803E846C
-#define SYNTH_FADE_TABLE gSynthFades
 
 #define SYNTH_APPLY_FADE(fade, fadeIndex, fadeHandle)      \
     do {                                                   \
@@ -86,7 +85,7 @@ void synthSetFade(u8 value, u16 time, u8 selector, u8 action, u32 handle) {
         fn_802836E4((s32*)&fadeTime);
     }
 
-    fadeTable = SYNTH_FADE_TABLE;
+    fadeTable = gSynthFades;
     target = (f32)value * SYNTH_FADE_SCALE;
 
     if (selector == SYNTH_FADE_SELECTOR_ACTION_0_OR_1) {
@@ -144,13 +143,19 @@ apply_actions_2_or_3:
 
 u32 synthIsFadeActive(u32 fadeIndex) {
     SynthFade* fade;
-    u32 mask;
+    SynthFade* fadeTable;
+    u8 maskedFadeIndex;
 
-    fade = &SYNTH_FADE_TABLE[fadeIndex & 0xFF];
-    mask = 1 << (fadeIndex & 0xFF);
+    maskedFadeIndex = fadeIndex;
+    fadeTable = (SynthFade*)((u8*)&gSynthDelayStorage + 0x5D4);
+    fade = &fadeTable[maskedFadeIndex];
 
-    if (fade->type != SYNTH_FADE_ACTION_DISABLED && (gSynthFadeMask & mask) != 0 && fade->target < fade->start) {
-        return 1;
+    if (fade->type != SYNTH_FADE_ACTION_DISABLED) {
+        if ((gSynthFadeMask & (1 << maskedFadeIndex)) != 0) {
+            if (fade->target > fade->start) {
+                return 1;
+            }
+        }
     }
 
     return 0;

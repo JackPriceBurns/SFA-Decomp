@@ -129,16 +129,15 @@ void synthFlushDelayedBucket(SynthDelayedNode** head, SynthDelayCallback callbac
 }
 
 void synthDispatchDelayedAction(SynthFade* fade) {
-    s32 action;
-
-    action = fade->delayAction;
-    if (action == SYNTH_DELAY_ACTION_QUEUE) {
-        synthQueueHandle(fade->handle);
-    } else if (action < SYNTH_DELAY_ACTION_QUEUE) {
-        if (action >= SYNTH_DELAY_ACTION_FREE) {
+    switch (fade->delayAction) {
+        case SYNTH_DELAY_ACTION_FREE:
             synthFreeHandle(fade->handle);
-        }
-    } else if (action < 4) {
-        synthSetHandleMixData(fade->handle, 0, 0);
+            break;
+        case SYNTH_DELAY_ACTION_QUEUE:
+            synthQueueHandle(fade->handle);
+            break;
+        case SYNTH_DELAY_ACTION_CLEAR_MIX:
+            synthSetHandleMixData(fade->handle, 0, 0);
+            break;
     }
 }
