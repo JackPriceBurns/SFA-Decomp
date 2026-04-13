@@ -76,6 +76,9 @@ dvd/dvdqueue.c:
 gx/GXLight.c:
 	.text       start:0x80259DD4 end:0x8025AE7C
 
+amcstubs/AmcExi2Stubs.c:
+	.text       start:0x8026C680 end:0x8026C6B0
+
 audio/synth_callback.c:
 	extab       start:0x80005620 end:0x80005630
 	extabindex  start:0x80005CC0 end:0x80005CD8

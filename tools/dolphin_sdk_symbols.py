@@ -283,9 +283,9 @@ def load_source_function_names(path: Path) -> set[str]:
             name = match.group("name")
             if name in CONTROL_KEYWORDS:
                 continue
-            if line.endswith("{"):
+            if "{" in line:
                 names.add(name)
-            else:
+            elif not line.endswith(";"):
                 pending_name = name
     return names
 
@@ -321,11 +321,12 @@ def source_match_names(
     exact: ConfigSymbol | None,
 ) -> tuple[str, ...]:
     names: list[str] = []
-    if not is_anonymous(symbol.name):
-        names.append(symbol.name)
     if exact is not None and not is_placeholder(exact.name):
-        if exact.name not in names:
-            names.append(exact.name)
+        names.append(exact.name)
+        if exact.name != symbol.name:
+            return tuple(names)
+    if not is_anonymous(symbol.name) and symbol.name not in names:
+        names.append(symbol.name)
     return tuple(names)
 
 
@@ -939,7 +940,8 @@ def iter_source_paths(src_root: Path) -> list[Path]:
 def cluster_source_candidates(
     source_path: Path,
     src_root: Path,
-    name_index: dict[str, list[TranslatedSymbol]],
+    seed_index: dict[str, list[TranslatedSymbol]],
+    all_index: dict[str, list[TranslatedSymbol]],
     gap: int,
     require_provenance: bool,
 ) -> list[SourceCluster]:
@@ -955,7 +957,7 @@ def cluster_source_candidates(
     matched: list[TranslatedSymbol] = []
     seen: set[tuple[int, str]] = set()
     for name in sorted(source_functions):
-        for candidate in name_index.get(name, []):
+        for candidate in seed_index.get(name, []):
             if candidate.symbol.section != ".text":
                 continue
             key = (candidate.translated_address, name)
@@ -968,8 +970,8 @@ def cluster_source_candidates(
         return []
 
     matched.sort(key=lambda candidate: candidate.translated_address)
-    clusters: list[list[Candidate]] = []
-    current: list[Candidate] = []
+    clusters: list[list[TranslatedSymbol]] = []
+    current: list[TranslatedSymbol] = []
 
     for candidate in matched:
         if not current:
@@ -986,15 +988,52 @@ def cluster_source_candidates(
     if current:
         clusters.append(current)
 
+    all_matches: list[TranslatedSymbol] = []
+    seen_matches: set[tuple[int, str]] = set()
+    for name in sorted(source_functions):
+        for candidate in all_index.get(name, []):
+            if candidate.symbol.section != ".text":
+                continue
+            key = (candidate.translated_address, name)
+            if key in seen_matches:
+                continue
+            seen_matches.add(key)
+            all_matches.append(candidate)
+    all_matches.sort(key=lambda candidate: candidate.translated_address)
+
     reports: list[SourceCluster] = []
     for cluster in clusters:
-        unique_names = {preferred_match_name(candidate) for candidate in cluster}
+        expanded = list(cluster)
+        start = min(candidate.translated_address for candidate in expanded)
+        end = max(candidate.translated_address + candidate.symbol.size for candidate in expanded)
+        expanded_seen = {
+            (candidate.translated_address, preferred_match_name(candidate)) for candidate in expanded
+        }
+        changed = True
+        while changed:
+            changed = False
+            for candidate in all_matches:
+                key = (candidate.translated_address, preferred_match_name(candidate))
+                if key in expanded_seen:
+                    continue
+                candidate_start = candidate.translated_address
+                candidate_end = candidate_start + candidate.symbol.size
+                if candidate_start > end + gap or candidate_end < start - gap:
+                    continue
+                expanded.append(candidate)
+                expanded_seen.add(key)
+                start = min(start, candidate_start)
+                end = max(end, candidate_end)
+                changed = True
+
+        expanded.sort(key=lambda candidate: candidate.translated_address)
+        unique_names = {preferred_match_name(candidate) for candidate in expanded}
         if len(unique_names) < 2:
             continue
 
         provenance_counts = Counter(
             (candidate.symbol.library, candidate.symbol.object_path)
-            for candidate in cluster
+            for candidate in expanded
             if candidate.symbol.library and candidate.symbol.object_path
         )
         if require_provenance and not provenance_counts:
@@ -1005,14 +1044,16 @@ def cluster_source_candidates(
         dominant_count = 0
         if provenance_counts:
             (dominant_library, dominant_object_path), dominant_count = provenance_counts.most_common(1)[0]
+        if require_provenance and dominant_count < 2:
+            continue
         exact_name_count = sum(
             candidate.exact is not None
             and not is_placeholder(candidate.exact.name)
             and candidate.exact.name in source_functions
-            for candidate in cluster
+            for candidate in expanded
         )
-        active_count = sum(candidate.split is not None for candidate in cluster)
-        split_free_count = len(cluster) - active_count
+        active_count = sum(candidate.split is not None for candidate in expanded)
+        split_free_count = len(expanded) - active_count
         score = (
             len(unique_names) * 8
             + dominant_count * 4
@@ -1025,7 +1066,7 @@ def cluster_source_candidates(
             SourceCluster(
                 source_path=source_path,
                 split_path=split_path,
-                candidates=tuple(cluster),
+                candidates=tuple(expanded),
                 dominant_library=dominant_library,
                 dominant_object_path=dominant_object_path,
                 dominant_count=dominant_count,
@@ -1048,17 +1089,48 @@ def cluster_source_candidates(
 
 
 def print_source_clusters(
+    candidates: list[Candidate],
     translated_symbols: list[TranslatedSymbol],
     src_root: Path,
     gap: int,
     limit: int | None,
     source_filter: Path | None,
+    min_score: int,
     require_provenance: bool,
 ) -> None:
-    name_index: dict[str, list[TranslatedSymbol]] = defaultdict(list)
+    seed_keys = {
+        (candidate.symbol.section, candidate.translated_address)
+        for candidate in candidates
+        if candidate.symbol.section == ".text"
+        and candidate.translation_delta is not None
+        and (
+            (
+                candidate.exact is not None
+                and not is_placeholder(candidate.exact.name)
+            )
+            or is_actionable(candidate, min_score, True, require_provenance)
+        )
+        and (
+            not require_provenance
+            or (candidate.symbol.library and candidate.symbol.object_path)
+        )
+    }
+
+    seed_index: dict[str, list[TranslatedSymbol]] = defaultdict(list)
+    all_index: dict[str, list[TranslatedSymbol]] = defaultdict(list)
     for candidate in translated_symbols:
-        for name in source_match_names(candidate.symbol, candidate.exact):
-            name_index[name].append(candidate)
+        if candidate.symbol.section != ".text" or candidate.translation_delta is None:
+            continue
+
+        names = source_match_names(candidate.symbol, candidate.exact)
+        if not names:
+            continue
+
+        for name in names:
+            all_index[name].append(candidate)
+            key = (candidate.symbol.section, candidate.translated_address)
+            if key in seed_keys:
+                seed_index[name].append(candidate)
 
     source_paths = [source_filter] if source_filter is not None else iter_source_paths(src_root)
     reports: list[SourceCluster] = []
@@ -1069,7 +1141,8 @@ def print_source_clusters(
             cluster_source_candidates(
                 source_path,
                 src_root,
-                name_index,
+                seed_index,
+                all_index,
                 gap,
                 require_provenance,
             )
@@ -1259,11 +1332,13 @@ def main() -> None:
         )
     elif args.command == "source-clusters":
         print_source_clusters(
+            candidates=candidates,
             translated_symbols=translated_symbols,
             src_root=args.src_root,
             gap=args.gap,
             limit=args.limit,
             source_filter=args.source,
+            min_score=args.min_score,
             require_provenance=not args.no_provenance_required,
         )
     else:

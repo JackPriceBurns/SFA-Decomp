@@ -367,6 +367,15 @@ config.libs = [
         ],
     ),
     {
+        "lib": "amcstubs",
+        "mw_version": "GC/1.3",
+        "cflags": cflags_trk,
+        "progress_category": "sdk",
+        "objects": [
+            Object(NonMatching, "amcstubs/AmcExi2Stubs.c"),
+        ],
+    },
+    {
         "lib": "TRK_MINNOW_DOLPHIN",
         "mw_version": "GC/1.3",
         "cflags": cflags_trk,
