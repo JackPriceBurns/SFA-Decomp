@@ -1,6 +1,5 @@
 #include "src/audio/synth_internal.h"
 
-extern void fn_8026FCA0(s32 value, u8 studioIndex, u32 channelIndex);
 extern u32 lbl_803DEEA0;
 
 #define SYNTH_VOICE_PROGRAM_DATA(voice) (*(u8**)((voice)->unk10 + 0x108))
@@ -24,9 +23,9 @@ void fn_8026D6DC(u32 channelIndex) {
                 0) {
                 value = point->value;
                 channelState->currentValue = value;
-                fn_8026FCA0((s32)(value >> 10), (u8)lbl_803DEEA0, channelIndex);
+                synthSetStudioChannelScale((s32)(value >> 10), (u8)lbl_803DEEA0, channelIndex);
             } else {
-                fn_8026FCA0((s32)point->value, (u8)lbl_803DEEA0, channelIndex);
+                synthSetStudioChannelScale((s32)point->value, (u8)lbl_803DEEA0, channelIndex);
                 point = channelState->eventCursor;
                 channelState->currentValue = point->value << 10;
             }

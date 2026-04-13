@@ -34,6 +34,9 @@ audio/synth_sequence.c:
 audio/synth_init.c:
 	.text       start:0x8026FA70 end:0x8026FCA0
 
+audio/synth_scale.c:
+	.text       start:0x8026FCA0 end:0x8026FD1C
+
 audio/synth_delay.c:
 	extab       start:0x800056C0 end:0x800056E8
 	extabindex  start:0x80005DB0 end:0x80005DEC

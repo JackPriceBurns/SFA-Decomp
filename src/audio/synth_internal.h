@@ -11,6 +11,7 @@ typedef float f32;
 #define SYNTH_MAX_VOICES 8
 #define SYNTH_CALLBACK_COUNT 0x100
 #define SYNTH_VOICE_NOTE_COUNT 0x10
+#define SYNTH_STUDIO_CHANNEL_SCALE_STUDIO_COUNT 9
 #define SYNTH_DELAY_BUCKET_COUNT 0x20
 #define SYNTH_DELAY_BUCKET_INVALID 0xFF
 
@@ -60,7 +61,7 @@ typedef struct SynthDelayedEntry {
 } SynthDelayedEntry;
 
 typedef struct SynthDelayStorage {
-    u8 unk000[0x240];
+    u32 studioChannelScales[SYNTH_STUDIO_CHANNEL_SCALE_STUDIO_COUNT][SYNTH_VOICE_NOTE_COUNT];
     SynthDelayedNode* bucketHeads[SYNTH_DELAY_BUCKET_COUNT][3];
 } SynthDelayStorage;
 
@@ -210,6 +211,8 @@ extern SynthVoice* gSynthAllocatedVoices;
 extern u32 gSynthNextHandle;
 
 void synthInitVoices(void);
+void synthSetStudioChannelScale(s32 value, u8 studioIndex, u32 channelIndex);
+u32 synthGetVoiceSlotChannelScale(SynthVoiceSlot* slot);
 void synthRecycleVoiceCallbacks(SynthVoice* voice);
 SynthCallbackLink* synthAllocCallback(s32 triggerValue, u8 controllerIndex);
 s32 synthUpdateCallbacks(void);
