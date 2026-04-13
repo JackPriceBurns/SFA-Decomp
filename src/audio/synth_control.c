@@ -143,12 +143,10 @@ apply_actions_2_or_3:
 
 u32 synthIsFadeActive(u32 fadeIndex) {
     SynthFade* fade;
-    SynthFade* fadeTable;
     u8 maskedFadeIndex;
 
     maskedFadeIndex = fadeIndex;
-    fadeTable = (SynthFade*)((u8*)&gSynthDelayStorage + 0x5D4);
-    fade = &fadeTable[maskedFadeIndex];
+    fade = &gSynthFades[maskedFadeIndex];
 
     if (fade->type != SYNTH_FADE_ACTION_DISABLED) {
         if ((gSynthFadeMask & (1 << maskedFadeIndex)) != 0) {
