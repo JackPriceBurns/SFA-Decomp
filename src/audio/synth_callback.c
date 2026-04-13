@@ -1,0 +1,228 @@
+#include "src/audio/synth_internal.h"
+
+#define SYNTH_CALLBACK_ACTIVE_LIST_COUNT 2
+#define SYNTH_CALLBACK_COMPLETED_LIST_INDEX 2
+#define SYNTH_CALLBACK_THRESHOLD(voice, index) (*(s32*)&((voice)->unkEE0[0x62C + ((index) * 8)]))
+#define SYNTH_CALLBACK_STUDIO_INDEX(voice, controller) ((voice)->channelData[(controller) * 0x38])
+
+void synthRecycleVoiceCallbacks(SynthVoice* voice) {
+    SynthCallbackLink* callback;
+    SynthCallbackLink* next;
+
+    callback = voice->callbackLists[0];
+    if (callback != 0) {
+        for (next = callback->next; next != 0; next = next->next) {
+            callback = next;
+        }
+
+        if (gSynthFreeCallbacks != 0) {
+            callback->next = gSynthFreeCallbacks;
+            gSynthFreeCallbacks->prev = callback;
+        }
+
+        gSynthFreeCallbacks = voice->callbackLists[0];
+        voice->callbackLists[0] = 0;
+    }
+
+    callback = voice->callbackLists[1];
+    if (callback != 0) {
+        for (next = callback->next; next != 0; next = next->next) {
+            callback = next;
+        }
+
+        if (gSynthFreeCallbacks != 0) {
+            callback->next = gSynthFreeCallbacks;
+            gSynthFreeCallbacks->prev = callback;
+        }
+
+        gSynthFreeCallbacks = voice->callbackLists[1];
+        voice->callbackLists[1] = 0;
+    }
+
+    callback = voice->callbackLists[2];
+    if (callback != 0) {
+        for (next = callback->next; next != 0; next = next->next) {
+            callback = next;
+        }
+
+        if (gSynthFreeCallbacks != 0) {
+            callback->next = gSynthFreeCallbacks;
+            gSynthFreeCallbacks->prev = callback;
+        }
+
+        gSynthFreeCallbacks = voice->callbackLists[2];
+        voice->callbackLists[2] = 0;
+    }
+}
+
+SynthCallbackLink* synthAllocCallback(s32 id, u8 controllerIndex) {
+    SynthCallbackLink* callback;
+    SynthCallbackLink* current;
+    SynthCallbackLink* prev;
+
+    callback = gSynthFreeCallbacks;
+    if (callback == 0) {
+        return 0;
+    }
+
+    gSynthFreeCallbacks = callback->next;
+    if (gSynthFreeCallbacks != 0) {
+        gSynthFreeCallbacks->prev = 0;
+    }
+
+    callback->id = id;
+    callback->controllerIndex = controllerIndex;
+    callback->listIndex = SYNTH_CALLBACK_STUDIO_INDEX(gSynthCurrentVoice, controllerIndex);
+
+    prev = 0;
+    current = gSynthCurrentVoice->callbackLists[callback->listIndex];
+    while (current != 0) {
+        if (current->id > callback->id) {
+            callback->next = current;
+            callback->prev = prev;
+            if (prev != 0) {
+                prev->next = callback;
+            } else {
+                gSynthCurrentVoice->callbackLists[callback->listIndex] = callback;
+            }
+            current->prev = callback;
+            return callback;
+        }
+
+        prev = current;
+        current = current->next;
+    }
+
+    callback->prev = prev;
+    if (prev != 0) {
+        prev->next = callback;
+    } else {
+        gSynthCurrentVoice->callbackLists[callback->listIndex] = callback;
+    }
+    callback->next = 0;
+    return callback;
+}
+
+s32 synthUpdateCallbacks(void) {
+    s32 listIndex;
+    SynthCallbackLink* callback;
+
+    for (listIndex = 0; listIndex < SYNTH_CALLBACK_ACTIVE_LIST_COUNT; listIndex++) {
+        callback = gSynthCurrentVoice->callbackLists[listIndex];
+        while (callback != 0) {
+            if (callback->id > SYNTH_CALLBACK_THRESHOLD(gSynthCurrentVoice, listIndex)) {
+                break;
+            }
+
+            synthTriggerCallback((u32)callback->id);
+            gSynthCurrentVoice->callbackLists[listIndex] = callback->next;
+            if (gSynthCurrentVoice->callbackLists[listIndex] != 0) {
+                gSynthCurrentVoice->callbackLists[listIndex]->prev = 0;
+            }
+
+            callback->next = gSynthCurrentVoice->callbackLists[SYNTH_CALLBACK_COMPLETED_LIST_INDEX];
+            if (gSynthCurrentVoice->callbackLists[SYNTH_CALLBACK_COMPLETED_LIST_INDEX] != 0) {
+                gSynthCurrentVoice->callbackLists[SYNTH_CALLBACK_COMPLETED_LIST_INDEX]->prev = callback;
+            }
+            gSynthCurrentVoice->callbackLists[SYNTH_CALLBACK_COMPLETED_LIST_INDEX] = callback;
+            callback = gSynthCurrentVoice->callbackLists[listIndex];
+        }
+    }
+
+    return gSynthCurrentVoice->callbackLists[0] != 0 || gSynthCurrentVoice->callbackLists[1] != 0;
+}
+
+void synthFlushCallbacks(void) {
+    s32 listIndex;
+    SynthCallbackLink* callback;
+    SynthCallbackLink* next;
+
+    for (listIndex = 0; listIndex < SYNTH_CALLBACK_ACTIVE_LIST_COUNT; listIndex++) {
+        callback = gSynthCurrentVoice->callbackLists[listIndex];
+        while (callback != 0) {
+            next = callback->next;
+            synthTriggerCallback((u32)callback->id);
+            gSynthCurrentVoice->callbackLists[listIndex] = next;
+            if (next != 0) {
+                next->prev = 0;
+            }
+
+            callback->next = gSynthCurrentVoice->callbackLists[SYNTH_CALLBACK_COMPLETED_LIST_INDEX];
+            if (gSynthCurrentVoice->callbackLists[SYNTH_CALLBACK_COMPLETED_LIST_INDEX] != 0) {
+                gSynthCurrentVoice->callbackLists[SYNTH_CALLBACK_COMPLETED_LIST_INDEX]->prev = callback;
+            }
+            gSynthCurrentVoice->callbackLists[SYNTH_CALLBACK_COMPLETED_LIST_INDEX] = callback;
+            callback = next;
+        }
+    }
+}
+
+void synthFreeCallback(SynthCallbackLink* callback) {
+    if (callback->next != 0) {
+        callback->next->prev = callback->prev;
+    }
+
+    if (callback->prev != 0) {
+        callback->prev->next = callback->next;
+    } else {
+        gSynthCurrentVoice->callbackLists[SYNTH_CALLBACK_COMPLETED_LIST_INDEX] = callback->next;
+    }
+
+    callback->next = gSynthFreeCallbacks;
+    if (gSynthFreeCallbacks != 0) {
+        gSynthFreeCallbacks->prev = callback;
+    }
+
+    callback->prev = 0;
+    gSynthFreeCallbacks = callback;
+}
+
+u32 synthAssignHandle(s32 voiceIndex) {
+    u32 handle;
+    SynthVoice* voice;
+
+    do {
+        SynthVoice* current;
+
+        handle = gSynthNextHandle++;
+        gSynthNextHandle &= 0x7FFFFFFF;
+
+        for (current = gSynthAllocatedVoices; current != 0; current = current->next) {
+            if (current->handle == handle) {
+                handle = 0xFFFFFFFF;
+                break;
+            }
+        }
+
+        for (current = gSynthQueuedVoices; current != 0; current = current->next) {
+            if (current->handle == handle) {
+                handle = 0xFFFFFFFF;
+                break;
+            }
+        }
+    } while (handle == 0xFFFFFFFF);
+
+    voice = &gSynthVoices[voiceIndex];
+    voice->handle = handle;
+    return handle;
+}
+
+u32 synthResolveHandle(u32 handle) {
+    SynthVoice* voice;
+    u32 resolvedHandle;
+
+    resolvedHandle = handle & 0x7FFFFFFF;
+    for (voice = gSynthAllocatedVoices; voice != 0; voice = voice->next) {
+        if (voice->handle == resolvedHandle) {
+            return voice->slotIndex | (handle & 0x80000000);
+        }
+    }
+
+    for (voice = gSynthQueuedVoices; voice != 0; voice = voice->next) {
+        if (voice->handle == resolvedHandle) {
+            return voice->slotIndex | (handle & 0x80000000);
+        }
+    }
+
+    return 0xFFFFFFFF;
+}
