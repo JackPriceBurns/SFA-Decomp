@@ -82,8 +82,9 @@ typedef struct SynthFade {
     f32 auxProgress;
     f32 auxProgressStep;
     u32 handle;
-    u8 action;
-    u8 unk2D[3];
+    u8 delayAction;
+    u8 type;
+    u8 pad[2];
 } SynthFade;
 
 typedef struct SynthVoice {
@@ -97,7 +98,7 @@ typedef struct SynthVoice {
     u32 immediateMixValue0;
     u32 immediateMixValue1;
     u8 unk124[0x200];
-    u8 controllerStudioMap[0x40];
+    u8 studioMap[0x40];
     u8 unk364[0xB00];
     SynthCallbackLink* callbackLists[3];
     u8 unkE70[0x40];

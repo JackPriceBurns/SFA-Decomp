@@ -121,19 +121,19 @@ void synthFlushDelayedBucket(SynthDelayedNode** head, SynthDelayCallback callbac
 }
 
 void synthDispatchDelayedAction(SynthFade* fade) {
-    if (fade->action == SYNTH_DELAY_ACTION_QUEUE) {
+    if (fade->delayAction == SYNTH_DELAY_ACTION_QUEUE) {
         synthQueueHandle(fade->handle);
         return;
     }
 
-    if (fade->action < SYNTH_DELAY_ACTION_QUEUE) {
-        if (fade->action == SYNTH_DELAY_ACTION_FREE) {
+    if (fade->delayAction < SYNTH_DELAY_ACTION_QUEUE) {
+        if (fade->delayAction == SYNTH_DELAY_ACTION_FREE) {
             synthFreeHandle(fade->handle);
         }
         return;
     }
 
-    if (fade->action < 4) {
+    if (fade->delayAction < 4) {
         synthSetHandleMixData(fade->handle, 0, 0);
     }
 }

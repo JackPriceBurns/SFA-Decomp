@@ -378,8 +378,8 @@ found:
 
     if ((slot & 0x80000000) == 0) {
         voice = &gSynthVoices[slot];
-        controllerStudioMapCompare = voice->controllerStudioMap;
-        controllerStudioMapValue = voice->controllerStudioMap;
+        controllerStudioMapCompare = voice->studioMap;
+        controllerStudioMapValue = voice->studioMap;
 
         synthSetFade(value0, value1, voice->currentStudio, mode, handle);
 

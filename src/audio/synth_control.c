@@ -24,7 +24,7 @@ extern const f32 lbl_803E846C;
 
 #define SYNTH_APPLY_FADE(fade, fadeIndex)     \
     do {                                      \
-        (fade)->action = action;              \
+        (fade)->delayAction = action;         \
         (fade)->handle = handle;              \
                                               \
         if (fadeTime != 0) {                  \
@@ -93,7 +93,7 @@ void synthSetFade(u8 value, u16 time, u8 selector, u8 action, u32 handle) {
 apply_actions_0_or_1:
         fade = fadeTable;
         for (fadeIndex = 0; fadeIndex < SYNTH_FADE_COUNT; fadeIndex++, fade++) {
-            if (fade->action == 0 || fade->action == 1) {
+            if (fade->type == 0 || fade->type == 1) {
                 SYNTH_APPLY_FADE(fade, fadeIndex);
             }
         }
@@ -104,7 +104,7 @@ apply_actions_0_or_1:
 apply_actions_2_or_3:
         fade = fadeTable;
         for (fadeIndex = 0; fadeIndex < SYNTH_FADE_COUNT; fadeIndex++, fade++) {
-            if (fade->action == 2 || fade->action == 3) {
+            if (fade->type == 2 || fade->type == 3) {
                 SYNTH_APPLY_FADE(fade, fadeIndex);
             }
         }
@@ -135,7 +135,7 @@ apply_actions_2_or_3:
 
     fade = fadeTable;
     for (fadeIndex = 0; fadeIndex < SYNTH_FADE_COUNT; fadeIndex++, fade++) {
-        if (fade->action == actionFilter) {
+        if (fade->type == actionFilter) {
             SYNTH_APPLY_FADE(fade, fadeIndex);
         }
     }
@@ -149,7 +149,7 @@ u32 synthIsFadeActive(u32 fadeIndex) {
     fade = &SYNTH_FADE_TABLE[fadeIndex & 0xFF];
     mask = 1 << (fadeIndex & 0xFF);
 
-    if (fade->action != SYNTH_FADE_ACTION_DISABLED && (gSynthFadeMask & mask) != 0 && fade->target < fade->start) {
+    if (fade->type != SYNTH_FADE_ACTION_DISABLED && (gSynthFadeMask & mask) != 0 && fade->target < fade->start) {
         return 1;
     }
 
@@ -161,7 +161,7 @@ void synthSetFadeAction(u32 fadeIndex, u8 action) {
         return;
     }
 
-    gSynthFades[fadeIndex & 0xFF].action = action;
+    gSynthFades[fadeIndex & 0xFF].type = action;
 }
 
 #undef SYNTH_APPLY_FADE
