@@ -406,6 +406,12 @@ config.libs = [
             Object(NonMatching, "gx/GXLight.c"),
         ],
     ),
+    DolphinLib(
+        "OdemuExi2",
+        [
+            Object(NonMatching, "OdemuExi2/DebuggerDriver.c"),
+        ],
+    ),
     {
         "lib": "amcstubs",
         "mw_version": "GC/1.3",

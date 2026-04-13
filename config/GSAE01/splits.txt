@@ -163,6 +163,11 @@ audio/synth_control.c:
 	extabindex  start:0x80005E1C end:0x80005E40
 	.text       start:0x802721A0 end:0x8027273C
 
+OdemuExi2/DebuggerDriver.c:
+	extab       start:0x80005CB0 end:0x80005CB8
+	extabindex  start:0x80006698 end:0x800066A4
+	.text       start:0x80285A28 end:0x80286608
+
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x802866D0 end:0x80286718
 	.dtors      start:0x802C2028 end:0x802C202C
