@@ -92,12 +92,12 @@ found:
 
         for (listIndex = 0; listIndex < 2; listIndex++) {
             for (callback = voice->callbackLists[listIndex]; callback != 0; callback = callback->next) {
-                synthCancelCallbackVoices(callback->id);
+                synthCancelCallbackVoices(callback->callbackId);
             }
         }
 
         for (callback = voice->callbackLists[2]; callback != 0; callback = callback->next) {
-            synthCancelCallbackVoices(callback->id);
+            synthCancelCallbackVoices(callback->callbackId);
         }
 
         synthRecycleVoiceCallbacks(voice);
@@ -161,12 +161,12 @@ found:
 
             for (listIndex = 0; listIndex < 2; listIndex++) {
                 for (callback = voice->callbackLists[listIndex]; callback != 0; callback = callback->next) {
-                    synthCancelCallbackVoices(callback->id);
+                    synthCancelCallbackVoices(callback->callbackId);
                 }
             }
 
             for (callback = voice->callbackLists[2]; callback != 0; callback = callback->next) {
-                synthCancelCallbackVoices(callback->id);
+                synthCancelCallbackVoices(callback->callbackId);
             }
 
             synthRecycleVoiceCallbacks(voice);

@@ -55,7 +55,7 @@ void synthRecycleVoiceCallbacks(SynthVoice* voice) {
     }
 }
 
-SynthCallbackLink* synthAllocCallback(s32 id, u8 controllerIndex) {
+SynthCallbackLink* synthAllocCallback(s32 triggerValue, u8 controllerIndex) {
     SynthCallbackLink* callback;
     SynthCallbackLink* current;
     SynthCallbackLink* prev;
@@ -70,14 +70,14 @@ SynthCallbackLink* synthAllocCallback(s32 id, u8 controllerIndex) {
         gSynthFreeCallbacks->prev = 0;
     }
 
-    callback->id = id;
+    callback->triggerValue = triggerValue;
     callback->controllerIndex = controllerIndex;
     callback->listIndex = SYNTH_CALLBACK_STUDIO_INDEX(gSynthCurrentVoice, controllerIndex);
 
     prev = 0;
     current = gSynthCurrentVoice->callbackLists[callback->listIndex];
     while (current != 0) {
-        if (current->id > callback->id) {
+        if (current->triggerValue > callback->triggerValue) {
             callback->next = current;
             callback->prev = prev;
             if (prev != 0) {
@@ -110,11 +110,11 @@ s32 synthUpdateCallbacks(void) {
     for (listIndex = 0; listIndex < SYNTH_CALLBACK_ACTIVE_LIST_COUNT; listIndex++) {
         callback = gSynthCurrentVoice->callbackLists[listIndex];
         while (callback != 0) {
-            if (callback->id > SYNTH_CALLBACK_THRESHOLD(gSynthCurrentVoice, listIndex)) {
+            if (callback->triggerValue > SYNTH_CALLBACK_THRESHOLD(gSynthCurrentVoice, listIndex)) {
                 break;
             }
 
-            synthTriggerCallback((u32)callback->id);
+            synthTriggerCallback(callback->callbackId);
             gSynthCurrentVoice->callbackLists[listIndex] = callback->next;
             if (gSynthCurrentVoice->callbackLists[listIndex] != 0) {
                 gSynthCurrentVoice->callbackLists[listIndex]->prev = 0;
@@ -141,7 +141,7 @@ void synthFlushCallbacks(void) {
         callback = gSynthCurrentVoice->callbackLists[listIndex];
         while (callback != 0) {
             next = callback->next;
-            synthTriggerCallback((u32)callback->id);
+            synthTriggerCallback(callback->callbackId);
             gSynthCurrentVoice->callbackLists[listIndex] = next;
             if (next != 0) {
                 next->prev = 0;

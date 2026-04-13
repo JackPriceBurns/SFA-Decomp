@@ -22,26 +22,26 @@ extern const f32 lbl_803E846C;
 #define SYNTH_FADE_TIME_SCALE lbl_803E846C
 #define SYNTH_FADE_TABLE gSynthFades
 
-#define SYNTH_APPLY_FADE(fade, fadeIndex)     \
-    do {                                      \
-        (fade)->delayAction = action;         \
-        (fade)->handle = handle;              \
-                                              \
-        if (fadeTime != 0) {                  \
-            (fade)->start = (fade)->current;  \
-            (fade)->target = target;          \
-            (fade)->progress = SYNTH_FADE_ONE; \
+#define SYNTH_APPLY_FADE(fade, fadeIndex, fadeHandle)      \
+    do {                                                   \
+        (fade)->delayAction = action;                      \
+        (fade)->handle = (fadeHandle);                     \
+                                                           \
+        if (fadeTime != 0) {                               \
+            (fade)->start = (fade)->current;               \
+            (fade)->target = target;                       \
+            (fade)->progress = SYNTH_FADE_ONE;             \
             (fade)->progressStep = SYNTH_FADE_TIME_SCALE / (f32)fadeTime; \
-        } else {                              \
-            (fade)->target = target;          \
-            (fade)->current = target;         \
-                                              \
+        } else {                                           \
+            (fade)->target = target;                       \
+            (fade)->current = target;                      \
+                                                           \
             if ((fade)->handle != SYNTH_INVALID_LINK_ID) { \
-                synthDispatchDelayedAction(fade); \
-            }                                 \
-        }                                     \
-                                              \
-        gSynthFadeMask |= 1 << (fadeIndex);   \
+                synthDispatchDelayedAction(fade);          \
+            }                                              \
+        }                                                  \
+                                                           \
+        gSynthFadeMask |= 1 << (fadeIndex);                \
     } while (0)
 
 void fn_802721A0(s32 value0, s32 value1) {
@@ -94,7 +94,7 @@ apply_actions_0_or_1:
         fade = fadeTable;
         for (fadeIndex = 0; fadeIndex < SYNTH_FADE_COUNT; fadeIndex++, fade++) {
             if (fade->type == 0 || fade->type == 1) {
-                SYNTH_APPLY_FADE(fade, fadeIndex);
+                SYNTH_APPLY_FADE(fade, fadeIndex, SYNTH_INVALID_LINK_ID);
             }
         }
         return;
@@ -105,7 +105,7 @@ apply_actions_2_or_3:
         fade = fadeTable;
         for (fadeIndex = 0; fadeIndex < SYNTH_FADE_COUNT; fadeIndex++, fade++) {
             if (fade->type == 2 || fade->type == 3) {
-                SYNTH_APPLY_FADE(fade, fadeIndex);
+                SYNTH_APPLY_FADE(fade, fadeIndex, SYNTH_INVALID_LINK_ID);
             }
         }
         return;
@@ -122,21 +122,21 @@ apply_actions_2_or_3:
             actionFilter = 2;
         } else {
             fade = &fadeTable[selector];
-            SYNTH_APPLY_FADE(fade, selector);
+            SYNTH_APPLY_FADE(fade, selector, handle);
             return;
         }
     } else if (selector < SYNTH_FADE_SELECTOR_ACTION_0_OR_1) {
         actionFilter = 1;
     } else {
         fade = &fadeTable[selector];
-        SYNTH_APPLY_FADE(fade, selector);
+        SYNTH_APPLY_FADE(fade, selector, handle);
         return;
     }
 
     fade = fadeTable;
     for (fadeIndex = 0; fadeIndex < SYNTH_FADE_COUNT; fadeIndex++, fade++) {
         if (fade->type == actionFilter) {
-            SYNTH_APPLY_FADE(fade, fadeIndex);
+            SYNTH_APPLY_FADE(fade, fadeIndex, handle);
         }
     }
     return;

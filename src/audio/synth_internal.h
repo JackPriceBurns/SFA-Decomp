@@ -16,8 +16,8 @@ typedef float f32;
 typedef struct SynthCallbackLink {
     struct SynthCallbackLink* next;
     struct SynthCallbackLink* prev;
-    u32 unk08;
-    s32 id;
+    u32 callbackId;
+    s32 triggerValue;
     u8 controllerIndex;
     u8 listIndex;
     u8 unk12[2];
@@ -133,7 +133,7 @@ extern u32 gSynthNextHandle;
 
 void synthInitVoices(void);
 void synthRecycleVoiceCallbacks(SynthVoice* voice);
-SynthCallbackLink* synthAllocCallback(s32 id, u8 controllerIndex);
+SynthCallbackLink* synthAllocCallback(s32 triggerValue, u8 controllerIndex);
 s32 synthUpdateCallbacks(void);
 void synthFlushCallbacks(void);
 void synthFreeCallback(SynthCallbackLink* callback);

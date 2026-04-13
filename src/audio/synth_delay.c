@@ -7,10 +7,9 @@ typedef void (*SynthDelayCallback)(void);
 #define SYNTH_DELAY_ACTION_CLEAR_MIX 3
 
 void synthInsertDelayedNode(SynthDelayedEntry* entry, s32 nodeIndex, u32 delay) {
-    SynthDelayedNode** bucketHead;
+    SynthDelayedNode* node;
     SynthDelayedNode** bucketHeads;
     SynthDelayedNode** head;
-    SynthDelayedNode* node;
     u8 targetBucket;
 
     targetBucket = (u8)(((delay >> 8) + gSynthDelayBucketCursor) & 0x1F);
@@ -27,11 +26,10 @@ void synthInsertDelayedNode(SynthDelayedEntry* entry, s32 nodeIndex, u32 delay) 
                 node->next->prev = node->prev;
             }
 
-            if (node->prev == 0) {
-                bucketHead = gSynthDelayStorage.bucketHeads[node->bucketIndex];
-                bucketHead[2] = node->next;
-            } else {
+            if (node->prev != 0) {
                 node->prev->next = node->next;
+            } else {
+                gSynthDelayStorage.bucketHeads[node->bucketIndex][2] = node->next;
             }
         }
 
@@ -51,11 +49,10 @@ void synthInsertDelayedNode(SynthDelayedEntry* entry, s32 nodeIndex, u32 delay) 
                 node->next->prev = node->prev;
             }
 
-            if (node->prev == 0) {
-                bucketHead = gSynthDelayStorage.bucketHeads[node->bucketIndex];
-                bucketHead[0] = node->next;
-            } else {
+            if (node->prev != 0) {
                 node->prev->next = node->next;
+            } else {
+                gSynthDelayStorage.bucketHeads[node->bucketIndex][0] = node->next;
             }
         }
 
@@ -83,18 +80,29 @@ void synthInsertDelayedNode(SynthDelayedEntry* entry, s32 nodeIndex, u32 delay) 
 }
 
 void synthInitDelayedEntry(SynthDelayedEntry* entry) {
-    entry->word0 = gSynthDelayedActionWord0;
-    entry->word1 = gSynthDelayedActionWord1;
-    entry->word2.word = gSynthDelayedActionWord0;
-    entry->word3 = gSynthDelayedActionWord1;
+    u32 word0;
+    u32 word1;
+
+    word0 = gSynthDelayedActionWord0;
+    word1 = gSynthDelayedActionWord1;
+    entry->word1 = word1;
+    entry->word0 = word0;
+
+    word0 = gSynthDelayedActionWord0;
+    word1 = gSynthDelayedActionWord1;
+    entry->word3 = word1;
+    entry->word2.word = word0;
 
     synthInsertDelayedNode(entry, 0, 0);
     synthInsertDelayedNode(entry, 1, 0);
 }
 
 void synthRequeueDelayedEntry(SynthDelayedEntry* entry) {
-    synthInsertDelayedNode(entry, 0, 0);
-    synthInsertDelayedNode(entry, 1, 0);
+    SynthDelayedEntry* delayedEntry;
+
+    delayedEntry = entry;
+    synthInsertDelayedNode(delayedEntry, 0, 0);
+    synthInsertDelayedNode(delayedEntry, 1, 0);
 }
 
 void synthQueueDelayedAction(SynthDelayedEntry* entry) {
@@ -121,19 +129,22 @@ void synthFlushDelayedBucket(SynthDelayedNode** head, SynthDelayCallback callbac
 }
 
 void synthDispatchDelayedAction(SynthFade* fade) {
-    if (fade->delayAction == SYNTH_DELAY_ACTION_QUEUE) {
+    s32 action;
+
+    action = fade->delayAction;
+    if (action == SYNTH_DELAY_ACTION_QUEUE) {
         synthQueueHandle(fade->handle);
         return;
     }
 
-    if (fade->delayAction < SYNTH_DELAY_ACTION_QUEUE) {
-        if (fade->delayAction == SYNTH_DELAY_ACTION_FREE) {
+    if (action < SYNTH_DELAY_ACTION_QUEUE) {
+        if (action >= SYNTH_DELAY_ACTION_FREE) {
             synthFreeHandle(fade->handle);
         }
         return;
     }
 
-    if (fade->delayAction < 4) {
+    if (action < 4) {
         synthSetHandleMixData(fade->handle, 0, 0);
     }
 }
