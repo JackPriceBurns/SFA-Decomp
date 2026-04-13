@@ -12,8 +12,12 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
 - `python tools/orig/map_catalog.py`
   - Recovers the EN map catalog directly from `MAPINFO.bin`, `MAPS.*`, `globalma.bin`, `TRKBLK.tab`, and `orig/GSAE01/sys/main.dol`.
   - Emits either a markdown summary or a CSV dump of all 117 map IDs, including romlist aliases and dir-backed vs root-only map families.
+- `python tools/orig/dol_tables.py`
+  - Recovers the EN runtime file-ID table and `.ctors` / `.dtors` directly from `orig/GSAE01/sys/main.dol`.
+  - Cross-checks runtime aliases against the retail EN FST so alias-only loader names stand out immediately.
 
 Focused notes for that tool live in [map_catalog.md](/C:/Projects/SFA-Decomp/docs/orig/map_catalog.md).
+Focused notes for the DOL runtime tables live in [dol_tables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_tables.md).
 
 ## High-value findings
 
@@ -139,6 +143,32 @@ The same pass also surfaces a few source-file-like strings still embedded in the
 
 That is not enough for a full source map, but it is enough to seed file/subsystem naming around nearby functions or warning strings.
 
+### 7. The EN retail DOL gives a real runtime file-ID table and live init tables
+
+`dol_tables.py` recovers an 88-entry runtime file-ID table at `0x802CBECC` covering IDs `0x00` through `0x57`.
+
+This gives direct EN loader anchors such as:
+
+- `0x25` `BLOCKS.bin`
+- `0x26` `BLOCKS.tab`
+- `0x42` `DLLS.bin`
+- `0x43` `DLLS.tab`
+- `0x44` `DLLSIMPO.bin`
+- `0x51` `PREANIM.bin`
+- `0x52` `PREANIM.tab`
+
+It also proves that the later IDs are not just random duplicates; they are a second runtime ID range that intentionally reuses map-family names like `MODELS`, `BLOCKS`, `ANIM`, `TEX0`, `TEX1`, `VOXMAP`, and `ANIMCURV`.
+
+On the split side, the same tool confirms the live EN init tables:
+
+- `.ctors[0]` -> `__init_cpp_exceptions`
+- `.ctors[1]` -> `fn_802952E8`
+- `.dtors[0]` -> `__destroy_global_chain`
+- `.dtors[1]` -> `__fini_cpp_exceptions`
+- `.dtors[2]` -> `__destroy_global_chain`
+
+That gives one concrete unnamed constructor target in the retail binary and removes guesswork around the EN `.ctors` / `.dtors` contents.
+
 ## Romlist mining highlights
 
 `romlist_audit.py` reports:
@@ -183,4 +213,5 @@ The new local tools are meant to keep the most immediately useful parts reproduc
 - Use the tiny `TrickyFood` romlists to confirm the base placement-record layout in code.
 - Use `curve` as the first variable-length object to recover a principled parameter decoder.
 - Follow the `BLOCKS.bin` / `BLOCKS.tab` DOL strings into loader code and rename the `modXX` path family accordingly.
+- Use `python tools/orig/dol_tables.py --search BLOCKS DLLS PREANIM` while naming file-loader switch tables and split candidates around the EN DOL loaders.
 - Decide whether the `darkicemines` root duplication should drive a first-pass file-ID enum or loader switch table.
