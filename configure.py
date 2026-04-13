@@ -295,8 +295,25 @@ config.libs = [
         "progress_category": "sdk",  # str | List[str]
         "objects": [
             Object(Matching, "Runtime.PPCEABI.H/__start.s"),
+            Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/__mem.s"),
+            Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/mem_TRK.s"),
+            Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/__exception.s"),
             Object(Matching, "Runtime.PPCEABI.H/global_destructor_chain.c"),
+            Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/runtime.s"),
             Object(Matching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
+            Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/fragment.s"),
+        ],
+    },
+    {
+        "lib": "main",
+        "mw_version": config.linker_version,
+        "cflags": cflags_base,
+        "progress_category": "game",
+        "objects": [
+            Object(MatchingFor("GSAE01"), "audio/synth_callback.c"),
+            Object(MatchingFor("GSAE01"), "audio/synth_handle.c"),
+            Object(MatchingFor("GSAE01"), "audio/synth_delay.c"),
+            Object(MatchingFor("GSAE01"), "audio/synth_control.c"),
         ],
     },
 ]
