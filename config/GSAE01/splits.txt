@@ -64,6 +64,7 @@ audio/synth_control.c:
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x802866D0 end:0x80286718
 	.dtors      start:0x802C2028 end:0x802C202C
+	.sbss       start:0x803DF060 end:0x803DF064
 
 Runtime.PPCEABI.H/runtime.s: comment:0
 	.text       start:0x80286718 end:0x80286E3C
