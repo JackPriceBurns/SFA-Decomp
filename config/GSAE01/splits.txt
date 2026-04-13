@@ -13,5 +13,15 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:4
 
+Runtime.PPCEABI.H/global_destructor_chain.c:
+	.text       start:0x802866D0 end:0x80286718
+	.dtors      start:0x802C2028 end:0x802C202C
+
+Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
+	.text       start:0x80286E3C end:0x80286EB8
+	.ctors      start:0x802C2000 end:0x802C2004
+	.dtors      start:0x802C2020 end:0x802C2028
+	.sdata      start:0x803DD2A0 end:0x803DD2A8
+
 Runtime.PPCEABI.H/__start.s: comment:0
 	.init       start:0x80003100 end:0x80003538
