@@ -16,10 +16,11 @@ typedef float f32;
 typedef struct SynthCallbackLink {
     struct SynthCallbackLink* next;
     struct SynthCallbackLink* prev;
+    u32 unk08;
     s32 id;
     u8 controllerIndex;
     u8 listIndex;
-    u8 unk0E[6];
+    u8 unk12[2];
 } SynthCallbackLink;
 
 typedef struct SynthPendingUpdate {
