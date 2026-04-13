@@ -1,11 +1,11 @@
 #include "src/audio/synth_internal.h"
 
-extern u32 lbl_803DEEA0;
+extern u32 gSynthCurrentVoiceSlotIndex;
 
 #define SYNTH_VOICE_PROGRAM_DATA(voice) (*(u8**)((voice)->unk10 + 0x108))
 #define SYNTH_PROGRAM_FLAGS(program) (*(u32*)((program) + 0x10))
 
-void fn_8026D6DC(u32 channelIndex) {
+void synthUpdateChannelScaleEvents(u32 channelIndex) {
     SynthChannelState* channelState;
     SynthPitchPoint* point;
     u32 value;
@@ -23,9 +23,11 @@ void fn_8026D6DC(u32 channelIndex) {
                 0) {
                 value = point->value;
                 channelState->currentValue = value;
-                synthSetStudioChannelScale((s32)(value >> 10), (u8)lbl_803DEEA0, channelIndex);
+                synthSetStudioChannelScale((s32)(value >> 10), (u8)gSynthCurrentVoiceSlotIndex,
+                                           channelIndex);
             } else {
-                synthSetStudioChannelScale((s32)point->value, (u8)lbl_803DEEA0, channelIndex);
+                synthSetStudioChannelScale((s32)point->value, (u8)gSynthCurrentVoiceSlotIndex,
+                                           channelIndex);
                 point = channelState->eventCursor;
                 channelState->currentValue = point->value << 10;
             }

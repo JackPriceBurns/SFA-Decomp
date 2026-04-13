@@ -1,8 +1,8 @@
 #include "src/audio/synth_internal.h"
 
-extern void fn_80278D74(void*);
+extern void fn_80278D74(SynthVoiceSlot*);
 extern u32 fn_80279C00(u32);
-extern void fn_80282630(s32, s32, s32);
+extern void fn_80282630(u32, SynthVoiceSlot*, SynthVoiceSlot*);
 extern void fn_802836E4(s32*);
 extern const f32 lbl_803E8430;
 extern const f32 lbl_803E8440;
@@ -43,12 +43,12 @@ extern const f32 lbl_803E846C;
         gSynthFadeMask |= 1 << (fadeIndex);                \
     } while (0)
 
-void fn_802721A0(s32 value0, s32 value1) {
-    fn_80282630(7, value0, value1);
-    fn_80282630(10, value0, value1);
-    fn_80282630(0x5B, value0, value1);
-    fn_80282630(0x80, value0, value1);
-    fn_80282630(0x84, value0, value1);
+void synthCopyVoiceSlotMixState(SynthVoiceSlot* dst, SynthVoiceSlot* src) {
+    fn_80282630(7, dst, src);
+    fn_80282630(10, dst, src);
+    fn_80282630(0x5B, dst, src);
+    fn_80282630(0x80, dst, src);
+    fn_80282630(0x84, dst, src);
 }
 
 s32 synthTriggerCallback(u32 callbackId) {
