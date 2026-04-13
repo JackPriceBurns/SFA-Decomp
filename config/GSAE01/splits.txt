@@ -13,6 +13,15 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:4
 
+sdk/mtx/mtx.c:
+	.text       start:0x802475B8 end:0x80247BF8
+
+sdk/mtx/mtxvec.c:
+	.text       start:0x80247BF8 end:0x80247E94
+
+sdk/mtx/vec.c:
+	.text       start:0x80247E94 end:0x80248180
+
 audio/synth_callback.c:
 	extab       start:0x80005620 end:0x80005630
 	extabindex  start:0x80005CC0 end:0x80005CD8

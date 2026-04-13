@@ -1,3 +1,5 @@
+/* TODO: restore stripped imported address metadata if needed. */
+
 .include "macros.inc"
 .file "__start"
 
@@ -5,208 +7,208 @@
 .balign 4
 
 .fn __check_pad3, local
-/* 80003100 00000100  7C 08 02 A6 */ mflr r0
-/* 80003104 00000104  3C 60 80 00 */ lis r3, 0x8000
-/* 80003108 00000108  90 01 00 04 */ stw r0, 0x4(r1)
-/* 8000310C 0000010C  94 21 FF F8 */ stwu r1, -0x8(r1)
-/* 80003110 00000110  A0 03 30 E4 */ lhz r0, 0x30e4(r3)
-/* 80003114 00000114  70 00 0E EF */ andi. r0, r0, 0xeef
-/* 80003118 00000118  2C 00 0E EF */ cmpwi r0, 0xeef
-/* 8000311C 0000011C  40 82 00 14 */ bne .L_80003130
-/* 80003120 00000120  38 60 00 00 */ li r3, 0x0
-/* 80003124 00000124  38 80 00 00 */ li r4, 0x0
-/* 80003128 00000128  38 A0 00 00 */ li r5, 0x0
-/* 8000312C 0000012C  48 24 1E 75 */ bl OSResetSystem
+mflr r0
+lis r3, 0x8000
+stw r0, 0x4(r1)
+stwu r1, -0x8(r1)
+lhz r0, 0x30e4(r3)
+andi. r0, r0, 0xeef
+cmpwi r0, 0xeef
+bne .L_80003130
+li r3, 0x0
+li r4, 0x0
+li r5, 0x0
+bl OSResetSystem
 .L_80003130:
-/* 80003130 00000130  80 01 00 0C */ lwz r0, 0xc(r1)
-/* 80003134 00000134  38 21 00 08 */ addi r1, r1, 0x8
-/* 80003138 00000138  7C 08 03 A6 */ mtlr r0
-/* 8000313C 0000013C  4E 80 00 20 */ blr
+lwz r0, 0xc(r1)
+addi r1, r1, 0x8
+mtlr r0
+blr
 .endfn __check_pad3
 
 .fn __start, weak
-/* 80003140 00000140  48 00 01 39 */ bl __init_registers
-/* 80003144 00000144  48 00 02 11 */ bl __init_hardware
-/* 80003148 00000148  38 00 FF FF */ li r0, -0x1
-/* 8000314C 0000014C  94 21 FF F8 */ stwu r1, -0x8(r1)
-/* 80003150 00000150  90 01 00 04 */ stw r0, 0x4(r1)
-/* 80003154 00000154  90 01 00 00 */ stw r0, 0x0(r1)
-/* 80003158 00000158  48 00 01 3D */ bl __init_data
-/* 8000315C 0000015C  38 00 00 00 */ li r0, 0x0
-/* 80003160 00000160  3C C0 80 00 */ lis r6, 0x8000
-/* 80003164 00000164  38 C6 00 44 */ addi r6, r6, 0x44
-/* 80003168 00000168  90 06 00 00 */ stw r0, 0x0(r6)
-/* 8000316C 0000016C  3C C0 80 00 */ lis r6, 0x8000
-/* 80003170 00000170  38 C6 00 F4 */ addi r6, r6, 0xf4
-/* 80003174 00000174  80 C6 00 00 */ lwz r6, 0x0(r6)
-/* 80003178 00000178  28 06 00 00 */ cmplwi r6, 0x0
-/* 8000317C 0000017C  41 82 00 0C */ beq .L_80003188
-/* 80003180 00000180  80 E6 00 0C */ lwz r7, 0xc(r6)
-/* 80003184 00000184  48 00 00 24 */ b .L_800031A8
+bl __init_registers
+bl __init_hardware
+li r0, -0x1
+stwu r1, -0x8(r1)
+stw r0, 0x4(r1)
+stw r0, 0x0(r1)
+bl __init_data
+li r0, 0x0
+lis r6, 0x8000
+addi r6, r6, 0x44
+stw r0, 0x0(r6)
+lis r6, 0x8000
+addi r6, r6, 0xf4
+lwz r6, 0x0(r6)
+cmplwi r6, 0x0
+beq .L_80003188
+lwz r7, 0xc(r6)
+b .L_800031A8
 .L_80003188:
-/* 80003188 00000188  3C A0 80 00 */ lis r5, 0x8000
-/* 8000318C 0000018C  38 A5 00 34 */ addi r5, r5, 0x34
-/* 80003190 00000190  80 A5 00 00 */ lwz r5, 0x0(r5)
-/* 80003194 00000194  28 05 00 00 */ cmplwi r5, 0x0
-/* 80003198 00000198  41 82 00 38 */ beq .L_800031D0
-/* 8000319C 0000019C  3C E0 80 00 */ lis r7, 0x8000
-/* 800031A0 000001A0  38 E7 30 E8 */ addi r7, r7, 0x30e8
-/* 800031A4 000001A4  80 E7 00 00 */ lwz r7, 0x0(r7)
+lis r5, 0x8000
+addi r5, r5, 0x34
+lwz r5, 0x0(r5)
+cmplwi r5, 0x0
+beq .L_800031D0
+lis r7, 0x8000
+addi r7, r7, 0x30e8
+lwz r7, 0x0(r7)
 .L_800031A8:
-/* 800031A8 000001A8  38 A0 00 00 */ li r5, 0x0
-/* 800031AC 000001AC  28 07 00 02 */ cmplwi r7, 0x2
-/* 800031B0 000001B0  41 82 00 10 */ beq .L_800031C0
-/* 800031B4 000001B4  28 07 00 03 */ cmplwi r7, 0x3
-/* 800031B8 000001B8  40 82 00 18 */ bne .L_800031D0
-/* 800031BC 000001BC  38 A0 00 01 */ li r5, 0x1
+li r5, 0x0
+cmplwi r7, 0x2
+beq .L_800031C0
+cmplwi r7, 0x3
+bne .L_800031D0
+li r5, 0x1
 .L_800031C0:
-/* 800031C0 000001C0  3C C0 80 29 */ lis r6, InitMetroTRK@ha
-/* 800031C4 000001C4  38 C6 D0 F0 */ addi r6, r6, InitMetroTRK@l
-/* 800031C8 000001C8  7C C8 03 A6 */ mtlr r6
-/* 800031CC 000001CC  4E 80 00 21 */ blrl
+lis r6, InitMetroTRK@ha
+addi r6, r6, InitMetroTRK@l
+mtlr r6
+blrl
 .L_800031D0:
-/* 800031D0 000001D0  3C C0 80 00 */ lis r6, 0x8000
-/* 800031D4 000001D4  38 C6 00 F4 */ addi r6, r6, 0xf4
-/* 800031D8 000001D8  80 A6 00 00 */ lwz r5, 0x0(r6)
-/* 800031DC 000001DC  28 05 00 00 */ cmplwi r5, 0x0
-/* 800031E0 000001E0  41 A2 00 50 */ beq+ .L_80003230
-/* 800031E4 000001E4  80 C5 00 08 */ lwz r6, 0x8(r5)
-/* 800031E8 000001E8  28 06 00 00 */ cmplwi r6, 0x0
-/* 800031EC 000001EC  41 A2 00 44 */ beq+ .L_80003230
-/* 800031F0 000001F0  7C C5 32 14 */ add r6, r5, r6
-/* 800031F4 000001F4  81 C6 00 00 */ lwz r14, 0x0(r6)
-/* 800031F8 000001F8  28 0E 00 00 */ cmplwi r14, 0x0
-/* 800031FC 000001FC  41 82 00 34 */ beq .L_80003230
-/* 80003200 00000200  39 E6 00 04 */ addi r15, r6, 0x4
-/* 80003204 00000204  7D C9 03 A6 */ mtctr r14
+lis r6, 0x8000
+addi r6, r6, 0xf4
+lwz r5, 0x0(r6)
+cmplwi r5, 0x0
+beq+ .L_80003230
+lwz r6, 0x8(r5)
+cmplwi r6, 0x0
+beq+ .L_80003230
+add r6, r5, r6
+lwz r14, 0x0(r6)
+cmplwi r14, 0x0
+beq .L_80003230
+addi r15, r6, 0x4
+mtctr r14
 .L_80003208:
-/* 80003208 00000208  38 C6 00 04 */ addi r6, r6, 0x4
-/* 8000320C 0000020C  80 E6 00 00 */ lwz r7, 0x0(r6)
-/* 80003210 00000210  7C E7 2A 14 */ add r7, r7, r5
-/* 80003214 00000214  90 E6 00 00 */ stw r7, 0x0(r6)
-/* 80003218 00000218  42 00 FF F0 */ bdnz .L_80003208
-/* 8000321C 0000021C  3C A0 80 00 */ lis r5, 0x8000
-/* 80003220 00000220  38 A5 00 34 */ addi r5, r5, 0x34
-/* 80003224 00000224  55 E7 00 34 */ clrrwi r7, r15, 5
-/* 80003228 00000228  90 E5 00 00 */ stw r7, 0x0(r5)
-/* 8000322C 0000022C  48 00 00 0C */ b .L_80003238
+addi r6, r6, 0x4
+lwz r7, 0x0(r6)
+add r7, r7, r5
+stw r7, 0x0(r6)
+bdnz .L_80003208
+lis r5, 0x8000
+addi r5, r5, 0x34
+clrrwi r7, r15, 5
+stw r7, 0x0(r5)
+b .L_80003238
 .L_80003230:
-/* 80003230 00000230  39 C0 00 00 */ li r14, 0x0
-/* 80003234 00000234  39 E0 00 00 */ li r15, 0x0
+li r14, 0x0
+li r15, 0x0
 .L_80003238:
-/* 80003238 00000238  48 24 42 95 */ bl DBInit
-/* 8000323C 0000023C  48 23 DA 21 */ bl OSInit
-/* 80003240 00000240  3C 80 80 00 */ lis r4, 0x8000
-/* 80003244 00000244  38 84 30 E6 */ addi r4, r4, 0x30e6
-/* 80003248 00000248  A0 64 00 00 */ lhz r3, 0x0(r4)
-/* 8000324C 0000024C  70 65 80 00 */ andi. r5, r3, 0x8000
-/* 80003250 00000250  41 82 00 10 */ beq .L_80003260
-/* 80003254 00000254  70 63 7F FF */ andi. r3, r3, 0x7fff
-/* 80003258 00000258  28 03 00 01 */ cmplwi r3, 0x1
-/* 8000325C 0000025C  40 82 00 08 */ bne .L_80003264
+bl DBInit
+bl OSInit
+lis r4, 0x8000
+addi r4, r4, 0x30e6
+lhz r3, 0x0(r4)
+andi. r5, r3, 0x8000
+beq .L_80003260
+andi. r3, r3, 0x7fff
+cmplwi r3, 0x1
+bne .L_80003264
 .L_80003260:
-/* 80003260 00000260  4B FF FE A1 */ bl __check_pad3
+bl __check_pad3
 .L_80003264:
-/* 80003264 00000264  48 24 41 D5 */ bl __init_user
-/* 80003268 00000268  7D C3 73 78 */ mr r3, r14
-/* 8000326C 0000026C  7D E4 7B 78 */ mr r4, r15
-/* 80003270 00000270  48 01 E1 91 */ bl main
-/* 80003274 00000274  48 28 A9 94 */ b exit
+bl __init_user
+mr r3, r14
+mr r4, r15
+bl main
+b exit
 .endfn __start
 
 .fn __init_registers, local
-/* 80003278 00000278  3C 20 80 3F */ lis r1, _stack_addr@h
-/* 8000327C 0000027C  60 21 90 F8 */ ori r1, r1, _stack_addr@l
-/* 80003280 00000280  3C 40 80 3E */ lis r2, _SDA2_BASE_@h
-/* 80003284 00000284  60 42 71 80 */ ori r2, r2, _SDA2_BASE_@l
-/* 80003288 00000288  3D A0 80 3E */ lis r13, _SDA_BASE_@h
-/* 8000328C 0000028C  61 AD 3E 40 */ ori r13, r13, _SDA_BASE_@l
-/* 80003290 00000290  4E 80 00 20 */ blr
+lis r1, _stack_addr@h
+ori r1, r1, _stack_addr@l
+lis r2, _SDA2_BASE_@h
+ori r2, r2, _SDA2_BASE_@l
+lis r13, _SDA_BASE_@h
+ori r13, r13, _SDA_BASE_@l
+blr
 .endfn __init_registers
 
 .fn __init_data, local
-/* 80003294 00000294  7C 08 02 A6 */ mflr r0
-/* 80003298 00000298  90 01 00 04 */ stw r0, 0x4(r1)
-/* 8000329C 0000029C  94 21 FF E8 */ stwu r1, -0x18(r1)
-/* 800032A0 000002A0  93 E1 00 14 */ stw r31, 0x14(r1)
-/* 800032A4 000002A4  93 C1 00 10 */ stw r30, 0x10(r1)
-/* 800032A8 000002A8  93 A1 00 0C */ stw r29, 0xc(r1)
-/* 800032AC 000002AC  3C 60 80 00 */ lis r3, _rom_copy_info@ha
-/* 800032B0 000002B0  38 03 55 70 */ addi r0, r3, _rom_copy_info@l
-/* 800032B4 000002B4  7C 1D 03 78 */ mr r29, r0
-/* 800032B8 000002B8  48 00 00 04 */ b .L_800032BC
+mflr r0
+stw r0, 0x4(r1)
+stwu r1, -0x18(r1)
+stw r31, 0x14(r1)
+stw r30, 0x10(r1)
+stw r29, 0xc(r1)
+lis r3, _rom_copy_info@ha
+addi r0, r3, _rom_copy_info@l
+mr r29, r0
+b .L_800032BC
 .L_800032BC:
-/* 800032BC 000002BC  48 00 00 04 */ b .L_800032C0
+b .L_800032C0
 .L_800032C0:
-/* 800032C0 000002C0  83 DD 00 08 */ lwz r30, 0x8(r29)
-/* 800032C4 000002C4  28 1E 00 00 */ cmplwi r30, 0x0
-/* 800032C8 000002C8  41 82 00 38 */ beq .L_80003300
-/* 800032CC 000002CC  80 9D 00 00 */ lwz r4, 0x0(r29)
-/* 800032D0 000002D0  83 FD 00 04 */ lwz r31, 0x4(r29)
-/* 800032D4 000002D4  41 82 00 24 */ beq .L_800032F8
-/* 800032D8 000002D8  7C 1F 20 40 */ cmplw r31, r4
-/* 800032DC 000002DC  41 82 00 1C */ beq .L_800032F8
-/* 800032E0 000002E0  7F E3 FB 78 */ mr r3, r31
-/* 800032E4 000002E4  7F C5 F3 78 */ mr r5, r30
-/* 800032E8 000002E8  48 00 01 AD */ bl memcpy
-/* 800032EC 000002EC  7F E3 FB 78 */ mr r3, r31
-/* 800032F0 000002F0  7F C4 F3 78 */ mr r4, r30
-/* 800032F4 000002F4  48 00 00 81 */ bl __flush_cache
+lwz r30, 0x8(r29)
+cmplwi r30, 0x0
+beq .L_80003300
+lwz r4, 0x0(r29)
+lwz r31, 0x4(r29)
+beq .L_800032F8
+cmplw r31, r4
+beq .L_800032F8
+mr r3, r31
+mr r5, r30
+bl memcpy
+mr r3, r31
+mr r4, r30
+bl __flush_cache
 .L_800032F8:
-/* 800032F8 000002F8  3B BD 00 0C */ addi r29, r29, 0xc
-/* 800032FC 000002FC  4B FF FF C4 */ b .L_800032C0
+addi r29, r29, 0xc
+b .L_800032C0
 .L_80003300:
-/* 80003300 00000300  3C 60 80 00 */ lis r3, _bss_init_info@ha
-/* 80003304 00000304  38 03 55 F4 */ addi r0, r3, _bss_init_info@l
-/* 80003308 00000308  7C 1D 03 78 */ mr r29, r0
-/* 8000330C 0000030C  48 00 00 04 */ b .L_80003310
+lis r3, _bss_init_info@ha
+addi r0, r3, _bss_init_info@l
+mr r29, r0
+b .L_80003310
 .L_80003310:
-/* 80003310 00000310  48 00 00 04 */ b .L_80003314
+b .L_80003314
 .L_80003314:
-/* 80003314 00000314  80 BD 00 04 */ lwz r5, 0x4(r29)
-/* 80003318 00000318  28 05 00 00 */ cmplwi r5, 0x0
-/* 8000331C 0000031C  41 82 00 1C */ beq .L_80003338
-/* 80003320 00000320  80 7D 00 00 */ lwz r3, 0x0(r29)
-/* 80003324 00000324  41 82 00 0C */ beq .L_80003330
-/* 80003328 00000328  38 80 00 00 */ li r4, 0x0
-/* 8000332C 0000032C  48 00 00 7D */ bl memset
+lwz r5, 0x4(r29)
+cmplwi r5, 0x0
+beq .L_80003338
+lwz r3, 0x0(r29)
+beq .L_80003330
+li r4, 0x0
+bl memset
 .L_80003330:
-/* 80003330 00000330  3B BD 00 08 */ addi r29, r29, 0x8
-/* 80003334 00000334  4B FF FF E0 */ b .L_80003314
+addi r29, r29, 0x8
+b .L_80003314
 .L_80003338:
-/* 80003338 00000338  80 01 00 1C */ lwz r0, 0x1c(r1)
-/* 8000333C 0000033C  83 E1 00 14 */ lwz r31, 0x14(r1)
-/* 80003340 00000340  83 C1 00 10 */ lwz r30, 0x10(r1)
-/* 80003344 00000344  83 A1 00 0C */ lwz r29, 0xc(r1)
-/* 80003348 00000348  38 21 00 18 */ addi r1, r1, 0x18
-/* 8000334C 0000034C  7C 08 03 A6 */ mtlr r0
-/* 80003350 00000350  4E 80 00 20 */ blr
+lwz r0, 0x1c(r1)
+lwz r31, 0x14(r1)
+lwz r30, 0x10(r1)
+lwz r29, 0xc(r1)
+addi r1, r1, 0x18
+mtlr r0
+blr
 .endfn __init_data
 
 .fn __init_hardware, global
-/* 80003354 00000354  7C 00 00 A6 */ mfmsr r0
-/* 80003358 00000358  60 00 20 00 */ ori r0, r0, 0x2000
-/* 8000335C 0000035C  7C 00 01 24 */ mtmsr r0
-/* 80003360 00000360  7F E8 02 A6 */ mflr r31
-/* 80003364 00000364  48 23 E0 7D */ bl __OSPSInit
-/* 80003368 00000368  48 23 F2 FD */ bl __OSCacheInit
-/* 8000336C 0000036C  7F E8 03 A6 */ mtlr r31
-/* 80003370 00000370  4E 80 00 20 */ blr
+mfmsr r0
+ori r0, r0, 0x2000
+mtmsr r0
+mflr r31
+bl __OSPSInit
+bl __OSCacheInit
+mtlr r31
+blr
 .endfn __init_hardware
 
 .fn __flush_cache, global
-/* 80003374 00000374  3C A0 FF FF */ lis r5, 0xffff
-/* 80003378 00000378  60 A5 FF F1 */ ori r5, r5, 0xfff1
-/* 8000337C 0000037C  7C A5 18 38 */ and r5, r5, r3
-/* 80003380 00000380  7C 65 18 50 */ subf r3, r5, r3
-/* 80003384 00000384  7C 84 1A 14 */ add r4, r4, r3
+lis r5, 0xffff
+ori r5, r5, 0xfff1
+and r5, r5, r3
+subf r3, r5, r3
+add r4, r4, r3
 .L_80003388:
-/* 80003388 00000388  7C 00 28 6C */ dcbst r0, r5
-/* 8000338C 0000038C  7C 00 04 AC */ sync
-/* 80003390 00000390  7C 00 2F AC */ icbi r0, r5
-/* 80003394 00000394  30 A5 00 08 */ addic r5, r5, 0x8
-/* 80003398 00000398  34 84 FF F8 */ subic. r4, r4, 0x8
-/* 8000339C 0000039C  40 80 FF EC */ bge .L_80003388
-/* 800033A0 000003A0  4C 00 01 2C */ isync
-/* 800033A4 000003A4  4E 80 00 20 */ blr
+dcbst r0, r5
+sync
+icbi r0, r5
+addic r5, r5, 0x8
+subic. r4, r4, 0x8
+bge .L_80003388
+isync
+blr
 .endfn __flush_cache

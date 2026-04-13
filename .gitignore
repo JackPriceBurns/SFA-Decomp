@@ -19,6 +19,7 @@ orig/*/*
 
 # Build files
 build/
+temp/
 .ninja_*
 build.ninja
 

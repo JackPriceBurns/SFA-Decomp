@@ -304,6 +304,14 @@ config.libs = [
             Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/fragment.s"),
         ],
     },
+    DolphinLib(
+        "mtx",
+        [
+            Object(NonMatching, "sdk/mtx/mtx.c"),
+            Object(NonMatching, "sdk/mtx/mtxvec.c"),
+            Object(NonMatching, "sdk/mtx/vec.c"),
+        ],
+    ),
     {
         "lib": "main",
         "mw_version": config.linker_version,

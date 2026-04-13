@@ -3,12 +3,13 @@
 Keep this light. The project is still in the "recover the game" phase, not the "polish an already-understood decomp" phase.
 
 ## Target
-- Target version is `EN v1.0` (`GCCE01`).
+- Active target version in this repo is `EN v1.0` (`GSAE01`).
 - `orig/` may contain EN, PAL, and JP artifacts. Use them for cross-checking only.
 - `resources/ghidra-decomp-4-12-2026/` contains the raw EN v1.0 Ghidra decomp with no code analysis. Use it for basic code structure only.
-- `resources/DolphinSymbolExtract_GSAE01.txt` contains the EN v1.0 english symbols based on Dolphin Signature analysis. This is good for SDK matching. Please use this when determining SDK splits.
+- `resources/DolphinSymbolExport_GSAE01.txt` contains the active EN symbol export based on Dolphin Signature analysis. This is good for SDK matching, but the addresses need to be translated against the current `config/GSAE01/symbols.txt` anchors before using them for splits.
 - Other `resources/*` content should also be treated as rough shape data, not analysis.
-- `reference_projects/*` exists to mine patterns, especially SDK code and common Nintendo/GameCube layouts. Do not commit anything from there.
+- `reference_projects/*` may exist in some checkouts to mine patterns, especially SDK code and common Nintendo/GameCube layouts. Do not edit anything in this folder, as it is reference code from other game decompilation efforts.
+- SDK files have already been added to this project, but they are from another game. We will need to assign our splits to use these files, update symbols, and possibly learn from `reference_projects/*` to drive our SDK files to matching.
 
 ## What Progress Looks Like
 - Recover real functions, data, class boundaries, globals, vtables, and file structure.
@@ -41,12 +42,13 @@ This repo starts from very little. Expect to do naming, struct recovery, type cl
 - Write small custom tools and scripts under the tools/ folder when the repo lacks the visibility needed to move quickly.
 
 ## Rules
-- Bias toward EN `GCCE01` for addresses, sizes, and matching decisions.
+- Bias toward EN `GSAE01` for addresses, sizes, and matching decisions.
 - Prefer real definitions and linkage over `extern` placeholders.
 - Do not hardcode addresses or invent junk `lbl_` / `fn_` names just to force progress.
 - Do not manually force compiler-generated sections or synthesize likely-generated init/ctor/dtor glue unless there is strong evidence.
 - Keep code clean. No analysis debris, commented-out experiments, or notes in the project tree.
 - Use other regions to inform understanding, not to override the EN target.
+- Do not paste raw Dolphin addresses straight into config. Run `python tools/dolphin_sdk_symbols.py summary` first, use the inferred address translation, then review the surrounding translated cluster manually.
 
 ## Minimal Loop
 1. Pick a target with real leverage.
