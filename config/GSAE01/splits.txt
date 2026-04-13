@@ -18,6 +18,11 @@ audio/synth_callback.c:
 	extabindex  start:0x80005CC0 end:0x80005CD8
 	.text       start:0x8026C6B8 end:0x8026CBEC
 
+audio/synth_channel.c:
+	extab       start:0x80005638 end:0x80005640
+	extabindex  start:0x80005CE4 end:0x80005CF0
+	.text       start:0x8026D6DC end:0x8026D7C4
+
 audio/synth_handle.c:
 	extab       start:0x80005640 end:0x80005658
 	extabindex  start:0x80005CF0 end:0x80005D14

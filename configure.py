@@ -311,6 +311,7 @@ config.libs = [
         "progress_category": "game",
         "objects": [
             Object(MatchingFor("GSAE01"), "audio/synth_callback.c"),
+            Object(MatchingFor("GSAE01"), "audio/synth_channel.c"),
             Object(MatchingFor("GSAE01"), "audio/synth_handle.c"),
             Object(MatchingFor("GSAE01"), "audio/synth_init.c"),
             Object(MatchingFor("GSAE01"), "audio/synth_delay.c"),
