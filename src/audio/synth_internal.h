@@ -8,7 +8,7 @@ typedef int s32;
 typedef float f32;
 
 #define SYNTH_MAX_VOICES 8
-#define SYNTH_CALLBACK_COUNT 0x140
+#define SYNTH_CALLBACK_COUNT 0x100
 #define SYNTH_VOICE_NOTE_COUNT 0x10
 #define SYNTH_DELAY_BUCKET_COUNT 0x20
 #define SYNTH_DELAY_BUCKET_INVALID 0xFF
@@ -19,7 +19,7 @@ typedef struct SynthCallbackLink {
     s32 id;
     u8 controllerIndex;
     u8 listIndex;
-    u8 pad[2];
+    u8 unk0E[6];
 } SynthCallbackLink;
 
 typedef struct SynthPendingUpdate {
