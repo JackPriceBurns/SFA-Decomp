@@ -18,4 +18,5 @@ Exploratory notes derived from the bundled retail assets under `orig/`.
 - [developer_artifacts.md](/C:/Projects/SFA-Decomp/docs/orig/developer_artifacts.md)
 - [source_leaks.md](/C:/Projects/SFA-Decomp/docs/orig/source_leaks.md)
 - [source_recovery.md](/C:/Projects/SFA-Decomp/docs/orig/source_recovery.md)
+- [source_functions.md](/C:/Projects/SFA-Decomp/docs/orig/source_functions.md)
 - [source_materialize.md](/C:/Projects/SFA-Decomp/docs/orig/source_materialize.md)

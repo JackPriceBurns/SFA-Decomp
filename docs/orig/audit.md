@@ -30,6 +30,8 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
   - Inventories direct source/header artifacts in `orig/GSAE01`, scores embedded source-like strings, and keeps asset-noise matches out of the high-value summary.
 - `python tools/orig/source_recovery.py`
   - Resolves retail `main.dol` source-tagged strings back to current EN xrefs and extracts retail-authored function/context labels such as `setBlendMove` from warning strings.
+- `python tools/orig/source_functions.py`
+  - Focuses the same retail string evidence down to function-label candidates, keeping file name, retail label, EN xref cluster, and debug-side name bridges together in one report.
 
 Focused notes for that tool live in [map_catalog.md](/C:/Projects/SFA-Decomp/docs/orig/map_catalog.md).
 Focused notes for the DOL runtime tables live in [dol_tables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_tables.md).
@@ -39,6 +41,7 @@ Focused notes for per-object retail placement widths live in [romlist_params.md]
 Focused notes for developer-facing leftovers live in [developer_artifacts.md](/C:/Projects/SFA-Decomp/docs/orig/developer_artifacts.md).
 Focused notes for the broader retail source/header leak inventory live in [source_leaks.md](/C:/Projects/SFA-Decomp/docs/orig/source_leaks.md).
 Focused notes for source-tagged EN `main.dol` recovery targets live in [source_recovery.md](/C:/Projects/SFA-Decomp/docs/orig/source_recovery.md).
+Focused notes for retail function-label recovery live in [source_functions.md](/C:/Projects/SFA-Decomp/docs/orig/source_functions.md).
 
 ## High-value findings
 
@@ -280,5 +283,6 @@ The new local tools are meant to keep the most immediately useful parts reproduc
 - Follow the `BLOCKS.bin` / `BLOCKS.tab` DOL strings into loader code and rename the `modXX` path family accordingly.
 - Use `python tools/orig/dol_tables.py --search BLOCKS DLLS PREANIM` while naming file-loader switch tables and split candidates around the EN DOL loaders.
 - Use `python tools/orig/dol_xrefs.py --search camcontrol curves SHthorntail romlist` before naming anonymous functions that already have retail string evidence.
+- Use `python tools/orig/source_functions.py --search objanim setBlendMove Init` when a retail warning string appears to expose a real function label and you want the EN xref cluster immediately.
 - Use `python tools/orig/dol_vtables.py --stores-only` before recovering a class-like subsystem that seems to write a function pointer to offset `0`.
 - Decide whether the `darkicemines` root duplication should drive a first-pass file-ID enum or loader switch table.
