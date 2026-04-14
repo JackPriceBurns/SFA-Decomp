@@ -35,6 +35,9 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
 - `python tools/orig/object_family_packets.py`
   - Synthesizes retail object defs, root romlist widths, EN DLL descriptors, and optional reference-only XML hints into ranked object-family recovery packets.
   - Can materialize non-built packet stubs under `src/main/unknown/` for boundary planning without touching the active build.
+- `python tools/orig/object_def_packets.py`
+  - Synthesizes one retail-backed packet per object def, cross-linking root placement widths, class packets, DLL families, EN descriptor slots, and reference-only object/DLL hints.
+  - Can materialize broad non-built exploratory stub batches under `src/main/unknown/objects/`.
 
 Focused notes for that tool live in [map_catalog.md](/C:/Projects/SFA-Decomp/docs/orig/map_catalog.md).
 Focused notes for the DOL runtime tables live in [dol_tables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_tables.md).
@@ -42,6 +45,7 @@ Focused notes for direct DOL string xrefs live in [dol_xrefs.md](/C:/Projects/SF
 Focused notes for constructor-backed function-pointer tables live in [dol_vtables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_vtables.md).
 Focused notes for per-object retail placement widths live in [romlist_params.md](/C:/Projects/SFA-Decomp/docs/orig/romlist_params.md).
 Focused notes for object/DLL family packetization live in [object_family_packets.md](/C:/Projects/SFA-Decomp/docs/orig/object_family_packets.md).
+Focused notes for per-object packet materialization live in [object_def_packets.md](/C:/Projects/SFA-Decomp/docs/orig/object_def_packets.md).
 Focused notes for developer-facing leftovers live in [developer_artifacts.md](/C:/Projects/SFA-Decomp/docs/orig/developer_artifacts.md).
 Focused notes for the broader retail source/header leak inventory live in [source_leaks.md](/C:/Projects/SFA-Decomp/docs/orig/source_leaks.md).
 Focused notes for source-tagged EN `main.dol` recovery targets live in [source_recovery.md](/C:/Projects/SFA-Decomp/docs/orig/source_recovery.md).
