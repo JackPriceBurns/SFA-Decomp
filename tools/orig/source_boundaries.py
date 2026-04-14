@@ -10,7 +10,7 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tools.orig.dol_xrefs import FunctionSymbol, load_function_symbols
+from tools.orig.dol_xrefs import DolFile, FunctionSymbol, PRINTABLE_RE, load_function_symbols, scan_text_xrefs
 from tools.orig.source_matrix import (
     build_source_variant_index,
     collect_all_bundle_source_hits,
@@ -25,6 +25,11 @@ class SplitRange:
     path: str
     start: int
     end: int
+
+
+@dataclass(frozen=True)
+class RawStringRef:
+    text: str
 
 
 @dataclass(frozen=True)
@@ -53,6 +58,11 @@ class BoundaryHint:
     reference_symbol_hints: tuple[str, ...]
     nearby_before: tuple[str, ...]
     nearby_after: tuple[str, ...]
+    indirect_strings: tuple[str, ...]
+    indirect_functions: tuple[FunctionSymbol, ...]
+    indirect_span_start: int | None
+    indirect_span_end: int | None
+    indirect_gap_text: str | None
     score: int
 
     @property
@@ -60,6 +70,12 @@ class BoundaryHint:
         if self.span_start is None or self.span_end is None:
             return None
         return self.span_end - self.span_start
+
+    @property
+    def indirect_span_size(self) -> int | None:
+        if self.indirect_span_start is None or self.indirect_span_end is None:
+            return None
+        return self.indirect_span_end - self.indirect_span_start
 
 
 def unique_strings(values: list[str], limit: int | None = None) -> tuple[str, ...]:
@@ -92,6 +108,17 @@ def build_split_ranges(path: Path) -> list[SplitRange]:
 
 def format_symbol_span(function: FunctionSymbol) -> str:
     return f"{function.name}@0x{function.address:08X}-0x{function.address + function.size:08X}"
+
+
+def scan_all_printable_strings(dol: DolFile) -> list[tuple[int, str]]:
+    strings: list[tuple[int, str]] = []
+    for match in PRINTABLE_RE.finditer(dol.data):
+        section = dol.offset_to_section(match.start())
+        if section is None:
+            continue
+        address = section.address + (match.start() - section.offset)
+        strings.append((address, match.group(0).decode("ascii", "ignore")))
+    return strings
 
 
 def symbol_neighbors(
@@ -148,6 +175,122 @@ def split_gap_context(
     return "unsplit", (), gap_start, gap_end, prev_path, next_path
 
 
+def describe_gap_context(
+    split_status: str,
+    current_split_paths: tuple[str, ...],
+    gap_start: int | None,
+    gap_end: int | None,
+    gap_prev_path: str | None,
+    gap_next_path: str | None,
+    no_xrefs_text: str = "no EN xrefs recovered",
+) -> str:
+    if split_status == "no-xrefs":
+        return no_xrefs_text
+    if split_status == "single-split":
+        return f"inside current split `{current_split_paths[0]}`"
+    if split_status == "multi-split":
+        return "crosses current splits " + ", ".join(f"`{path}`" for path in current_split_paths)
+    parts: list[str] = ["outside current `splits.txt` coverage"]
+    if gap_start is not None and gap_end is not None:
+        parts.append(f"in gap `0x{gap_start:08X}-0x{gap_end:08X}`")
+    elif gap_end is not None:
+        parts.append(f"before split coverage starts at `0x{gap_end:08X}`")
+    elif gap_start is not None:
+        parts.append(f"after split coverage ends at `0x{gap_start:08X}`")
+    if gap_prev_path is not None:
+        parts.append(f"prev split `{gap_prev_path}`")
+    if gap_next_path is not None:
+        parts.append(f"next split `{gap_next_path}`")
+    return ", ".join(parts)
+
+
+def meaningful_indirect_string(text: str, source_name: str) -> bool:
+    if text == source_name:
+        return False
+    if ".c" in text.lower() or ".cpp" in text.lower():
+        return False
+    if "No Longer supported" in text:
+        return False
+    alpha_count = sum(char.isalpha() for char in text)
+    if alpha_count < 4:
+        return False
+    if text.lstrip().startswith("%"):
+        return False
+    return True
+
+
+def indirect_neighborhood(
+    group: RecoveryGroup,
+    raw_strings: list[tuple[int, str]],
+    string_index_by_address: dict[int, int],
+    xrefs_by_target: dict[int, tuple[FunctionSymbol, ...]],
+    current_splits: list[SplitRange],
+    radius: int = 14,
+    max_string_delta: int = 0x3000,
+    max_support_strings: int = 5,
+) -> tuple[tuple[str, ...], tuple[FunctionSymbol, ...], int | None, int | None, str | None]:
+    if group.xrefs or not group.retail_addresses:
+        return (), (), None, None, None
+
+    anchor_address = next((address for address in group.retail_addresses if address in string_index_by_address), None)
+    if anchor_address is None:
+        return (), (), None, None, None
+
+    anchor_index = string_index_by_address[anchor_address]
+    candidates: list[tuple[int, int, str, tuple[FunctionSymbol, ...]]] = []
+    for offset in range(max(0, anchor_index - radius), min(len(raw_strings), anchor_index + radius + 1)):
+        address, text = raw_strings[offset]
+        if abs(address - anchor_address) > max_string_delta:
+            continue
+        if not meaningful_indirect_string(text, group.retail_source_name):
+            continue
+        functions = xrefs_by_target.get(address, ())
+        if not functions:
+            continue
+        candidates.append((abs(address - anchor_address), offset, text, functions))
+
+    if not candidates:
+        return (), (), None, None, None
+
+    support_strings: list[str] = []
+    support_functions: list[FunctionSymbol] = []
+    seen_function_addresses: set[int] = set()
+    for _distance, _offset, text, functions in sorted(candidates, key=lambda item: (item[0], item[1], item[2].lower())):
+        added = False
+        for function in functions:
+            if function.address in seen_function_addresses:
+                continue
+            seen_function_addresses.add(function.address)
+            support_functions.append(function)
+            added = True
+        if added and text not in support_strings:
+            support_strings.append(text)
+        if len(support_strings) >= max_support_strings:
+            break
+
+    support_functions.sort(key=lambda item: item.address)
+    if not support_functions:
+        return (), (), None, None, None
+
+    span_start = support_functions[0].address
+    span_end = support_functions[-1].address + support_functions[-1].size
+    split_status, current_split_paths, gap_start, gap_end, gap_prev_path, gap_next_path = split_gap_context(
+        current_splits,
+        span_start,
+        span_end,
+    )
+    gap_text = describe_gap_context(
+        split_status,
+        current_split_paths,
+        gap_start,
+        gap_end,
+        gap_prev_path,
+        gap_next_path,
+        no_xrefs_text="no indirect EN neighborhood recovered",
+    )
+    return tuple(support_strings), tuple(support_functions), span_start, span_end, gap_text
+
+
 def suggested_path(hint: ReferenceHint) -> str:
     if hint.current_debug_paths:
         return hint.current_debug_paths[0].replace("\\", "/")
@@ -195,10 +338,36 @@ def build_boundary_hints(
     reference_hints: list[ReferenceHint],
     current_functions: list[FunctionSymbol],
     current_splits: list[SplitRange],
+    dol_path: Path,
 ) -> list[BoundaryHint]:
     reference_by_name = {hint.retail_source_name.lower(): hint for hint in reference_hints}
     function_by_address = {function.address: function for function in current_functions}
     variant_index = build_source_variant_index(collect_all_bundle_source_hits(default_bundle_specs()))
+    current_dol = DolFile(dol_path)
+    raw_strings = scan_all_printable_strings(current_dol)
+    string_index_by_address = {address: index for index, (address, _text) in enumerate(raw_strings)}
+    raw_string_entries = {
+        address: RawStringRef(text=text)
+        for address, text in raw_strings
+    }
+    text_xrefs = scan_text_xrefs(current_dol, raw_string_entries, current_functions)
+    grouped_xrefs: dict[int, list[FunctionSymbol]] = {}
+    for xref in text_xrefs:
+        if xref.function_start is None:
+            continue
+        function = function_by_address.get(xref.function_start)
+        if function is None:
+            continue
+        grouped_xrefs.setdefault(xref.target_address, []).append(function)
+    xrefs_by_target = {
+        target_address: tuple(
+            sorted(
+                {function.address: function for function in functions}.values(),
+                key=lambda item: item.address,
+            )
+        )
+        for target_address, functions in grouped_xrefs.items()
+    }
 
     hints: list[BoundaryHint] = []
     for group in groups:
@@ -217,6 +386,16 @@ def build_boundary_hints(
         )
         before, after = symbol_neighbors(current_functions, xref_functions)
         selected_path = suggested_path(hint)
+        indirect_strings, indirect_functions, indirect_span_start, indirect_span_end, indirect_gap_text = indirect_neighborhood(
+            group,
+            raw_strings,
+            string_index_by_address,
+            xrefs_by_target,
+            current_splits,
+        )
+        score = boundary_score(group, hint, split_status, bundle_ids, xref_functions)
+        if indirect_functions:
+            score += 100 + len(indirect_functions) * 20
 
         hints.append(
             BoundaryHint(
@@ -244,7 +423,12 @@ def build_boundary_hints(
                 reference_symbol_hints=hint.reference_symbol_hints,
                 nearby_before=before,
                 nearby_after=after,
-                score=boundary_score(group, hint, split_status, bundle_ids, xref_functions),
+                indirect_strings=indirect_strings,
+                indirect_functions=indirect_functions,
+                indirect_span_start=indirect_span_start,
+                indirect_span_end=indirect_span_end,
+                indirect_gap_text=indirect_gap_text,
+                score=score,
             )
         )
 
@@ -278,24 +462,14 @@ def unique_xref_functions(
 
 
 def describe_gap(hint: BoundaryHint) -> str:
-    if hint.split_status == "no-xrefs":
-        return "no EN xrefs recovered"
-    if hint.split_status == "single-split":
-        return f"inside current split `{hint.current_split_paths[0]}`"
-    if hint.split_status == "multi-split":
-        return "crosses current splits " + ", ".join(f"`{path}`" for path in hint.current_split_paths)
-    parts: list[str] = ["outside current `splits.txt` coverage"]
-    if hint.gap_start is not None and hint.gap_end is not None:
-        parts.append(f"in gap `0x{hint.gap_start:08X}-0x{hint.gap_end:08X}`")
-    elif hint.gap_end is not None:
-        parts.append(f"before split coverage starts at `0x{hint.gap_end:08X}`")
-    elif hint.gap_start is not None:
-        parts.append(f"after split coverage ends at `0x{hint.gap_start:08X}`")
-    if hint.gap_prev_path is not None:
-        parts.append(f"prev split `{hint.gap_prev_path}`")
-    if hint.gap_next_path is not None:
-        parts.append(f"next split `{hint.gap_next_path}`")
-    return ", ".join(parts)
+    return describe_gap_context(
+        hint.split_status,
+        hint.current_split_paths,
+        hint.gap_start,
+        hint.gap_end,
+        hint.gap_prev_path,
+        hint.gap_next_path,
+    )
 
 
 def markdown_lines_for_hint(hint: BoundaryHint) -> list[str]:
@@ -323,11 +497,23 @@ def markdown_lines_for_hint(hint: BoundaryHint) -> list[str]:
         lines.append("  EN xrefs: " + ", ".join(f"`{xref}`" for xref in hint.en_xrefs[:6]))
     else:
         lines.append("  EN xrefs: none")
+    if hint.indirect_span_start is not None and hint.indirect_span_end is not None:
+        lines.append(
+            f"  indirect EN neighborhood: `0x{hint.indirect_span_start:08X}-0x{hint.indirect_span_end:08X}` (`0x{hint.indirect_span_size:X}` bytes)"
+        )
+    if hint.indirect_strings:
+        lines.append("  indirect via strings: " + ", ".join(f"`{text}`" for text in hint.indirect_strings))
     if hint.xref_functions:
         lines.append(
             "  EN functions: " + ", ".join(f"`{format_symbol_span(function)}`" for function in hint.xref_functions[:6])
         )
+    elif hint.indirect_functions:
+        lines.append(
+            "  indirect functions: " + ", ".join(f"`{format_symbol_span(function)}`" for function in hint.indirect_functions[:6])
+        )
     lines.append("  split status: " + describe_gap(hint))
+    if hint.indirect_gap_text is not None:
+        lines.append("  indirect split status: " + hint.indirect_gap_text)
     if hint.debug_paths:
         lines.append("  debug paths: " + ", ".join(f"`{path}`" for path in hint.debug_paths[:3]))
     if hint.reference_paths:
@@ -348,6 +534,7 @@ def summary_markdown(hints: list[BoundaryHint], limit: int) -> str:
     unsplit = [hint for hint in xref_backed if hint.split_status == "unsplit"]
     with_targets = [hint for hint in hints if hint.suggested_path != Path(hint.retail_source_name).name]
     cross_region = [hint for hint in hints if len(hint.bundle_ids) >= 3]
+    indirect = [hint for hint in hints if hint.xref_count == 0 and hint.indirect_span_start is not None]
 
     lines: list[str] = []
     lines.append("# Retail source-boundary hints")
@@ -358,6 +545,7 @@ def summary_markdown(hints: list[BoundaryHint], limit: int) -> str:
     lines.append(f"- EN xref groups still outside current `splits.txt`: `{len(unsplit)}`")
     lines.append(f"- Groups with a concrete path hint: `{len(with_targets)}`")
     lines.append(f"- Groups seen in at least three bundled regions: `{len(cross_region)}`")
+    lines.append(f"- No-xref groups with indirect EN neighborhoods: `{len(indirect)}`")
     lines.append("")
     lines.append("## Highest-value unsplit boundary seeds")
     visible = [hint for hint in unsplit[:limit]]
@@ -367,8 +555,15 @@ def summary_markdown(hints: list[BoundaryHint], limit: int) -> str:
     else:
         lines.append("- None")
     lines.append("")
+    lines.append("## Indirect neighborhoods for no-xref retail tags")
+    if indirect:
+        for hint in indirect[: min(3, len(indirect))]:
+            lines.extend(markdown_lines_for_hint(hint))
+    else:
+        lines.append("- None")
+    lines.append("")
     lines.append("## Lower-signal retail names")
-    residual = [hint for hint in hints if hint not in visible]
+    residual = [hint for hint in hints if hint not in visible and hint not in indirect]
     if residual:
         for hint in residual[: min(6, len(residual))]:
             lines.append(
@@ -404,6 +599,10 @@ def search_markdown(hints: list[BoundaryHint], patterns: list[str]) -> str:
         fields.extend(path.lower() for path in hint.reference_paths)
         fields.extend(name.lower() for name in hint.debug_named_functions)
         fields.extend(name.lower() for name in hint.reference_symbol_hints)
+        fields.extend(text.lower() for text in hint.indirect_strings)
+        fields.extend(function.name.lower() for function in hint.indirect_functions)
+        if hint.indirect_gap_text is not None:
+            fields.append(hint.indirect_gap_text.lower())
         if any(any(pattern in field for field in fields) for pattern in lowered):
             matches.append(hint)
 
@@ -442,6 +641,12 @@ def rows_to_csv(hints: list[BoundaryHint]) -> str:
         "debug_named_functions",
         "reference_paths",
         "reference_symbol_hints",
+        "indirect_strings",
+        "indirect_function_spans",
+        "indirect_span_start",
+        "indirect_span_end",
+        "indirect_span_size",
+        "indirect_gap_text",
         "nearby_before",
         "nearby_after",
         "score",
@@ -475,6 +680,12 @@ def rows_to_csv(hints: list[BoundaryHint]) -> str:
                 "debug_named_functions": ",".join(hint.debug_named_functions),
                 "reference_paths": ",".join(hint.reference_paths),
                 "reference_symbol_hints": ",".join(hint.reference_symbol_hints),
+                "indirect_strings": ",".join(hint.indirect_strings),
+                "indirect_function_spans": ",".join(format_symbol_span(function) for function in hint.indirect_functions),
+                "indirect_span_start": "" if hint.indirect_span_start is None else f"0x{hint.indirect_span_start:08X}",
+                "indirect_span_end": "" if hint.indirect_span_end is None else f"0x{hint.indirect_span_end:08X}",
+                "indirect_span_size": "" if hint.indirect_span_size is None else f"0x{hint.indirect_span_size:X}",
+                "indirect_gap_text": hint.indirect_gap_text or "",
                 "nearby_before": ",".join(hint.nearby_before),
                 "nearby_after": ",".join(hint.nearby_after),
                 "score": hint.score,
@@ -525,7 +736,7 @@ def main() -> None:
     )
     current_functions = load_function_symbols(args.symbols)
     current_splits = build_split_ranges(args.splits)
-    hints = build_boundary_hints(groups, reference_hints, current_functions, current_splits)
+    hints = build_boundary_hints(groups, reference_hints, current_functions, current_splits, args.dol)
 
     if args.format == "csv":
         print(rows_to_csv(hints), end="")

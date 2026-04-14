@@ -94,6 +94,7 @@ class SourceReport:
     size_windows: tuple["TextWindowMatch", ...] = ()
     asm_pattern_windows: tuple["AsmPatternWindowMatch", ...] = ()
     translated_clusters: tuple["TranslatedCluster", ...] = ()
+    assigned_audit: "AssignedSplitAudit | None" = None
 
 
 @dataclass(frozen=True)
@@ -146,6 +147,22 @@ class AsmPatternWindowMatch:
     size_mismatch_count: int
     overlap_count: int
     overlaps: tuple[str, ...]
+    first_symbol: str
+    last_symbol: str
+
+
+@dataclass(frozen=True)
+class AssignedSplitAudit:
+    split_path: str
+    start: int
+    end: int
+    span: int
+    size_delta: int
+    compiled_function_count: int
+    assigned_function_count: int
+    exact_function_matches: int
+    size_mismatch_count: int
+    boundary_conflict_count: int
     first_symbol: str
     last_symbol: str
 
@@ -492,6 +509,30 @@ def load_auto_text_functions(version: str) -> tuple[AsmTextFunction, ...]:
     return tuple(functions)
 
 
+def normalize_source_path(source: Path) -> str:
+    try:
+        return source.relative_to(Path("src")).as_posix()
+    except ValueError:
+        return source.as_posix()
+
+
+def find_assigned_text_split(version: str, source: Path):
+    source_key = normalize_source_path(source)
+    for split in load_text_splits(version):
+        if split.path.replace("\\", "/") == source_key:
+            return split
+    return None
+
+
+def find_asm_functions_in_window(version: str, start: int, end: int) -> tuple[AsmTextFunction, ...]:
+    functions = [
+        function
+        for function in load_auto_text_functions(version)
+        if start <= function.start and function.end <= end
+    ]
+    return tuple(functions)
+
+
 def find_text_size_windows(
     version: str,
     text_size: int,
@@ -646,6 +687,46 @@ def describe_boundary_conflicts(version: str, start: int, end: int) -> list[Boun
     return conflicts
 
 
+def build_assigned_split_audit(
+    version: str,
+    source: Path,
+    text_size: int,
+    compiled_functions: tuple[ObjectSymbol, ...],
+) -> AssignedSplitAudit | None:
+    split = find_assigned_text_split(version, source)
+    if split is None:
+        return None
+
+    span = split.end - split.start
+    window_functions = find_asm_functions_in_window(version, split.start, split.end)
+    compiled_sizes = tuple(function.size for function in compiled_functions)
+    window_sizes = tuple(function.size for function in window_functions)
+    compared_count = min(len(compiled_sizes), len(window_sizes))
+    exact_function_matches = sum(
+        compiled_size == window_size
+        for compiled_size, window_size in zip(compiled_sizes[:compared_count], window_sizes[:compared_count])
+    )
+    size_mismatch_count = max(len(compiled_sizes), len(window_sizes)) - exact_function_matches
+    boundary_conflicts = describe_boundary_conflicts(version, split.start, split.end)
+
+    first_symbol = window_functions[0].name if window_functions else ""
+    last_symbol = window_functions[-1].name if window_functions else ""
+    return AssignedSplitAudit(
+        split_path=split.path,
+        start=split.start,
+        end=split.end,
+        span=span,
+        size_delta=span - text_size,
+        compiled_function_count=len(compiled_functions),
+        assigned_function_count=len(window_functions),
+        exact_function_matches=exact_function_matches,
+        size_mismatch_count=size_mismatch_count,
+        boundary_conflict_count=len(boundary_conflicts),
+        first_symbol=first_symbol,
+        last_symbol=last_symbol,
+    )
+
+
 def find_exact_text_symbol(version: str, address: int) -> ConfigSymbol | None:
     for symbol in load_text_symbols(version):
         if symbol.address == address:
@@ -747,6 +828,12 @@ def analyze_source(
         )
         for cluster in translated_clusters
     )
+    assigned_audit = build_assigned_split_audit(
+        version=version,
+        source=source,
+        text_size=text_size,
+        compiled_functions=compiled_functions,
+    )
     return SourceReport(
         source=source,
         sections=tuple(sections),
@@ -757,6 +844,7 @@ def analyze_source(
         size_windows=size_windows,
         asm_pattern_windows=asm_pattern_windows,
         translated_clusters=normalized_clusters,
+        assigned_audit=assigned_audit,
     )
 
 
@@ -865,6 +953,7 @@ def print_report(
     cluster_limit: int,
     size_window_limit: int,
     asm_pattern_limit: int,
+    show_assigned: bool,
     show_functions: bool,
     function_limit: int,
 ) -> None:
@@ -886,6 +975,19 @@ def print_report(
             )
             if cluster.names:
                 print(f"    names={', '.join(cluster.names)}")
+
+    if show_assigned and report.assigned_audit is not None:
+        audit = report.assigned_audit
+        print("assigned split:")
+        print(
+            f"  0x{audit.start:08X}-0x{audit.end:08X} span=0x{audit.span:X} "
+            f"delta={format_signed_hex(audit.size_delta)} "
+            f"func-matches={audit.exact_function_matches}/"
+            f"{max(audit.compiled_function_count, audit.assigned_function_count)} "
+            f"boundary-conflicts={audit.boundary_conflict_count}"
+        )
+        if audit.first_symbol and audit.last_symbol:
+            print(f"    symbols={audit.first_symbol} .. {audit.last_symbol}")
 
     if report.size_windows and size_window_limit > 0:
         print("size windows:")
@@ -1023,6 +1125,15 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
                 f"anchors=0 exact=0 blockers=0 overlaps=0 text=0x{report.text_size:X} "
                 f"{report.source.as_posix()} -"
             )
+            if report.assigned_audit is not None:
+                audit = report.assigned_audit
+                print(
+                    f"  assigned=0x{audit.start:08X}-0x{audit.end:08X} "
+                    f"delta={format_signed_hex(audit.size_delta)} "
+                    f"func-matches={audit.exact_function_matches}/"
+                    f"{max(audit.compiled_function_count, audit.assigned_function_count)} "
+                    f"boundary-conflicts={audit.boundary_conflict_count}"
+                )
             if window is not None:
                 print(
                     f"  size-window=0x{window.start:08X}-0x{window.end:08X} "
@@ -1056,6 +1167,57 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
                 f"  translated=0x{cluster.start:08X}-0x{cluster.end:08X} "
                 f"span=0x{cluster.span:X} overrun=0x{cluster.text_overrun:X} "
                 f"matches={cluster.match_count}"
+            )
+        if report.assigned_audit is not None:
+            audit = report.assigned_audit
+            print(
+                f"  assigned=0x{audit.start:08X}-0x{audit.end:08X} "
+                f"delta={format_signed_hex(audit.size_delta)} "
+                f"func-matches={audit.exact_function_matches}/"
+                f"{max(audit.compiled_function_count, audit.assigned_function_count)} "
+                f"boundary-conflicts={audit.boundary_conflict_count}"
+            )
+
+
+def print_assigned_rank_summary(reports: list[SourceReport]) -> None:
+    ranked = [
+        report
+        for report in reports
+        if report.assigned_audit is not None
+    ]
+    ranked.sort(
+        key=lambda report: (
+            -report.assigned_audit.size_mismatch_count,
+            -abs(report.assigned_audit.size_delta),
+            -report.assigned_audit.boundary_conflict_count,
+            report.source.as_posix(),
+        )
+    )
+
+    for report in ranked:
+        audit = report.assigned_audit
+        assert audit is not None
+        print(
+            f"mismatches={audit.size_mismatch_count} "
+            f"delta={format_signed_hex(audit.size_delta)} "
+            f"boundary-conflicts={audit.boundary_conflict_count} "
+            f"{report.source.as_posix()} "
+            f"0x{audit.start:08X}-0x{audit.end:08X}"
+        )
+        print(
+            f"  assigned-funcs={audit.assigned_function_count} "
+            f"compiled-funcs={audit.compiled_function_count} "
+            f"exact-func-matches={audit.exact_function_matches}"
+        )
+        if audit.first_symbol and audit.last_symbol:
+            print(f"  symbols={audit.first_symbol} .. {audit.last_symbol}")
+        if report.asm_pattern_windows:
+            window = report.asm_pattern_windows[0]
+            print(
+                f"  best-asm=0x{window.start:08X}-0x{window.end:08X} "
+                f"delta={format_signed_hex(window.size_delta)} "
+                f"func-matches={window.exact_function_matches}/{window.function_count} "
+                f"overlaps={window.overlap_count}"
             )
 
 
@@ -1095,6 +1257,11 @@ def parse_args() -> argparse.Namespace:
         "--rank",
         action="store_true",
         help="Print a ranked one-line summary for all probed sources.",
+    )
+    parser.add_argument(
+        "--rank-assigned",
+        action="store_true",
+        help="Rank current assigned split windows by how badly they match the compiled source.",
     )
     parser.add_argument(
         "--hypothesis-limit",
@@ -1145,6 +1312,11 @@ def parse_args() -> argparse.Namespace:
         "--show-asm-pattern-windows",
         action="store_true",
         help="Print the best matching auto-asm function windows for the compiled function-size pattern.",
+    )
+    parser.add_argument(
+        "--show-assigned",
+        action="store_true",
+        help="Print the currently assigned split window audit when the source already exists in splits.txt.",
     )
     parser.add_argument(
         "--asm-pattern-limit",
@@ -1222,6 +1394,9 @@ def main() -> None:
     if args.rank:
         print_ranked_summary(args.version, reports)
         return
+    if args.rank_assigned:
+        print_assigned_rank_summary(reports)
+        return
 
     for report in reports:
         print_report(
@@ -1231,6 +1406,7 @@ def main() -> None:
             args.cluster_limit,
             args.size_window_limit if args.show_size_windows else 0,
             args.asm_pattern_limit if args.show_asm_pattern_windows else 0,
+            args.show_assigned,
             args.show_functions,
             args.function_limit,
         )

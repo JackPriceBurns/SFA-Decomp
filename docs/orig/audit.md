@@ -35,6 +35,7 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
   - Resolves retail `main.dol` source-tagged strings back to current EN xrefs and extracts retail-authored function/context labels such as `setBlendMove` from warning strings.
 - `python tools/orig/source_boundaries.py`
   - Converts the surviving retail source tags into current EN work windows, split coverage status, and immediate path hints for first-pass source skeletons.
+  - Also surfaces low-confidence indirect EN neighborhoods for no-direct-xref retail tags such as `n_attractmode.c` instead of leaving them as pure dead ends.
 - `python tools/orig/source_functions.py`
   - Focuses the same retail string evidence down to function-label candidates, keeping file name, retail label, EN xref cluster, and debug-side name bridges together in one report.
 - `python tools/orig/source_worklist.py`

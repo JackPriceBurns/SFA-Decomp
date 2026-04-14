@@ -43,7 +43,7 @@ This repo starts from very little. Expect to do naming, struct recovery, type cl
 - Use `python tools/orig/source_leaks.py` when checking whether `orig/*` still preserves direct source/header names before leaning on external debug-side references.
 - Use `python tools/orig/source_matrix.py` when PAL / JP / EN rev1 may strengthen or rename a weak source-tag clue before you commit to a file name or materialize a stub.
 - Use `python tools/orig/source_recovery.py` when `main.dol` source-tagged strings may give EN file/function anchors for naming or splits.
-- Use `python tools/orig/source_boundaries.py` when you need those retail EN source tags turned into concrete current EN work windows and split coverage status before planning a first-pass source skeleton.
+- Use `python tools/orig/source_boundaries.py` when you need those retail EN source tags turned into concrete current EN work windows and split coverage status before planning a first-pass source skeleton, including low-confidence indirect neighborhoods for no-direct-xref tags like `n_attractmode.c`.
 - Use `python tools/orig/source_skeleton.py` when retail source-tagged xrefs need to be grouped into current EN address islands so you can plan first-pass source skeletons or split windows instead of treating each clue in isolation.
 - Use `python tools/orig/source_corridors.py` when a retail-backed EN span needs debug-side file-size or short source-order context so you can tell whether the current seed is too small, too wide, or sitting next to one obvious missing source file.
 - Use `python tools/orig/source_windows.py` when a retail-backed EN span also has an exact debug-side split and you want ranked current EN whole-file window candidates instead of only a seed-too-small / seed-too-wide verdict.

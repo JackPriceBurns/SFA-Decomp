@@ -12,6 +12,7 @@ This pass closes a gap in the existing `orig/` tooling.
   - Checks whether those spans are already owned by `config/GSAE01/splits.txt` or still live in an unsplit gap.
   - Pulls in the best current path hint from `sfadebug` / `reference_projects/rena-tools`.
   - Adds neighboring EN function names so the next decomp pass can open the right local window immediately.
+  - For retail tags with no direct EN xref, now scans nearby retail strings for indirect EN function neighborhoods instead of stopping at a dead-end.
 
 ## High-value findings
 
@@ -61,7 +62,28 @@ The report gives immediate split windows for:
 
 Even when the final file boundaries still need adjustment, that is already enough to stop guessing at buckets and start from retail-backed EN islands instead.
 
-### 5. Region variants can tighten naming decisions
+### 5. `n_attractmode.c` no longer dead-ends completely
+
+One weak spot in the earlier boundary pass was that a retail source tag without a direct EN string xref simply disappeared into the residual list.
+
+The tool now keeps a separate low-confidence path for those cases:
+
+- it walks nearby retail strings around the no-xref source tag
+- keeps only nearby strings that do resolve to current EN functions
+- reports the resulting EN neighborhood explicitly as indirect evidence, not as a final file boundary
+
+That currently helps one real case:
+
+- `n_attractmode.c`
+  - no direct EN source-tag xref
+  - indirect EN neighborhood: `0x8010ACF0-0x80130618`
+  - supporting strings: `n_rareware`, `PATHCAM error: need at least two control points`, `/savegame/save%d.bin`, `PICMENU: tex overflow`
+
+This is still a broad window, but it is materially better than having no bounded place to open at all when recovering the title-screen / movie path.
+
+The same pass still refuses to invent a fake window for `dvdfs.c`, which is the right behavior given the current evidence.
+
+### 6. Region variants can tighten naming decisions
 
 The report keeps region alias data attached to the same boundary hint. The clearest current case is:
 
@@ -78,6 +100,7 @@ That does not override EN, but it is a useful warning that a file stem may have 
   - `python tools/orig/source_boundaries.py --search objanim`
   - `python tools/orig/source_boundaries.py --search textblock laser`
   - `python tools/orig/source_boundaries.py --search camcontrol curves`
+  - `python tools/orig/source_boundaries.py --search n_attractmode`
 - Spreadsheet-friendly dump:
   - `python tools/orig/source_boundaries.py --format csv`
 
@@ -88,3 +111,5 @@ That does not override EN, but it is a useful warning that a file stem may have 
 - Use `source_object_packets.py` when the same source name also needs to be tied to object / DLL / class evidence.
 
 The main value of `source_boundaries.py` is that it turns retail file-name evidence into a current EN work window instead of leaving it as a detached string clue.
+
+Even when the source tag has no direct xref, it now tries to surface one bounded indirect neighborhood before giving up.
