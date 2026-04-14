@@ -158,10 +158,10 @@ dolphin/gx/GXFrameBuf.c:
 	.text       start:0x80259340 end:0x80259DD4
 
 dolphin/gx/GXLight.c:
-	.text       start:0x80259DD4 end:0x8025AE7C
+	.text       start:0x80259DD4 end:0x8025A7EC
 
 dolphin/gx/GXTexture.c:
-	.text       start:0x8025AE7C end:0x8025B258
+	.text       start:0x8025A7EC end:0x8025B258
 
 dolphin/gx/GXBump.c:
 	.text       start:0x8025B94C end:0x8025C000
