@@ -8,3 +8,4 @@ Exploratory notes derived from the bundled retail assets under `orig/`.
 - [dol_strings.md](/C:/Projects/SFA-Decomp/docs/orig/dol_strings.md)
 - [dol_tables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_tables.md)
 - [object_catalog.md](/C:/Projects/SFA-Decomp/docs/orig/object_catalog.md)
+- [modules.md](/C:/Projects/SFA-Decomp/docs/orig/modules.md)

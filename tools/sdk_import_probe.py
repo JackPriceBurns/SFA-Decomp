@@ -8,9 +8,11 @@ import subprocess
 import sys
 from collections import defaultdict
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 
 from dolphin_sdk_symbols import (
+    ConfigSymbol,
     build_candidates,
     build_translated_symbols,
     cluster_source_candidates,
@@ -98,6 +100,14 @@ class TranslatedCluster:
     active_count: int
     text_overrun: int
     names: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class BoundaryConflict:
+    boundary: str
+    symbol_name: str
+    symbol_start: int
+    symbol_end: int
 
 
 def parse_build_config(build_ninja: Path, version: str) -> BuildConfig:
@@ -330,6 +340,46 @@ def describe_overlap(version: str, start: int, end: int) -> list[str]:
     return overlaps
 
 
+@lru_cache(maxsize=None)
+def load_text_symbols(version: str) -> tuple[ConfigSymbol, ...]:
+    symbols_path = Path("config") / version / "symbols.txt"
+    return tuple(
+        sorted(
+            (
+                symbol
+                for symbol in load_config_symbols(symbols_path)
+                if symbol.section == ".text" and symbol.size is not None
+            ),
+            key=lambda symbol: symbol.address,
+        )
+    )
+
+
+def describe_boundary_conflicts(version: str, start: int, end: int) -> list[BoundaryConflict]:
+    conflicts: list[BoundaryConflict] = []
+    for symbol in load_text_symbols(version):
+        symbol_end = symbol.address + symbol.size
+        if symbol.address < start < symbol_end:
+            conflicts.append(
+                BoundaryConflict(
+                    boundary="start",
+                    symbol_name=symbol.name,
+                    symbol_start=symbol.address,
+                    symbol_end=symbol_end,
+                )
+            )
+        if symbol.address < end < symbol_end:
+            conflicts.append(
+                BoundaryConflict(
+                    boundary="end",
+                    symbol_name=symbol.name,
+                    symbol_start=symbol.address,
+                    symbol_end=symbol_end,
+                )
+            )
+    return conflicts
+
+
 def build_start_hypotheses(anchors: list[AnchorCandidate]) -> list[StartHypothesis]:
     by_start: dict[int, list[AnchorCandidate]] = {}
     for anchor in anchors:
@@ -524,16 +574,25 @@ def print_report(
     for hypothesis in report.hypotheses[:hypothesis_limit]:
         span_end = hypothesis.start + report.text_size
         overlaps = describe_overlap(version, hypothesis.start, span_end)
+        boundary_conflicts = describe_boundary_conflicts(version, hypothesis.start, span_end)
         print(
             f"  0x{hypothesis.start:08X}-0x{span_end:08X} size=0x{report.text_size:X} "
             f"anchors={len(hypothesis.anchors)} exact-size={hypothesis.exact_count} "
-            f"overlaps={len(overlaps)}"
+            f"overlaps={len(overlaps)} boundary-conflicts={len(boundary_conflicts)}"
         )
         if overlaps:
             for overlap in overlaps[:5]:
                 print(f"    {overlap}")
             if len(overlaps) > 5:
                 print(f"    ... {len(overlaps) - 5} more")
+        if boundary_conflicts:
+            for conflict in boundary_conflicts[:4]:
+                print(
+                    f"    {conflict.boundary} inside {conflict.symbol_name}"
+                    f"@0x{conflict.symbol_start:08X}-0x{conflict.symbol_end:08X}"
+                )
+            if len(boundary_conflicts) > 4:
+                print(f"    ... {len(boundary_conflicts) - 4} more boundary conflicts")
 
         print("  anchor details:")
         for anchor in hypothesis.anchors:
@@ -547,16 +606,21 @@ def print_report(
 
 
 def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
-    ranked: list[tuple[int, int, int, int, SourceReport, StartHypothesis | None]] = []
+    ranked: list[tuple[int, int, int, int, int, SourceReport, StartHypothesis | None]] = []
     for report in reports:
         best = report.hypotheses[0] if report.hypotheses else None
         overlap_count = 9999
+        boundary_conflict_count = 9999
         if best is not None:
             overlap_count = len(describe_overlap(version, best.start, best.start + report.text_size))
+            boundary_conflict_count = len(
+                describe_boundary_conflicts(version, best.start, best.start + report.text_size)
+            )
         ranked.append(
             (
                 len(best.anchors) if best is not None else 0,
                 best.exact_count if best is not None else 0,
+                -boundary_conflict_count,
                 -overlap_count,
                 report.text_size,
                 report,
@@ -569,24 +633,27 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
             -item[0],
             -item[1],
             item[2],
-            -item[3],
-            item[4].source.as_posix(),
+            item[3],
+            -item[4],
+            item[5].source.as_posix(),
         )
     )
 
-    for anchor_count, exact_count, neg_overlap_count, _, report, best in ranked:
+    for anchor_count, exact_count, neg_boundary_conflict_count, neg_overlap_count, _, report, best in ranked:
         if best is None:
             print(
-                f"anchors=0 exact=0 overlaps=0 text=0x{report.text_size:X} "
+                f"anchors=0 exact=0 blockers=0 overlaps=0 text=0x{report.text_size:X} "
                 f"{report.source.as_posix()} -"
             )
             continue
 
+        boundary_conflict_count = -neg_boundary_conflict_count
         overlap_count = -neg_overlap_count
         span_end = best.start + report.text_size
         names = ", ".join(anchor.compiled_symbol.name for anchor in best.anchors[:5])
         print(
-            f"anchors={anchor_count} exact={exact_count} overlaps={overlap_count} "
+            f"anchors={anchor_count} exact={exact_count} blockers={boundary_conflict_count} "
+            f"overlaps={overlap_count} "
             f"text=0x{report.text_size:X} {report.source.as_posix()} "
             f"0x{best.start:08X}-0x{span_end:08X}"
         )

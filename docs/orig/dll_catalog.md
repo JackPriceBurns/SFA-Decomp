@@ -37,23 +37,30 @@ From `OBJECTS.bin`, the EN retail data uses `448` non-`0xFFFF` DLL IDs across ob
 
 Of those:
 
-- `434` resolve cleanly to descriptor tables in `main.dol`
-- `14` do not
+- `427` resolve cleanly to descriptor tables in `main.dol`
+- `21` do not
 
 The unresolved object DLL IDs are:
 
 - `0x0146` `CloudShipCo`
 - `0x014D` `LaserBeam`
+- `0x0151` `CFScalesGal`
 - `0x0152` `CF_ObjCreat`
+- `0x015C` `CFForceFiel`
+- `0x0161` `CFTreasRobo`
 - `0x0165` `CFRemovalSh`
 - `0x0168` `HoloPoint`
 - `0x0208` `WM_Wallpowe`
+- `0x0214` `WM_TransTop`
 - `0x023D` `DBPointMum`
 - `0x0240` `GCRobotBlas`
 - `0x026A` `DR_Geezer`
 - `0x026D` `DR_Vines`
 - `0x0270` `DR_Rock`
+- `0x0274` `DR_pulley`
+- `0x0275` `DR_cradle`
 - `0x0277` `CFWindLiftL`
+- `0x0278` `DRCollapseP` / `DRPlatformC`
 - `0x027A` `DR_Collapse`
 - `0x027F` `DR_LightHal` / `DR_LightPol` / `DR_LightLam`
 
