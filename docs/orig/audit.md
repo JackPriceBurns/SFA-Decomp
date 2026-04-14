@@ -21,11 +21,14 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
 - `python tools/orig/dol_vtables.py --stores-only`
   - Scans the EN retail DOL for short function-pointer tables and keeps the ones that are written into object-like registers by code.
   - Gives constructor-style anchors for vtable or callback-table recovery without guessing from decomp artifacts.
+- `python tools/orig/developer_artifacts.py`
+  - Catalogs the generated `*.c.new` boot-text sources, the MusyX symbol header backup, the leftover REL testcase files, and the SDK-style source leaks in `apploader.img`.
 
 Focused notes for that tool live in [map_catalog.md](/C:/Projects/SFA-Decomp/docs/orig/map_catalog.md).
 Focused notes for the DOL runtime tables live in [dol_tables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_tables.md).
 Focused notes for direct DOL string xrefs live in [dol_xrefs.md](/C:/Projects/SFA-Decomp/docs/orig/dol_xrefs.md).
 Focused notes for constructor-backed function-pointer tables live in [dol_vtables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_vtables.md).
+Focused notes for developer-facing leftovers live in [developer_artifacts.md](/C:/Projects/SFA-Decomp/docs/orig/developer_artifacts.md).
 
 ## High-value findings
 
