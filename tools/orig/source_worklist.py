@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 import csv
 import io
+import json
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -89,6 +91,7 @@ class WorkItem:
     split_status: str
     fit_status: str | None
     bundle_count: int
+    xref_functions: tuple[str, ...]
     island_sources: tuple[str, ...]
     island_span_start: int | None
     island_span_end: int | None
@@ -112,6 +115,18 @@ def unique_strings(values: list[str]) -> tuple[str, ...]:
 
 def basename(path: str) -> str:
     return Path(path).name
+
+
+def write_text_if_changed(path: Path, text: str) -> bool:
+    if path.is_file() and path.read_text(encoding="utf-8") == text:
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8", newline="\n")
+    return True
+
+
+def sanitize_filename_component(value: str) -> str:
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", value).strip("._") or "item"
 
 
 def lookup_by_name(items, key: str = "retail_source_name") -> dict[str, object]:
@@ -408,6 +423,7 @@ def build_work_items(
                 split_status=hint.split_status,
                 fit_status=None if anchor.debug_split_size is None else anchor.fit_status,
                 bundle_count=len(hint.bundle_ids),
+                xref_functions=tuple(format_symbol_span(function) for function in hint.xref_functions),
                 island_sources=island_sources,
                 island_span_start=island_span_start,
                 island_span_end=island_span_end,
@@ -542,37 +558,257 @@ def summary_markdown(items: list[WorkItem], limit: int) -> str:
     lines.append("- Summary: `python tools/orig/source_worklist.py`")
     lines.append("- Search one file or action: `python tools/orig/source_worklist.py --search SHthorntail split-now corridor`")
     lines.append("- CSV dump: `python tools/orig/source_worklist.py --format csv`")
+    lines.append("- JSON dump: `python tools/orig/source_worklist.py --format json`")
+    lines.append("- Write packet briefs: `python tools/orig/source_worklist.py --materialize-all`")
     return "\n".join(lines)
 
 
-def search_markdown(items: list[WorkItem], patterns: list[str]) -> str:
-    lowered = [pattern.lower() for pattern in patterns]
-    matches: list[WorkItem] = []
-    for item in items:
-        fields = [
-            item.retail_source_name.lower(),
-            item.suggested_path.lower(),
-            item.action.lower(),
-            item.confidence.lower(),
-            item.reason.lower(),
-        ]
-        fields.extend(label.lower() for label in item.retail_labels)
-        fields.extend(path.lower() for path in item.island_sources)
-        fields.extend(path.lower() for path in item.prev_corridor_paths)
-        fields.extend(path.lower() for path in item.next_corridor_paths)
-        fields.extend(path.lower() for path in item.debug_prev_paths)
-        fields.extend(path.lower() for path in item.debug_next_paths)
-        if any(any(pattern in field for field in fields) for pattern in lowered):
-            matches.append(item)
-
+def search_markdown(items: list[WorkItem]) -> str:
     lines = ["# Retail source boundary worklist search", ""]
-    if not matches:
+    if not items:
         lines.append("- No matching worklist entries.")
         return "\n".join(lines)
 
-    for item in matches:
+    for item in items:
         lines.extend(markdown_for_item(item))
     return "\n".join(lines)
+
+
+def item_matches(item: WorkItem, patterns: list[str]) -> bool:
+    lowered = [pattern.lower() for pattern in patterns]
+    fields = [
+        item.retail_source_name.lower(),
+        item.suggested_path.lower(),
+        item.action.lower(),
+        item.confidence.lower(),
+        item.reason.lower(),
+    ]
+    fields.extend(label.lower() for label in item.retail_labels)
+    fields.extend(path.lower() for path in item.island_sources)
+    fields.extend(path.lower() for path in item.prev_corridor_paths)
+    fields.extend(path.lower() for path in item.next_corridor_paths)
+    fields.extend(path.lower() for path in item.debug_prev_paths)
+    fields.extend(path.lower() for path in item.debug_next_paths)
+    return any(any(pattern in field for field in fields) for pattern in lowered)
+
+
+def filter_items(items: list[WorkItem], patterns: list[str] | None) -> list[WorkItem]:
+    if not patterns:
+        return list(items)
+    return [item for item in items if item_matches(item, patterns)]
+
+
+def rows_to_json(items: list[WorkItem]) -> str:
+    rows: list[dict[str, object]] = []
+    for item in items:
+        rows.append(
+            {
+                "retail_source_name": item.retail_source_name,
+                "suggested_path": item.suggested_path,
+                "action": item.action,
+                "confidence": item.confidence,
+                "reason": item.reason,
+                "xref_count": item.xref_count,
+                "retail_labels": list(item.retail_labels),
+                "current_seed_start": None if item.current_seed_start is None else f"0x{item.current_seed_start:08X}",
+                "current_seed_end": None if item.current_seed_end is None else f"0x{item.current_seed_end:08X}",
+                "current_seed_size": None if item.current_seed_size is None else f"0x{item.current_seed_size:X}",
+                "current_seed_functions": item.current_seed_functions,
+                "suggested_start": None if item.suggested_start is None else f"0x{item.suggested_start:08X}",
+                "suggested_end": None if item.suggested_end is None else f"0x{item.suggested_end:08X}",
+                "suggested_size": None if item.suggested_size is None else f"0x{item.suggested_size:X}",
+                "debug_target_size": None if item.debug_target_size is None else f"0x{item.debug_target_size:X}",
+                "window_delta": item.window_delta,
+                "window_coverage": item.window_coverage,
+                "split_status": item.split_status,
+                "fit_status": item.fit_status,
+                "bundle_count": item.bundle_count,
+                "xref_functions": list(item.xref_functions),
+                "island_sources": list(item.island_sources),
+                "island_span_start": None if item.island_span_start is None else f"0x{item.island_span_start:08X}",
+                "island_span_end": None if item.island_span_end is None else f"0x{item.island_span_end:08X}",
+                "prev_corridor_paths": list(item.prev_corridor_paths),
+                "next_corridor_paths": list(item.next_corridor_paths),
+                "debug_prev_paths": list(item.debug_prev_paths),
+                "debug_next_paths": list(item.debug_next_paths),
+                "score": item.score,
+            }
+        )
+    return json.dumps(rows, indent=2) + "\n"
+
+
+def functions_in_span(
+    current_functions: list[FunctionSymbol],
+    start: int | None,
+    end: int | None,
+) -> tuple[FunctionSymbol, ...]:
+    if start is None or end is None:
+        return ()
+    return tuple(
+        function
+        for function in current_functions
+        if start <= function.address and function.address < end
+    )
+
+
+def next_steps_for_action(item: WorkItem) -> tuple[str, ...]:
+    if item.action == "split-now":
+        return (
+            "Claim the suggested EN window as a first-pass split candidate and verify the function count against nearby rodata/data ownership.",
+            "Use the corridor neighbors only as edge guards; the retail evidence is already strong enough to start a real source file.",
+        )
+    if item.action == "expand-window":
+        return (
+            "Inspect the suggested window as one candidate file before naming the final boundary.",
+            "Verify that the retail xref function lands inside the expanded range and that adjacent functions do not obviously belong to the corridor neighbors.",
+        )
+    if item.action == "shrink-window":
+        return (
+            "Trim the current seed around the retail-xref functions before materializing a file boundary.",
+            "Prefer the compact suggested window as the first hypothesis, then validate surrounding rodata and call patterns.",
+        )
+    if item.action == "shared-island":
+        return (
+            "Treat the shared island as one small packet first, then separate the leaf files once constructor or registration boundaries are clearer.",
+            "Open every tiny function in the island together; splitting them independently is likely to overfit weak evidence.",
+        )
+    if item.action == "corridor-packet":
+        return (
+            "Work the whole corridor packet instead of asserting a narrow final boundary immediately.",
+            "Use the listed gap neighbors to decide whether this source should become one file or part of a larger missing cluster.",
+        )
+    if item.action == "seed-only":
+        return (
+            "Keep this as a naming seed only until more size or corridor context appears.",
+        )
+    return (
+        "Keep this as supporting naming evidence and revisit after more EN xrefs or adjacent file structure has been recovered.",
+    )
+
+
+def packet_markdown(item: WorkItem, current_functions: list[FunctionSymbol]) -> str:
+    inspect_start = item.suggested_start if item.suggested_start is not None else item.current_seed_start
+    inspect_end = item.suggested_end if item.suggested_end is not None else item.current_seed_end
+    inspect_functions = functions_in_span(current_functions, inspect_start, inspect_end)
+    seed_functions = functions_in_span(current_functions, item.current_seed_start, item.current_seed_end)
+
+    lines: list[str] = []
+    lines.append(f"# Retail Source Boundary Packet: `{item.retail_source_name}`")
+    lines.append("")
+    lines.append("## Summary")
+    lines.append(f"- action: `{item.action}`")
+    lines.append(f"- confidence: `{item.confidence}`")
+    lines.append(f"- suggested path: `{item.suggested_path}`")
+    lines.append(f"- split status: `{item.split_status}`")
+    lines.append(f"- retail bundles: `{item.bundle_count}`")
+    lines.append(f"- current seed: {span_text(item.current_seed_start, item.current_seed_end, item.current_seed_size)}")
+    if item.debug_target_size is not None:
+        lines.append(f"- debug target size: `0x{item.debug_target_size:X}`")
+    if item.fit_status:
+        lines.append(f"- fit status: `{item.fit_status}`")
+    if item.suggested_start is not None:
+        lines.append(
+            "- suggested window: "
+            + span_text(item.suggested_start, item.suggested_end, item.suggested_size)
+            + f" delta=`{item.window_delta:+#x}` xref_coverage=`{item.window_coverage}`"
+        )
+    if item.retail_labels:
+        lines.append("- retail labels: " + ", ".join(f"`{label}`" for label in item.retail_labels))
+    lines.append(f"- xref count: `{item.xref_count}`")
+    lines.append("")
+    lines.append("## Why")
+    lines.append(f"- {item.reason}")
+    lines.append("")
+    lines.append("## EN Xref Functions")
+    if item.xref_functions:
+        for value in item.xref_functions:
+            lines.append(f"- `{value}`")
+    else:
+        lines.append("- none")
+    lines.append("")
+    lines.append("## Current Seed Functions")
+    if seed_functions:
+        for function in seed_functions:
+            lines.append(f"- `{format_symbol_span(function)}` size=`0x{function.size:X}`")
+    else:
+        lines.append("- none")
+    lines.append("")
+    lines.append("## Suggested Inspection Window")
+    if inspect_functions:
+        for function in inspect_functions[:40]:
+            lines.append(f"- `{format_symbol_span(function)}` size=`0x{function.size:X}`")
+        if len(inspect_functions) > 40:
+            lines.append(f"- ... (+{len(inspect_functions) - 40} more functions)")
+    else:
+        lines.append("- none")
+    lines.append("")
+    lines.append("## Corridor Context")
+    lines.append("- previous corridor: " + preview_paths(item.prev_corridor_paths))
+    lines.append("- next corridor: " + preview_paths(item.next_corridor_paths))
+    if item.debug_prev_paths or item.debug_next_paths:
+        if item.debug_prev_paths:
+            lines.append("- debug neighbors before: " + preview_paths(item.debug_prev_paths))
+        if item.debug_next_paths:
+            lines.append("- debug neighbors after: " + preview_paths(item.debug_next_paths))
+    if len(item.island_sources) > 1:
+        lines.append("- shared island sources: " + ", ".join(f"`{name}`" for name in item.island_sources))
+        if item.island_span_start is not None and item.island_span_end is not None:
+            lines.append(
+                "- shared island span: "
+                + span_text(
+                    item.island_span_start,
+                    item.island_span_end,
+                    item.island_span_end - item.island_span_start,
+                )
+            )
+    lines.append("")
+    lines.append("## Recommended Next Steps")
+    for step in next_steps_for_action(item):
+        lines.append(f"- {step}")
+    return "\n".join(lines) + "\n"
+
+
+def packet_filename(index: int, width: int, item: WorkItem) -> str:
+    stem = Path(item.retail_source_name).stem
+    return f"{index:0{width}d}-{item.action}-{sanitize_filename_component(stem)}.md"
+
+
+def packet_index_markdown(items: list[WorkItem], output_root: Path) -> str:
+    width = max(2, len(str(len(items))))
+    lines = ["# Retail Source Boundary Packets", ""]
+    lines.append("Generated by `python tools/orig/source_worklist.py --materialize-all`.")
+    lines.append("")
+    for index, item in enumerate(items, start=1):
+        filename = packet_filename(index, width, item)
+        lines.append(
+            f"- [{filename}]({filename}) action=`{item.action}` confidence=`{item.confidence}` target=`{item.suggested_path}`"
+        )
+    lines.append("")
+    lines.append(f"- Packet root: `{output_root.as_posix()}`")
+    return "\n".join(lines) + "\n"
+
+
+def materialize_packets(
+    items: list[WorkItem],
+    current_functions: list[FunctionSymbol],
+    output_root: Path,
+) -> tuple[int, int]:
+    written = 0
+    unchanged = 0
+    width = max(2, len(str(len(items))))
+    for index, item in enumerate(items, start=1):
+        text = packet_markdown(item, current_functions)
+        path = output_root / packet_filename(index, width, item)
+        if write_text_if_changed(path, text):
+            written += 1
+        else:
+            unchanged += 1
+    index_path = output_root / "README.md"
+    if write_text_if_changed(index_path, packet_index_markdown(items, output_root)):
+        written += 1
+    else:
+        unchanged += 1
+    return written, unchanged
 
 
 def rows_to_csv(items: list[WorkItem]) -> str:
@@ -597,6 +833,7 @@ def rows_to_csv(items: list[WorkItem]) -> str:
         "split_status",
         "fit_status",
         "bundle_count",
+        "xref_functions",
         "island_sources",
         "island_span_start",
         "island_span_end",
@@ -632,6 +869,7 @@ def rows_to_csv(items: list[WorkItem]) -> str:
                 "split_status": item.split_status,
                 "fit_status": item.fit_status or "",
                 "bundle_count": item.bundle_count,
+                "xref_functions": ",".join(item.xref_functions),
                 "island_sources": ",".join(item.island_sources),
                 "island_span_start": "" if item.island_span_start is None else f"0x{item.island_span_start:08X}",
                 "island_span_end": "" if item.island_span_end is None else f"0x{item.island_span_end:08X}",
@@ -660,9 +898,12 @@ def build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument("--reference-inventory", type=Path, default=Path("reference_projects/rena-tools/sfadebug/notes/srcfiles.txt"), help="Reference inventory mined only for side-path hints.")
     parser.add_argument("--reference-dll-registry", type=Path, default=Path("reference_projects/rena-tools/StarFoxAdventures/data/KD/dlls.xml"), help="Reference DLL registry mined only for side-path hints.")
     parser.add_argument("--reference-object-xml", type=Path, nargs="*", default=(Path("reference_projects/rena-tools/StarFoxAdventures/data/U0/objects.xml"), Path("reference_projects/rena-tools/StarFoxAdventures/data/U0/objects2.xml")), help="Reference object XML files mined only for side-path hints.")
-    parser.add_argument("--format", choices=("markdown", "csv"), default="markdown", help="Output format.")
+    parser.add_argument("--format", choices=("markdown", "csv", "json"), default="markdown", help="Output format.")
     parser.add_argument("--search", nargs="+", help="Case-insensitive substring search across file names, actions, and corridor context.")
     parser.add_argument("--limit", type=int, default=6, help="Maximum entries per summary section.")
+    parser.add_argument("--materialize-top", type=int, default=0, help="Write the top N visible worklist packets under --output-root.")
+    parser.add_argument("--materialize-all", action="store_true", help="Write every visible worklist packet under --output-root.")
+    parser.add_argument("--output-root", type=Path, default=Path("docs/orig/source_worklist_packets"), help="Destination directory for generated worklist packets.")
     return parser
 
 
@@ -705,12 +946,29 @@ def main() -> None:
         max_gap_functions=8,
     )
     items = build_work_items(anchors, hints, corridors, islands, current_functions)
+    visible_items = filter_items(items, args.search)
+
+    if args.materialize_all:
+        materialized_items = visible_items
+    elif args.materialize_top > 0:
+        materialized_items = visible_items[: args.materialize_top]
+    else:
+        materialized_items = []
+
+    if materialized_items:
+        written, unchanged = materialize_packets(materialized_items, current_functions, args.output_root)
+        print(
+            f"materialized={len(materialized_items)} written={written} unchanged={unchanged} root={args.output_root.as_posix()}",
+            file=sys.stderr,
+        )
 
     try:
         if args.format == "csv":
-            sys.stdout.write(rows_to_csv(items))
+            sys.stdout.write(rows_to_csv(visible_items))
+        elif args.format == "json":
+            sys.stdout.write(rows_to_json(visible_items))
         elif args.search:
-            sys.stdout.write(search_markdown(items, args.search))
+            sys.stdout.write(search_markdown(visible_items))
             sys.stdout.write("\n")
         else:
             sys.stdout.write(summary_markdown(items, args.limit))

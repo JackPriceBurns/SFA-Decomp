@@ -18,6 +18,7 @@ What was still missing was one answer to the practical question:
 - `python tools/orig/source_worklist.py`
   - merges the committed `source_boundaries.py`, `source_corridors.py`, and `source_skeleton.py` signals
   - keeps the retail EN xref span, debug split size, source-order corridor neighbors, and shared-island context together
+  - can emit machine-readable JSON or ready-to-work packet briefs under [source_worklist_packets/README.md](/C:/Projects/SFA-Decomp/docs/orig/source_worklist_packets/README.md)
   - classifies each source into one of:
     - `split-now`
     - `expand-window`
@@ -110,6 +111,11 @@ These stay useful as naming / SDK context, but they are not current split target
   - `python tools/orig/source_worklist.py --search corridor`
 - spreadsheet dump:
   - `python tools/orig/source_worklist.py --format csv`
+- machine-readable dump:
+  - `python tools/orig/source_worklist.py --format json`
+- packet briefs:
+  - `python tools/orig/source_worklist.py --materialize-all`
+  - writes one markdown packet per visible work item under [source_worklist_packets/README.md](/C:/Projects/SFA-Decomp/docs/orig/source_worklist_packets/README.md)
 
 ## Why this matters
 
@@ -121,3 +127,5 @@ This worklist makes that distinction explicit:
 - expand the undersized seeds before naming them
 - shrink the oversized seed before materializing it
 - keep packet-style cases grouped until the surrounding corridor is understood
+
+The packet export closes the last handoff gap: a worker can open one generated markdown brief and immediately see the recommended EN window, the functions inside it, and the corridor neighbors that bound the next split attempt.

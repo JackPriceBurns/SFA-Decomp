@@ -43,11 +43,13 @@ This repo starts from very little. Expect to do naming, struct recovery, type cl
 - Use `python tools/orig/source_leaks.py` when checking whether `orig/*` still preserves direct source/header names before leaning on external debug-side references.
 - Use `python tools/orig/source_matrix.py` when PAL / JP / EN rev1 may strengthen or rename a weak source-tag clue before you commit to a file name or materialize a stub.
 - Use `python tools/orig/source_recovery.py` when `main.dol` source-tagged strings may give EN file/function anchors for naming or splits.
+- Use `python tools/orig/source_boundaries.py` when you need those retail EN source tags turned into concrete current EN work windows and split coverage status before planning a first-pass source skeleton.
 - Use `python tools/orig/source_skeleton.py` when retail source-tagged xrefs need to be grouped into current EN address islands so you can plan first-pass source skeletons or split windows instead of treating each clue in isolation.
 - Use `python tools/orig/source_corridors.py` when a retail-backed EN span needs debug-side file-size or short source-order context so you can tell whether the current seed is too small, too wide, or sitting next to one obvious missing source file.
 - Use `python tools/orig/source_windows.py` when a retail-backed EN span also has an exact debug-side split and you want ranked current EN whole-file window candidates instead of only a seed-too-small / seed-too-wide verdict.
 - Use `python tools/orig/source_gap_packets.py` when two retail-backed anchors leave one or a few plausible missing files between them and you want resolved debug-side path hints plus the current EN gap functions for immediate split planning.
 - Use `python tools/orig/source_functions.py` when you want a tighter report of retail-labeled function candidates such as `setBlendMove` / `Init` with their current EN xref clusters.
+- Use `python tools/orig/source_worklist.py` when you want one prioritized queue of retail-backed boundary jobs, or `--materialize-all` to emit ready markdown packets under `docs/orig/source_worklist_packets/` for handoff.
 - Use `python tools/orig/source_reference_hints.py` when retail EN evidence names a file but you want clearly-labeled reference-project path, function, DLL, or object hints without promoting them to source-truth.
 - Use `python tools/orig/source_object_packets.py` when a retail source tag needs to be tied back to current EN object/class/DLL packets or materialized into a non-built source packet under `src/main/unknown/source_packets/`.
 - Use `python tools/orig/source_materialize.py` when you want to materialize retail-backed stubs under `src/` and/or export exact disc source/header artifacts to a local non-source folder.

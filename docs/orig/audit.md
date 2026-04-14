@@ -33,8 +33,12 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
   - Inventories direct source/header artifacts in `orig/GSAE01`, scores embedded source-like strings, and keeps asset-noise matches out of the high-value summary.
 - `python tools/orig/source_recovery.py`
   - Resolves retail `main.dol` source-tagged strings back to current EN xrefs and extracts retail-authored function/context labels such as `setBlendMove` from warning strings.
+- `python tools/orig/source_boundaries.py`
+  - Converts the surviving retail source tags into current EN work windows, split coverage status, and immediate path hints for first-pass source skeletons.
 - `python tools/orig/source_functions.py`
   - Focuses the same retail string evidence down to function-label candidates, keeping file name, retail label, EN xref cluster, and debug-side name bridges together in one report.
+- `python tools/orig/source_worklist.py`
+  - Collapses the boundary, corridor, and shared-island signals into one prioritized queue and can materialize ready boundary packets under `docs/orig/source_worklist_packets/`.
 - `python tools/orig/object_family_packets.py`
   - Synthesizes retail object defs, root romlist widths, EN DLL descriptors, and optional reference-only XML hints into ranked object-family recovery packets.
   - Can materialize non-built packet stubs under `src/main/unknown/` for boundary planning without touching the active build.
@@ -53,7 +57,9 @@ Focused notes for per-object packet materialization live in [object_def_packets.
 Focused notes for developer-facing leftovers live in [developer_artifacts.md](/C:/Projects/SFA-Decomp/docs/orig/developer_artifacts.md).
 Focused notes for the broader retail source/header leak inventory live in [source_leaks.md](/C:/Projects/SFA-Decomp/docs/orig/source_leaks.md).
 Focused notes for source-tagged EN `main.dol` recovery targets live in [source_recovery.md](/C:/Projects/SFA-Decomp/docs/orig/source_recovery.md).
+Focused notes for current EN boundary seeds live in [source_boundaries.md](/C:/Projects/SFA-Decomp/docs/orig/source_boundaries.md).
 Focused notes for retail function-label recovery live in [source_functions.md](/C:/Projects/SFA-Decomp/docs/orig/source_functions.md).
+Focused notes for the prioritized boundary queue live in [source_worklist.md](/C:/Projects/SFA-Decomp/docs/orig/source_worklist.md).
 
 ## High-value findings
 
@@ -296,6 +302,7 @@ The new local tools are meant to keep the most immediately useful parts reproduc
 - Use `python tools/orig/dol_tables.py --search BLOCKS DLLS PREANIM` while naming file-loader switch tables and split candidates around the EN DOL loaders.
 - Use `python tools/orig/dol_xrefs.py --search camcontrol curves SHthorntail romlist` before naming anonymous functions that already have retail string evidence.
 - Use `python tools/orig/source_functions.py --search objanim setBlendMove Init` when a retail warning string appears to expose a real function label and you want the EN xref cluster immediately.
+- Use `python tools/orig/source_worklist.py --materialize-all` when the next step is handing a decomp worker a ready-to-open packet for the strongest retail-backed boundary jobs instead of a loose list of source names.
 - Use `python tools/orig/dol_vtables.py --stores-only` before recovering a class-like subsystem that seems to write a function pointer to offset `0`.
 - Use `python tools/orig/constructor_packets.py --materialize-top 2` when the vtable scan needs to become an actual non-built source packet for class-boundary work.
 - Decide whether the `darkicemines` root duplication should drive a first-pass file-ID enum or loader switch table.
