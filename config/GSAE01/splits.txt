@@ -424,6 +424,12 @@ dolphin/MSL_C/PPCEABI/bare/H/s_modf.c:
 dolphin/MSL_C/PPCEABI/bare/H/gamecube.c:
 	.text       start:0x8029241C end:0x80292428
 
+dolphin/MSL_C/PPCEABI/bare/H/uart_console_io_gcn.c:
+	.text       start:0x80292460 end:0x80292538
+
+dolphin/MSL_C/PPCEABI/bare/H/rand.c:
+	.text       start:0x80292538 end:0x80292568
+
 dolphin/MSL_C/PPCEABI/bare/H/math_ppc.c:
 	.text       start:0x802928F4 end:0x802929A8
 

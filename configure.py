@@ -597,6 +597,8 @@ config.libs = [
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/s_ldexp.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/s_modf.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/gamecube.c"),
+            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/uart_console_io_gcn.c"),
+            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/rand.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/math_ppc.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/s_tan.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/extras.c"),
