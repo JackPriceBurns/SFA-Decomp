@@ -1,13 +1,12 @@
 {
   "artifacts": {
-    "unchanged": [],
-    "written": [
+    "unchanged": [
       {
         "kind": "backup-header",
         "output_path": "disc_artifacts/audio/starfox.h",
         "source_path": "files/audio/starfox.h.bak",
         "source_tokens": [],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -18,7 +17,7 @@
           "binary/Boot/English.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -29,7 +28,7 @@
           "binary/Boot/French.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -40,7 +39,7 @@
           "binary/Boot/German.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -51,7 +50,7 @@
           "binary/Boot/Italian.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -62,7 +61,7 @@
           "binary/Boot/Spanish.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -73,7 +72,7 @@
           "gametext/Boot/English.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -84,7 +83,7 @@
           "gametext/Boot/French.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -95,7 +94,7 @@
           "gametext/Boot/German.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -106,7 +105,7 @@
           "gametext/Boot/Italian.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -117,7 +116,7 @@
           "gametext/Boot/Japanese.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       },
       {
@@ -128,10 +127,11 @@
           "gametext/Boot/Spanish.c",
           "GameTextData.h"
         ],
-        "status": "written",
+        "status": "unchanged",
         "type": "artifact"
       }
-    ]
+    ],
+    "written": []
   },
   "stubs": {
     "skipped": [
@@ -150,8 +150,7 @@
         "type": "stub"
       }
     ],
-    "unchanged": [],
-    "written": [
+    "unchanged": [
       {
         "confidence": "exact",
         "debug_paths": [
@@ -179,7 +178,7 @@
         ],
         "retail_source_name": "objanim.c",
         "score": 29,
-        "status": "written",
+        "status": "unchanged",
         "type": "stub"
       },
       {
@@ -213,7 +212,7 @@
         ],
         "retail_source_name": "laser.c",
         "score": 27,
-        "status": "written",
+        "status": "unchanged",
         "type": "stub"
       },
       {
@@ -249,7 +248,7 @@
         ],
         "retail_source_name": "DIMBoss.c",
         "score": 26,
-        "status": "written",
+        "status": "unchanged",
         "type": "stub"
       },
       {
@@ -276,7 +275,7 @@
         ],
         "retail_source_name": "camcontrol.c",
         "score": 25,
-        "status": "written",
+        "status": "unchanged",
         "type": "stub"
       },
       {
@@ -310,7 +309,7 @@
         ],
         "retail_source_name": "curves.c",
         "score": 25,
-        "status": "written",
+        "status": "unchanged",
         "type": "stub"
       },
       {
@@ -339,7 +338,7 @@
         "retail_messages": [],
         "retail_source_name": "SHthorntail.c",
         "score": 25,
-        "status": "written",
+        "status": "unchanged",
         "type": "stub"
       },
       {
@@ -376,7 +375,7 @@
         ],
         "retail_source_name": "expgfx.c",
         "score": 20,
-        "status": "written",
+        "status": "unchanged",
         "type": "stub"
       },
       {
@@ -404,7 +403,7 @@
         ],
         "retail_source_name": "textblock.c",
         "score": 15,
-        "status": "written",
+        "status": "unchanged",
         "type": "stub"
       },
       {
@@ -425,16 +424,17 @@
         ],
         "retail_source_name": "objHitReact.c",
         "score": 14,
-        "status": "written",
+        "status": "unchanged",
         "type": "stub"
       }
-    ]
+    ],
+    "written": []
   },
   "summary": {
-    "artifact_unchanged": 0,
-    "artifact_written": 12,
+    "artifact_unchanged": 12,
+    "artifact_written": 0,
     "stub_skipped": 2,
-    "stub_unchanged": 0,
-    "stub_written": 9
+    "stub_unchanged": 9,
+    "stub_written": 0
   }
 }

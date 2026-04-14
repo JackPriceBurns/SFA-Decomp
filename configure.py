@@ -490,6 +490,15 @@ config.libs = [
             Object(NonMatching, "TRK_MINNOW_DOLPHIN/mslsupp.c"),
         ],
     },
+    DolphinLib(
+        "MSL_C",
+        [
+            Object(NonMatching, "MSL_C/PPCEABI/bare/H/buffer_io.c"),
+            Object(NonMatching, "MSL_C/PPCEABI/bare/H/mem.c"),
+            Object(NonMatching, "MSL_C/PPCEABI/bare/H/printf.c"),
+            Object(NonMatching, "MSL_C/PPCEABI/bare/H/string.c"),
+        ],
+    ),
     {
         "lib": "main",
         "mw_version": config.linker_version,
