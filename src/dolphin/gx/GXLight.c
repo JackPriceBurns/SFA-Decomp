@@ -57,17 +57,6 @@ void GXInitLightAttnA(GXLightObj* lt_obj, f32 a0, f32 a1, f32 a2) {
     obj->a[2] = a2;
 }
 
-void GXGetLightAttnA(const GXLightObj* lt_obj, f32* a0, f32* a1, f32* a2) {
-    __GXLightObjInt_struct* obj;
-
-    ASSERTMSGLINE(153, lt_obj != NULL, "Light Object Pointer is null");
-    obj = (__GXLightObjInt_struct*)lt_obj;
-    CHECK_GXBEGIN(154, "GXGetLightAttnA");
-    *a0 = obj->a[0];
-    *a1 = obj->a[1];
-    *a2 = obj->a[2];
-}
-
 void GXInitLightAttnK(GXLightObj* lt_obj, f32 k0, f32 k1, f32 k2) {
     __GXLightObjInt_struct* obj;
 
@@ -206,18 +195,6 @@ void GXInitLightPos(GXLightObj* lt_obj, f32 x, f32 y, f32 z) {
     obj->lpos[2] = z;
 }
 
-void GXGetLightPos(const GXLightObj* lt_obj, f32* x, f32* y, f32* z) {
-    __GXLightObjInt_struct* obj;
-
-    ASSERTMSGLINE(339, lt_obj != NULL, "Light Object Pointer is null");
-    obj = (__GXLightObjInt_struct*)lt_obj;
-    CHECK_GXBEGIN(341, "GXGetLightPos");
-
-    *x = obj->lpos[0];
-    *y = obj->lpos[1];
-    *z = obj->lpos[2];
-}
-
 void GXInitLightDir(GXLightObj* lt_obj, f32 nx, f32 ny, f32 nz) {
     __GXLightObjInt_struct* obj;
 
@@ -227,17 +204,6 @@ void GXInitLightDir(GXLightObj* lt_obj, f32 nx, f32 ny, f32 nz) {
     obj->ldir[0] = -nx;
     obj->ldir[1] = -ny;
     obj->ldir[2] = -nz;
-}
-
-void GXGetLightDir(const GXLightObj* lt_obj, f32* nx, f32* ny, f32* nz) {
-    __GXLightObjInt_struct* obj;
-
-    ASSERTMSGLINE(372, lt_obj != NULL, "Light Object Pointer is null");
-    obj = (__GXLightObjInt_struct*)lt_obj;
-
-    *nx = -obj->ldir[0];
-    *ny = -obj->ldir[1];
-    *nz = -obj->ldir[2];
 }
 
 void GXInitSpecularDir(GXLightObj* lt_obj, f32 nx, f32 ny, f32 nz) {
@@ -268,21 +234,6 @@ void GXInitSpecularDir(GXLightObj* lt_obj, f32 nx, f32 ny, f32 nz) {
     obj->lpos[2] = nz * -1.0e18f;
 }
 
-void GXInitSpecularDirHA(GXLightObj* lt_obj, f32 nx, f32 ny, f32 nz, f32 hx, f32 hy, f32 hz) {
-    __GXLightObjInt_struct* obj;
-
-    ASSERTMSGLINE(436, lt_obj != NULL, "Light Object Pointer is null");
-    obj = (__GXLightObjInt_struct*)lt_obj;
-    CHECK_GXBEGIN(437, "GXInitSpecularHA");
-
-    obj->ldir[0] = hx;
-    obj->ldir[1] = hy;
-    obj->ldir[2] = hz;
-    obj->lpos[0] = nx * -1.0e18f;
-    obj->lpos[1] = ny * -1.0e18f;
-    obj->lpos[2] = nz * -1.0e18f;
-}
-
 void GXInitLightColor(GXLightObj* lt_obj, GXColor color) {
     __GXLightObjInt_struct* obj;
 
@@ -291,16 +242,6 @@ void GXInitLightColor(GXLightObj* lt_obj, GXColor color) {
     CHECK_GXBEGIN(463, "GXInitLightColor");
 
     *(u32*)&obj->Color = *(u32*)&color;
-}
-
-void GXGetLightColor(const GXLightObj* lt_obj, GXColor* color) {
-    __GXLightObjInt_struct* obj;
-
-    ASSERTMSGLINE(476, lt_obj != NULL, "Light Object Pointer is null");
-    obj = (__GXLightObjInt_struct*)lt_obj;
-    CHECK_GXBEGIN(477, "GXGetLightColor");
-
-    *(u32*)color = *(u32*)&obj->Color;
 }
 
 #if DEBUG
@@ -408,35 +349,6 @@ void GXLoadLightObjImm(const GXLightObj* lt_obj, GXLightID light) {
     PushLight(lt_obj, (void*)GXFIFO_ADDR);
 #endif
 
-    __GXData->bpSentNot = 1;
-}
-
-void GXLoadLightObjIndx(u32 lt_obj_indx, GXLightID light) {
-    u32 reg;
-    u32 addr;
-    u32 idx;
-
-    CHECK_GXBEGIN(624, "GXLoadLightObjIndx");
-
-#if DEBUG
-    idx = ConvLightID2Num(light);
-#else
-    idx = 31 - __cntlzw(light);
-#endif
-
-    ASSERTMSGLINE(627, idx < 8, "GXLoadLightObjIndx: Invalid Light Id");
-    idx &= 7;
-
-    addr = idx * 0x10 + 0x600;
-    reg = 0;
-    SET_REG_FIELD(632, reg, 12, 0, addr);
-    SET_REG_FIELD(634, reg, 4, 12, 0xF);
-    SET_REG_FIELD(634, reg, 16, 16, lt_obj_indx);
-    GX_WRITE_U8(0x38);
-    GX_WRITE_U32(reg);
-#if DEBUG
-    __GXShadowIndexState(7, reg);
-#endif
     __GXData->bpSentNot = 1;
 }
 
