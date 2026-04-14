@@ -61,3 +61,4 @@ python tools/dolphin_sdk_symbols.py split-seeds --gap 0x200
 
 - `split-seeds` prints minimal translated ranges from high-confidence candidates. Treat them as anchors, not final object boundaries.
 - `candidates` prints both the raw Dolphin address and the translated repo address.
+- When reference projects also have exact split bounds and `orig/*/sys/main.dol`, use [sdk_dol_match.md](/c:/Projects/SFA-Decomp/docs/sdk_dol_match.md) for cross-game normalized PPC signature matching.

@@ -144,6 +144,20 @@ class MatchResult:
     compared_function_count: int
 
 
+@dataclass(frozen=True)
+class DiscoveryHit:
+    reference: WindowSignature
+    target: WindowSignature
+    overall_score: float
+    function_mask_score: float
+    window_mask_score: float
+    ngram_score: float
+    size_score: float
+    count_score: float
+    exact_size_matches: int
+    compared_function_count: int
+
+
 def parse_reference_spec(value: str) -> ReferenceSpec:
     if ":" not in value:
         raise argparse.ArgumentTypeError(f"Reference spec must be project:config, got {value!r}")
@@ -372,6 +386,15 @@ def load_reference_text_splits(path: Path) -> tuple[SplitRange, ...]:
     return tuple(split for split in load_splits(path) if split.section == ".text")
 
 
+@lru_cache(maxsize=None)
+def load_target_text_splits(version: str) -> tuple[SplitRange, ...]:
+    return tuple(
+        split
+        for split in load_splits(Path("config") / version / "splits.txt")
+        if split.section == ".text"
+    )
+
+
 def collect_reference_window_metadata(
     spec: ReferenceSpec,
     path_filters: tuple[str, ...],
@@ -479,12 +502,17 @@ def build_target_window_from_source(
     return build_target_window_from_range(version, dol_path, split.start, split.end)
 
 
+def window_is_unassigned(version: str, start: int, end: int) -> bool:
+    return all(split.end <= start or split.start >= end for split in load_target_text_splits(version))
+
+
 def iter_target_windows(
     version: str,
     dol_path: Path,
     function_count: int,
     range_start: int | None,
     range_end: int | None,
+    only_unassigned: bool = False,
 ) -> tuple[WindowSignature, ...]:
     functions = load_target_functions(version, dol_path)
     if function_count <= 0 or function_count > len(functions):
@@ -499,6 +527,8 @@ def iter_target_windows(
             continue
         if range_end is not None and window_start >= range_end:
             break
+        if only_unassigned and not window_is_unassigned(version, window_start, window_end):
+            continue
         windows.append(
             WindowSignature(
                 label=version,
@@ -526,6 +556,69 @@ def rank_candidates(target: WindowSignature, candidates: list[WindowSignature], 
     return results[:limit]
 
 
+def discover_reference_hits(
+    version: str,
+    dol_path: Path,
+    references: list[WindowSignature],
+    range_start: int,
+    range_end: int,
+    min_score: float,
+    limit: int,
+    limit_per_reference: int,
+    only_unassigned: bool,
+) -> list[DiscoveryHit]:
+    target_cache: dict[int, tuple[WindowSignature, ...]] = {}
+    best_by_target: dict[tuple[int, int], DiscoveryHit] = {}
+
+    for reference in references:
+        target_windows = target_cache.get(reference.function_count)
+        if target_windows is None:
+            target_windows = iter_target_windows(
+                version=version,
+                dol_path=dol_path,
+                function_count=reference.function_count,
+                range_start=range_start,
+                range_end=range_end,
+                only_unassigned=only_unassigned,
+            )
+            target_cache[reference.function_count] = target_windows
+        if not target_windows:
+            continue
+
+        ranked = rank_candidates(reference, list(target_windows), limit_per_reference)
+        for result in ranked:
+            if result.overall_score < min_score:
+                continue
+            key = (result.candidate.start, result.candidate.end)
+            hit = DiscoveryHit(
+                reference=reference,
+                target=result.candidate,
+                overall_score=result.overall_score,
+                function_mask_score=result.function_mask_score,
+                window_mask_score=result.window_mask_score,
+                ngram_score=result.ngram_score,
+                size_score=result.size_score,
+                count_score=result.count_score,
+                exact_size_matches=result.exact_size_matches,
+                compared_function_count=result.compared_function_count,
+            )
+            existing = best_by_target.get(key)
+            if existing is None or hit.overall_score > existing.overall_score:
+                best_by_target[key] = hit
+
+    hits = sorted(
+        best_by_target.values(),
+        key=lambda hit: (
+            -hit.overall_score,
+            -hit.exact_size_matches,
+            abs(hit.target.span - hit.reference.span),
+            hit.target.start,
+            hit.reference.game,
+        ),
+    )
+    return hits[:limit]
+
+
 def verdict_for_result(result: MatchResult) -> str:
     if (
         result.overall_score >= 0.88
@@ -534,6 +627,18 @@ def verdict_for_result(result: MatchResult) -> str:
     ):
         return "source-likely"
     if result.overall_score >= 0.74 and result.size_score >= 0.85:
+        return "structural"
+    return "weak"
+
+
+def verdict_for_hit(hit: DiscoveryHit) -> str:
+    if (
+        hit.overall_score >= 0.88
+        and hit.size_score >= 0.96
+        and hit.count_score >= 0.999
+    ):
+        return "source-likely"
+    if hit.overall_score >= 0.74 and hit.size_score >= 0.85:
         return "structural"
     return "weak"
 
@@ -567,6 +672,43 @@ def print_match_results(target: WindowSignature, results: list[MatchResult]) -> 
         )
 
 
+def print_discovery_hits(
+    range_start: int,
+    range_end: int,
+    only_unassigned: bool,
+    min_score: float,
+    hits: list[DiscoveryHit],
+) -> None:
+    assignment_mode = "unassigned-only" if only_unassigned else "all-windows"
+    print(
+        f"discovery: 0x{range_start:08X}-0x{range_end:08X} "
+        f"mode={assignment_mode} min-score={min_score * 100:.2f}"
+    )
+    if not hits:
+        print("matches:")
+        print("   none")
+        return
+    print("matches:")
+    for index, hit in enumerate(hits, start=1):
+        print(
+            f"  {index:>2}. 0x{hit.target.start:08X}-0x{hit.target.end:08X} "
+            f"span=0x{hit.target.span:X} funcs={hit.target.function_count} "
+            f"score={hit.overall_score * 100:.2f} {verdict_for_hit(hit)}"
+        )
+        print(
+            f"      ref={hit.reference.game} {hit.reference.source_path} "
+            f"0x{hit.reference.start:08X}-0x{hit.reference.end:08X}"
+        )
+        print(
+            f"      mask-fn={hit.function_mask_score * 100:.2f} "
+            f"mask-win={hit.window_mask_score * 100:.2f} "
+            f"ngram={hit.ngram_score * 100:.2f} "
+            f"size={hit.size_score * 100:.2f} "
+            f"count={hit.count_score * 100:.2f} "
+            f"exact-sizes={hit.exact_size_matches}/{hit.compared_function_count}"
+        )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
@@ -590,6 +732,11 @@ def parse_args() -> argparse.Namespace:
         help="Reference split path to search for inside the SFA DOL",
     )
     parser.add_argument(
+        "--discover",
+        action="store_true",
+        help="Bulk-scan reference windows against a target SFA range",
+    )
+    parser.add_argument(
         "--path-contains",
         action="append",
         default=[],
@@ -610,6 +757,23 @@ def parse_args() -> argparse.Namespace:
         type=parse_int,
         help="Optional SFA search window end for --reference-source mode",
     )
+    parser.add_argument(
+        "--only-unassigned",
+        action="store_true",
+        help="Restrict discovery/reference scans to SFA windows with no current split overlap",
+    )
+    parser.add_argument(
+        "--min-score",
+        type=float,
+        default=0.80,
+        help="Minimum score for --discover output, as a 0-1 value",
+    )
+    parser.add_argument(
+        "--limit-per-reference",
+        type=int,
+        default=1,
+        help="Maximum candidate SFA windows to keep per reference split in --discover mode",
+    )
     parser.add_argument("--limit", type=int, default=20, help="Number of matches to show")
     args = parser.parse_args()
 
@@ -618,10 +782,12 @@ def parse_args() -> argparse.Namespace:
 
     source_mode = args.source is not None or args.range_start is not None or args.range_end is not None
     reference_mode = args.reference_source is not None
-    if source_mode == reference_mode:
+    discover_mode = args.discover
+    active_modes = sum((1 if source_mode else 0, 1 if reference_mode else 0, 1 if discover_mode else 0))
+    if active_modes != 1:
         parser.error(
             "Choose exactly one mode: either --source/--range-start+--range-end, "
-            "or --reference-source"
+            "--reference-source, or --discover"
         )
     if (args.range_start is None) != (args.range_end is None):
         parser.error("--range-start and --range-end must be provided together")
@@ -629,6 +795,8 @@ def parse_args() -> argparse.Namespace:
         parser.error("--range-end must be greater than --range-start")
     if args.reference_source is not None and len(args.reference) != 1:
         parser.error("--reference-source mode requires exactly one --reference")
+    if args.discover and (args.target_range_start is None or args.target_range_end is None):
+        parser.error("--discover requires --target-range-start and --target-range-end")
     if args.target_range_start is not None and args.target_range_end is not None:
         if args.target_range_end <= args.target_range_start:
             parser.error("--target-range-end must be greater than --target-range-start")
@@ -641,6 +809,36 @@ def main() -> None:
     args = parse_args()
     dol_path = target_dol_path_for_version(args.version)
 
+    if args.discover:
+        if args.all_splits:
+            path_filters = tuple(args.path_contains)
+        else:
+            path_filters = tuple(args.path_contains) or DEFAULT_SDK_FILTERS
+        references: list[WindowSignature] = []
+        for spec in args.reference:
+            references.extend(collect_reference_windows(spec, path_filters))
+        if not references:
+            raise SystemExit("No reference windows matched the requested filters")
+        hits = discover_reference_hits(
+            version=args.version,
+            dol_path=dol_path,
+            references=references,
+            range_start=args.target_range_start,
+            range_end=args.target_range_end,
+            min_score=args.min_score,
+            limit=args.limit,
+            limit_per_reference=args.limit_per_reference,
+            only_unassigned=args.only_unassigned,
+        )
+        print_discovery_hits(
+            range_start=args.target_range_start,
+            range_end=args.target_range_end,
+            only_unassigned=args.only_unassigned,
+            min_score=args.min_score,
+            hits=hits,
+        )
+        return
+
     if args.reference_source is not None:
         spec = args.reference[0]
         reference_window = select_reference_window(spec, args.reference_source)
@@ -651,6 +849,7 @@ def main() -> None:
                 function_count=reference_window.function_count,
                 range_start=args.target_range_start,
                 range_end=args.target_range_end,
+                only_unassigned=args.only_unassigned,
             )
         )
         if not candidates:
