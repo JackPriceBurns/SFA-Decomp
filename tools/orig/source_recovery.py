@@ -46,6 +46,21 @@ class RecoveryCandidate:
     retail_text: str
     retail_source_name: str
     retail_address: int
+    retail_label: str | None
+    retail_message: str | None
+    xrefs: tuple[StringXref, ...]
+    debug_sources: tuple[DebugSourceFile, ...]
+    debug_symbol_hits: tuple[str, ...]
+    listed_in_debug_srcfiles: bool
+
+
+@dataclass(frozen=True)
+class RecoveryGroup:
+    retail_source_name: str
+    retail_addresses: tuple[int, ...]
+    retail_texts: tuple[str, ...]
+    retail_labels: tuple[str, ...]
+    retail_messages: tuple[str, ...]
     xrefs: tuple[StringXref, ...]
     debug_sources: tuple[DebugSourceFile, ...]
     debug_symbol_hits: tuple[str, ...]
@@ -59,6 +74,35 @@ def normalize_token(value: str) -> str:
 def extract_source_name(text: str) -> str | None:
     match = SOURCE_TOKEN_RE.search(text)
     return None if match is None else match.group(1)
+
+
+def clean_context_text(value: str | None) -> str | None:
+    if value is None:
+        return None
+    cleaned = re.sub(r"\s+", " ", value.strip(" \t\r\n<>:-"))
+    return cleaned or None
+
+
+def extract_retail_context(text: str, source_name: str) -> tuple[str | None, str | None]:
+    escaped = re.escape(source_name)
+
+    match = re.search(rf"<\s*{escaped}\s*--\s*([^>]+)>(.*)$", text)
+    if match is not None:
+        return clean_context_text(match.group(1)), clean_context_text(match.group(2))
+
+    match = re.search(rf"<\s*{escaped}\s+([^>]+)>(.*)$", text)
+    if match is not None:
+        return clean_context_text(match.group(1)), clean_context_text(match.group(2))
+
+    match = re.search(rf"{escaped}\s*:\s*(.*)$", text)
+    if match is not None:
+        return None, clean_context_text(match.group(1))
+
+    match = re.search(rf"{escaped}(.*)$", text)
+    if match is not None:
+        return None, clean_context_text(match.group(1))
+
+    return None, None
 
 
 def parse_debug_srcfiles(path: Path) -> set[str]:
@@ -202,6 +246,7 @@ def collect_candidates(
         source_name = extract_source_name(entry.text)
         if source_name is None:
             continue
+        retail_label, retail_message = extract_retail_context(entry.text, source_name)
         if entry.address in seen_addresses:
             continue
         seen_addresses.add(entry.address)
@@ -212,6 +257,8 @@ def collect_candidates(
                 retail_text=entry.text,
                 retail_source_name=source_name,
                 retail_address=entry.address,
+                retail_label=retail_label,
+                retail_message=retail_message,
                 xrefs=tuple(xrefs_by_target.get(entry.address, [])),
                 debug_sources=debug_sources,
                 debug_symbol_hits=tuple(symbol_stem_hits(debug_symbol_names, source_name)),
@@ -230,14 +277,92 @@ def collect_candidates(
     return candidates
 
 
-def search_candidates(candidates: list[RecoveryCandidate], patterns: list[str]) -> list[RecoveryCandidate]:
-    lowered = [pattern.lower() for pattern in patterns]
-    matches: list[RecoveryCandidate] = []
+def unique_values(values: list[str]) -> tuple[str, ...]:
+    result: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        if not value or value in seen:
+            continue
+        seen.add(value)
+        result.append(value)
+    return tuple(result)
+
+
+def dedupe_xrefs(xrefs: list[StringXref]) -> tuple[StringXref, ...]:
+    result: list[StringXref] = []
+    seen: set[tuple[int, int]] = set()
+    for xref in xrefs:
+        key = (xref.xref_address, xref.target_address)
+        if key in seen:
+            continue
+        seen.add(key)
+        result.append(xref)
+    return tuple(result)
+
+
+def dedupe_debug_sources(sources: list[DebugSourceFile]) -> tuple[DebugSourceFile, ...]:
+    result: list[DebugSourceFile] = []
+    seen: set[str] = set()
+    for source in sources:
+        if source.path in seen:
+            continue
+        seen.add(source.path)
+        result.append(source)
+    return tuple(result)
+
+
+def group_candidates(candidates: list[RecoveryCandidate]) -> list[RecoveryGroup]:
+    groups_by_name: dict[str, list[RecoveryCandidate]] = defaultdict(list)
     for candidate in candidates:
+        groups_by_name[candidate.retail_source_name.lower()].append(candidate)
+
+    groups: list[RecoveryGroup] = []
+    for values in groups_by_name.values():
+        values.sort(key=lambda item: item.retail_address)
+        groups.append(
+            RecoveryGroup(
+                retail_source_name=values[0].retail_source_name,
+                retail_addresses=tuple(candidate.retail_address for candidate in values),
+                retail_texts=tuple(candidate.retail_text for candidate in values),
+                retail_labels=unique_values(
+                    [candidate.retail_label for candidate in values if candidate.retail_label is not None]
+                ),
+                retail_messages=unique_values(
+                    [candidate.retail_message for candidate in values if candidate.retail_message is not None]
+                ),
+                xrefs=dedupe_xrefs([xref for candidate in values for xref in candidate.xrefs]),
+                debug_sources=dedupe_debug_sources(
+                    [source for candidate in values for source in candidate.debug_sources]
+                ),
+                debug_symbol_hits=unique_values(
+                    [name for candidate in values for name in candidate.debug_symbol_hits]
+                ),
+                listed_in_debug_srcfiles=any(candidate.listed_in_debug_srcfiles for candidate in values),
+            )
+        )
+
+    groups.sort(
+        key=lambda item: (
+            not item.xrefs,
+            not item.debug_sources,
+            not item.listed_in_debug_srcfiles,
+            item.retail_source_name.lower(),
+            item.retail_addresses[0],
+        )
+    )
+    return groups
+
+
+def search_candidates(groups: list[RecoveryGroup], patterns: list[str]) -> list[RecoveryGroup]:
+    lowered = [pattern.lower() for pattern in patterns]
+    matches: list[RecoveryGroup] = []
+    for candidate in groups:
         fields = [
-            candidate.retail_text.lower(),
             candidate.retail_source_name.lower(),
         ]
+        fields.extend(text.lower() for text in candidate.retail_texts)
+        fields.extend(label.lower() for label in candidate.retail_labels)
+        fields.extend(message.lower() for message in candidate.retail_messages)
         fields.extend(source.path.lower() for source in candidate.debug_sources)
         fields.extend(name.lower() for name in candidate.debug_symbol_hits)
         fields.extend(format_function_name(xref).lower() for xref in candidate.xrefs)
@@ -246,11 +371,11 @@ def search_candidates(candidates: list[RecoveryCandidate], patterns: list[str]) 
     return matches
 
 
-def top_named_functions(candidate: RecoveryCandidate, limit: int = 8) -> list[str]:
-    if candidate.debug_sources:
+def top_named_functions(debug_sources: tuple[DebugSourceFile, ...], debug_symbol_hits: tuple[str, ...], limit: int = 8) -> list[str]:
+    if debug_sources:
         names: list[str] = []
         seen: set[str] = set()
-        for source in candidate.debug_sources:
+        for source in debug_sources:
             for name in meaningful_function_names(source.functions):
                 if name in seen:
                     continue
@@ -259,20 +384,20 @@ def top_named_functions(candidate: RecoveryCandidate, limit: int = 8) -> list[st
                 if len(names) >= limit:
                     return names
         return names
-    return list(candidate.debug_symbol_hits[:limit])
+    return list(debug_symbol_hits[:limit])
 
 
-def summary_markdown(candidates: list[RecoveryCandidate]) -> str:
-    with_xrefs = [candidate for candidate in candidates if candidate.xrefs]
-    with_debug_sources = [candidate for candidate in candidates if candidate.debug_sources]
+def summary_markdown(groups: list[RecoveryGroup]) -> str:
+    with_xrefs = [candidate for candidate in groups if candidate.xrefs]
+    with_debug_sources = [candidate for candidate in groups if candidate.debug_sources]
     with_both = [
         candidate
-        for candidate in candidates
+        for candidate in groups
         if candidate.xrefs and candidate.debug_sources
     ]
     with_symbol_only = [
         candidate
-        for candidate in candidates
+        for candidate in groups
         if not candidate.debug_sources and candidate.debug_symbol_hits
     ]
 
@@ -280,7 +405,8 @@ def summary_markdown(candidates: list[RecoveryCandidate]) -> str:
     lines.append("# Retail source-recovery crosswalk")
     lines.append("")
     lines.append("## Summary")
-    lines.append(f"- Retail source-tagged strings recovered: `{len(candidates)}`")
+    lines.append(f"- Retail source-tagged strings recovered: `{sum(len(candidate.retail_texts) for candidate in groups)}`")
+    lines.append(f"- Unique retail source basenames recovered: `{len(groups)}`")
     lines.append(f"- Candidates with direct EN xrefs: `{len(with_xrefs)}`")
     lines.append(f"- Candidates with exact sfadebug split-path matches: `{len(with_debug_sources)}`")
     lines.append(f"- Candidates with both EN xrefs and exact debug source matches: `{len(with_both)}`")
@@ -294,8 +420,18 @@ def summary_markdown(candidates: list[RecoveryCandidate]) -> str:
             for xref in candidate.xrefs[:3]
         )
         debug_preview = ", ".join(f"`{source.path}`" for source in candidate.debug_sources[:2])
-        func_preview = ", ".join(f"`{name}`" for name in top_named_functions(candidate, 6))
-        lines.append(f"- `{candidate.retail_source_name}` at `0x{candidate.retail_address:08X}`")
+        func_preview = ", ".join(
+            f"`{name}`"
+            for name in top_named_functions(candidate.debug_sources, candidate.debug_symbol_hits, 6)
+        )
+        address_preview = ", ".join(f"`0x{address:08X}`" for address in candidate.retail_addresses[:3])
+        lines.append(
+            f"- `{candidate.retail_source_name}` retail strings={len(candidate.retail_texts)} addresses={address_preview}"
+        )
+        if candidate.retail_labels:
+            lines.append("  retail labels: " + ", ".join(f"`{label}`" for label in candidate.retail_labels[:4]))
+        if candidate.retail_messages:
+            lines.append("  retail messages: " + ", ".join(f"`{message}`" for message in candidate.retail_messages[:2]))
         lines.append(f"  EN xrefs: {xref_preview}")
         lines.append(f"  sfadebug paths: {debug_preview}")
         if func_preview:
@@ -310,7 +446,14 @@ def summary_markdown(candidates: list[RecoveryCandidate]) -> str:
                 f"`{format_function_name(xref)}`"
                 for xref in candidate.xrefs[:3]
             )
-            lines.append(f"- `{candidate.retail_source_name}` at `0x{candidate.retail_address:08X}`")
+            address_preview = ", ".join(f"`0x{address:08X}`" for address in candidate.retail_addresses[:4])
+            lines.append(
+                f"- `{candidate.retail_source_name}` retail strings={len(candidate.retail_texts)} addresses={address_preview}"
+            )
+            if candidate.retail_labels:
+                lines.append("  retail labels: " + ", ".join(f"`{label}`" for label in candidate.retail_labels[:4]))
+            if candidate.retail_messages:
+                lines.append("  retail messages: " + ", ".join(f"`{message}`" for message in candidate.retail_messages[:2]))
             if candidate.xrefs:
                 lines.append(f"  EN xrefs: {xref_preview}")
             lines.append(f"  debug symbol hits: {func_preview}")
@@ -323,7 +466,7 @@ def summary_markdown(candidates: list[RecoveryCandidate]) -> str:
     return "\n".join(lines)
 
 
-def search_markdown(candidates: list[RecoveryCandidate], patterns: list[str]) -> str:
+def search_markdown(candidates: list[RecoveryGroup], patterns: list[str]) -> str:
     matches = search_candidates(candidates, patterns)
     lines = ["# Source-recovery search", ""]
     if not matches:
@@ -331,8 +474,16 @@ def search_markdown(candidates: list[RecoveryCandidate], patterns: list[str]) ->
         return "\n".join(lines)
 
     for candidate in matches:
-        lines.append(f"- `{candidate.retail_source_name}` at `0x{candidate.retail_address:08X}`")
-        lines.append(f"  retail string: `{candidate.retail_text}`")
+        lines.append(f"- `{candidate.retail_source_name}`")
+        lines.append(
+            "  retail addresses: " + ", ".join(f"`0x{address:08X}`" for address in candidate.retail_addresses[:6])
+        )
+        for text in candidate.retail_texts[:4]:
+            lines.append(f"  retail string: `{text}`")
+        if candidate.retail_labels:
+            lines.append("  retail labels: " + ", ".join(f"`{label}`" for label in candidate.retail_labels[:6]))
+        if candidate.retail_messages:
+            lines.append("  retail messages: " + ", ".join(f"`{message}`" for message in candidate.retail_messages[:4]))
         if candidate.xrefs:
             for xref in candidate.xrefs[:6]:
                 lines.append(
@@ -363,6 +514,8 @@ def rows_to_csv(candidates: list[RecoveryCandidate]) -> str:
         "retail_source_name",
         "retail_address",
         "retail_text",
+        "retail_label",
+        "retail_message",
         "xref_count",
         "en_functions",
         "debug_source_paths",
@@ -379,10 +532,14 @@ def rows_to_csv(candidates: list[RecoveryCandidate]) -> str:
                 "retail_source_name": candidate.retail_source_name,
                 "retail_address": f"0x{candidate.retail_address:08X}",
                 "retail_text": candidate.retail_text,
+                "retail_label": candidate.retail_label or "",
+                "retail_message": candidate.retail_message or "",
                 "xref_count": len(candidate.xrefs),
                 "en_functions": ",".join(format_function_name(xref) for xref in candidate.xrefs),
                 "debug_source_paths": ",".join(source.path for source in candidate.debug_sources),
-                "debug_named_functions": ",".join(top_named_functions(candidate, 12)),
+                "debug_named_functions": ",".join(
+                    top_named_functions(candidate.debug_sources, candidate.debug_symbol_hits, 12)
+                ),
                 "debug_symbol_hits": ",".join(candidate.debug_symbol_hits[:12]),
                 "listed_in_debug_srcfiles": str(candidate.listed_in_debug_srcfiles).lower(),
             }
@@ -449,15 +606,16 @@ def main() -> None:
         debug_splits_path=args.debug_splits,
         debug_srcfiles_path=args.debug_srcfiles,
     )
+    groups = group_candidates(candidates)
 
     try:
         if args.format == "csv":
             sys.stdout.write(rows_to_csv(candidates))
         elif args.search:
-            sys.stdout.write(search_markdown(candidates, args.search))
+            sys.stdout.write(search_markdown(groups, args.search))
             sys.stdout.write("\n")
         else:
-            sys.stdout.write(summary_markdown(candidates))
+            sys.stdout.write(summary_markdown(groups))
             sys.stdout.write("\n")
     except BrokenPipeError:
         pass

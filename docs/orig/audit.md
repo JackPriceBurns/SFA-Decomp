@@ -26,6 +26,10 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
   - Gives constructor-style anchors for vtable or callback-table recovery without guessing from decomp artifacts.
 - `python tools/orig/developer_artifacts.py`
   - Catalogs the generated `*.c.new` boot-text sources, the MusyX symbol header backup, the leftover REL testcase files, and the SDK-style source leaks in `apploader.img`.
+- `python tools/orig/source_leaks.py`
+  - Inventories direct source/header artifacts in `orig/GSAE01`, scores embedded source-like strings, and keeps asset-noise matches out of the high-value summary.
+- `python tools/orig/source_recovery.py`
+  - Resolves retail `main.dol` source-tagged strings back to current EN xrefs and extracts retail-authored function/context labels such as `setBlendMove` from warning strings.
 
 Focused notes for that tool live in [map_catalog.md](/C:/Projects/SFA-Decomp/docs/orig/map_catalog.md).
 Focused notes for the DOL runtime tables live in [dol_tables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_tables.md).
@@ -33,6 +37,8 @@ Focused notes for direct DOL string xrefs live in [dol_xrefs.md](/C:/Projects/SF
 Focused notes for constructor-backed function-pointer tables live in [dol_vtables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_vtables.md).
 Focused notes for per-object retail placement widths live in [romlist_params.md](/C:/Projects/SFA-Decomp/docs/orig/romlist_params.md).
 Focused notes for developer-facing leftovers live in [developer_artifacts.md](/C:/Projects/SFA-Decomp/docs/orig/developer_artifacts.md).
+Focused notes for the broader retail source/header leak inventory live in [source_leaks.md](/C:/Projects/SFA-Decomp/docs/orig/source_leaks.md).
+Focused notes for source-tagged EN `main.dol` recovery targets live in [source_recovery.md](/C:/Projects/SFA-Decomp/docs/orig/source_recovery.md).
 
 ## High-value findings
 

@@ -40,6 +40,8 @@ This repo starts from very little. Expect to do naming, struct recovery, type cl
 - Replace guessed offsets and anonymous blobs with real fields when justified.
 - Identify reusable SDK or middleware code from `reference_projects/*`.
 - Mine strings, assets, tables, and binary patterns when that reveals structure.
+- Use `python tools/orig/source_leaks.py` when checking whether `orig/*` still preserves direct source/header names before leaning on external debug-side references.
+- Use `python tools/orig/source_recovery.py` when `main.dol` source-tagged strings may give EN file/function anchors for naming or splits.
 - Use `python tools/orig/tab_catalog.py` when you need real retail chunk boundaries from `.tab` / `.bin` families before proposing asset splits.
 - Use `python tools/orig/dol_vtables.py --stores-only` when hunting constructor-backed class boundaries, vtables, or callback tables in the retail DOL.
 - Use `python tools/orig/romlist_params.py` when recovering object placement structs, param widths, or variable-length romlist families from retail data.

@@ -16,3 +16,5 @@ Exploratory notes derived from the bundled retail assets under `orig/`.
 - [romlist_params.md](/C:/Projects/SFA-Decomp/docs/orig/romlist_params.md)
 - [modules.md](/C:/Projects/SFA-Decomp/docs/orig/modules.md)
 - [developer_artifacts.md](/C:/Projects/SFA-Decomp/docs/orig/developer_artifacts.md)
+- [source_leaks.md](/C:/Projects/SFA-Decomp/docs/orig/source_leaks.md)
+- [source_recovery.md](/C:/Projects/SFA-Decomp/docs/orig/source_recovery.md)
