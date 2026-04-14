@@ -592,6 +592,10 @@ config.libs = [
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/printf.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/string.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/wchar_io.c"),
+            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/s_copysign.c"),
+            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/s_frexp.c"),
+            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/s_ldexp.c"),
+            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/s_modf.c"),
         ],
     ),
     {
