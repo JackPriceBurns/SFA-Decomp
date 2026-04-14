@@ -362,13 +362,25 @@ dolphin/TRK_MINNOW_DOLPHIN/target_options.c:
 	.text       start:0x8028DAAC end:0x8028DAC8
 
 dolphin/TRK_MINNOW_DOLPHIN/mslsupp.c:
-	.text       start:0x8028DAC8 end:0x8028DC08
+	.text       start:0x8028DAC8 end:0x8028DB4C
+
+dolphin/MSL_C/PPCEABI/bare/H/abort_exit.c:
+	.text       start:0x8028DB4C end:0x8028DCD4
+
+dolphin/MSL_C/PPCEABI/bare/H/ansi_files.c:
+	.text       start:0x8028DCD4 end:0x8028E344
 
 dolphin/MSL_C/PPCEABI/bare/H/buffer_io.c:
 	.text       start:0x8028EF5C end:0x8028F054
 
+dolphin/MSL_C/PPCEABI/bare/H/mbstring.c:
+	.text       start:0x8028F844 end:0x8028F988
+
 dolphin/MSL_C/PPCEABI/bare/H/mem.c:
 	.text       start:0x8028F988 end:0x8028FAF8
+
+dolphin/MSL_C/PPCEABI/bare/H/misc_io.c:
+	.text       start:0x8028FD18 end:0x8028FDE8
 
 dolphin/MSL_C/PPCEABI/bare/H/printf.c:
 	.text       start:0x8028FDE8 end:0x802907F4
