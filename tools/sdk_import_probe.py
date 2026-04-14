@@ -482,6 +482,11 @@ def load_auto_text_functions(version: str) -> tuple[AsmTextFunction, ...]:
     if not asm_root.is_dir():
         return ()
 
+    named_ranges = [
+        (split.start, split.end)
+        for split in load_text_splits(version)
+        if split.path and not split.path.startswith("auto/")
+    ]
     functions: list[AsmTextFunction] = []
     seen: set[tuple[int, int, str]] = set()
     for asm_path in sorted(asm_root.glob("auto_*_text.s")):
@@ -498,12 +503,72 @@ def load_auto_text_functions(version: str) -> tuple[AsmTextFunction, ...]:
             start = int(header_match.group("start"), 16)
             size = int(header_match.group("size"), 16)
             end = start + size
+            if any(not (end <= range_start or start >= range_end) for range_start, range_end in named_ranges):
+                continue
             name = name_match.group("name")
             key = (start, end, name)
             if key in seen:
                 continue
             seen.add(key)
             functions.append(AsmTextFunction(start=start, end=end, size=size, name=name))
+
+    functions.sort(key=lambda item: (item.start, item.end, item.name))
+    return tuple(functions)
+
+
+@lru_cache(maxsize=None)
+def load_named_text_functions(version: str) -> tuple[AsmTextFunction, ...]:
+    asm_root = Path("build") / version / "asm"
+    if not asm_root.is_dir():
+        return ()
+
+    functions: list[AsmTextFunction] = []
+    seen: set[tuple[int, int]] = set()
+    for split in load_text_splits(version):
+        asm_path = (asm_root / Path(split.path)).with_suffix(".s")
+        if not asm_path.is_file():
+            continue
+
+        lines = asm_path.read_text(encoding="utf-8", errors="ignore").splitlines()
+        for index, line in enumerate(lines):
+            header_match = ASM_FN_HEADER_RE.match(line)
+            if header_match is None or index + 1 >= len(lines):
+                continue
+
+            name_match = ASM_FN_NAME_RE.match(lines[index + 1].strip())
+            if name_match is None:
+                continue
+
+            start = int(header_match.group("start"), 16)
+            size = int(header_match.group("size"), 16)
+            end = start + size
+            key = (start, end)
+            if key in seen:
+                continue
+            seen.add(key)
+            functions.append(
+                AsmTextFunction(
+                    start=start,
+                    end=end,
+                    size=size,
+                    name=name_match.group("name"),
+                )
+            )
+
+    functions.sort(key=lambda item: (item.start, item.end, item.name))
+    return tuple(functions)
+
+
+@lru_cache(maxsize=None)
+def load_text_functions(version: str) -> tuple[AsmTextFunction, ...]:
+    functions: list[AsmTextFunction] = list(load_named_text_functions(version))
+    covered_ranges = [(function.start, function.end) for function in functions]
+
+    for function in load_auto_text_functions(version):
+        if any(not (function.end <= start or function.start >= end) for start, end in covered_ranges):
+            continue
+        functions.append(function)
+        covered_ranges.append((function.start, function.end))
 
     functions.sort(key=lambda item: (item.start, item.end, item.name))
     return tuple(functions)
@@ -527,7 +592,7 @@ def find_assigned_text_split(version: str, source: Path):
 def find_asm_functions_in_window(version: str, start: int, end: int) -> tuple[AsmTextFunction, ...]:
     functions = [
         function
-        for function in load_auto_text_functions(version)
+        for function in load_text_functions(version)
         if start <= function.start and function.end <= end
     ]
     return tuple(functions)
@@ -613,7 +678,7 @@ def find_asm_pattern_windows(
     if limit <= 0 or not compiled_functions or text_size <= 0:
         return ()
 
-    asm_functions = load_auto_text_functions(version)
+    asm_functions = load_text_functions(version)
     if not asm_functions or len(compiled_functions) > len(asm_functions):
         return ()
 

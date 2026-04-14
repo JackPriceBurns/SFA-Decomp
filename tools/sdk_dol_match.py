@@ -11,7 +11,7 @@ from pathlib import Path
 
 from dolphin_sdk_symbols import ConfigSymbol, SplitRange, load_config_symbols, load_splits
 from orig.dol_xrefs import DolFile
-from sdk_import_probe import AsmTextFunction, find_assigned_text_split, load_auto_text_functions
+from sdk_import_probe import AsmTextFunction, find_assigned_text_split, load_text_functions
 
 
 DEFAULT_REFERENCE_SPECS = (
@@ -463,7 +463,7 @@ def load_target_text_splits(version: str) -> tuple[SplitRange, ...]:
 @lru_cache(maxsize=None)
 def load_target_ownership_prefix(version: str) -> tuple[int, ...]:
     splits = load_target_text_splits(version)
-    functions = load_auto_text_functions(version)
+    functions = load_text_functions(version)
     owned_prefix = [0]
     split_index = 0
     for function in functions:
@@ -603,7 +603,7 @@ def build_target_window_from_range(
 ) -> WindowSignature:
     functions = tuple(
         build_target_function_signature(version, dol_path, function.start, function.end, function.name)
-        for function in load_auto_text_functions(version)
+        for function in load_text_functions(version)
         if start <= function.start and function.end <= end
     )
     if not functions:
@@ -641,7 +641,7 @@ def iter_target_windows(
     range_end: int | None,
     only_unassigned: bool = False,
 ) -> tuple[WindowSignature, ...]:
-    functions = load_auto_text_functions(version)
+    functions = load_text_functions(version)
     if function_count <= 0 or function_count > len(functions):
         return ()
 
@@ -771,7 +771,7 @@ def discover_reference_hits(
 ) -> list[DiscoveryHit]:
     target_cache: dict[int, tuple[RawWindow, ...]] = {}
     best_by_target: dict[tuple[int, int], DiscoveryHit] = {}
-    auto_functions = load_auto_text_functions(version)
+    auto_functions = load_text_functions(version)
     ownership_prefix = load_target_ownership_prefix(version) if only_unassigned else ()
     reference_dol_cache: dict[str, DolFile] = {}
 
