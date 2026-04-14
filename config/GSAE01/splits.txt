@@ -240,6 +240,9 @@ OdemuExi2/DebuggerDriver.c:
 	extabindex  start:0x80006698 end:0x800066A4
 	.text       start:0x80285A28 end:0x80286608
 
+Runtime.PPCEABI.H/__va_arg.c:
+	.text       start:0x80286608 end:0x802866D0
+
 Runtime.PPCEABI.H/global_destructor_chain.c:
 	.text       start:0x802866D0 end:0x80286718
 	.dtors      start:0x802C2028 end:0x802C202C

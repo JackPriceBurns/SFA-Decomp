@@ -1,38 +1,30 @@
 # Retail Source Materialization
 
-This pass turns the `orig/` audit work into concrete files under `src/` without touching the active build configuration.
+This pass turns the `orig/` audit work into concrete stub targets under `src/` without touching the active build configuration, while keeping literal recovered source/header artifacts out of the committable source tree by default.
 
 ## Tool
 
 - `python tools/orig/source_materialize.py`
-  - Copies literal source/header artifacts preserved on disc into `src/disc_artifacts/`.
+  - Reports literal source/header artifacts preserved on disc in the manifest, including hashes and whether the file still carries Rare copyright / machine-generated notices.
   - Generates non-built `.c` stubs for EN `main.dol` source-recovery candidates directly into `src/`.
   - Can also promote weak EN candidates when the same source tag repeats across multiple bundled retail versions.
   - Writes a machine-readable manifest to [source_materialize.json](/C:/Projects/SFA-Decomp/docs/orig/source_materialize.json).
   - Treats previously generated stubs as managed outputs, so reruns can refresh them in place while still refusing to overwrite unrelated real sources.
+  - Only exports exact disc artifacts when explicitly asked, and refuses to place those exports anywhere under `src/`.
 
-## What It Materialized
+## What It Produces
 
-The current run produced two different classes of output.
+The current run produces two different classes of output.
 
 ### 1. Exact disc artifacts
 
-These are copied straight from `orig/GSAE01` with the `.new` / `.bak` suffixes normalized away:
+These are reported straight from `orig/GSAE01` with recommended export paths, not copied into `src/`:
 
-- [English.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/binary/Boot/English.c)
-- [French.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/binary/Boot/French.c)
-- [German.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/binary/Boot/German.c)
-- [Italian.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/binary/Boot/Italian.c)
-- [Spanish.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/binary/Boot/Spanish.c)
-- [English.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/gametext/Boot/English.c)
-- [French.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/gametext/Boot/French.c)
-- [German.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/gametext/Boot/German.c)
-- [Italian.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/gametext/Boot/Italian.c)
-- [Japanese.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/gametext/Boot/Japanese.c)
-- [Spanish.c](/C:/Projects/SFA-Decomp/src/disc_artifacts/gametext/Boot/Spanish.c)
-- [starfox.h](/C:/Projects/SFA-Decomp/src/disc_artifacts/audio/starfox.h)
+- `files/Boot/{English,French,German,Italian,Spanish}.c.new`
+- `files/gametext/Boot/{English,French,German,Italian,Japanese,Spanish}.c.new`
+- `files/audio/starfox.h.bak`
 
-These are the strongest possible recovery wins because they are not inferred.
+These are the strongest possible recovery wins because they are not inferred. They are also archival evidence, not decomp source. Several of the boot `.c.new` files still carry the original Rare copyright block verbatim, so the default workflow keeps them out of `src/`.
 
 ### 2. Retail-backed source stubs
 
@@ -53,19 +45,19 @@ Current generated stubs:
 - [DIMboss.c](/C:/Projects/SFA-Decomp/src/dll/DIM/DIMboss.c)
 - [SHthorntail.c](/C:/Projects/SFA-Decomp/src/dll/SH/SHthorntail.c)
 - [objanim.c](/C:/Projects/SFA-Decomp/src/main/objanim.c)
-- [expgfx.c](/C:/Projects/SFA-Decomp/src/unknown/expgfx.c)
-- [n_attractmode.c](/C:/Projects/SFA-Decomp/src/unknown/n_attractmode.c)
-- [objHitReact.c](/C:/Projects/SFA-Decomp/src/unknown/objHitReact.c)
-- [textblock.c](/C:/Projects/SFA-Decomp/src/unknown/textblock.c)
+- [expgfx.c](/C:/Projects/SFA-Decomp/src/expgfx.c)
+- [n_attractmode.c](/C:/Projects/SFA-Decomp/src/n_attractmode.c)
+- [objHitReact.c](/C:/Projects/SFA-Decomp/src/objHitReact.c)
+- [textblock.c](/C:/Projects/SFA-Decomp/src/textblock.c)
 
-The `unknown/` outputs are deliberate. Retail evidence was strong enough to justify a file, but not strong enough to justify a directory assignment yet.
+The root-level outputs are deliberate. Retail evidence was strong enough to justify a file, but not strong enough to justify a directory assignment yet, so the materializer keeps those stubs at `src/<basename>` instead of inventing a synthetic folder.
 
 Two immediate examples of why this matters:
 
 - [objanim.c](/C:/Projects/SFA-Decomp/src/main/objanim.c) now carries both the retail label `setBlendMove` and the debug-side bridge `Object_ObjAnimSetMove`.
-- [textblock.c](/C:/Projects/SFA-Decomp/src/unknown/textblock.c) now materializes a concrete `Init` placeholder from the retail string even without any usable debug-side names.
+- [textblock.c](/C:/Projects/SFA-Decomp/src/textblock.c) now materializes a concrete `Init` placeholder from the retail string even without any usable debug-side names.
 - [curves.c](/C:/Projects/SFA-Decomp/src/dll/curves.c) now records the JP-only alias `hcurves.c` next to the shared `MAX_ROMCURVES exceeded!!` warning.
-- [n_attractmode.c](/C:/Projects/SFA-Decomp/src/unknown/n_attractmode.c) is now present because the same weak source tag repeats in EN v1.0, EN rev1, PAL, and JP.
+- [n_attractmode.c](/C:/Projects/SFA-Decomp/src/n_attractmode.c) is now present because the same weak source tag repeats in EN v1.0, EN rev1, PAL, and JP.
 
 ## Skips That Matter
 
@@ -73,11 +65,15 @@ Two immediate examples of why this matters:
 
 ## Practical Use
 
-- Regenerate everything:
+- Regenerate the stub set and manifest:
   - `python tools/orig/source_materialize.py`
+- Also export the direct artifacts for local inspection outside `src/`:
+  - `python tools/orig/source_materialize.py --export-direct-artifacts`
+- Export the direct artifacts to a custom non-source folder:
+  - `python tools/orig/source_materialize.py --export-direct-artifacts --artifact-output-root temp/orig/recovered_source`
 - Also include debug-path-only files that do not yet have an EN xref:
   - `python tools/orig/source_materialize.py --include-debug-path-only`
 - Also include weak EN candidates that are repeated across multiple bundled retail versions:
   - `python tools/orig/source_materialize.py --include-cross-version-weak`
 
-The intent is not to declare these files solved. The intent is to reduce the activation energy between "retail evidence exists" and "there is a concrete file in-tree someone can start recovering right now."
+The intent is not to declare these files solved. The intent is to reduce the activation energy between "retail evidence exists" and "there is a concrete file in-tree someone can start recovering right now," without turning literal recovered Rare source files into normal `src/` content.

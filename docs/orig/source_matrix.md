@@ -50,13 +50,13 @@ In EN v1.0 it sits beside movie-facing strings such as:
 - `starfox.thp`
 - `malloc for movie failed`
 
-That is enough to justify a non-built placeholder file at [n_attractmode.c](/C:/Projects/SFA-Decomp/src/unknown/n_attractmode.c) so the title-movie code cluster has a concrete source target.
+That is enough to justify a non-built placeholder file at [n_attractmode.c](/C:/Projects/SFA-Decomp/src/n_attractmode.c) so the title-movie code cluster has a concrete source target.
 
 ### 4. Direct source artifacts are not distributed evenly across bundles
 
 Shared across all four bundles:
 
-- [starfox.h](/C:/Projects/SFA-Decomp/src/disc_artifacts/audio/starfox.h)
+- `files/audio/starfox.h.bak`
 - `files/gametext/Boot/{English,French,German,Italian,Spanish}.c.new`
 
 Present in EN v1.0, EN rev1, and PAL but not JP:

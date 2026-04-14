@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -93,10 +94,9 @@ def is_managed_generated_stub(path: Path) -> bool:
     return GENERATED_MARKER in path.read_text(encoding="utf-8", errors="replace")[:512]
 
 
-def artifact_output_relpath(artifact: DirectSourceArtifact) -> str:
+def artifact_export_relpath(artifact: DirectSourceArtifact) -> str:
     if artifact.source_tokens:
-        token = normalize_separators(artifact.source_tokens[0]).lstrip("/")
-        return f"disc_artifacts/{token}"
+        return normalize_separators(artifact.source_tokens[0]).lstrip("/")
 
     relpath = normalize_separators(artifact.relative_path)
     relpath = relpath.removeprefix("files/")
@@ -104,14 +104,14 @@ def artifact_output_relpath(artifact: DirectSourceArtifact) -> str:
         relpath = relpath[:-4]
     if relpath.endswith(".bak"):
         relpath = relpath[:-4]
-    return f"disc_artifacts/{relpath}"
+    return relpath
 
 
 def stub_output_relpath(candidate: RecoveryGroup) -> str:
     basename = Path(candidate.retail_source_name).name
     if candidate.debug_sources:
         return normalize_separators(candidate.debug_sources[0].path)
-    return f"unknown/{basename}"
+    return basename
 
 
 def candidate_confidence(candidate: RecoveryGroup) -> str:
@@ -286,6 +286,8 @@ def render_stub(
     lines.append(" *")
     lines.append(f" * Retail source name: {candidate.retail_source_name}")
     lines.append(f" * Output path: {output_relpath}")
+    if "/" not in output_relpath and "\\" not in output_relpath:
+        lines.append(" * Placement note: kept at src root until a directory is proven.")
     lines.append(f" * Confidence: {confidence}")
     lines.append(f" * Score: {score}")
     lines.append(" *")
@@ -365,32 +367,57 @@ def render_stub(
     return "\n".join(lines).rstrip() + "\n"
 
 
-def materialize_artifacts(
+def build_artifact_entry(
+    src_path: Path,
+    artifact: DirectSourceArtifact,
+    export_relpath: str,
+) -> dict[str, object]:
+    data = src_path.read_bytes()
+    lowered = data.lower()
+    return {
+        "type": "artifact",
+        "kind": artifact.kind,
+        "source_tokens": list(artifact.source_tokens),
+        "source_path": artifact.relative_path,
+        "recommended_export_path": export_relpath,
+        "size_bytes": len(data),
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "contains_rare_copyright_notice": b"copyright" in lowered and b"rare ltd" in lowered,
+        "contains_machine_generated_notice": b"machine generated" in lowered,
+    }
+
+
+def report_artifacts(
     orig_root: Path,
-    output_root: Path,
-) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+ ) -> list[tuple[Path, str, dict[str, object]]]:
     artifacts = collect_direct_source_artifacts(orig_root)
-    written: list[dict[str, object]] = []
-    skipped: list[dict[str, object]] = []
+    reports: list[tuple[Path, str, dict[str, object]]] = []
 
     for artifact in artifacts:
         src_path = orig_root / artifact.relative_path
-        relpath = artifact_output_relpath(artifact)
+        relpath = artifact_export_relpath(artifact)
+        entry = build_artifact_entry(src_path, artifact, relpath)
+        reports.append((src_path, relpath, entry))
+    return reports
+
+
+def export_reported_artifacts(
+    reports: list[tuple[Path, str, dict[str, object]]],
+    output_root: Path,
+) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    written: list[dict[str, object]] = []
+    unchanged: list[dict[str, object]] = []
+    for src_path, relpath, base_entry in reports:
         dst_path = output_root / relpath
         changed = copy_file_if_changed(src_path, dst_path)
-        entry = {
-            "type": "artifact",
-            "status": "written" if changed else "unchanged",
-            "kind": artifact.kind,
-            "source_tokens": list(artifact.source_tokens),
-            "source_path": artifact.relative_path,
-            "output_path": relpath,
-        }
+        entry = dict(base_entry)
+        entry["status"] = "written" if changed else "unchanged"
+        entry["output_path"] = relpath
         if changed:
             written.append(entry)
         else:
-            skipped.append(entry)
-    return written, skipped
+            unchanged.append(entry)
+    return written, unchanged
 
 
 def materialize_stubs(
@@ -435,6 +462,7 @@ def materialize_stubs(
 
 
 def build_manifest(
+    artifact_reported: list[dict[str, object]],
     artifact_written: list[dict[str, object]],
     artifact_unchanged: list[dict[str, object]],
     stub_written: list[dict[str, object]],
@@ -443,6 +471,7 @@ def build_manifest(
 ) -> dict[str, object]:
     return {
         "summary": {
+            "artifact_reported": len(artifact_reported),
             "artifact_written": len(artifact_written),
             "artifact_unchanged": len(artifact_unchanged),
             "stub_written": len(stub_written),
@@ -450,6 +479,7 @@ def build_manifest(
             "stub_skipped": len(stub_skipped),
         },
         "artifacts": {
+            "reported": artifact_reported,
             "written": artifact_written,
             "unchanged": artifact_unchanged,
         },
@@ -466,12 +496,19 @@ def write_manifest(path: Path, manifest: dict[str, object]) -> bool:
     return write_text_if_changed(path, text)
 
 
-def summary_text(manifest: dict[str, object], manifest_path: Path, output_root: Path) -> str:
+def summary_text(
+    manifest: dict[str, object],
+    manifest_path: Path,
+    output_root: Path,
+    artifact_output_root: Path,
+    artifact_exports_enabled: bool,
+) -> str:
     summary = manifest["summary"]
     lines = [
         "# Source materialization",
         "",
-        f"- Output root: `{output_root.as_posix()}`",
+        f"- Stub output root: `{output_root.as_posix()}`",
+        f"- Direct artifacts reported: `{summary['artifact_reported']}`",
         f"- Artifact files written: `{summary['artifact_written']}`",
         f"- Artifact files unchanged: `{summary['artifact_unchanged']}`",
         f"- Stub files written: `{summary['stub_written']}`",
@@ -479,12 +516,16 @@ def summary_text(manifest: dict[str, object], manifest_path: Path, output_root: 
         f"- Stub candidates skipped: `{summary['stub_skipped']}`",
         f"- Manifest: `{manifest_path.as_posix()}`",
     ]
+    if artifact_exports_enabled:
+        lines.insert(3, f"- Direct artifact export root: `{artifact_output_root.as_posix()}`")
+    else:
+        lines.insert(3, "- Direct artifact exports: disabled by default")
     return "\n".join(lines)
 
 
 def build_argument_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Materialize retail orig/ source artifacts and EN source-recovery stubs into src/."
+        description="Report direct orig/ source artifacts and materialize EN source-recovery stubs."
     )
     parser.add_argument(
         "--orig-root",
@@ -532,7 +573,18 @@ def build_argument_parser() -> argparse.ArgumentParser:
         "--output-root",
         type=Path,
         default=Path("src"),
-        help="Destination root for copied artifacts and generated stubs.",
+        help="Destination root for generated stubs.",
+    )
+    parser.add_argument(
+        "--export-direct-artifacts",
+        action="store_true",
+        help="Also copy exact disc source/header artifacts to a local export folder outside src/.",
+    )
+    parser.add_argument(
+        "--artifact-output-root",
+        type=Path,
+        default=Path("temp/orig/source_artifacts"),
+        help="Destination root for direct artifact exports when --export-direct-artifacts is used.",
     )
     parser.add_argument(
         "--manifest",
@@ -556,6 +608,8 @@ def build_argument_parser() -> argparse.ArgumentParser:
 def main() -> None:
     parser = build_argument_parser()
     args = parser.parse_args()
+    if args.export_direct_artifacts and is_relative_to(args.artifact_output_root.resolve(), args.src_root.resolve()):
+        parser.error("Refusing to export direct source artifacts under src/. Use a non-source destination.")
 
     candidates = collect_candidates(
         retail_strings_path=args.dol,
@@ -577,6 +631,9 @@ def main() -> None:
     legacy_recovered_root = args.src_root / "recovered"
     if legacy_recovered_root.resolve() != args.output_root.resolve():
         excluded_roots.append(legacy_recovered_root)
+    legacy_unknown_root = args.src_root / "unknown"
+    if legacy_unknown_root.resolve() != args.output_root.resolve():
+        excluded_roots.append(legacy_unknown_root)
     existing_basenames = load_existing_source_basenames(
         args.src_root,
         excluded_roots=tuple(excluded_roots),
@@ -590,9 +647,18 @@ def main() -> None:
         source_evidence_by_name=source_evidence_by_name,
     )
 
-    artifact_written, artifact_unchanged = materialize_artifacts(args.orig_root, args.output_root)
+    artifact_reports = report_artifacts(args.orig_root)
+    artifact_reported = [entry for _src_path, _relpath, entry in artifact_reports]
+    if args.export_direct_artifacts:
+        artifact_written, artifact_unchanged = export_reported_artifacts(
+            artifact_reports,
+            args.artifact_output_root,
+        )
+    else:
+        artifact_written, artifact_unchanged = [], []
     stub_written, stub_unchanged = materialize_stubs(stub_decisions, args.output_root)
     manifest = build_manifest(
+        artifact_reported=artifact_reported,
         artifact_written=artifact_written,
         artifact_unchanged=artifact_unchanged,
         stub_written=stub_written,
@@ -600,7 +666,15 @@ def main() -> None:
         stub_skipped=stub_skipped,
     )
     write_manifest(args.manifest, manifest)
-    print(summary_text(manifest, args.manifest, args.output_root))
+    print(
+        summary_text(
+            manifest,
+            args.manifest,
+            args.output_root,
+            args.artifact_output_root,
+            args.export_direct_artifacts,
+        )
+    )
 
 
 if __name__ == "__main__":

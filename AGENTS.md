@@ -44,7 +44,8 @@ This repo starts from very little. Expect to do naming, struct recovery, type cl
 - Use `python tools/orig/source_matrix.py` when PAL / JP / EN rev1 may strengthen or rename a weak source-tag clue before you commit to a file name or materialize a stub.
 - Use `python tools/orig/source_recovery.py` when `main.dol` source-tagged strings may give EN file/function anchors for naming or splits.
 - Use `python tools/orig/source_functions.py` when you want a tighter report of retail-labeled function candidates such as `setBlendMove` / `Init` with their current EN xref clusters.
-- Use `python tools/orig/source_materialize.py` when you want to materialize exact disc source/header artifacts and retail-backed stub files directly under `src/`.
+- Use `python tools/orig/source_reference_hints.py` when retail EN evidence names a file but you want clearly-labeled reference-project path, function, DLL, or object hints without promoting them to source-truth.
+- Use `python tools/orig/source_materialize.py` when you want to materialize retail-backed stubs under `src/` and/or export exact disc source/header artifacts to a local non-source folder.
 - Use `python tools/orig/tab_catalog.py` when you need real retail chunk boundaries from `.tab` / `.bin` families before proposing asset splits.
 - Use `python tools/orig/dol_vtables.py --stores-only` when hunting constructor-backed class boundaries, vtables, or callback tables in the retail DOL.
 - Use `python tools/orig/romlist_params.py` when recovering object placement structs, param widths, or variable-length romlist families from retail data.
@@ -54,6 +55,8 @@ This repo starts from very little. Expect to do naming, struct recovery, type cl
 - Bias toward EN `GSAE01` for addresses, sizes, and matching decisions.
 - Prefer real definitions and linkage over `extern` placeholders.
 - Do not hardcode addresses or invent junk `lbl_` / `fn_` names just to force progress.
+- Do not commit literal recovered source/header artifacts from `orig/` into `src/`; keep them in manifests/docs or export them to a local non-source folder when needed.
+- When materializing retail-backed stubs without a proven directory, keep them at `src/<basename>` instead of inventing synthetic folders.
 - Do not manually force compiler-generated sections or synthesize likely-generated init/ctor/dtor glue unless there is strong evidence.
 - Keep code clean. No analysis debris, commented-out experiments, or notes in the project tree.
 - Use other regions to inform understanding, not to override the EN target.
