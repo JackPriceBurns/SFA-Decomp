@@ -26,8 +26,8 @@ from dolphin_sdk_symbols import (
 
 
 BUILD_LINE_RE = re.compile(
-    r"^build build\\(?P<version>[^\\]+)\\src\\base\\PPCArch\.o: \S+ "
-    r"src\\base\\PPCArch\.c(?:\s+\|.*)?$"
+    r"^build build\\(?P<version>[^\\]+)\\src\\(?:dolphin\\)?base\\PPCArch\.o: \S+\s+"
+    r"src\\(?:dolphin\\)?base\\PPCArch\.c(?:\s+\|.*)?$"
 )
 NAME_RE = re.compile(r"^\s+Name: (?P<name>.*?)(?: \(\d+\))?$")
 SIZE_RE = re.compile(r"^\s+Size: (?P<size>0x[0-9A-Fa-f]+|\d+)$")
@@ -113,14 +113,26 @@ class BoundaryConflict:
 
 def parse_build_config(build_ninja: Path, version: str) -> BuildConfig:
     lines = build_ninja.read_text(encoding="utf-8").splitlines()
-    for index, line in enumerate(lines):
+    logical_lines: list[tuple[int, str]] = []
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        start_index = index
+        while line.rstrip().endswith("$"):
+            line = line.rstrip()
+            line = f"{line[:-1]} {lines[index + 1].strip()}"
+            index += 1
+        logical_lines.append((start_index, line))
+        index += 1
+
+    for start_index, line in logical_lines:
         match = BUILD_LINE_RE.match(line)
         if match is None or match.group("version") != version:
             continue
 
         mw_version = ""
         cflags_parts: list[str] = []
-        cursor = index + 1
+        cursor = start_index + 1
         while cursor < len(lines) and lines[cursor].startswith("  "):
             entry = lines[cursor]
             if entry.startswith("  mw_version = "):
