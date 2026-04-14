@@ -6,10 +6,21 @@ import shlex
 import shutil
 import subprocess
 import sys
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-from dolphin_sdk_symbols import load_config_symbols, load_splits
+from dolphin_sdk_symbols import (
+    build_candidates,
+    build_translated_symbols,
+    cluster_source_candidates,
+    default_dolphin_path,
+    is_actionable,
+    load_config_symbols,
+    load_dolphin_symbols,
+    load_splits,
+    source_match_names,
+)
 
 
 BUILD_LINE_RE = re.compile(
@@ -23,6 +34,7 @@ SECTION_RE = re.compile(r"^\s+Section: (?P<section>.+?) \(")
 TYPE_RE = re.compile(r"^\s+Type: (?P<type>.+?) \(")
 SYMBOL_START_RE = re.compile(r"^\s*Symbol \{$")
 SECTION_START_RE = re.compile(r"^\s*Section \{$")
+QUOTED_INCLUDE_RE = re.compile(r'^\s*#\s*include\s+"(?P<path>[^"]+)"')
 
 
 @dataclass(frozen=True)
@@ -71,6 +83,21 @@ class SourceReport:
     text_size: int
     anchors: tuple[AnchorCandidate, ...]
     hypotheses: tuple[StartHypothesis, ...]
+    translated_clusters: tuple["TranslatedCluster", ...] = ()
+
+
+@dataclass(frozen=True)
+class TranslatedCluster:
+    start: int
+    end: int
+    span: int
+    score: int
+    match_count: int
+    unique_name_count: int
+    exact_name_count: int
+    active_count: int
+    text_overrun: int
+    names: tuple[str, ...]
 
 
 def parse_build_config(build_ninja: Path, version: str) -> BuildConfig:
@@ -142,6 +169,50 @@ def compile_source(
     if not object_path.is_file():
         raise SystemExit(f"Expected compiled object not found: {object_path}")
     return object_path
+
+
+def resolve_extra_include_dirs(
+    source: Path,
+    explicit_include_dirs: tuple[Path, ...],
+) -> tuple[Path, ...]:
+    resolved: list[Path] = []
+    seen: set[Path] = set()
+
+    def add(path: Path) -> None:
+        try:
+            normalized = path.resolve()
+        except OSError:
+            normalized = path
+        if normalized in seen or not path.is_dir():
+            return
+        seen.add(normalized)
+        resolved.append(path)
+
+    for include_dir in explicit_include_dirs:
+        add(include_dir)
+
+    add(source.parent)
+
+    include_root = Path("include")
+    search_root = include_root if include_root.is_dir() else None
+    if search_root is None:
+        return tuple(resolved)
+
+    for raw_line in source.read_text(encoding="utf-8", errors="ignore").splitlines():
+        match = QUOTED_INCLUDE_RE.match(raw_line)
+        if match is None:
+            continue
+
+        include_name = match.group("path")
+        if "/" in include_name or "\\" in include_name:
+            continue
+
+        matches = list(search_root.rglob(include_name))
+        if len(matches) != 1:
+            continue
+        add(matches[0].parent)
+
+    return tuple(resolved)
 
 
 def parse_llvm_readobj(object_path: Path) -> tuple[list[ObjectSection], list[ObjectSymbol]]:
@@ -288,30 +359,142 @@ def analyze_source(
     build_config: BuildConfig,
     output_root: Path,
     extra_include_dirs: tuple[Path, ...],
+    translated_clusters: tuple[TranslatedCluster, ...],
 ) -> SourceReport:
+    include_dirs = resolve_extra_include_dirs(source, extra_include_dirs)
     object_path = compile_source(
         source,
         build_config,
         version,
         output_root,
-        extra_include_dirs=extra_include_dirs,
+        extra_include_dirs=include_dirs,
     )
     sections, symbols = parse_llvm_readobj(object_path)
     anchors = find_anchor_candidates(symbols, config_symbols_path)
     text_size = next((section.size for section in sections if section.name == ".text"), 0)
+    normalized_clusters = tuple(
+        TranslatedCluster(
+            start=cluster.start,
+            end=cluster.end,
+            span=cluster.span,
+            score=cluster.score,
+            match_count=cluster.match_count,
+            unique_name_count=cluster.unique_name_count,
+            exact_name_count=cluster.exact_name_count,
+            active_count=cluster.active_count,
+            text_overrun=max(0, text_size - cluster.span),
+            names=cluster.names,
+        )
+        for cluster in translated_clusters
+    )
     return SourceReport(
         source=source,
         sections=tuple(sections),
         text_size=text_size,
         anchors=tuple(anchors),
         hypotheses=tuple(build_start_hypotheses(anchors)),
+        translated_clusters=normalized_clusters,
     )
+
+
+def build_translated_clusters(
+    version: str,
+    source: Path,
+    min_score: int,
+    require_provenance: bool,
+    gap: int,
+) -> tuple[TranslatedCluster, ...]:
+    dolphin_path = default_dolphin_path(version)
+    config_dir = Path("config") / version
+    symbols_path = config_dir / "symbols.txt"
+    splits_path = config_dir / "splits.txt"
+    src_root = Path("src")
+
+    dolphin_symbols = load_dolphin_symbols(dolphin_path)
+    config_symbols = load_config_symbols(symbols_path)
+    split_ranges = load_splits(splits_path)
+    translated_symbols = build_translated_symbols(
+        dolphin_symbols,
+        config_symbols,
+        split_ranges,
+        manual_delta=None,
+    )
+    candidates = build_candidates(translated_symbols)
+
+    seed_keys = {
+        (candidate.symbol.section, candidate.translated_address)
+        for candidate in candidates
+        if candidate.symbol.section == ".text"
+        and candidate.translation_delta is not None
+        and (
+            (candidate.exact is not None and not candidate.exact.name.startswith(("fn_", "FUN_", "lbl_", "sub_", "zz_")))
+            or is_actionable(candidate, min_score, True, require_provenance)
+        )
+        and (
+            not require_provenance
+            or (candidate.symbol.library and candidate.symbol.object_path)
+        )
+    }
+
+    seed_index: dict[str, list] = defaultdict(list)
+    all_index: dict[str, list] = defaultdict(list)
+    for item in translated_symbols:
+        if item.symbol.section != ".text" or item.translation_delta is None:
+            continue
+
+        names = source_match_names(item.symbol, item.exact)
+        if not names:
+            continue
+
+        for name in names:
+            all_index[name].append(item)
+            key = (item.symbol.section, item.translated_address)
+            if key in seed_keys:
+                seed_index[name].append(item)
+
+    reports = cluster_source_candidates(
+        source,
+        src_root,
+        seed_index,
+        all_index,
+        gap,
+        require_provenance,
+    )
+    deduped: list[TranslatedCluster] = []
+    seen: set[tuple[int, int, tuple[str, ...]]] = set()
+    for report in reports:
+        names = tuple(
+            candidate.exact.name
+            if candidate.exact is not None and not candidate.exact.name.startswith(("fn_", "FUN_", "lbl_", "sub_", "zz_"))
+            else candidate.symbol.name
+            for candidate in report.candidates[:6]
+        )
+        key = (report.start, report.end, names)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(
+            TranslatedCluster(
+                start=report.start,
+                end=report.end,
+                span=report.span,
+                score=report.score,
+                match_count=len(report.candidates),
+                unique_name_count=report.unique_name_count,
+                exact_name_count=report.exact_name_count,
+                active_count=report.active_count,
+                text_overrun=0,
+                names=names,
+            )
+        )
+    return tuple(deduped)
 
 
 def print_report(
     version: str,
     report: SourceReport,
     hypothesis_limit: int,
+    cluster_limit: int,
 ) -> None:
     print(f"# {report.source.as_posix()}")
     print("sections:")
@@ -319,6 +502,18 @@ def print_report(
         if section.name.startswith(".rela") or section.name in {".symtab", ".strtab", ".shstrtab", ".comment"}:
             continue
         print(f"  {section.name:<8} 0x{section.size:X}")
+
+    if report.translated_clusters:
+        print("translated clusters:")
+        for cluster in report.translated_clusters[:cluster_limit]:
+            print(
+                f"  0x{cluster.start:08X}-0x{cluster.end:08X} span=0x{cluster.span:X} "
+                f"matches={cluster.match_count} exact={cluster.exact_name_count} "
+                f"active={cluster.active_count} score={cluster.score} "
+                f"overrun=0x{cluster.text_overrun:X}"
+            )
+            if cluster.names:
+                print(f"    names={', '.join(cluster.names)}")
 
     if not report.anchors:
         print("anchors: none")
@@ -397,6 +592,13 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
         )
         if names:
             print(f"  names={names}")
+        if report.translated_clusters:
+            cluster = report.translated_clusters[0]
+            print(
+                f"  translated=0x{cluster.start:08X}-0x{cluster.end:08X} "
+                f"span=0x{cluster.span:X} overrun=0x{cluster.text_overrun:X} "
+                f"matches={cluster.match_count}"
+            )
 
 
 def parse_args() -> argparse.Namespace:
@@ -438,6 +640,29 @@ def parse_args() -> argparse.Namespace:
         default=3,
         help="Maximum start hypotheses to print per source (default: 3).",
     )
+    parser.add_argument(
+        "--cluster-limit",
+        type=int,
+        default=2,
+        help="Maximum translated clusters to print per source (default: 2).",
+    )
+    parser.add_argument(
+        "--cluster-min-score",
+        type=int,
+        default=6,
+        help="Minimum translated candidate score used to seed source clusters (default: 6).",
+    )
+    parser.add_argument(
+        "--cluster-gap",
+        type=lambda value: int(value, 0),
+        default=0x100,
+        help="Maximum translated cluster gap in bytes (default: 0x100).",
+    )
+    parser.add_argument(
+        "--require-cluster-provenance",
+        action="store_true",
+        help="Only use translated symbols with Dolphin library/object provenance when building source clusters.",
+    )
     return parser.parse_args()
 
 
@@ -459,8 +684,15 @@ def main() -> None:
                 continue
             raise SystemExit(f"Missing source file: {source}")
 
-        object_dir = output_root / source.stem
+        object_dir = output_root / source.with_suffix("")
         try:
+            translated_clusters = build_translated_clusters(
+                version=args.version,
+                source=source,
+                min_score=args.cluster_min_score,
+                require_provenance=args.require_cluster_provenance,
+                gap=args.cluster_gap,
+            )
             report = analyze_source(
                 version=args.version,
                 config_symbols_path=config_symbols_path,
@@ -468,6 +700,7 @@ def main() -> None:
                 build_config=build_config,
                 output_root=object_dir,
                 extra_include_dirs=extra_include_dirs,
+                translated_clusters=translated_clusters,
             )
         except subprocess.CalledProcessError as exc:
             if args.keep_going:
@@ -483,7 +716,7 @@ def main() -> None:
         return
 
     for report in reports:
-        print_report(args.version, report, args.hypothesis_limit)
+        print_report(args.version, report, args.hypothesis_limit, args.cluster_limit)
 
 
 if __name__ == "__main__":

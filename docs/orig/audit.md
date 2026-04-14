@@ -15,9 +15,13 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
 - `python tools/orig/dol_tables.py`
   - Recovers the EN runtime file-ID table and `.ctors` / `.dtors` directly from `orig/GSAE01/sys/main.dol`.
   - Cross-checks runtime aliases against the retail EN FST so alias-only loader names stand out immediately.
+- `python tools/orig/dol_xrefs.py`
+  - Recovers direct string xrefs from the EN retail DOL so source-tagged warnings and file-path strings can be tied back to concrete code addresses.
+  - Resolves those xrefs through `config/GSAE01/symbols.txt` so current `fn_...` ranges can be opened immediately.
 
 Focused notes for that tool live in [map_catalog.md](/C:/Projects/SFA-Decomp/docs/orig/map_catalog.md).
 Focused notes for the DOL runtime tables live in [dol_tables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_tables.md).
+Focused notes for direct DOL string xrefs live in [dol_xrefs.md](/C:/Projects/SFA-Decomp/docs/orig/dol_xrefs.md).
 
 ## High-value findings
 
@@ -169,6 +173,18 @@ On the split side, the same tool confirms the live EN init tables:
 
 That gives one concrete unnamed constructor target in the retail binary and removes guesswork around the EN `.ctors` / `.dtors` contents.
 
+### 8. The EN retail DOL still ties several anonymous functions back to source-tagged strings
+
+`dol_xrefs.py` finds direct text xrefs from current anonymous function ranges to strings such as:
+
+- `objHitReact.c: sphere overflow! %d` -> `fn_8003549C+0x140`
+- `curves.c: MAX_ROMCURVES exceeded!!` -> `fn_800E556C+0x18`
+- `<camcontrol.c>  failed to load triggered camaction actionno %d` -> `fn_80102D3C+0x288`
+- `SHthorntail.c` -> `fn_801D5764+0x364`
+- `%s.romlist.zlb` -> `fn_800484A4+0x40`, `fn_800484A4+0xDC`
+
+This is useful because it converts leftover retail strings into directly actionable EN code anchors for naming, split proposals, and subsystem clustering.
+
 ## Romlist mining highlights
 
 `romlist_audit.py` reports:
@@ -214,4 +230,5 @@ The new local tools are meant to keep the most immediately useful parts reproduc
 - Use `curve` as the first variable-length object to recover a principled parameter decoder.
 - Follow the `BLOCKS.bin` / `BLOCKS.tab` DOL strings into loader code and rename the `modXX` path family accordingly.
 - Use `python tools/orig/dol_tables.py --search BLOCKS DLLS PREANIM` while naming file-loader switch tables and split candidates around the EN DOL loaders.
+- Use `python tools/orig/dol_xrefs.py --search camcontrol curves SHthorntail romlist` before naming anonymous functions that already have retail string evidence.
 - Decide whether the `darkicemines` root duplication should drive a first-pass file-ID enum or loader switch table.
