@@ -431,6 +431,12 @@ config.libs = [
         ],
     ),
     DolphinLib(
+        "axfx",
+        [
+            Object(NonMatching, "axfx/axfx.c"),
+        ],
+    ),
+    DolphinLib(
         "thp",
         [
             Object(NonMatching, "thp/THPDec.c"),

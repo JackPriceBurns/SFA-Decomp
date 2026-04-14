@@ -9,6 +9,9 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
   - Cross-region comparison intentionally skips bulky media files: `.adp`, `.iso`, `.sam`, `.thp`.
 - `python tools/orig/romlist_audit.py`
   - Decompresses `*.romlist.zlb`, resolves object IDs through `OBJINDEX.bin`, mines stable record sizes, and reports high-usage object definitions plus minimal romlists.
+- `python tools/orig/romlist_params.py`
+  - Resolves retail romlist placements back to canonical object defs and reports stable per-object record widths, parameter byte lengths, and sample param blobs.
+  - Supports targeted lookup by object, DLL, class, map, or size when recovering placement structs.
 - `python tools/orig/map_catalog.py`
   - Recovers the EN map catalog directly from `MAPINFO.bin`, `MAPS.*`, `globalma.bin`, `TRKBLK.tab`, and `orig/GSAE01/sys/main.dol`.
   - Emits either a markdown summary or a CSV dump of all 117 map IDs, including romlist aliases and dir-backed vs root-only map families.
@@ -28,6 +31,7 @@ Focused notes for that tool live in [map_catalog.md](/C:/Projects/SFA-Decomp/doc
 Focused notes for the DOL runtime tables live in [dol_tables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_tables.md).
 Focused notes for direct DOL string xrefs live in [dol_xrefs.md](/C:/Projects/SFA-Decomp/docs/orig/dol_xrefs.md).
 Focused notes for constructor-backed function-pointer tables live in [dol_vtables.md](/C:/Projects/SFA-Decomp/docs/orig/dol_vtables.md).
+Focused notes for per-object retail placement widths live in [romlist_params.md](/C:/Projects/SFA-Decomp/docs/orig/romlist_params.md).
 Focused notes for developer-facing leftovers live in [developer_artifacts.md](/C:/Projects/SFA-Decomp/docs/orig/developer_artifacts.md).
 
 ## High-value findings
@@ -209,6 +213,20 @@ This is useful because it converts leftover retail strings into directly actiona
 
 The first one is the main takeaway: it gives one concrete retail data address and one constructor-like function that can be attacked together while recovering class boundaries or virtual methods.
 
+### 10. Retail romlists already pin down most object placement widths
+
+`romlist_params.py` shows that the root EN romlists place `814` canonical object defs:
+
+- `813` are fixed-size across all observed placements
+- only `0x0491` `curve` varies, with sizes `13w`, `14w`, `15w`, and `17w`
+
+Two immediate wins fall out of that:
+
+- the trigger DLL family (`dll 0x0126`) is uniformly `20w`, so it already behaves like one shared placement-struct family
+- several `class 0x0039` level-controller objects are `6w`, proving the retail loader accepts header-only placements with no trailing params
+
+That makes `romlist_params.py` a fast way to choose which object families can be given real parameter structs immediately and which ones still need a variable-length decoder.
+
 ## Romlist mining highlights
 
 `romlist_audit.py` reports:
@@ -251,6 +269,7 @@ The new local tools are meant to keep the most immediately useful parts reproduc
 
 - Turn `MAPINFO.bin` and `WARPTAB.bin` into real struct definitions and small dumpers under the main repo tooling.
 - Use the tiny `TrickyFood` romlists to confirm the base placement-record layout in code.
+- Use `python tools/orig/romlist_params.py --search curve dll:0x0126 size:6w` while recovering object placement structs, trigger families, or header-only level-controller records.
 - Use `curve` as the first variable-length object to recover a principled parameter decoder.
 - Follow the `BLOCKS.bin` / `BLOCKS.tab` DOL strings into loader code and rename the `modXX` path family accordingly.
 - Use `python tools/orig/dol_tables.py --search BLOCKS DLLS PREANIM` while naming file-loader switch tables and split candidates around the EN DOL loaders.

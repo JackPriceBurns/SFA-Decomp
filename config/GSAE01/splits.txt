@@ -40,6 +40,9 @@ os/OSContext.c:
 os/OSInterrupt.c:
 	.text       start:0x80243E74 end:0x80244690
 
+axfx/axfx.c:
+	.text       start:0x80244710 end:0x8024476C
+
 os/OSMemory.c:
 	.text       start:0x802448FC end:0x80244BDC
 
