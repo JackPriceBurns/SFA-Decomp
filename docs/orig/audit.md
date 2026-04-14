@@ -39,6 +39,9 @@ This is a side-agent reconnaissance pass over the bundled retail assets in `orig
   - Focuses the same retail string evidence down to function-label candidates, keeping file name, retail label, EN xref cluster, and debug-side name bridges together in one report.
 - `python tools/orig/source_worklist.py`
   - Collapses the boundary, corridor, and shared-island signals into one prioritized queue and can materialize ready boundary packets under `docs/orig/source_worklist_packets/`.
+- `python tools/orig/source_gap_windows.py`
+  - Turns the short retail-backed gap packets into estimated current EN per-file windows by fitting debug split sizes onto the live EN function ranges.
+  - Can materialize ready gap-window briefs under `docs/orig/source_gap_window_briefs/`.
 - `python tools/orig/source_blueprints.py`
   - Reconciles retail-backed anchor windows and short gap packets into address-ordered local source skeleton blocks.
   - Keeps overlap warnings explicit so first-pass boundary work starts from one neighborhood view instead of several separate reports.
@@ -64,6 +67,8 @@ Focused notes for source-tagged EN `main.dol` recovery targets live in [source_r
 Focused notes for current EN boundary seeds live in [source_boundaries.md](/C:/Projects/SFA-Decomp/docs/orig/source_boundaries.md).
 Focused notes for retail function-label recovery live in [source_functions.md](/C:/Projects/SFA-Decomp/docs/orig/source_functions.md).
 Focused notes for the prioritized boundary queue live in [source_worklist.md](/C:/Projects/SFA-Decomp/docs/orig/source_worklist.md).
+Focused notes for estimated gap-file windows live in [source_gap_windows.md](/C:/Projects/SFA-Decomp/docs/orig/source_gap_windows.md).
+Ready gap-window packet briefs live in [source_gap_window_briefs/README.md](/C:/Projects/SFA-Decomp/docs/orig/source_gap_window_briefs/README.md).
 Focused notes for ordered source skeleton neighborhoods live in [source_blueprints.md](/C:/Projects/SFA-Decomp/docs/orig/source_blueprints.md).
 Ready neighborhood packet briefs live in [source_blueprint_briefs/README.md](/C:/Projects/SFA-Decomp/docs/orig/source_blueprint_briefs/README.md).
 

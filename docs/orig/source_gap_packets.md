@@ -96,12 +96,16 @@ That makes it a good "recover the neighborhood shape first" packet even though i
 - Write ready corridor briefs:
   - `python tools/orig/source_gap_packets.py --materialize-all`
   - writes one markdown brief per visible packet under [source_gap_packet_briefs/README.md](/C:/Projects/SFA-Decomp/docs/orig/source_gap_packet_briefs/README.md)
+ - Turn the short packets into per-file EN window estimates:
+   - `python tools/orig/source_gap_windows.py`
+   - follow-up notes live in [source_gap_windows.md](/C:/Projects/SFA-Decomp/docs/orig/source_gap_windows.md)
 
 ## How It Fits
 
 - Use `source_skeleton.py` to find retail-backed EN islands.
 - Use `source_corridors.py` to judge whether an anchor is too small, too wide, or sitting near likely missing files.
 - Use `source_gap_packets.py` when you want the next recoverable filename packet between two anchors, with the current EN gap functions already attached.
+- Use `source_gap_windows.py` when that packet is short enough that you want estimated current EN boundaries for each missing file, not just the packet names.
 - Use `source_gap_packets.py --materialize-all` when the next step is handing someone an ordered corridor packet instead of a terminal summary.
 
 The new value here is packaging. It turns source-order evidence into concrete filename packets that are easier to hand to the next decomp pass.
