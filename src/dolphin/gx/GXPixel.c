@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include <dolphin/gx.h>
 #include <dolphin/os.h>
 
@@ -109,6 +111,49 @@ void GXSetFog(GXFogType type, f32 startz, f32 endz, f32 nearz, f32 farz, GXColor
     GX_WRITE_RAS_REG(fogclr);
 
     __GXData->bpSentNot = 0;
+}
+
+void GXSetFogColor(GXColor color) {
+    u32 colorReg;
+    u32 rgba;
+
+    CHECK_GXBEGIN(246, "GXSetFogColor");
+
+    colorReg = 0xF2000000;
+    rgba = *(u32*)&color;
+    SET_REG_FIELD(0, colorReg, 24, 0, rgba >> 8);
+    GX_WRITE_RAS_REG(colorReg);
+    __GXData->bpSentNot = 0;
+}
+
+void GXInitFogAdjTable(GXFogAdjTable* table, u16 width, const f32 projmtx[4][4]) {
+    f32 xi;
+    f32 iw;
+    f32 rangeVal;
+    f32 nearZ;
+    f32 sideX;
+    u32 i;
+
+    CHECK_GXBEGIN(275, "GXInitFogAdjTable");
+    ASSERTMSGLINE(276, table != NULL, "GXInitFogAdjTable: table pointer is null");
+    ASSERTMSGLINE(277, width <= 640, "GXInitFogAdjTable: invalid width value");
+
+    if (0.0f == projmtx[3][3]) {
+        nearZ = projmtx[2][3] / (projmtx[2][2] - 1.0f);
+        sideX = nearZ / projmtx[0][0];
+    } else {
+        sideX = 1.0f / projmtx[0][0];
+        nearZ = 1.73205f * sideX;
+    }
+
+    iw = 2.0f / width;
+    for (i = 0; i < 10; i++) {
+        xi = (f32)((i + 1) << 5);
+        xi *= iw;
+        xi *= sideX;
+        rangeVal = sqrtf(1.0f + ((xi * xi) / (nearZ * nearZ)));
+        table->r[i] = (u16)((u32)(256.0f * rangeVal) & 0xFFF);
+    }
 }
 
 /*
