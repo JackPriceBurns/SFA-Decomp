@@ -172,6 +172,9 @@ dolphin/gx/GXTev.c:
 dolphin/gx/GXPixel.c:
 	.text       start:0x8025CA38 end:0x8025D180
 
+dolphin/gx/GXDraw.c:
+	.text       start:0x8025D180 end:0x8025D49C
+
 dolphin/gx/GXStubs.c:
 	.text       start:0x8025D49C end:0x8025D4A0
 

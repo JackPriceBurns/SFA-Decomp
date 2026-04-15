@@ -467,6 +467,7 @@ config.libs = [
             Object(NonMatching, "dolphin/gx/GXDisplayList.c"),
             Object(NonMatching, "dolphin/gx/GXFrameBuf.c"),
             Object(NonMatching, "dolphin/gx/GXGeometry.c"),
+            Object(NonMatching, "dolphin/gx/GXDraw.c"),
             Object(NonMatching, "dolphin/gx/GXPerf.c"),
             Object(NonMatching, "dolphin/gx/GXPixel.c"),
             Object(NonMatching, "dolphin/gx/GXSave.c"),
