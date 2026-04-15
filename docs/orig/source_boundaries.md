@@ -12,7 +12,7 @@ This pass closes a gap in the existing `orig/` tooling.
   - Checks whether those spans are already owned by `config/GSAE01/splits.txt` or still live in an unsplit gap.
   - Pulls in the best current path hint from `sfadebug` / `reference_projects/rena-tools`.
   - Adds neighboring EN function names so the next decomp pass can open the right local window immediately.
-  - For retail tags with no direct EN xref, now scans nearby retail strings for indirect EN function neighborhoods instead of stopping at a dead-end.
+  - For retail tags with no direct EN xref, now also mines nearby-string consensus across EN rev1, PAL, and JP before ranking the indirect EN neighborhood.
 
 ## High-value findings
 
@@ -62,13 +62,14 @@ The report gives immediate split windows for:
 
 Even when the final file boundaries still need adjustment, that is already enough to stop guessing at buckets and start from retail-backed EN islands instead.
 
-### 5. `n_attractmode.c` no longer dead-ends completely
+### 5. `n_attractmode.c` now carries both an indirect EN window and stable cross-bundle context
 
 One weak spot in the earlier boundary pass was that a retail source tag without a direct EN string xref simply disappeared into the residual list.
 
 The tool now keeps a separate low-confidence path for those cases:
 
 - it walks nearby retail strings around the no-xref source tag
+- it keeps the nearby strings that survive across EN v1.0, EN rev1, PAL, and JP as context
 - keeps only nearby strings that do resolve to current EN functions
 - reports the resulting EN neighborhood explicitly as indirect evidence, not as a final file boundary
 
@@ -76,14 +77,27 @@ That currently helps one real case:
 
 - `n_attractmode.c`
   - no direct EN source-tag xref
+  - stable nearby strings: `starfox.thp`, `malloc for movie failed`, `/savegame/save%d.bin`, `PICMENU: tex overflow`
   - indirect EN neighborhood: `0x8010ACF0-0x80130618`
-  - supporting strings: `n_rareware`, `PATHCAM error: need at least two control points`, `/savegame/save%d.bin`, `PICMENU: tex overflow`
+  - EN-xref support strings: `n_rareware`, `PATHCAM error: need at least two control points`, `/savegame/save%d.bin`, `PICMENU: tex overflow`
 
 This is still a broad window, but it is materially better than having no bounded place to open at all when recovering the title-screen / movie path.
 
-The same pass still refuses to invent a fake window for `dvdfs.c`, which is the right behavior given the current evidence.
+### 6. `dvdfs.c` still refuses a fake EN window, but the surrounding loader context is now explicit
 
-### 6. Region variants can tighten naming decisions
+The tool still does the conservative thing here:
+
+- `dvdfs.c` has no direct EN string xref
+- there is still no trustworthy indirect EN neighborhood to promote as a boundary
+
+What changed is the context around that dead-end:
+
+- stable nearby strings: `SFX.bin`, `SFX.tab`
+- exact debug-side path hint: `dolphin/dvdfs.c`
+
+That is enough to keep the name grounded in the loader/DVD area without pretending the current EN boundary is known.
+
+### 7. Region variants can tighten naming decisions
 
 The report keeps region alias data attached to the same boundary hint. The clearest current case is:
 

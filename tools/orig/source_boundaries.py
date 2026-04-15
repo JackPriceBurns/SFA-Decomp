@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import argparse
+from collections import defaultdict
 import csv
 import io
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -10,11 +12,12 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tools.orig.dol_xrefs import DolFile, FunctionSymbol, PRINTABLE_RE, load_function_symbols, scan_text_xrefs
+from tools.orig.dol_xrefs import DolFile, FILE_TOKEN_RE, FunctionSymbol, PRINTABLE_RE, load_function_symbols, scan_text_xrefs
 from tools.orig.source_matrix import (
     build_source_variant_index,
     collect_all_bundle_source_hits,
     default_bundle_specs,
+    nearby_source_strings,
 )
 from tools.orig.source_recovery import RecoveryGroup, format_function_name, parse_debug_split_text_ranges
 from tools.orig.source_reference_hints import ReferenceHint, build_groups, collect_reference_hints
@@ -56,6 +59,7 @@ class BoundaryHint:
     debug_named_functions: tuple[str, ...]
     reference_paths: tuple[str, ...]
     reference_symbol_hints: tuple[str, ...]
+    bundle_context_strings: tuple[str, ...]
     nearby_before: tuple[str, ...]
     nearby_after: tuple[str, ...]
     indirect_strings: tuple[str, ...]
@@ -204,6 +208,45 @@ def describe_gap_context(
     return ", ".join(parts)
 
 
+LEADING_CONTEXT_NOISE_RE = re.compile(r"^[^A-Za-z/<]+")
+SOURCE_CONTEXT_RE = re.compile(r"<[^>]+\>\s*.*")
+
+
+def normalize_context_string(text: str) -> str:
+    normalized = " ".join(text.split())
+    if not normalized:
+        return normalized
+
+    source_match = SOURCE_CONTEXT_RE.search(normalized)
+    if source_match is not None:
+        return source_match.group(0)
+
+    normalized = LEADING_CONTEXT_NOISE_RE.sub("", normalized)
+    file_match = FILE_TOKEN_RE.search(normalized)
+    if file_match is not None and " " not in normalized:
+        return file_match.group(0)
+    return normalized
+
+
+def collapse_context_variants(values: list[str]) -> dict[str, str]:
+    unique = list(unique_strings(values))
+    ordered = sorted(unique, key=len)
+    canonical: dict[str, str] = {}
+    for value in unique:
+        lowered = value.lower()
+        best = value
+        for candidate in ordered:
+            if candidate == value:
+                continue
+            if len(value) - len(candidate) > 3 or len(candidate) < 8:
+                continue
+            if lowered.endswith(candidate.lower()):
+                best = candidate
+                break
+        canonical[value] = best
+    return canonical
+
+
 def meaningful_indirect_string(text: str, source_name: str) -> bool:
     if text == source_name:
         return False
@@ -219,12 +262,72 @@ def meaningful_indirect_string(text: str, source_name: str) -> bool:
     return True
 
 
+def bundle_context_strings(
+    retail_source_name: str,
+    bundle_hits,
+    specs_by_bundle_id,
+    en_context_function_counts: dict[str, int],
+    radius: int = 4,
+    limit: int = 6,
+) -> tuple[tuple[str, ...], dict[str, int]]:
+    if not bundle_hits:
+        return (), {}
+
+    nearby_rows: list[tuple[str, str]] = []
+    for hit in bundle_hits:
+        spec = specs_by_bundle_id.get(hit.bundle_id)
+        if spec is None:
+            continue
+        for text in nearby_source_strings(spec, hit.address, radius=radius):
+            normalized = normalize_context_string(text)
+            if not meaningful_indirect_string(normalized, retail_source_name):
+                continue
+            nearby_rows.append((hit.bundle_id, normalized))
+
+    if not nearby_rows:
+        return (), {}
+
+    canonical_map = collapse_context_variants([text for _bundle_id, text in nearby_rows])
+    bundles_by_context: dict[str, set[str]] = defaultdict(set)
+    occurrences_by_context: dict[str, int] = defaultdict(int)
+    for bundle_id, text in nearby_rows:
+        canonical = canonical_map[text]
+        bundles_by_context[canonical].add(bundle_id)
+        occurrences_by_context[canonical] += 1
+
+    ordered = sorted(
+        bundles_by_context,
+        key=lambda item: (
+            -len(bundles_by_context[item]),
+            -en_context_function_counts.get(item, 0),
+            -occurrences_by_context[item],
+            item.lower(),
+        ),
+    )
+    return tuple(ordered[:limit]), {item: len(bundles_by_context[item]) for item in bundles_by_context}
+
+
+def en_context_function_counts(
+    raw_strings: list[tuple[int, str]],
+    xrefs_by_target: dict[int, tuple[FunctionSymbol, ...]],
+) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for address, text in raw_strings:
+        functions = xrefs_by_target.get(address, ())
+        if not functions:
+            continue
+        normalized = normalize_context_string(text)
+        counts[normalized] = max(counts.get(normalized, 0), len(functions))
+    return counts
+
+
 def indirect_neighborhood(
     group: RecoveryGroup,
     raw_strings: list[tuple[int, str]],
     string_index_by_address: dict[int, int],
     xrefs_by_target: dict[int, tuple[FunctionSymbol, ...]],
     current_splits: list[SplitRange],
+    preferred_context_scores: dict[str, int] | None = None,
     radius: int = 14,
     max_string_delta: int = 0x3000,
     max_support_strings: int = 5,
@@ -242,12 +345,14 @@ def indirect_neighborhood(
         address, text = raw_strings[offset]
         if abs(address - anchor_address) > max_string_delta:
             continue
-        if not meaningful_indirect_string(text, group.retail_source_name):
+        normalized = normalize_context_string(text)
+        if not meaningful_indirect_string(normalized, group.retail_source_name):
             continue
         functions = xrefs_by_target.get(address, ())
         if not functions:
             continue
-        candidates.append((abs(address - anchor_address), offset, text, functions))
+        preference = 0 if preferred_context_scores is None else preferred_context_scores.get(normalized, 0)
+        candidates.append((preference, abs(address - anchor_address), offset, normalized, functions))
 
     if not candidates:
         return (), (), None, None, None
@@ -255,7 +360,10 @@ def indirect_neighborhood(
     support_strings: list[str] = []
     support_functions: list[FunctionSymbol] = []
     seen_function_addresses: set[int] = set()
-    for _distance, _offset, text, functions in sorted(candidates, key=lambda item: (item[0], item[1], item[2].lower())):
+    for _preference, _distance, _offset, text, functions in sorted(
+        candidates,
+        key=lambda item: (-item[0], item[1], item[2], item[3].lower()),
+    ):
         added = False
         for function in functions:
             if function.address in seen_function_addresses:
@@ -342,7 +450,10 @@ def build_boundary_hints(
 ) -> list[BoundaryHint]:
     reference_by_name = {hint.retail_source_name.lower(): hint for hint in reference_hints}
     function_by_address = {function.address: function for function in current_functions}
-    variant_index = build_source_variant_index(collect_all_bundle_source_hits(default_bundle_specs()))
+    bundle_specs = default_bundle_specs()
+    specs_by_bundle_id = {spec.bundle_id: spec for spec in bundle_specs}
+    bundle_hits = collect_all_bundle_source_hits(bundle_specs)
+    variant_index = build_source_variant_index(bundle_hits)
     current_dol = DolFile(dol_path)
     raw_strings = scan_all_printable_strings(current_dol)
     string_index_by_address = {address: index for index, (address, _text) in enumerate(raw_strings)}
@@ -368,6 +479,7 @@ def build_boundary_hints(
         )
         for target_address, functions in grouped_xrefs.items()
     }
+    context_function_counts = en_context_function_counts(raw_strings, xrefs_by_target)
 
     hints: list[BoundaryHint] = []
     for group in groups:
@@ -375,6 +487,16 @@ def build_boundary_hints(
         evidence = variant_index.get(group.retail_source_name.lower())
         alias_names = () if evidence is None else evidence.alias_names
         bundle_ids = () if evidence is None else evidence.all_bundle_ids
+        context_strings, context_bundle_counts = bundle_context_strings(
+            group.retail_source_name,
+            () if evidence is None else evidence.all_hits,
+            specs_by_bundle_id,
+            context_function_counts,
+        )
+        preferred_context_scores = {
+            text: context_bundle_counts[text] * 100 + context_function_counts.get(text, 0)
+            for text in context_strings
+        }
 
         xref_functions = unique_xref_functions(group, function_by_address)
         span_start = None if not xref_functions else min(function.address for function in xref_functions)
@@ -392,10 +514,13 @@ def build_boundary_hints(
             string_index_by_address,
             xrefs_by_target,
             current_splits,
+            preferred_context_scores=preferred_context_scores,
         )
         score = boundary_score(group, hint, split_status, bundle_ids, xref_functions)
         if indirect_functions:
             score += 100 + len(indirect_functions) * 20
+        if context_strings:
+            score += len(context_strings) * 8
 
         hints.append(
             BoundaryHint(
@@ -421,6 +546,7 @@ def build_boundary_hints(
                 debug_named_functions=tuple(group.debug_symbol_hits[:8]),
                 reference_paths=hint.reference_configure_paths,
                 reference_symbol_hints=hint.reference_symbol_hints,
+                bundle_context_strings=context_strings,
                 nearby_before=before,
                 nearby_after=after,
                 indirect_strings=indirect_strings,
@@ -483,6 +609,8 @@ def markdown_lines_for_hint(hint: BoundaryHint) -> list[str]:
         lines.append("  region aliases: " + ", ".join(f"`{name}`" for name in hint.alias_names))
     if hint.bundle_ids:
         lines.append("  bundles: " + ", ".join(f"`{bundle_id}`" for bundle_id in hint.bundle_ids))
+    if hint.bundle_context_strings and not hint.en_xrefs:
+        lines.append("  cross-bundle nearby strings: " + ", ".join(f"`{text}`" for text in hint.bundle_context_strings))
     if hint.retail_labels:
         lines.append("  retail labels: " + ", ".join(f"`{label}`" for label in hint.retail_labels))
     if hint.retail_messages:
@@ -599,6 +727,7 @@ def search_markdown(hints: list[BoundaryHint], patterns: list[str]) -> str:
         fields.extend(path.lower() for path in hint.reference_paths)
         fields.extend(name.lower() for name in hint.debug_named_functions)
         fields.extend(name.lower() for name in hint.reference_symbol_hints)
+        fields.extend(text.lower() for text in hint.bundle_context_strings)
         fields.extend(text.lower() for text in hint.indirect_strings)
         fields.extend(function.name.lower() for function in hint.indirect_functions)
         if hint.indirect_gap_text is not None:
@@ -641,6 +770,7 @@ def rows_to_csv(hints: list[BoundaryHint]) -> str:
         "debug_named_functions",
         "reference_paths",
         "reference_symbol_hints",
+        "bundle_context_strings",
         "indirect_strings",
         "indirect_function_spans",
         "indirect_span_start",
@@ -680,6 +810,7 @@ def rows_to_csv(hints: list[BoundaryHint]) -> str:
                 "debug_named_functions": ",".join(hint.debug_named_functions),
                 "reference_paths": ",".join(hint.reference_paths),
                 "reference_symbol_hints": ",".join(hint.reference_symbol_hints),
+                "bundle_context_strings": ",".join(hint.bundle_context_strings),
                 "indirect_strings": ",".join(hint.indirect_strings),
                 "indirect_function_spans": ",".join(format_symbol_span(function) for function in hint.indirect_functions),
                 "indirect_span_start": "" if hint.indirect_span_start is None else f"0x{hint.indirect_span_start:08X}",
