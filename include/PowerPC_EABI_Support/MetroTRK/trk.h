@@ -16,6 +16,7 @@ typedef MessageBuffer TRKBuffer;
 void TRKSaveExtended1Block();
 
 DSError TRKDoConnect(TRKBuffer*);
+DSError TRKDoUnsupported(TRKBuffer*);
 DSError TRKDoDisconnect(TRKBuffer*);
 DSError TRKDoReset(TRKBuffer*);
 DSError TRKDoVersions(TRKBuffer*);

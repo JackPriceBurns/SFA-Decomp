@@ -1,69 +1,44 @@
-/* TODO: restore stripped imported address metadata if needed. */
-
-/**
- * dispatch.c
- * Description:
- */
-
 #include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/dispatch.h"
 #include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/msgbuf.h"
-#include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/MWTrace.h"
+#include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/msghndlr.h"
 
-DSError TRKInitializeDispatcher() {
+u32 gTRKDispatchTableSize;
+
+struct DispatchEntry {
+    DSError (*fn)(TRKBuffer*);
+};
+
+struct DispatchEntry gTRKDispatchTable[33] = {
+    { &TRKDoUnsupported },   { &TRKDoConnect },        { &TRKDoDisconnect },
+    { &TRKDoReset },         { &TRKDoVersions },       { &TRKDoSupportMask },
+    { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoUnsupported },
+    { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoUnsupported },
+    { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoUnsupported },
+    { &TRKDoUnsupported },   { &TRKDoReadMemory },     { &TRKDoWriteMemory },
+    { &TRKDoReadRegisters }, { &TRKDoWriteRegisters }, { &TRKDoUnsupported },
+    { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoSetOption },
+    { &TRKDoContinue },      { &TRKDoStep },           { &TRKDoStop },
+    { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoUnsupported },
+    { &TRKDoUnsupported },   { &TRKDoUnsupported },
+};
+
+DSError TRKInitializeDispatcher(void)
+{
+    gTRKDispatchTableSize = 32;
     return DS_NoError;
 }
 
-BOOL TRKDispatchMessage(TRKBuffer* msg) {
-    u32 err;
+BOOL TRKDispatchMessage(TRKBuffer* buffer)
+{
+    DSError error;
+    u8 command;
 
-	err = DS_DispatchError;
-	TRKSetBufferPosition(msg, 0);
-	MWTRACE(1, "Dispatch command 0x%08x\n", msg->data[4]);
-
-	switch (msg->data[4]) {
-	case DSMSG_Connect:
-		err = TRKDoConnect(msg);
-		break;
-	case DSMSG_Disconnect:
-		err = TRKDoDisconnect(msg);
-		break;
-	case DSMSG_Reset:
-		err = TRKDoReset(msg);
-		break;
-	case DSMSG_Override:
-		err = TRKDoOverride(msg);
-		break;
-	case DSMSG_Versions:
-		err = TRKDoVersions(msg);
-		break;
-	case DSMSG_SupportMask:
-		err = TRKDoSupportMask(msg);
-		break;
-	case DSMSG_ReadMemory:
-		err = TRKDoReadMemory(msg);
-		break;
-	case DSMSG_WriteMemory:
-		err = TRKDoWriteMemory(msg);
-		break;
-	case DSMSG_ReadRegisters:
-		err = TRKDoReadRegisters(msg);
-		break;
-	case DSMSG_WriteRegisters:
-		err = TRKDoWriteRegisters(msg);
-		break;
-	case DSMSG_Continue:
-		err = TRKDoContinue(msg);
-		break;
-	case DSMSG_Step:
-		err = TRKDoStep(msg);
-		break;
-	case DSMSG_Stop:
-		err = TRKDoStop(msg);
-		break;
-	case DSMSG_SetOption:
-		err = TRKDoSetOption(msg);
-		break;
-	}
-	MWTRACE(1, "Dispatch complete err = %ld\n", err);
-	return err;
+    error = DS_DispatchError;
+    TRKSetBufferPosition(buffer, 0);
+    TRKReadBuffer1_ui8(buffer, &command);
+    command &= 0xFF;
+    if (command < gTRKDispatchTableSize) {
+        error = gTRKDispatchTable[command].fn(buffer);
+    }
+    return error;
 }

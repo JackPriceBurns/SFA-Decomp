@@ -51,6 +51,10 @@ DSError TRKStandardACK(TRKBuffer* buffer, MessageCommandID commandID,
     return DS_NoError;
 }
 
+DSError TRKDoUnsupported(TRKBuffer* buffer) {
+    return TRKStandardACK(buffer, DSMSG_ReplyACK, DSREPLY_UnsupportedCommandError);
+}
+
 DSError TRKDoConnect(TRKBuffer* buffer) {
     IsTRKConnected = TRUE;
     return TRKStandardACK(buffer, 0x80, DSREPLY_NoError);
