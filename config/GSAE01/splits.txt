@@ -46,6 +46,9 @@ dolphin/os/OSFont.c:
 dolphin/os/OSInterrupt.c:
 	.text       start:0x80243E74 end:0x802446E0
 
+dolphin/os/OSLink.c:
+	.text       start:0x802446E0 end:0x802446F8
+
 dolphin/os/OSMessage.c:
 	.text       start:0x802446F8 end:0x802448FC
 
