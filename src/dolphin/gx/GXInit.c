@@ -55,8 +55,6 @@ static GXVtxAttrFmtList GXDefaultVATList[] = {
     {GX_VA_NULL, 0, 0, 0},
 };
 
-static f32 GXDefaultProjData[] = {1.0f, 0.0f, 1.0f, 0.0f, -1.0f, -2.0f, 0.0f};
-
 // prototypes
 static int __GXShutdown(int final);
 
@@ -418,7 +416,6 @@ void __GXInitGX(void) {
     GXLoadTexMtxImm(identity_mtx, GX_IDENTITY, GX_MTX3x4);
     GXLoadTexMtxImm(identity_mtx, GX_PTIDENTITY, GX_MTX3x4);
     GXSetViewport(GXInit_ZeroF, GXInit_ZeroF, rmode->fbWidth, rmode->xfbHeight, GXInit_ZeroF, GXInit_OneF);
-    GXSetProjectionv(GXDefaultProjData);
     GXSetCoPlanar(GX_DISABLE);
     GXSetCullMode(GX_CULL_BACK);
     GXSetClipMode(GX_CLIP_ENABLE);

@@ -4,125 +4,82 @@
 
 #include "dolphin/gx/__gx.h"
 
+#define gx __GXData
+
 extern u32 __cvt_fp2unsigned(f64 d);
 
 void GXSetProjection(const Mtx44 mtx, GXProjectionType type) {
+    u32 reg;
+
     CHECK_GXBEGIN(295, "GXSetProjection");
 
-    __GXData->projType = type;
-    __GXData->projMtx[0] = mtx[0][0];
-    __GXData->projMtx[2] = mtx[1][1];
-    __GXData->projMtx[4] = mtx[2][2];
-    __GXData->projMtx[5] = mtx[2][3];
+    gx->projType = type;
+    gx->projMtx[0] = mtx[0][0];
+    gx->projMtx[2] = mtx[1][1];
+    gx->projMtx[4] = mtx[2][2];
+    gx->projMtx[5] = mtx[2][3];
     if (type == GX_ORTHOGRAPHIC) {
-        __GXData->projMtx[1] = mtx[0][3];
-        __GXData->projMtx[3] = mtx[1][3];
+        gx->projMtx[1] = mtx[0][3];
+        gx->projMtx[3] = mtx[1][3];
     } else {
-        __GXData->projMtx[1] = mtx[0][2];
-        __GXData->projMtx[3] = mtx[1][2];
+        gx->projMtx[1] = mtx[0][2];
+        gx->projMtx[3] = mtx[1][2];
     }
 
+    reg = 0x00061020;
     GX_WRITE_U8(0x10);
-    GX_WRITE_U32(0x00061020);
-    GX_WRITE_F32(__GXData->projMtx[0]);
-    GX_WRITE_F32(__GXData->projMtx[1]);
-    GX_WRITE_F32(__GXData->projMtx[2]);
-    GX_WRITE_F32(__GXData->projMtx[3]);
-    GX_WRITE_F32(__GXData->projMtx[4]);
-    GX_WRITE_F32(__GXData->projMtx[5]);
-    GX_WRITE_U32(__GXData->projType);
-    __GXData->bpSentNot = 1;
-}
-
-void GXSetProjectionv(const f32* ptr) {
-    CHECK_GXBEGIN(339, "GXSetProjectionv");
-
-    __GXData->projType = (u32)ptr[0];
-    __GXData->projMtx[0] = ptr[1];
-    __GXData->projMtx[1] = ptr[2];
-    __GXData->projMtx[2] = ptr[3];
-    __GXData->projMtx[3] = ptr[4];
-    __GXData->projMtx[4] = ptr[5];
-    __GXData->projMtx[5] = ptr[6];
-
-    GX_WRITE_U8(0x10);
-    GX_WRITE_U32(0x00061020);
-    GX_WRITE_F32(__GXData->projMtx[0]);
-    GX_WRITE_F32(__GXData->projMtx[1]);
-    GX_WRITE_F32(__GXData->projMtx[2]);
-    GX_WRITE_F32(__GXData->projMtx[3]);
-    GX_WRITE_F32(__GXData->projMtx[4]);
-    GX_WRITE_F32(__GXData->projMtx[5]);
-    GX_WRITE_U32(__GXData->projType);
-    __GXData->bpSentNot = 1;
+    GX_WRITE_U32(reg);
+    GX_WRITE_F32(gx->projMtx[0]);
+    GX_WRITE_F32(gx->projMtx[1]);
+    GX_WRITE_F32(gx->projMtx[2]);
+    GX_WRITE_F32(gx->projMtx[3]);
+    GX_WRITE_F32(gx->projMtx[4]);
+    GX_WRITE_F32(gx->projMtx[5]);
+    GX_WRITE_U32(gx->projType);
+    gx->bpSentNot = 1;
 }
 
 #define qr0 0
 
-static inline void WriteMTXPS4x3(register const f32 mtx[3][4], register volatile f32* dest) {
-    register f32 a00_a01;
-    register f32 a02_a03;
-    register f32 a10_a11;
-    register f32 a12_a13;
-    register f32 a20_a21;
-    register f32 a22_a23;
-
-    asm {
-        psq_l a00_a01, 0x00(mtx), 0, qr0
-        psq_l a02_a03, 0x08(mtx), 0, qr0
-        psq_l a10_a11, 0x10(mtx), 0, qr0
-        psq_l a12_a13, 0x18(mtx), 0, qr0
-        psq_l a20_a21, 0x20(mtx), 0, qr0
-        psq_l a22_a23, 0x28(mtx), 0, qr0
-        psq_st a00_a01, 0(dest), 0, qr0
-        psq_st a02_a03, 0(dest), 0, qr0
-        psq_st a10_a11, 0(dest), 0, qr0
-        psq_st a12_a13, 0(dest), 0, qr0
-        psq_st a20_a21, 0(dest), 0, qr0
-        psq_st a22_a23, 0(dest), 0, qr0
-    }
+static asm void WriteMTXPS4x3(register const f32 mtx[3][4], register volatile f32* dest) {
+    psq_l f0, 0x00(mtx), 0, qr0
+    psq_l f1, 0x08(mtx), 0, qr0
+    psq_l f2, 0x10(mtx), 0, qr0
+    psq_l f3, 0x18(mtx), 0, qr0
+    psq_l f4, 0x20(mtx), 0, qr0
+    psq_l f5, 0x28(mtx), 0, qr0
+    psq_st f0, 0(dest), 0, qr0
+    psq_st f1, 0(dest), 0, qr0
+    psq_st f2, 0(dest), 0, qr0
+    psq_st f3, 0(dest), 0, qr0
+    psq_st f4, 0(dest), 0, qr0
+    psq_st f5, 0(dest), 0, qr0
 }
 
-static inline void WriteMTXPS3x3from3x4(register const f32 mtx[3][4], register volatile f32* dest) {
-    register f32 a00_a01;
-    register f32 a02_a03;
-    register f32 a10_a11;
-    register f32 a12_a13;
-    register f32 a20_a21;
-    register f32 a22_a23;
-
-    asm {
-        psq_l  a00_a01, 0x00(mtx), 0, qr0
-        lfs    a02_a03, 0x08(mtx)
-        psq_l  a10_a11, 0x10(mtx), 0, qr0
-        lfs    a12_a13, 0x18(mtx)
-        psq_l  a20_a21, 0x20(mtx), 0, qr0
-        lfs    a22_a23, 0x28(mtx)
-        psq_st a00_a01, 0(dest), 0, qr0
-        stfs   a02_a03, 0(dest)
-        psq_st a10_a11, 0(dest), 0, qr0
-        stfs   a12_a13, 0(dest)
-        psq_st a20_a21, 0(dest), 0, qr0
-        stfs   a22_a23, 0(dest)
-    }
+static asm void WriteMTXPS3x3from3x4(register const f32 mtx[3][4], register volatile f32* dest) {
+    psq_l f0, 0x00(mtx), 0, qr0
+    lfs   f1, 0x08(mtx)
+    psq_l f2, 0x10(mtx), 0, qr0
+    lfs   f3, 0x18(mtx)
+    psq_l f4, 0x20(mtx), 0, qr0
+    lfs   f5, 0x28(mtx)
+    psq_st f0, 0(dest), 0, qr0
+    stfs  f1, 0(dest)
+    psq_st f2, 0(dest), 0, qr0
+    stfs  f3, 0(dest)
+    psq_st f4, 0(dest), 0, qr0
+    stfs  f5, 0(dest)
 }
 
-static inline void WriteMTXPS4x2(register const f32 mtx[2][4], register volatile f32* dest) {
-    register f32 a00_a01;
-    register f32 a02_a03;
-    register f32 a10_a11;
-    register f32 a12_a13;
-
-    asm {
-        psq_l a00_a01, 0x00(mtx), 0, qr0
-        psq_l a02_a03, 0x08(mtx), 0, qr0
-        psq_l a10_a11, 0x10(mtx), 0, qr0
-        psq_l a12_a13, 0x18(mtx), 0, qr0
-        psq_st a00_a01, 0(dest), 0, qr0
-        psq_st a02_a03, 0(dest), 0, qr0
-        psq_st a10_a11, 0(dest), 0, qr0
-        psq_st a12_a13, 0(dest), 0, qr0
-    }
+static asm void WriteMTXPS4x2(register const f32 mtx[2][4], register volatile f32* dest) {
+    psq_l f0, 0x00(mtx), 0, qr0
+    psq_l f1, 0x08(mtx), 0, qr0
+    psq_l f2, 0x10(mtx), 0, qr0
+    psq_l f3, 0x18(mtx), 0, qr0
+    psq_st f0, 0(dest), 0, qr0
+    psq_st f1, 0(dest), 0, qr0
+    psq_st f2, 0(dest), 0, qr0
+    psq_st f3, 0(dest), 0, qr0
 }
 
 #define GX_WRITE_MTX_ELEM(addr, value) \
@@ -189,8 +146,8 @@ void GXLoadNrmMtxImm(const Mtx mtx, u32 id) {
 
 void GXSetCurrentMtx(u32 id) {
     CHECK_GXBEGIN(708, "GXSetCurrentMtx");
-    __GXData->matIdxA = (__GXData->matIdxA & 0xFFFFFFC0) | id;
-    __GXSetMatrixIndex(0);
+    SET_REG_FIELD(708, gx->matIdxA, 6, 0, id);
+    __GXSetMatrixIndex(GX_VA_PNMTXIDX);
 }
 
 void GXLoadTexMtxImm(const f32 mtx[][4], u32 id, GXTexMtxType type) {
@@ -378,16 +335,5 @@ void GXSetScissorBoxOffset(s32 x_off, s32 y_off) {
 void GXSetClipMode(GXClipMode mode) {
     CHECK_GXBEGIN(1151, "GXSetClipMode");
     GX_WRITE_XF_REG(5, mode);
-    __GXData->bpSentNot = 1;
-}
-
-void __GXSetMatrixIndex(GXAttr matIdxAttr) {
-    if (matIdxAttr < GX_VA_TEX4MTXIDX) {
-        GX_WRITE_SOME_REG4(8, 0x30, __GXData->matIdxA, -12);
-        GX_WRITE_XF_REG(24, __GXData->matIdxA);
-    } else {
-        GX_WRITE_SOME_REG4(8, 0x40, __GXData->matIdxB, -12);
-        GX_WRITE_XF_REG(25, __GXData->matIdxB);
-    }
     __GXData->bpSentNot = 1;
 }
