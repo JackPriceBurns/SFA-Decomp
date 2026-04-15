@@ -4,6 +4,8 @@
 
 #include "dolphin/gx/__gx.h"
 
+#define gx __GXData
+
 typedef struct __GXTexObjInt_struct {
     u32 mode0;
     u32 mode1;
@@ -511,4 +513,231 @@ void GXInvalidateTexAll(void) {
     GX_WRITE_RAS_REG(reg0);
     GX_WRITE_RAS_REG(reg1);
     __GXFlushTextureState();
+}
+
+GXTexRegionCallback GXSetTexRegionCallback(GXTexRegionCallback f) {
+    GXTexRegionCallback oldcb = __GXData->texRegionCallback;
+
+    __GXData->texRegionCallback = f;
+    return oldcb;
+}
+
+GXTlutRegionCallback GXSetTlutRegionCallback(GXTlutRegionCallback f) {
+    GXTlutRegionCallback oldcb = __GXData->tlutRegionCallback;
+
+    __GXData->tlutRegionCallback = f;
+    return oldcb;
+}
+
+void GXPreLoadEntireTexture(GXTexObj* tex_obj, GXTexRegion* region) {
+    u8 isMipMap;
+    u8 is32bit;
+    u32 wd;
+    u32 ht;
+    u32 maxLevelIndex;
+    u32 loadImage0;
+    u32 loadImage1;
+    u32 loadImage2;
+    u32 loadImage3;
+    u32 base;
+    u32 tmem1;
+    u32 tmem2;
+    u32 tmemAR;
+    u32 tmemGB;
+    u32 nTiles;
+    u32 rowTiles;
+    u32 colTiles;
+    u32 cmpTiles;
+    u32 i;
+    __GXTexObjInt* t = (__GXTexObjInt*)tex_obj;
+    __GXTexRegionInt* r = (__GXTexRegionInt*)region;
+
+    ASSERTMSGLINE(1820, tex_obj, "Texture Object Pointer is null");
+    ASSERTMSGLINE(1820, region, "TexRegion Object Pointer is null");
+    CHECK_GXBEGIN(1822, "GXPreLoadEntireTexture");
+    isMipMap = (t->flags & 1) == 1;
+    is32bit = GET_REG_FIELD(t->image0, 4, 20) == 6;
+
+    loadImage0 = 0;
+    SET_REG_FIELD(0, loadImage0, 8, 24, 0x60);
+    base = t->image3 & 0x1FFFFF;
+    SET_REG_FIELD(1831, loadImage0, 21, 0, base);
+
+    loadImage1 = 0;
+    SET_REG_FIELD(0, loadImage1, 8, 24, 0x61);
+    tmem1 = r->image1 & 0x7FFF;
+    SET_REG_FIELD(1837, loadImage1, 15, 0, tmem1);
+
+    loadImage2 = 0;
+    SET_REG_FIELD(0, loadImage2, 8, 24, 0x62);
+    tmem2 = r->image2 & 0x7FFF;
+    SET_REG_FIELD(1843, loadImage2, 15, 0, tmem2);
+
+    loadImage3 = 0;
+    SET_REG_FIELD(0, loadImage3, 8, 24, 0x63);
+    SET_REG_FIELD(1848, loadImage3, 15, 0, t->loadCnt);
+    SET_REG_FIELD(1849, loadImage3, 2, 15, t->loadFmt);
+    maxLevelIndex = 0;
+    nTiles = t->loadCnt;
+    if (isMipMap != 0) {
+        wd = GET_REG_FIELD(t->image0, 10, 0) + 1;
+        ht = GET_REG_FIELD(t->image0, 10, 10) + 1;
+        if (wd > ht) {
+            maxLevelIndex = (u16)(31 - __cntlzw(wd));
+        } else {
+            maxLevelIndex = (u16)(31 - __cntlzw(ht));
+        }
+    }
+
+    __GXFlushTextureState();
+    GX_WRITE_RAS_REG(loadImage0);
+    GX_WRITE_RAS_REG(loadImage1);
+    GX_WRITE_RAS_REG(loadImage2);
+    GX_WRITE_RAS_REG(loadImage3);
+
+    if (maxLevelIndex != 0) {
+        tmemAR = tmem1;
+        tmemGB = tmem2;
+        for (i = 0; i < maxLevelIndex; i++) {
+            if (is32bit != 0) {
+                base += nTiles * 2;
+                tmemAR += nTiles;
+                tmemGB += nTiles;
+            } else {
+                base += nTiles;
+                if (i & 1) {
+                    tmemGB += nTiles;
+                } else {
+                    tmemAR += nTiles;
+                }
+            }
+            tmem1 = (i & 1) ? tmemAR : tmemGB;
+            tmem2 = (i & 1) ? tmemGB : tmemAR;
+            __GetImageTileCount(t->fmt, (u16)(wd >> (i + 1)), (u16)(ht >> (i + 1)), &rowTiles, &colTiles, &cmpTiles);
+            nTiles = rowTiles * colTiles;
+            SET_REG_FIELD(1957, loadImage0, 21, 0, base);
+            SET_REG_FIELD(1958, loadImage1, 15, 0, tmem1);
+            SET_REG_FIELD(1959, loadImage2, 15, 0, tmem2);
+            SET_REG_FIELD(1960, loadImage3, 15, 0, nTiles);
+            GX_WRITE_RAS_REG(loadImage0);
+            GX_WRITE_RAS_REG(loadImage1);
+            GX_WRITE_RAS_REG(loadImage2);
+            GX_WRITE_RAS_REG(loadImage3);
+        }
+    }
+
+    __GXFlushTextureState();
+}
+
+static void __SetSURegs(u32 tmap, u32 tcoord) {
+    u32 w;
+    u32 h;
+    u8 s_bias;
+    u8 t_bias;
+
+    w = GET_REG_FIELD(gx->tImage0[tmap], 10, 0);
+    h = GET_REG_FIELD(gx->tImage0[tmap], 10, 10);
+    SET_REG_FIELD(2089, gx->suTs0[tcoord], 16, 0, w);
+    SET_REG_FIELD(2090, gx->suTs1[tcoord], 16, 0, h);
+    s_bias = GET_REG_FIELD(gx->tMode0[tmap], 2, 0) == 1;
+    t_bias = GET_REG_FIELD(gx->tMode0[tmap], 2, 2) == 1;
+    SET_REG_FIELD(2096, gx->suTs0[tcoord], 1, 16, s_bias);
+    SET_REG_FIELD(2097, gx->suTs1[tcoord], 1, 16, t_bias);
+    GX_WRITE_RAS_REG(gx->suTs0[tcoord]);
+    GX_WRITE_RAS_REG(gx->suTs1[tcoord]);
+    gx->bpSentNot = 0;
+}
+
+void __GXSetSUTexRegs(void) {
+    u32 nStages;
+    u32 nIndStages;
+    u32 i;
+    u32 map;
+    u32 tmap;
+    u32 coord;
+    u32* ptref;
+
+    if (gx->tcsManEnab != 0xFF) {
+        nStages = GET_REG_FIELD(gx->genMode, 4, 10) + 1;
+        nIndStages = GET_REG_FIELD(gx->genMode, 3, 16);
+        for (i = 0; i < nIndStages; i++) {
+            switch (i) {
+            case 0:
+                tmap = GET_REG_FIELD(gx->iref, 3, 0);
+                coord = GET_REG_FIELD(gx->iref, 3, 3);
+                break;
+            case 1:
+                tmap = GET_REG_FIELD(gx->iref, 3, 6);
+                coord = GET_REG_FIELD(gx->iref, 3, 9);
+                break;
+            case 2:
+                tmap = GET_REG_FIELD(gx->iref, 3, 12);
+                coord = GET_REG_FIELD(gx->iref, 3, 15);
+                break;
+            case 3:
+                tmap = GET_REG_FIELD(gx->iref, 3, 18);
+                coord = GET_REG_FIELD(gx->iref, 3, 21);
+                break;
+            }
+            if (!(gx->tcsManEnab & (1 << coord))) {
+                __SetSURegs(tmap, coord);
+            }
+        }
+
+        for (i = 0; i < nStages; i++) {
+            ptref = &gx->tref[i / 2];
+            map = gx->texmapId[i];
+            tmap = map & 0xFFFFFEFF;
+            if (i & 1) {
+                coord = GET_REG_FIELD(*ptref, 3, 15);
+            } else {
+                coord = GET_REG_FIELD(*ptref, 3, 3);
+            }
+            if ((tmap != 0xFF) && !(gx->tcsManEnab & (1 << coord)) && (gx->tevTcEnab & (1 << i))) {
+                __SetSURegs(tmap, coord);
+            }
+        }
+    }
+}
+
+void __GXSetTmemConfig(u32 config) {
+    switch (config) {
+    case 1:
+        GX_WRITE_RAS_REG(0x8C0D8000);
+        GX_WRITE_RAS_REG(0x900DC000);
+        GX_WRITE_RAS_REG(0x8D0D8800);
+        GX_WRITE_RAS_REG(0x910DC800);
+        GX_WRITE_RAS_REG(0x8E0D9000);
+        GX_WRITE_RAS_REG(0x920DD000);
+        GX_WRITE_RAS_REG(0x8F0D9800);
+        GX_WRITE_RAS_REG(0x930DD800);
+        GX_WRITE_RAS_REG(0xAC0DA000);
+        GX_WRITE_RAS_REG(0xB00DE000);
+        GX_WRITE_RAS_REG(0xAD0DA800);
+        GX_WRITE_RAS_REG(0xB10DE800);
+        GX_WRITE_RAS_REG(0xAE0DB000);
+        GX_WRITE_RAS_REG(0xB20DF000);
+        GX_WRITE_RAS_REG(0xAF0DB800);
+        GX_WRITE_RAS_REG(0xB30DF800);
+        break;
+    case 0:
+    default:
+        GX_WRITE_RAS_REG(0x8C0D8000);
+        GX_WRITE_RAS_REG(0x900DC000);
+        GX_WRITE_RAS_REG(0x8D0D8400);
+        GX_WRITE_RAS_REG(0x910DC400);
+        GX_WRITE_RAS_REG(0x8E0D8800);
+        GX_WRITE_RAS_REG(0x920DC800);
+        GX_WRITE_RAS_REG(0x8F0D8C00);
+        GX_WRITE_RAS_REG(0x930DCC00);
+        GX_WRITE_RAS_REG(0xAC0D9000);
+        GX_WRITE_RAS_REG(0xB00DD000);
+        GX_WRITE_RAS_REG(0xAD0D9400);
+        GX_WRITE_RAS_REG(0xB10DD400);
+        GX_WRITE_RAS_REG(0xAE0D9800);
+        GX_WRITE_RAS_REG(0xB20DD800);
+        GX_WRITE_RAS_REG(0xAF0D9C00);
+        GX_WRITE_RAS_REG(0xB30DDC00);
+        break;
+    }
 }
