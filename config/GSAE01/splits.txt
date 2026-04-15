@@ -50,7 +50,7 @@ dolphin/axfx/axfx.c:
 	.text       start:0x80244710 end:0x8024476C
 
 dolphin/os/OSMemory.c:
-	.text       start:0x802448FC end:0x80244C4C
+	.text       start:0x802448FC end:0x80244BDC
 
 dolphin/os/OSReboot.c:
 	.text       start:0x80244C4C end:0x80244E64

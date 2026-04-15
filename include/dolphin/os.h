@@ -100,8 +100,6 @@ void OSSetArenaLo(void* newLo);
 void* OSAllocFromArenaLo(u32 size, u32 align);
 void* OSAllocFromArenaHi(u32 size, u32 align);
 
-u32 OSGetPhysicalMemSize(void);
-
 void __OSPSInit(void);
 void __OSFPRInit(void);
 u32 __OSGetDIConfig(void);

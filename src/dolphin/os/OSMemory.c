@@ -1,11 +1,7 @@
 #include <dolphin.h>
 #include <dolphin/os.h>
-#include <dolphin/dvd.h>
 
 #include "dolphin/os/__os.h"
-
-#define TRUNC(n, a) (((u32)(n)) & ~((a)-1))
-#define ROUND(n, a) (((u32)(n) + (a)-1) & ~((a)-1))
 
 static BOOL OnReset(BOOL final);
 
@@ -15,26 +11,6 @@ static OSResetFunctionInfo ResetFunctionInfo = {
     NULL,
     NULL
 };
-
-u32 OSGetPhysicalMemSize(void) {
-#if DEBUG
-    OSBootInfo* BootInfo = (OSBootInfo*)OSPhysicalToCached(0);
-
-    return BootInfo->memorySize;
-#else
-    return __OSPhysicalMemSize;
-#endif
-}
-
-u32 OSGetConsoleSimulatedMemSize(void) {
-#if DEBUG
-    u32* memSize = (u32*)OSPhysicalToCached(0xF0);
-
-    return *memSize;
-#else
-    return __OSSimulatedMemSize;
-#endif
-}
 
 static BOOL OnReset(BOOL final) {
     if (final != FALSE) {
@@ -60,46 +36,6 @@ static void MEMIntrruptHandler(__OSInterrupt interrupt, OSContext* context) {
     }
 
     __OSUnhandledException(__OS_EXCEPTION_MEMORY_PROTECTION, context, cause, addr);
-}
-
-void OSProtectRange(u32 chan, void* addr, u32 nBytes, u32 control) {
-    BOOL enabled;
-    u32 start;
-    u32 end;
-    u16 reg;
-
-    ASSERTLINE(206, chan < 4);
-    ASSERTLINE(207, (control & ~(OS_PROTECT_CONTROL_RDWR)) == 0);
-
-    if (4 <= chan) {
-        return;
-    }
-
-    control &= 3;
-
-    end = (u32)addr + nBytes;
-    start = TRUNC(addr, 1u << 10);
-    end = ROUND(end, 1u << 10);
-
-    DCFlushRange((void*)start, end - start);
-
-    enabled = OSDisableInterrupts();
-
-    __OSMaskInterrupts(OS_INTERRUPTMASK(__OS_INTERRUPT_MEM_0 + chan));
-
-    __MEMRegs[0 + 2 * chan] = (u16)(start >> 10);
-    __MEMRegs[1 + 2 * chan] = (u16)(end >> 10);
-
-    reg = __MEMRegs[8];
-    reg &= ~(3 << 2 * chan);
-    reg |= control << 2 * chan;
-    __MEMRegs[8] = reg;
-
-    if (control != 3) {
-        __OSUnmaskInterrupts(OS_INTERRUPTMASK(__OS_INTERRUPT_MEM_0 + chan));
-    }
-
-    OSRestoreInterrupts(enabled);
 }
 
 static asm void Config24MB(void) {
@@ -185,15 +121,18 @@ static asm void RealMode(register u32 addr) {
 }
 
 void __OSInitMemoryProtection(void) {
-#ifndef DEBUG
-    u32 padding[9];
-    u32 temp;
-#endif
+    u32 padding[8];
+    u32 simulatedSize;
     BOOL enabled;
-    u32 size;
 
-    size = OSGetConsoleSimulatedMemSize();
+    simulatedSize = __OSSimulatedMemSize;
     enabled = OSDisableInterrupts();
+
+    if (simulatedSize <= 0x1800000) {
+        RealMode((u32)&Config24MB);
+    } else if (simulatedSize <= 0x3000000) {
+        RealMode((u32)&Config48MB);
+    }
 
     __MEMRegs[16] = 0;
     __MEMRegs[8] = 0xFF;
@@ -207,21 +146,8 @@ void __OSInitMemoryProtection(void) {
     __OSSetInterruptHandler(__OS_INTERRUPT_MEM_ADDRESS, MEMIntrruptHandler);
     OSRegisterResetFunction(&ResetFunctionInfo);
 
-#ifdef DEBUG
-    if (OSGetConsoleSimulatedMemSize() < OSGetPhysicalMemSize() && OSGetConsoleSimulatedMemSize() == 0x1800000)
-#else
-    temp = OSGetConsoleSimulatedMemSize();  // not sure how else to get the order right on retail
-    if (temp < OSGetPhysicalMemSize() && temp == 0x1800000)
-#endif
-    {
-        DCInvalidateRange((void*)0x81800000, 0x1800000);
+    if (__OSSimulatedMemSize < __OSPhysicalMemSize && __OSSimulatedMemSize == 0x1800000) {
         __MEMRegs[20] = 2;
-    }
-
-    if (size <= 0x1800000) {
-        RealMode((u32)&Config24MB);
-    } else if (size <= 0x3000000) {
-        RealMode((u32)&Config48MB);
     }
 
     __OSUnmaskInterrupts(OS_INTERRUPTMASK_MEM_ADDRESS);
