@@ -115,10 +115,11 @@ s32 __CARDFormatRegionAsync(s32 chan, u16 encode, CARDCallback callback) {
 }
 
 s32 CARDFormat(s32 chan) {
-    s32 result = __CARDFormatRegionAsync(chan, __CARDGetFontEncode(), &__CARDSyncCallback);
-    if (result < 0) {
-        return result;
-    }
+    s32 result;
 
-    return __CARDSync(chan);
+    result = __CARDFormatRegionAsync(chan, OSGetFontEncode(), __CARDSyncCallback);
+    if (result >= 0)
+        result = __CARDSync(chan);
+
+    return result;
 }
