@@ -7,8 +7,8 @@
 extern "C" {
 #endif
 
-extern void* (*__AXFXAlloc)(u32);
-extern void (*__AXFXFree)(void*);
+#define __AXFXAlloc(size) OSAlloc(size)
+#define __AXFXFree(ptr)   OSFree(ptr)
 
 #ifdef __cplusplus
 }

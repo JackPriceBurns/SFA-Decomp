@@ -27,7 +27,6 @@ typedef struct {
 void OSInitMessageQueue(OSMessageQueue* mq, void* msgArray, s32 msgCount);
 int OSSendMessage(OSMessageQueue* mq, void* msg, s32 flags);
 int OSReceiveMessage(OSMessageQueue* mq, void* msg, s32 flags);
-int OSJamMessage(OSMessageQueue* mq, void* msg, s32 flags);
 
 #ifdef __cplusplus
 }

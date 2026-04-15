@@ -333,6 +333,7 @@ config.libs = [
             Object(NonMatching, "dolphin/os/OSError.c"),
             Object(NonMatching, "dolphin/os/OSFont.c"),
             Object(NonMatching, "dolphin/os/OSInterrupt.c"),
+            Object(NonMatching, "dolphin/os/OSMessage.c"),
             Object(NonMatching, "dolphin/os/OSMemory.c"),
             Object(NonMatching, "dolphin/os/OSReboot.c"),
             Object(NonMatching, "dolphin/os/OSReset.c"),
@@ -504,7 +505,6 @@ config.libs = [
     DolphinLib(
         "axfx",
         [
-            Object(NonMatching, "dolphin/axfx/axfx.c"),
             Object(NonMatching, "dolphin/axfx/chorus.c"),
             Object(NonMatching, "dolphin/axfx/delay.c"),
             Object(NonMatching, "dolphin/axfx/reverb_hi.c"),
