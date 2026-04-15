@@ -42,6 +42,8 @@ Each block is one local EN neighborhood. Inside the block:
 - `python tools/orig/source_layout.py --broad-exact-layout`
 - `python tools/orig/source_layout.py --format csv`
 - `python tools/orig/source_layout.py --format json`
+- `python tools/orig/source_layout.py --materialize-all`
+- `python tools/orig/source_layout.py --broad-exact-layout --materialize-all`
 
 ## Reading The Result
 
@@ -65,4 +67,5 @@ That broader mode is exploratory, but it is still useful when the recovery goal 
 - Use `source_gap_windows.py` when you want the per-file estimates for one focused gap packet.
 - Use `source_blueprints.py` when you want neighborhood blocks and packet context.
 - Use `source_layout.py` when you want one ordered file skeleton that merges those answers into the next split plan.
+- Use `source_layout.py --materialize-all` when you want that ordered skeleton written into ready markdown briefs under [source_layout_briefs/README.md](/C:/Projects/SFA-Decomp/docs/orig/source_layout_briefs/README.md).
 - Use `source_layout.py --broad-exact-layout` when the corridor already has an exact debug interval and you want a much wider exploratory skeleton instead of only the focused short-packet view.
