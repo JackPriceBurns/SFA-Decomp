@@ -1,14 +1,6 @@
 #include <dolphin.h>
 #include <dolphin/os.h>
 
-void OSInitStopwatch(OSStopwatch* sw, char* name) {
-    sw->name = name;
-    sw->total = 0;
-    sw->hits = 0;
-    sw->min = 0x00000000FFFFFFFF;
-    sw->max = 0;
-}
-
 void OSStartStopwatch(OSStopwatch* sw) {
     sw->running = TRUE;
     sw->last = OSGetTime();
@@ -39,13 +31,4 @@ OSTime OSCheckStopwatch(OSStopwatch* sw) {
         currTotal += OSGetTime() - sw->last;
     }
     return currTotal;
-}
-
-void OSDumpStopwatch(OSStopwatch* sw) {
-    OSReport("Stopwatch [%s]	:\n", sw->name);
-    OSReport("\tTotal= %lld us\n",    OSTicksToMicroseconds(sw->total));
-    OSReport("\tHits = %d \n",        sw->hits);
-    OSReport("\tMin  = %lld us\n",    OSTicksToMicroseconds(sw->min));
-    OSReport("\tMax  = %lld us\n",    OSTicksToMicroseconds(sw->max));
-    OSReport("\tMean = %lld us\n",    OSTicksToMicroseconds(sw->total/sw->hits));
 }
