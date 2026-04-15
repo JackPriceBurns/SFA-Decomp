@@ -152,26 +152,3 @@ s32 CARDRead(CARDFileInfo* fileInfo, void* buf, s32 length, s32 offset) {
 
     return __CARDSync(fileInfo->chan);
 }
-
-s32 CARDCancel(CARDFileInfo* fileInfo) {
-    BOOL enabled;
-    s32 result;
-    CARDControl* card;
-
-    ASSERTLINE(338, 0 <= fileInfo->chan && fileInfo->chan < 2);
-    ASSERTLINE(339, 0 <= fileInfo->fileNo && fileInfo->fileNo < CARD_MAX_FILE);
-
-    enabled = OSDisableInterrupts();
-    
-    card = &__CARDBlock[fileInfo->chan];
-    result = CARD_RESULT_READY;
-    if (!card->attached)
-        result = CARD_RESULT_NOCARD;
-    else if (card->result == CARD_RESULT_BUSY && card->fileInfo == fileInfo) {
-        fileInfo->length = -1;
-        result = CARD_RESULT_CANCELED;
-    }
-
-    OSRestoreInterrupts(enabled);
-    return result;
-}

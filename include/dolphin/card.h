@@ -261,7 +261,6 @@ s32 CARDErase(CARDFileInfo* fileInfo, s32 length, s32 offset);
 
 // CARDFormat
 s32 CARDFormat(s32 chan);
-s32 CARDFormatAsync(s32 chan, CARDCallback callback);
 
 // CARDMount
 s32 CARDProbeEx(s32 chan, s32* memSize, s32* sectorSize);
@@ -293,7 +292,6 @@ s32 CARDGetXferredBytes(s32 chan);
 // CARDRead
 s32 CARDReadAsync(CARDFileInfo* fileInfo, void* buf, s32 length, s32 offset, CARDCallback callback);
 s32 CARDRead(CARDFileInfo*  fileInfo, void*  buf, s32 length, s32 offset);
-s32 CARDCancel(CARDFileInfo* fileInfo);
 
 // CARDRename
 s32 CARDRename(s32 chan, const char* oldName, const char* newName);

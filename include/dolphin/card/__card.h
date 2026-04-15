@@ -48,9 +48,7 @@ int __CARDEnableCompany(int enable);
 void __CARDMountCallback(s32 chan, s32 result);
 
 // CARDFormat
-s32 CARDFormatAsync(s32 chan, CARDCallback callback);
 s32 __CARDFormatRegionAsync(s32 chan, u16 encode, CARDCallback callback);
-s32 __CARDFormatRegion(s32 chan, u16 encode);
 
 // CARDDir
 CARDDir* __CARDGetDirBlock(CARDControl* card);
