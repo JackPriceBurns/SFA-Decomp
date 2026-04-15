@@ -206,7 +206,7 @@ dolphin/card/CARDRdwr.c:
 	.text       start:0x80260990 end:0x80260C10
 
 dolphin/card/CARDBlock.c:
-	.text       start:0x80260C18 end:0x80261014
+	.text       start:0x80260C10 end:0x80261014
 
 dolphin/card/CARDDir.c:
 	.text       start:0x80261014 end:0x80261278

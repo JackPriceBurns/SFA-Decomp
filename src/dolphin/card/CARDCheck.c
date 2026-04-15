@@ -323,21 +323,14 @@ s32 CARDCheckExAsync(s32 chan, s32* xferBytes, CARDCallback callback) {
     return CARD_RESULT_READY;
 }
 
-s32 CARDCheckAsync(s32 chan, CARDCallback callback) {
+s32 CARDCheck(s32 chan) {
+    s32 result;
     s32 xferBytes;
-    return CARDCheckExAsync(chan, &xferBytes, callback);
-}
 
-s32 CARDCheckEx(s32 chan, s32* xferBytes) {
-    s32 result = CARDCheckExAsync(chan, xferBytes, __CARDSyncCallback);
-    if (result < 0 || xferBytes == 0) {
+    result = CARDCheckExAsync(chan, &xferBytes, __CARDSyncCallback);
+    if (result < 0 || &xferBytes == NULL) {
         return result;
     }
 
     return __CARDSync(chan);
-}
-
-s32 CARDCheck(s32 chan) {
-    s32 xferBytes;
-    return CARDCheckEx(chan, &xferBytes);
 }

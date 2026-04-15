@@ -98,8 +98,3 @@ s32 __CARDWrite(s32 chan, u32 addr, s32 length, void* dst, CARDCallback callback
     card->buffer = dst;
     return __CARDWritePage(chan, BlockWriteCallback);
 }
-
-s32 CARDGetXferredBytes(s32 chan) {
-    ASSERTLINE(183, 0 <= chan && chan < 2);
-    return __CARDBlock[chan].xferred;
-}
