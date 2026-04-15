@@ -414,10 +414,10 @@ void GXLoadTexObjPreLoaded(GXTexObj* obj, GXTexRegion* region, GXTexMapID id) {
         GX_WRITE_RAS_REG(tlr->tlutObj.tlut);
     }
 
-    __GXData->tImage0[id] = t->image0;
-    __GXData->tMode0[id] = t->mode0;
-    __GXData->dirtyState |= 1;
-    __GXData->bpSentNot = 0;
+    (*((GXData * volatile*)&__GXData))->tImage0[id] = t->image0;
+    (*((GXData * volatile*)&__GXData))->tMode0[id] = t->mode0;
+    (*((GXData * volatile*)&__GXData))->dirtyState |= 1;
+    (*((GXData * volatile*)&__GXData))->bpSentNot = 0;
 }
 
 void GXLoadTexObj(GXTexObj* obj, GXTexMapID id) {
