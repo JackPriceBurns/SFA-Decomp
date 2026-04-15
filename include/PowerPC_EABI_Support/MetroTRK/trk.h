@@ -70,6 +70,7 @@ DSError TRKAppendBuffer_ui8(TRKBuffer*, const u8*, int);
 DSError TRKAppendBuffer_ui16(TRKBuffer*, const u16*, int);
 DSError TRKAppendBuffer_ui32(TRKBuffer*, const u32*, int);
 DSError TRKAppendBuffer_ui64(TRKBuffer*, const u64*, int);
+DSError TRKAppendBuffer1_ui8(TRKBuffer*, const u8);
 DSError TRKSetBufferPosition(TRKBuffer*, u32);
 
 DSError TRKReadBuffer1_ui8(TRKBuffer*, u8*);
@@ -112,6 +113,7 @@ DSError TRK_main(void);
 UARTError InitializeUART(UARTBaudRate baudRate);
 DSError TRKInitializeIntDrivenUART(u32, u32, u32, void*);
 int TRKPollUART(void);
+UARTError TRKReadUARTPoll(u8*);
 UARTError TRKReadUARTN(void*, u32);
 UARTError TRKWriteUARTN(const void* bytes, u32 length);
 void usr_put_initialize(void);
