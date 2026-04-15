@@ -55,7 +55,10 @@ DSError TRKPostEvent(TRKEvent* event) {
 }
 
 void TRKConstructEvent(TRKEvent* event, NubEventType eventType) {
-    event->eventType = eventType;
+    u8 type;
+
+    type = eventType;
+    event->eventType = type;
     event->eventID = 0;
     event->msgBufID = -1;
 }

@@ -77,7 +77,8 @@ typedef struct CommandReply {
 } CommandReply;
 
 typedef struct TRKEvent {
-	NubEventType eventType;
+	u8 eventType;
+	u8 _01[3];
 	NubEventID eventID;
 	MessageBufferID msgBufID;
 } TRKEvent;
