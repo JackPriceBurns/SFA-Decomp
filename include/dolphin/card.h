@@ -269,7 +269,6 @@ s32 CARDFormat(s32 chan);
 s32 CARDFormatAsync(s32 chan, CARDCallback callback);
 
 // CARDMount
-int CARDProbe(s32 chan);
 s32 CARDProbeEx(s32 chan, s32* memSize, s32* sectorSize);
 s32 CARDMountAsync(s32 chan, void* workArea, CARDCallback detachCallback, CARDCallback attachCallback);
 s32 CARDMount(s32 chan, void* workArea, CARDCallback detachCallback);
