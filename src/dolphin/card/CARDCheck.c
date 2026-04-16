@@ -45,6 +45,9 @@ static s32 VerifyID(CARDControl* card) {
     if (id->checkSum != checksum || id->checkSumInv != checksumInv)
         return CARD_RESULT_BROKEN;
 
+    if (id->encode != OSGetFontEncode())
+        return CARD_RESULT_ENCODING;
+
     rand = *(OSTime*)&id->serial[12];
     sramEx = __OSLockSramEx();
     for (i = 0; i < 12; i++) {
@@ -57,9 +60,6 @@ static s32 VerifyID(CARDControl* card) {
     }
 
     __OSUnlockSramEx(FALSE);
-
-    if (id->encode != OSGetFontEncode())
-        return CARD_RESULT_ENCODING;
 
     return CARD_RESULT_READY;
 }
