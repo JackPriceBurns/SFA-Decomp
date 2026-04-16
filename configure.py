@@ -324,6 +324,7 @@ config.libs = [
         "os",
         [
             Object(NonMatching, "dolphin/os/OS.c"),
+            Object(NonMatching, "dolphin/os/OSAddress.c"),
             Object(NonMatching, "dolphin/os/OSAlarm.c"),
             Object(NonMatching, "dolphin/os/OSAlloc.c"),
             Object(NonMatching, "dolphin/os/OSArena.c"),
@@ -579,6 +580,8 @@ config.libs = [
             Object(MatchingFor("GSAE01"), "dolphin/TRK_MINNOW_DOLPHIN/targcont.c"),
             Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/target_options.c"),
             Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/mslsupp.c"),
+            Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/MWTrace.c"),
+            Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.c"),
         ],
     },
     DolphinLib(

@@ -13,6 +13,18 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:4
 
+dolphin/TRK_MINNOW_DOLPHIN/MWTrace.c:
+	.text       start:0x8001741C end:0x8001746C
+
+dolphin/os/OSAddress.c:
+	.text       start:0x80080E28 end:0x80080E58
+
+dolphin/ax/AX.c:
+	.text       start:0x801177DC end:0x8011784C
+
+dolphin/TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.c:
+	.text       start:0x801B1398 end:0x801B13F0
+
 dolphin/base/PPCArch.c:
 	.text       start:0x80240A6C end:0x80240AD0
 
