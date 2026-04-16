@@ -17,8 +17,7 @@ extern const DSPStrings sDSPStrings;
 
 extern DSPTaskInfo* __DSP_rude_task;
 extern int __DSP_rude_task_pending;
-
-static BOOL __DSP_init_flag;
+extern BOOL __DSP_init_flag;
 
 u32 DSPCheckMailToDSP(void) {
     return (__DSPRegs[0] & (1 << 15)) >> 15;
