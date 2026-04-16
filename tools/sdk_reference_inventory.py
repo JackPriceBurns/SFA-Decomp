@@ -42,6 +42,7 @@ SDK_ROOTS = {
     "vi",
 }
 TEXT_RE = re.compile(r"\s*\.text\s+start:(0x[0-9A-Fa-f]+)\s+end:(0x[0-9A-Fa-f]+)")
+CANONICAL_EXTENSIONS = {".c", ".cpp", ".cp", ".cxx"}
 
 
 @dataclass(frozen=True)
@@ -81,7 +82,7 @@ def parse_refspec(value: str) -> RefSpec:
 
 def normalize_sdk_path(raw_path: str) -> str | None:
     path = raw_path.replace("\\", "/")
-    for prefix in ("Dolphin/", "dolphin/"):
+    for prefix in ("SDK/", "Dolphin/", "dolphin/"):
         if path.startswith(prefix):
             path = path[len(prefix) :]
             break
@@ -93,13 +94,23 @@ def normalize_sdk_path(raw_path: str) -> str | None:
     return f"dolphin/{root}/{rest}"
 
 
-def load_target_splits(version: str) -> set[str]:
+def canonicalize_sdk_path(path: str) -> str:
+    sdk_path = Path(path)
+    if sdk_path.suffix.lower() in CANONICAL_EXTENSIONS:
+        sdk_path = sdk_path.with_suffix(".c")
+    return sdk_path.as_posix()
+
+
+def load_target_splits(version: str) -> tuple[set[str], set[str]]:
     splits_path = ROOT / "config" / version / "splits.txt"
-    result: set[str] = set()
+    exact_paths: set[str] = set()
+    canonical_paths: set[str] = set()
     for line in splits_path.read_text().splitlines():
         if line and not line.startswith(" ") and line.endswith(":"):
-            result.add(line[:-1])
-    return result
+            path = line[:-1]
+            exact_paths.add(path)
+            canonical_paths.add(canonicalize_sdk_path(path))
+    return exact_paths, canonical_paths
 
 
 def iter_reference_units(spec: RefSpec) -> Iterable[RefUnit]:
@@ -192,16 +203,17 @@ def make_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = make_parser().parse_args()
-    target_splits = load_target_splits(args.version)
+    target_splits, target_canonical = load_target_splits(args.version)
     inventory = build_inventory(args.reference)
     path_filters = [needle.lower() for needle in args.path_contains]
 
     rows = []
     for path, per_ref in inventory.items():
         ref_count = len(per_ref)
+        canonical_path = canonicalize_sdk_path(path)
         if ref_count < args.min_refs:
             continue
-        if not args.show_present and path in target_splits:
+        if not args.show_present and canonical_path in target_canonical:
             continue
         if path_filters and not all(needle in path.lower() for needle in path_filters):
             continue
@@ -226,13 +238,19 @@ def main() -> int:
                     "min_funcs": min(funcs),
                     "max_funcs": max(funcs),
                     "present": path in target_splits,
+                    "covered": canonical_path in target_canonical,
                 },
             )
         )
 
     rows.sort()
     for _, _, _, row in rows[: args.limit]:
-        status = "present" if row["present"] else "missing"
+        if row["present"]:
+            status = "present"
+        elif row["covered"]:
+            status = "covered"
+        else:
+            status = "missing"
         refs = ",".join(row["refs"])
         print(
             f"refs={row['ref_count']} text=0x{row['min_span']:X}-0x{row['max_span']:X} "
