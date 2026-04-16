@@ -51,7 +51,6 @@ __declspec(weak) DSPTaskInfo* DSPAddTask(DSPTaskInfo* task);
 DSPTaskInfo* DSPCancelTask(DSPTaskInfo* task);
 DSPTaskInfo* DSPAssertTask(DSPTaskInfo* task);
 
-DSPTaskInfo* __DSPGetCurrentTask(void);
 
 #ifdef __cplusplus
 }

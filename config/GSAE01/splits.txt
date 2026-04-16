@@ -143,7 +143,10 @@ dolphin/ar/arq.c:
 	.text       start:0x80251290 end:0x80251624
 
 dolphin/dsp/dsp.c:
-	.text       start:0x80251624 end:0x80251880
+	.text       start:0x80251624 end:0x80251830
+
+dolphin/dsp/dsp_debug.c:
+	.text       start:0x80251830 end:0x80251880
 
 dolphin/dsp/dsp_task.c:
 	.text       start:0x80251880 end:0x80252104

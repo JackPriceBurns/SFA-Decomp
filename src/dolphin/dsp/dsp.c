@@ -104,5 +104,3 @@ DSPTaskInfo* DSPAddTask(DSPTaskInfo* task) {
 
     return task;
 }
-
-void __DSP_debug_printf(const char* fmt, ...) {}
