@@ -5,12 +5,12 @@
 
 #include "dolphin/dsp/__dsp.h"
 
-DSPTaskInfo* __DSP_curr_task;
-DSPTaskInfo* __DSP_first_task;
-DSPTaskInfo* __DSP_last_task;
-DSPTaskInfo* __DSP_tmp_task;
-DSPTaskInfo* __DSP_rude_task;
-int __DSP_rude_task_pending;
+extern DSPTaskInfo* __DSP_curr_task;
+extern DSPTaskInfo* __DSP_first_task;
+extern DSPTaskInfo* __DSP_last_task;
+extern DSPTaskInfo* __DSP_tmp_task;
+extern DSPTaskInfo* __DSP_rude_task;
+extern int __DSP_rude_task_pending;
 
 void __DSPHandler(__OSInterrupt intr, OSContext* context) {
     u8 unused[4];
