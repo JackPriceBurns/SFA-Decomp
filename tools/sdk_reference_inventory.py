@@ -113,6 +113,23 @@ def load_target_splits(version: str) -> tuple[set[str], set[str]]:
     return exact_paths, canonical_paths
 
 
+def load_configured_objects() -> tuple[set[str], set[str]]:
+    configure_path = ROOT / "configure.py"
+    exact_paths: set[str] = set()
+    canonical_paths: set[str] = set()
+    for match in re.finditer(r'Object\([^\n]*?,\s*"([^"]+\.(?:c|cpp|cp|cxx))"\)', configure_path.read_text()):
+        path = match.group(1)
+        exact_paths.add(path)
+        canonical_paths.add(canonicalize_sdk_path(path))
+    return exact_paths, canonical_paths
+
+
+def source_exists(path: str) -> bool:
+    rel = path.removeprefix("dolphin/")
+    candidate = ROOT / "src" / "dolphin" / Path(rel)
+    return candidate.exists()
+
+
 def iter_reference_units(spec: RefSpec) -> Iterable[RefUnit]:
     current_path: str | None = None
     current_unit: RefUnit | None = None
@@ -204,6 +221,7 @@ def make_parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = make_parser().parse_args()
     target_splits, target_canonical = load_target_splits(args.version)
+    configured_objects, configured_canonical = load_configured_objects()
     inventory = build_inventory(args.reference)
     path_filters = [needle.lower() for needle in args.path_contains]
 
@@ -239,6 +257,9 @@ def main() -> int:
                     "max_funcs": max(funcs),
                     "present": path in target_splits,
                     "covered": canonical_path in target_canonical,
+                    "configured": path in configured_objects,
+                    "configured_covered": canonical_path in configured_canonical,
+                    "source_exists": source_exists(path),
                 },
             )
         )
@@ -251,10 +272,18 @@ def main() -> int:
             status = "covered"
         else:
             status = "missing"
+        source_flag = "yes" if row["source_exists"] else "no"
+        if row["configured"]:
+            config_flag = "exact"
+        elif row["configured_covered"]:
+            config_flag = "covered"
+        else:
+            config_flag = "no"
         refs = ",".join(row["refs"])
         print(
             f"refs={row['ref_count']} text=0x{row['min_span']:X}-0x{row['max_span']:X} "
-            f"funcs={row['min_funcs']}-{row['max_funcs']} status={status} path={row['path']} refs:{refs}"
+            f"funcs={row['min_funcs']}-{row['max_funcs']} status={status} src={source_flag} cfg={config_flag} "
+            f"path={row['path']} refs:{refs}"
         )
 
     if not rows:
