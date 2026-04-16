@@ -168,6 +168,20 @@ class DiscoveryHit:
 
 
 @dataclass(frozen=True)
+class ReferenceSourceHit:
+    reference: WindowSignature
+    result: MatchResult
+
+
+@dataclass(frozen=True)
+class ReferenceSourceAggregate:
+    target: WindowSignature
+    hits: tuple[ReferenceSourceHit, ...]
+    average_score: float
+    best_score: float
+
+
+@dataclass(frozen=True)
 class RawWindow:
     source_path: str
     game: str
@@ -952,6 +966,129 @@ def print_discovery_hits(
         )
 
 
+def aggregate_reference_source_matches(
+    version: str,
+    dol_path: Path,
+    specs: list[ReferenceSpec],
+    source_query: str,
+    target_range_start: int | None,
+    target_range_end: int | None,
+    only_unassigned: bool,
+    coarse_limit: int | None,
+    limit_per_reference: int,
+    limit: int,
+) -> tuple[list[ReferenceSourceAggregate], list[str]]:
+    grouped_hits: dict[tuple[int, int], list[ReferenceSourceHit]] = {}
+    missing_specs: list[str] = []
+
+    for spec in specs:
+        try:
+            reference_window = select_reference_window(spec, source_query)
+        except SystemExit:
+            missing_specs.append(spec.label)
+            continue
+
+        candidates = list(
+            iter_target_windows(
+                version=version,
+                dol_path=dol_path,
+                function_count=reference_window.function_count,
+                range_start=target_range_start,
+                range_end=target_range_end,
+                only_unassigned=only_unassigned,
+            )
+        )
+        if not candidates:
+            continue
+
+        for result in rank_candidates(reference_window, candidates, limit_per_reference, coarse_limit):
+            key = (result.candidate.start, result.candidate.end)
+            grouped_hits.setdefault(key, []).append(
+                ReferenceSourceHit(reference=reference_window, result=result)
+            )
+
+    aggregates: list[ReferenceSourceAggregate] = []
+    for hits in grouped_hits.values():
+        sorted_hits = tuple(
+            sorted(
+                hits,
+                key=lambda hit: (
+                    -hit.result.overall_score,
+                    hit.reference.game,
+                    hit.reference.start,
+                ),
+            )
+        )
+        target = sorted_hits[0].result.candidate
+        average_score = sum(hit.result.overall_score for hit in sorted_hits) / len(sorted_hits)
+        best_score = max(hit.result.overall_score for hit in sorted_hits)
+        aggregates.append(
+            ReferenceSourceAggregate(
+                target=target,
+                hits=sorted_hits,
+                average_score=average_score,
+                best_score=best_score,
+            )
+        )
+
+    aggregates.sort(
+        key=lambda aggregate: (
+            -len(aggregate.hits),
+            -aggregate.average_score,
+            -aggregate.best_score,
+            aggregate.target.start,
+        )
+    )
+    return aggregates[:limit], missing_specs
+
+
+def print_aggregated_reference_source_matches(
+    source_query: str,
+    range_start: int | None,
+    range_end: int | None,
+    only_unassigned: bool,
+    specs: list[ReferenceSpec],
+    aggregates: list[ReferenceSourceAggregate],
+    missing_specs: list[str],
+) -> None:
+    assignment_mode = "unassigned-only" if only_unassigned else "all-windows"
+    range_label = "full-range"
+    if range_start is not None and range_end is not None:
+        range_label = f"0x{range_start:08X}-0x{range_end:08X}"
+    print(
+        f"reference-source aggregate: {source_query!r} "
+        f"range={range_label} mode={assignment_mode} refs={len(specs)}"
+    )
+    if missing_specs:
+        print("missing-reference-source:")
+        for label in missing_specs:
+            print(f"  {label}")
+    if not aggregates:
+        print("matches:")
+        print("   none")
+        return
+    print("matches:")
+    for index, aggregate in enumerate(aggregates, start=1):
+        target = aggregate.target
+        print(
+            f"  {index:>2}. {target.source_path} "
+            f"0x{target.start:08X}-0x{target.end:08X} span=0x{target.span:X} "
+            f"funcs={target.function_count} refs={len(aggregate.hits)} "
+            f"avg-score={aggregate.average_score * 100:.2f} "
+            f"best={aggregate.best_score * 100:.2f}"
+        )
+        for hit in aggregate.hits:
+            result = hit.result
+            print(
+                f"      ref={hit.reference.game} {hit.reference.source_path} "
+                f"score={result.overall_score * 100:.2f} "
+                f"mask-fn={result.function_mask_score * 100:.2f} "
+                f"mask-win={result.window_mask_score * 100:.2f} "
+                f"size={result.size_score * 100:.2f} "
+                f"exact-sizes={result.exact_size_matches}/{result.compared_function_count}"
+            )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
@@ -973,6 +1110,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--reference-source",
         help="Reference split path to search for inside the SFA DOL",
+    )
+    parser.add_argument(
+        "--aggregate-reference-source",
+        action="store_true",
+        help=(
+            "With --reference-source, aggregate repeated target windows across multiple "
+            "reference games instead of requiring exactly one --reference"
+        ),
     )
     parser.add_argument(
         "--discover",
@@ -1054,8 +1199,17 @@ def parse_args() -> argparse.Namespace:
         parser.error("--range-start and --range-end must be provided together")
     if args.range_start is not None and args.range_end <= args.range_start:
         parser.error("--range-end must be greater than --range-start")
-    if args.reference_source is not None and len(args.reference) != 1:
-        parser.error("--reference-source mode requires exactly one --reference")
+    if args.aggregate_reference_source and args.reference_source is None:
+        parser.error("--aggregate-reference-source requires --reference-source")
+    if (
+        args.reference_source is not None
+        and not args.aggregate_reference_source
+        and len(args.reference) != 1
+    ):
+        parser.error(
+            "--reference-source mode requires exactly one --reference unless "
+            "--aggregate-reference-source is used"
+        )
     if args.discover and (args.target_range_start is None or args.target_range_end is None):
         parser.error("--discover requires --target-range-start and --target-range-end")
     if args.target_range_start is not None and args.target_range_end is not None:
@@ -1111,6 +1265,30 @@ def main() -> None:
         return
 
     if args.reference_source is not None:
+        if args.aggregate_reference_source:
+            aggregates, missing_specs = aggregate_reference_source_matches(
+                version=args.version,
+                dol_path=dol_path,
+                specs=args.reference,
+                source_query=args.reference_source,
+                target_range_start=args.target_range_start,
+                target_range_end=args.target_range_end,
+                only_unassigned=args.only_unassigned,
+                coarse_limit=args.coarse_limit,
+                limit_per_reference=args.limit_per_reference,
+                limit=args.limit,
+            )
+            print_aggregated_reference_source_matches(
+                source_query=args.reference_source,
+                range_start=args.target_range_start,
+                range_end=args.target_range_end,
+                only_unassigned=args.only_unassigned,
+                specs=args.reference,
+                aggregates=aggregates,
+                missing_specs=missing_specs,
+            )
+            return
+
         spec = args.reference[0]
         reference_window = select_reference_window(spec, args.reference_source)
         candidates = list(
