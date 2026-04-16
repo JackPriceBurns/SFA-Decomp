@@ -5,6 +5,17 @@
 
 #include "dolphin/dsp/__dsp.h"
 
+typedef struct DSPTaskStrings {
+    char bootingTask[0x20];
+    char iramMmemAddr[0x30];
+    char iramDspAddr[0x30];
+    char iramLength[0x30];
+    char dramMmemAddr[0x30];
+    char startVector[0x60];
+} DSPTaskStrings;
+
+extern const DSPTaskStrings sDSPTaskStrings;
+
 extern DSPTaskInfo* __DSP_curr_task;
 extern DSPTaskInfo* __DSP_first_task;
 extern DSPTaskInfo* __DSP_last_task;
@@ -272,12 +283,12 @@ void __DSP_boot_task(DSPTaskInfo* task) {
     while (DSPCheckMailToDSP() != 0)
         ;
 
-    __DSP_debug_printf("DSP is booting task: 0x%08X\n", (u32)task);
-    __DSP_debug_printf("__DSP_boot_task()  : IRAM MMEM ADDR: 0x%08X\n", (u32)task->iram_mmem_addr);
-    __DSP_debug_printf("__DSP_boot_task()  : IRAM DSP ADDR : 0x%08X\n", task->iram_addr);
-    __DSP_debug_printf("__DSP_boot_task()  : IRAM LENGTH   : 0x%08X\n", task->iram_length);
-    __DSP_debug_printf("__DSP_boot_task()  : DRAM MMEM ADDR: 0x%08X\n", task->dram_length);
-    __DSP_debug_printf("__DSP_boot_task()  : Start Vector  : 0x%08X\n", task->dsp_init_vector);
+    __DSP_debug_printf(sDSPTaskStrings.bootingTask, (u32)task);
+    __DSP_debug_printf(sDSPTaskStrings.iramMmemAddr, (u32)task->iram_mmem_addr);
+    __DSP_debug_printf(sDSPTaskStrings.iramDspAddr, task->iram_addr);
+    __DSP_debug_printf(sDSPTaskStrings.iramLength, task->iram_length);
+    __DSP_debug_printf(sDSPTaskStrings.dramMmemAddr, task->dram_length);
+    __DSP_debug_printf(sDSPTaskStrings.startVector, task->dsp_init_vector);
 }
 
 void __DSP_add_task(DSPTaskInfo* task) {
