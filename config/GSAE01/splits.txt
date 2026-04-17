@@ -46,6 +46,9 @@ main/dll/df_partfx.c:
 main/dll/objfsa.c:
 	.text       start:0x800D8FE0 end:0x800E556C
 
+main/dll/curves.c:
+	.text       start:0x800E556C end:0x800E56A4
+
 main/dll/gameplay.c:
 	.text       start:0x800E56A4 end:0x800F49C8
 
@@ -378,6 +381,9 @@ main/dll/dll_CD.c:
 
 main/dll/dll_CE.c:
 	.text       start:0x80102D24 end:0x80102D3C
+
+main/dll/CAM/camcontrol.c:
+	.text       start:0x80102D3C end:0x80103130
 
 dolphin/ax/AX.c:
 	.text       start:0x801177DC end:0x8011784C
