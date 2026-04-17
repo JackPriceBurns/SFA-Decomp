@@ -6,7 +6,7 @@
  * source-file target that can be filled in during decomp work.
  *
  * Retail source name: curves.c
- * Output path: dll/curves.c
+ * Output path: main/dll/curves.c
  * Confidence: exact
  * Score: 32
  *

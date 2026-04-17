@@ -6,7 +6,7 @@
  * source-file target that can be filled in during decomp work.
  *
  * Retail source name: laser.c
- * Output path: dll/CF/laser.c
+ * Output path: main/dll/CF/laser.c
  * Confidence: exact
  * Score: 33
  *

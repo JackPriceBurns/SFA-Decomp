@@ -6,7 +6,7 @@
  * source-file target that can be filled in during decomp work.
  *
  * Retail source name: camcontrol.c
- * Output path: dll/CAM/camcontrol.c
+ * Output path: main/dll/CAM/camcontrol.c
  * Confidence: exact
  * Score: 31
  *
