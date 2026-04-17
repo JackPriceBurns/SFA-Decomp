@@ -181,6 +181,10 @@ class WindowSignature:
     def max_function_size(self) -> int:
         return max(function.size for function in self.functions)
 
+    @cached_property
+    def average_function_size(self) -> float:
+        return sum(function.size for function in self.functions) / len(self.functions)
+
 
 @dataclass(frozen=True)
 class MatchResult:
@@ -254,6 +258,10 @@ class RawWindow:
     @cached_property
     def max_function_size(self) -> int:
         return max(self.size_vector)
+
+    @cached_property
+    def average_function_size(self) -> float:
+        return sum(self.size_vector) / len(self.size_vector)
 
 
 def parse_reference_spec(value: str) -> ReferenceSpec:
@@ -594,6 +602,7 @@ def collect_reference_window_metadata(
     min_functions: int = 1,
     min_span: int = 0,
     min_largest_function: int = 0,
+    min_average_function_size: int = 0,
 ) -> list[tuple[str, tuple[tuple[int, int, str], ...]]]:
     symbols = load_reference_symbols(spec.symbols_path)
     windows: list[tuple[str, tuple[tuple[int, int, str], ...]]] = []
@@ -610,10 +619,12 @@ def collect_reference_window_metadata(
             continue
         span = functions[-1][1] - functions[0][0]
         max_function_size = max(end - start for start, end, _ in functions)
+        average_function_size = sum(end - start for start, end, _ in functions) / len(functions)
         if (
             len(functions) < min_functions
             or span < min_span
             or max_function_size < min_largest_function
+            or average_function_size < min_average_function_size
         ):
             continue
         windows.append((split_path, functions))
@@ -626,6 +637,7 @@ def collect_reference_raw_windows(
     min_functions: int = 1,
     min_span: int = 0,
     min_largest_function: int = 0,
+    min_average_function_size: int = 0,
 ) -> list[RawWindow]:
     return [
         RawWindow(
@@ -637,10 +649,11 @@ def collect_reference_raw_windows(
         )
         for split_path, functions in collect_reference_window_metadata(
             spec,
-                path_filters,
-                min_functions=min_functions,
-                min_span=min_span,
-                min_largest_function=min_largest_function,
+            path_filters,
+            min_functions=min_functions,
+            min_span=min_span,
+            min_largest_function=min_largest_function,
+            min_average_function_size=min_average_function_size,
         )
     ]
 
@@ -679,15 +692,17 @@ def collect_reference_windows(
     min_functions: int = 1,
     min_span: int = 0,
     min_largest_function: int = 0,
+    min_average_function_size: int = 0,
 ) -> list[WindowSignature]:
     dol = load_dol(spec.dol_path)
     windows: list[WindowSignature] = []
     for split_path, functions in collect_reference_window_metadata(
         spec,
-            path_filters,
-            min_functions=min_functions,
-            min_span=min_span,
-            min_largest_function=min_largest_function,
+        path_filters,
+        min_functions=min_functions,
+        min_span=min_span,
+        min_largest_function=min_largest_function,
+        min_average_function_size=min_average_function_size,
         ):
         windows.append(
             build_window_signature(
@@ -788,6 +803,7 @@ def iter_target_windows(
     range_start: int | None,
     range_end: int | None,
     only_unassigned: bool = False,
+    min_average_function_size: int = 0,
 ) -> tuple[WindowSignature, ...]:
     functions = load_text_functions(version)
     if function_count <= 0 or function_count > len(functions):
@@ -805,19 +821,20 @@ def iter_target_windows(
             break
         if only_unassigned and ownership_prefix[index + function_count] != ownership_prefix[index]:
             continue
-        windows.append(
-            WindowSignature(
-                label=version,
-                source_path=f"range:0x{window_start:08X}-0x{window_end:08X}",
-                game=version,
-                start=window_start,
-                end=window_end,
-                functions=tuple(
-                    build_target_function_signature(version, dol_path, function.start, function.end, function.name)
-                    for function in chunk
-                ),
-            )
+        window = WindowSignature(
+            label=version,
+            source_path=f"range:0x{window_start:08X}-0x{window_end:08X}",
+            game=version,
+            start=window_start,
+            end=window_end,
+            functions=tuple(
+                build_target_function_signature(version, dol_path, function.start, function.end, function.name)
+                for function in chunk
+            ),
         )
+        if window.average_function_size < min_average_function_size:
+            continue
+        windows.append(window)
     return tuple(windows)
 
 
@@ -917,6 +934,7 @@ def discover_reference_hits(
     min_functions: int,
     min_span: int,
     min_largest_function: int,
+    min_average_function_size: int,
 ) -> list[DiscoveryHit]:
     target_cache: dict[int, tuple[RawWindow, ...]] = {}
     best_by_target: dict[tuple[int, int], DiscoveryHit] = {}
@@ -929,6 +947,7 @@ def discover_reference_hits(
             reference.function_count < min_functions
             or reference.span < min_span
             or reference.max_function_size < min_largest_function
+            or reference.average_function_size < min_average_function_size
         ):
             continue
         target_windows = target_cache.get(reference.function_count)
@@ -953,6 +972,8 @@ def discover_reference_hits(
                     function_defs=tuple((function.start, function.end, function.name) for function in chunk),
                 )
                 if raw_window.max_function_size < min_largest_function:
+                    continue
+                if raw_window.average_function_size < min_average_function_size:
                     continue
                 raw_windows.append(raw_window)
             target_windows = tuple(raw_windows)
@@ -1126,6 +1147,7 @@ def aggregate_reference_source_matches(
     coarse_limit: int | None,
     limit_per_reference: int,
     limit: int,
+    min_average_function_size: int,
 ) -> tuple[list[ReferenceSourceAggregate], list[str]]:
     grouped_hits: dict[tuple[int, int], list[ReferenceSourceHit]] = {}
     missing_specs: list[str] = []
@@ -1145,6 +1167,7 @@ def aggregate_reference_source_matches(
                 range_start=target_range_start,
                 range_end=target_range_end,
                 only_unassigned=only_unassigned,
+                min_average_function_size=min_average_function_size,
             )
         )
         if not candidates:
@@ -1343,6 +1366,15 @@ def parse_args() -> argparse.Namespace:
         help="Minimum size of the largest function in a candidate window for --discover mode",
     )
     parser.add_argument(
+        "--min-average-function-size",
+        type=parse_int,
+        default=0,
+        help=(
+            "Minimum average function size in a candidate window; useful for filtering out "
+            "stub-heavy files"
+        ),
+    )
+    parser.add_argument(
         "--min-function-size",
         type=parse_int,
         default=0,
@@ -1424,6 +1456,7 @@ def main() -> None:
                         min_functions=args.min_functions,
                         min_span=args.min_span,
                         min_largest_function=args.min_largest_function,
+                        min_average_function_size=args.min_average_function_size,
                     )
                 )
             
@@ -1443,6 +1476,7 @@ def main() -> None:
             min_functions=effective_min_functions,
             min_span=effective_min_span,
             min_largest_function=effective_min_largest_function,
+            min_average_function_size=args.min_average_function_size,
         )
         print_discovery_hits(
             version=args.version,
@@ -1468,6 +1502,7 @@ def main() -> None:
                 coarse_limit=args.coarse_limit,
                 limit_per_reference=args.limit_per_reference,
                 limit=args.limit,
+                min_average_function_size=args.min_average_function_size,
             )
             print_aggregated_reference_source_matches(
                 version=args.version,
@@ -1491,6 +1526,7 @@ def main() -> None:
                 range_start=args.target_range_start,
                 range_end=args.target_range_end,
                 only_unassigned=args.only_unassigned,
+                min_average_function_size=args.min_average_function_size,
             )
         )
         if not candidates:
@@ -1532,7 +1568,13 @@ def main() -> None:
 
     candidates: list[WindowSignature] = []
     for spec in args.reference:
-        candidates.extend(collect_reference_windows(spec, path_filters))
+        candidates.extend(
+            collect_reference_windows(
+                spec,
+                path_filters,
+                min_average_function_size=args.min_average_function_size,
+            )
+        )
     if not candidates:
         raise SystemExit("No reference windows matched the requested filters")
 
