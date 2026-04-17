@@ -533,19 +533,34 @@ main/dll/debug/dimenu.c:
 	.text       start:0x8011CD58 end:0x8011DC94
 
 main/dll/tricky.c:
-	.text       start:0x8011DC94 end:0x8012434C
+	.text       start:0x8011DC94 end:0x80121F30
 
-main/dll/CF/robotpatrol.c:
-	.text       start:0x8012434C end:0x801265B0
+main/dll/maybeTemplate.c:
+	.text       start:0x80121F30 end:0x8012434C
+
+main/dll/baddie/balloonBaddie.c:
+	.text       start:0x8012434C end:0x80125708
+
+main/dll/baddie/swarmBaddie.c:
+	.text       start:0x80125708 end:0x801265B0
+
+main/dll/baddie/wispBaddie.c:
+	.text       start:0x801265B0 end:0x80128260
 
 main/dll/baddie/baby_snowworm.c:
-	.text       start:0x801265B0 end:0x80130A6C
+	.text       start:0x80128260 end:0x8012EBBC
 
 main/dll/baddie/wall_crawler.c:
-	.text       start:0x80130A6C end:0x8013209C
+	.text       start:0x8012EBBC end:0x8012FD0C
+
+main/dll/baddie/dll_DB.c:
+	.text       start:0x8012FD0C end:0x801309A8
+
+main/dll/baddie/dll_DA.c:
+	.text       start:0x801309A8 end:0x80131078
 
 main/dll/baddie/TumbleweedBush.c:
-	.text       start:0x8013209C end:0x801338A4
+	.text       start:0x80131078 end:0x8013209C
 
 main/dll/baddie/Tumbleweed.c:
 	.text       start:0x801338A4 end:0x80139724
