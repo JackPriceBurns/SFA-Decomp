@@ -1361,10 +1361,10 @@ dolphin/exi/EXIBios.c:
 	.text       start:0x802539E0 end:0x80254E78
 
 dolphin/exi/EXIUart.c:
-	.text       start:0x80254E78 end:0x802554D0
+	.text       start:0x80254E78 end:0x80255430
 
 dolphin/gx/GXInit.c:
-	.text       start:0x802554D0 end:0x8025665C
+	.text       start:0x80255430 end:0x8025665C
 
 dolphin/gx/GXFifo.c:
 	.text       start:0x8025665C end:0x80256F84
