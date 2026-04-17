@@ -67,6 +67,210 @@ dolphin/TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.c:
 main/dll/DIM/DIMboss.c:
 	.text       start:0x801BD0E8 end:0x801BDA04
 
+main/dll/DIM/DIMbosstonsil.c:
+	.text       start:0x801BDA04 end:0x801BDD60
+
+main/dll/DIM/dll_223.c:
+	.text       start:0x801BDD60 end:0x801BE2A4
+
+main/dll/DIM/DIMbossspit.c:
+	.text       start:0x801BE2A4 end:0x801BE4D4
+
+main/dll/dll_224.c:
+	.text       start:0x801BE4D4 end:0x801BE750
+
+main/dll/dll_226.c:
+	.text       start:0x801BE750 end:0x801BEA00
+
+main/dll/dll_227.c:
+	.text       start:0x801BEA00 end:0x801BEE20
+
+main/dll/riverFlowRelated018D.c:
+	.text       start:0x801BEE20 end:0x801BEEAC
+
+main/dll/dll_18E.c:
+	.text       start:0x801BEEAC end:0x801BF224
+
+main/dll/DF/rope.c:
+	.text       start:0x801BF224 end:0x801C05A0
+
+main/dll/DF/DFcradle.c:
+	.text       start:0x801C05A0 end:0x801C0F60
+
+main/dll/DF/DFpulley.c:
+	.text       start:0x801C0F60 end:0x801C11AC
+
+main/dll/DF/DFbarrel.c:
+	.text       start:0x801C11AC end:0x801C1414
+
+main/dll/DF/DFbarrelanim.c:
+	.text       start:0x801C1414 end:0x801C17EC
+
+main/dll/DF/dll_194.c:
+	.text       start:0x801C17EC end:0x801C1BCC
+
+main/dll/DF/dll_195.c:
+	.text       start:0x801C1BCC end:0x801C1BF4
+
+main/dll/DF/dll_196.c:
+	.text       start:0x801C1BF4 end:0x801C1F24
+
+main/dll/DF/DFmole.c:
+	.text       start:0x801C1F24 end:0x801C21A4
+
+main/dll/DF/DFwhirlpool.c:
+	.text       start:0x801C21A4 end:0x801C2460
+
+main/dll/DF/dll_198.c:
+	.text       start:0x801C2460 end:0x801C2828
+
+main/dll/DF/dll_199.c:
+	.text       start:0x801C2828 end:0x801C282C
+
+main/dll/DF/DFlantern.c:
+	.text       start:0x801C282C end:0x801C2EC8
+
+main/dll/dll_19C.c:
+	.text       start:0x801C2EC8 end:0x801C3CC0
+
+main/dll/dll_19E.c:
+	.text       start:0x801C3CC0 end:0x801C446C
+
+main/dll/creator19D.c:
+	.text       start:0x801C446C end:0x801C4B54
+
+main/dll/laser19F.c:
+	.text       start:0x801C4B54 end:0x801C54D4
+
+main/dll/mmshrine/shrine.c:
+	.text       start:0x801C54D4 end:0x801C5EE0
+
+main/dll/mmshrine/animobj1C0.c:
+	.text       start:0x801C5EE0 end:0x801C6298
+
+main/dll/mmshrine/torch1C1.c:
+	.text       start:0x801C6298 end:0x801C666C
+
+main/dll/mmshrine/shrine1C2.c:
+	.text       start:0x801C666C end:0x801C7CD8
+
+main/dll/creator1C4.c:
+	.text       start:0x801C7CD8 end:0x801C8524
+
+main/dll/dll_1C5.c:
+	.text       start:0x801C8524 end:0x801C8FE8
+
+main/dll/creator1C6.c:
+	.text       start:0x801C8FE8 end:0x801C9470
+
+main/dll/scene1C7.c:
+	.text       start:0x801C9470 end:0x801C95F4
+
+main/dll/flybaddie.c:
+	.text       start:0x801C95F4 end:0x801C9AF8
+
+main/dll/colrise.c:
+	.text       start:0x801C9AF8 end:0x801C9C14
+
+main/dll/cup1C3.c:
+	.text       start:0x801C9C14 end:0x801CA6B8
+
+main/dll/dll_1CA.c:
+	.text       start:0x801CA6B8 end:0x801CB288
+
+main/dll/symbol.c:
+	.text       start:0x801CB288 end:0x801CB334
+
+main/dll/dll_1CC.c:
+	.text       start:0x801CB334 end:0x801CBBE8
+
+main/dll/torch1CD.c:
+	.text       start:0x801CBBE8 end:0x801CC33C
+
+main/dll/shrine1CE.c:
+	.text       start:0x801CC33C end:0x801CCFE0
+
+main/dll/creator1CF.c:
+	.text       start:0x801CCFE0 end:0x801CD480
+
+main/dll/dll_1D0.c:
+	.text       start:0x801CD480 end:0x801CD80C
+
+main/dll/dll_1D1.c:
+	.text       start:0x801CD80C end:0x801CDC2C
+
+main/dll/ped.c:
+	.text       start:0x801CDC2C end:0x801CE1A0
+
+main/dll/dll_1D3.c:
+	.text       start:0x801CE1A0 end:0x801CEFC8
+
+main/dll/creator1D4.c:
+	.text       start:0x801CEFC8 end:0x801CF2E0
+
+main/dll/dll_1D5.c:
+	.text       start:0x801CF2E0 end:0x801CFAC0
+
+main/dll/creator1D6.c:
+	.text       start:0x801CFAC0 end:0x801CFDB8
+
+main/dll/flybaddie1D7.c:
+	.text       start:0x801CFDB8 end:0x801D0494
+
+main/dll/projball1D8.c:
+	.text       start:0x801D0494 end:0x801D0AB0
+
+main/dll/torch1D9.c:
+	.text       start:0x801D0AB0 end:0x801D0E2C
+
+main/dll/NW/NWsfx.c:
+	.text       start:0x801D0E2C end:0x801D188C
+
+main/dll/NW/dll_1DB.c:
+	.text       start:0x801D188C end:0x801D1B4C
+
+main/dll/NW/dll_1DC.c:
+	.text       start:0x801D1B4C end:0x801D1B54
+
+main/dll/NW/NWmammoth.c:
+	.text       start:0x801D1B54 end:0x801D21EC
+
+main/dll/NW/NWtricky.c:
+	.text       start:0x801D21EC end:0x801D23AC
+
+main/dll/dll_1DF.c:
+	.text       start:0x801D23AC end:0x801D2410
+
+main/dll/dll_1E0.c:
+	.text       start:0x801D2410 end:0x801D2414
+
+main/dll/dll_1E1.c:
+	.text       start:0x801D2414 end:0x801D2DA8
+
+main/dll/dll_1E2.c:
+	.text       start:0x801D2DA8 end:0x801D2E54
+
+main/dll/SH/SHmushroom.c:
+	.text       start:0x801D2E54 end:0x801D3134
+
+main/dll/SH/SHkillermushroom.c:
+	.text       start:0x801D3134 end:0x801D3B8C
+
+main/dll/SH/SHrocketmushroom.c:
+	.text       start:0x801D3B8C end:0x801D441C
+
+main/dll/SH/SHspore.c:
+	.text       start:0x801D441C end:0x801D4D8C
+
+main/dll/SH/dll_1E7.c:
+	.text       start:0x801D4D8C end:0x801D528C
+
+main/dll/SH/lily.c:
+	.text       start:0x801D528C end:0x801D5470
+
+main/dll/SH/dll_1E8.c:
+	.text       start:0x801D5470 end:0x801D5764
+
 main/dll/SH/SHthorntail.c:
 	.text       start:0x801D5764 end:0x801D5AFC
 
