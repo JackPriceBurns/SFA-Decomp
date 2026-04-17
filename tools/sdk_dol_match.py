@@ -102,6 +102,7 @@ SDK_ROOTS = {
 PATH_ALIASES = {
     "dolphin/dvd/dvdfatal.c": "dolphin/dvd/dvdFatal.c",
     "dolphin/pad/PadClamp.c": "dolphin/pad/Padclamp.c",
+    "dolphin/mtx/mtx44vec.c": "dolphin/mtx/mtxvec.c",
 }
 
 
@@ -351,12 +352,22 @@ def parse_int(value: str) -> int:
 
 def normalize_path(value: str) -> str:
     path = value.replace("\\", "/").strip()
+    for prefix in ("SDK/", "Dolphin/", "dolphin/"):
+        if path.startswith(prefix):
+            path = path[len(prefix) :]
+            break
     if path.startswith("src/"):
         rel = path[len("src/") :]
         if "/" in rel:
             root, rest = rel.split("/", 1)
             if root in SDK_ROOTS:
                 path = f"dolphin/{root}/{rest}"
+    elif "/" in path:
+        root, rest = path.split("/", 1)
+        if root in SDK_ROOTS:
+            if root == "TRK_MINNOW_DOLPHIN":
+                rest = Path(rest).name
+            path = f"dolphin/{root}/{rest}"
     path_obj = Path(path)
     suffix_lower = path_obj.suffix.lower()
     if suffix_lower in {".cpp", ".cp", ".cxx"}:
