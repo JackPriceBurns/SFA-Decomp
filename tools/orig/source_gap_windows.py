@@ -23,6 +23,7 @@ from tools.orig.source_recovery import parse_debug_split_text_ranges
 
 
 BROAD_EXACT_INTERVAL_LIMIT = 128
+BROAD_HINTED_PATH_LIMIT = 128
 
 
 @dataclass(frozen=True)
@@ -571,6 +572,9 @@ def summary_markdown(plans: list[GapWindowPlan], limit: int) -> str:
     lines.append(
         f"- Broad exact-interval corridors: `python tools/orig/source_gap_windows.py --broad-exact-intervals`"
     )
+    lines.append(
+        f"- Broad hint-driven corridors: `python tools/orig/source_gap_windows.py --broad-hinted-paths`"
+    )
     lines.append("- CSV dump: `python tools/orig/source_gap_windows.py --format csv`")
     lines.append("- JSON dump: `python tools/orig/source_gap_windows.py --format json`")
     lines.append("- Write window briefs: `python tools/orig/source_gap_windows.py --materialize-all`")
@@ -728,6 +732,14 @@ def build_argument_parser() -> argparse.ArgumentParser:
             "like DIMBoss -> SHthorntail can be projected without spelling out a custom limit."
         ),
     )
+    parser.add_argument(
+        "--broad-hinted-paths",
+        action="store_true",
+        help=(
+            "Raise --hinted-path-limit to a broader exploratory preset so large global-unique "
+            "hint packets like SHthorntail -> laser can be projected without spelling out a custom limit."
+        ),
+    )
     parser.add_argument("--materialize-top", type=int, default=0, help="Write the top N visible window briefs under --output-root.")
     parser.add_argument("--materialize-all", action="store_true", help="Write every visible window brief under --output-root.")
     parser.add_argument("--output-root", type=Path, default=Path("docs/orig/source_gap_window_briefs"), help="Destination directory for generated gap-window briefs.")
@@ -740,6 +752,8 @@ def main() -> None:
 
     if args.broad_exact_intervals:
         args.exact_interval_limit = max(args.exact_interval_limit, BROAD_EXACT_INTERVAL_LIMIT)
+    if args.broad_hinted_paths:
+        args.hinted_path_limit = max(args.hinted_path_limit, BROAD_HINTED_PATH_LIMIT)
 
     groups = build_groups(
         dol=args.dol,

@@ -31,6 +31,7 @@ CONFIDENCE_ORDER = {
 }
 
 BROAD_EXACT_LAYOUT_LIMIT = 128
+BROAD_HINTED_LAYOUT_LIMIT = 128
 
 
 @dataclass(frozen=True)
@@ -491,6 +492,7 @@ def summary_markdown(
     lines.append(
         f"- Broad exact-interval layouts: `python tools/orig/source_layout.py --broad-exact-layout`"
     )
+    lines.append("- Broad hint-driven layouts: `python tools/orig/source_layout.py --broad-hinted-layout`")
     lines.append("- CSV dump: `python tools/orig/source_layout.py --format csv`")
     lines.append("- JSON dump: `python tools/orig/source_layout.py --format json`")
     lines.append("- Write layout briefs: `python tools/orig/source_layout.py --materialize-all`")
@@ -674,6 +676,14 @@ def build_argument_parser() -> argparse.ArgumentParser:
             "corridor windows can be flattened without spelling out a custom limit."
         ),
     )
+    parser.add_argument(
+        "--broad-hinted-layout",
+        action="store_true",
+        help=(
+            "Raise --hinted-path-limit to a broader exploratory preset so large global-unique "
+            "hint packets can be flattened without spelling out a custom limit."
+        ),
+    )
     return parser
 
 
@@ -683,6 +693,8 @@ def main() -> None:
 
     if args.broad_exact_layout:
         args.exact_interval_limit = max(args.exact_interval_limit, BROAD_EXACT_LAYOUT_LIMIT)
+    if args.broad_hinted_layout:
+        args.hinted_path_limit = max(args.hinted_path_limit, BROAD_HINTED_LAYOUT_LIMIT)
 
     groups = build_groups(
         dol=args.dol,
