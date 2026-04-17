@@ -47,16 +47,337 @@ main/dll/objfsa.c:
 	.text       start:0x800D8FE0 end:0x800E556C
 
 main/dll/gameplay.c:
-	.text       start:0x800E56A4 end:0x800FD9E0
+	.text       start:0x800E56A4 end:0x800F49C8
+
+main/dll/foodbag.c:
+	.text       start:0x800F49C8 end:0x800FA86C
+
+main/dll/savegame.c:
+	.text       start:0x800FA86C end:0x800FC84C
+
+main/dll/screens.c:
+	.text       start:0x800FC84C end:0x800FD9D8
 
 main/dll/pickup.c:
-	.text       start:0x800FD9E0 end:0x80102CA0
+	.text       start:0x800FD9D8 end:0x80100558
 
 main/dll/modanimeflash1.c:
-	.text       start:0x80102CA0 end:0x80102CC8
+	.text       start:0x80100558 end:0x8010055C
+
+main/dll/dll_66.c:
+	.text       start:0x8010055C end:0x801007E4
+
+main/dll/modgfx67.c:
+	.text       start:0x801007E4 end:0x801007E8
+
+main/dll/dll_68.c:
+	.text       start:0x801007E8 end:0x801007EC
+
+main/dll/dll_69.c:
+	.text       start:0x801007EC end:0x8010081C
+
+main/dll/dll_6A.c:
+	.text       start:0x8010081C end:0x80100820
+
+main/dll/dll_6B.c:
+	.text       start:0x80100820 end:0x80100824
+
+main/dll/dll_6C.c:
+	.text       start:0x80100824 end:0x80100854
+
+main/dll/dll_6D.c:
+	.text       start:0x80100854 end:0x80100858
+
+main/dll/dll_6E.c:
+	.text       start:0x80100858 end:0x8010085C
+
+main/dll/dll_6F.c:
+	.text       start:0x8010085C end:0x8010088C
+
+main/dll/dll_70.c:
+	.text       start:0x8010088C end:0x80100890
+
+main/dll/dll_71.c:
+	.text       start:0x80100890 end:0x80100894
+
+main/dll/dll_AF.c:
+	.text       start:0x80100894 end:0x801008C4
+
+main/dll/dll_72.c:
+	.text       start:0x801008C4 end:0x801008C8
+
+main/dll/dll_73.c:
+	.text       start:0x801008C8 end:0x801008CC
+
+main/dll/dll_74.c:
+	.text       start:0x801008CC end:0x801008FC
+
+main/dll/dll_64.c:
+	.text       start:0x801008FC end:0x80100900
+
+main/dll/dll_75.c:
+	.text       start:0x80100900 end:0x80100904
+
+main/dll/dll_76.c:
+	.text       start:0x80100904 end:0x80100934
+
+main/dll/dll_77.c:
+	.text       start:0x80100934 end:0x80100938
+
+main/dll/dll_78.c:
+	.text       start:0x80100938 end:0x8010093C
+
+main/dll/dll_79.c:
+	.text       start:0x8010093C end:0x8010096C
+
+main/dll/dll_7A.c:
+	.text       start:0x8010096C end:0x80100970
+
+main/dll/dll_7B.c:
+	.text       start:0x80100970 end:0x80100974
+
+main/dll/dll_7C.c:
+	.text       start:0x80100974 end:0x801009A4
+
+main/dll/dll_7D.c:
+	.text       start:0x801009A4 end:0x801009A8
+
+main/dll/dll_7E.c:
+	.text       start:0x801009A8 end:0x801009AC
+
+main/dll/dll_7F.c:
+	.text       start:0x801009AC end:0x801009DC
+
+main/dll/dll_80.c:
+	.text       start:0x801009DC end:0x801009E0
+
+main/dll/dll_81.c:
+	.text       start:0x801009E0 end:0x801009E4
+
+main/dll/dll_82.c:
+	.text       start:0x801009E4 end:0x80100A14
+
+main/dll/dll_83.c:
+	.text       start:0x80100A14 end:0x80100A18
+
+main/dll/dll_84.c:
+	.text       start:0x80100A18 end:0x80100A1C
+
+main/dll/dll_85.c:
+	.text       start:0x80100A1C end:0x80100A4C
 
 main/dll/modcloudrunner2.c:
-	.text       start:0x80102CC8 end:0x80102D3C
+	.text       start:0x80100A4C end:0x80100A50
+
+main/dll/dll_87.c:
+	.text       start:0x80100A50 end:0x80100A54
+
+main/dll/dll_88.c:
+	.text       start:0x80100A54 end:0x80100A84
+
+main/dll/dll_89.c:
+	.text       start:0x80100A84 end:0x80100A88
+
+main/dll/dll_8A.c:
+	.text       start:0x80100A88 end:0x80100A8C
+
+main/dll/dll_8B.c:
+	.text       start:0x80100A8C end:0x80100ABC
+
+main/dll/dll_8C.c:
+	.text       start:0x80100ABC end:0x80100AC0
+
+main/dll/dll_8D.c:
+	.text       start:0x80100AC0 end:0x80100AC4
+
+main/dll/dll_8E.c:
+	.text       start:0x80100AC4 end:0x80100AF4
+
+main/dll/dll_8F.c:
+	.text       start:0x80100AF4 end:0x80100AF8
+
+main/dll/dll_90.c:
+	.text       start:0x80100AF8 end:0x80100AFC
+
+main/dll/dll_91.c:
+	.text       start:0x80100AFC end:0x80100B2C
+
+main/dll/dll_92.c:
+	.text       start:0x80100B2C end:0x80100B30
+
+main/dll/dll_93.c:
+	.text       start:0x80100B30 end:0x80100B34
+
+main/dll/dll_94.c:
+	.text       start:0x80100B34 end:0x80100B64
+
+main/dll/dll_95.c:
+	.text       start:0x80100B64 end:0x80100B68
+
+main/dll/dll_96.c:
+	.text       start:0x80100B68 end:0x80100B6C
+
+main/dll/dll_97.c:
+	.text       start:0x80100B6C end:0x80100B9C
+
+main/dll/dll_98.c:
+	.text       start:0x80100B9C end:0x80100BA0
+
+main/dll/dll_99.c:
+	.text       start:0x80100BA0 end:0x80100BA4
+
+main/dll/dll_9A.c:
+	.text       start:0x80100BA4 end:0x80100BD4
+
+main/dll/dll_9B.c:
+	.text       start:0x80100BD4 end:0x80100BD8
+
+main/dll/dll_9C.c:
+	.text       start:0x80100BD8 end:0x80100BDC
+
+main/dll/dll_9D.c:
+	.text       start:0x80100BDC end:0x80100C0C
+
+main/dll/dll_9E.c:
+	.text       start:0x80100C0C end:0x80100C10
+
+main/dll/dll_9F.c:
+	.text       start:0x80100C10 end:0x80100C14
+
+main/dll/dll_A0.c:
+	.text       start:0x80100C14 end:0x80100C44
+
+main/dll/dll_A1.c:
+	.text       start:0x80100C44 end:0x80100C48
+
+main/dll/dll_A2.c:
+	.text       start:0x80100C48 end:0x80100C4C
+
+main/dll/dll_A3.c:
+	.text       start:0x80100C4C end:0x80100C7C
+
+main/dll/dll_A4.c:
+	.text       start:0x80100C7C end:0x80100C80
+
+main/dll/dll_A5.c:
+	.text       start:0x80100C80 end:0x80100C84
+
+main/dll/dll_A6.c:
+	.text       start:0x80100C84 end:0x80100CB4
+
+main/dll/dll_A7.c:
+	.text       start:0x80100CB4 end:0x80100CB8
+
+main/dll/dll_A8.c:
+	.text       start:0x80100CB8 end:0x80100CBC
+
+main/dll/dll_A9.c:
+	.text       start:0x80100CBC end:0x80100CEC
+
+main/dll/dll_AA.c:
+	.text       start:0x80100CEC end:0x80100CF0
+
+main/dll/dll_AB.c:
+	.text       start:0x80100CF0 end:0x80100CF4
+
+main/dll/dll_AC.c:
+	.text       start:0x80100CF4 end:0x80100D24
+
+main/dll/dll_AD.c:
+	.text       start:0x80100D24 end:0x80100D28
+
+main/dll/dll_AE.c:
+	.text       start:0x80100D28 end:0x80100D2C
+
+main/dll/dll_B0.c:
+	.text       start:0x80100D2C end:0x80100D38
+
+main/dll/dll_B1.c:
+	.text       start:0x80100D38 end:0x80100D40
+
+main/dll/dll_B2.c:
+	.text       start:0x80100D40 end:0x80100F2C
+
+main/dll/dll_B3.c:
+	.text       start:0x80100F2C end:0x80101068
+
+main/dll/dll_B4.c:
+	.text       start:0x80101068 end:0x8010123C
+
+main/dll/dll_B5.c:
+	.text       start:0x8010123C end:0x80101350
+
+main/dll/dll_B6.c:
+	.text       start:0x80101350 end:0x80101844
+
+main/dll/dll_B7.c:
+	.text       start:0x80101844 end:0x8010192C
+
+main/dll/dll_B8.c:
+	.text       start:0x8010192C end:0x80101B44
+
+main/dll/dll_B9.c:
+	.text       start:0x80101B44 end:0x80101C10
+
+main/dll/dll_BA.c:
+	.text       start:0x80101C10 end:0x80101C1C
+
+main/dll/dll_BB.c:
+	.text       start:0x80101C1C end:0x80102158
+
+main/dll/dll_BC.c:
+	.text       start:0x80102158 end:0x801022E8
+
+main/dll/dll_BD.c:
+	.text       start:0x801022E8 end:0x80102304
+
+main/dll/dll_BF.c:
+	.text       start:0x80102304 end:0x8010233C
+
+main/dll/dll_C4.c:
+	.text       start:0x8010233C end:0x80102354
+
+main/dll/dll_C5.c:
+	.text       start:0x80102354 end:0x801023A8
+
+main/dll/dll_C6.c:
+	.text       start:0x801023A8 end:0x80102440
+
+main/dll/dll_C0.c:
+	.text       start:0x80102440 end:0x801024E8
+
+main/dll/dll_C1.c:
+	.text       start:0x801024E8 end:0x80102B5C
+
+main/dll/dll_BE.c:
+	.text       start:0x80102B5C end:0x80102B78
+
+main/dll/dll_C2.c:
+	.text       start:0x80102B78 end:0x80102B84
+
+main/dll/dll_C3.c:
+	.text       start:0x80102B84 end:0x80102B98
+
+main/dll/dll_C7.c:
+	.text       start:0x80102B98 end:0x80102BA4
+
+main/dll/dll_C8.c:
+	.text       start:0x80102BA4 end:0x80102BB0
+
+main/dll/dll_C9.c:
+	.text       start:0x80102BB0 end:0x80102CA0
+
+main/dll/dll_CB.c:
+	.text       start:0x80102CA0 end:0x80102CC8
+
+main/dll/dll_CC.c:
+	.text       start:0x80102CC8 end:0x80102CFC
+
+main/dll/dll_CD.c:
+	.text       start:0x80102CFC end:0x80102D24
+
+main/dll/dll_CE.c:
+	.text       start:0x80102D24 end:0x80102D3C
 
 dolphin/ax/AX.c:
 	.text       start:0x801177DC end:0x8011784C
