@@ -599,10 +599,19 @@ main/dll/pressureSwitch.c:
 	.text       start:0x8014E604 end:0x8014FAB4
 
 main/dll/seqObj.c:
-	.text       start:0x8014FAB4 end:0x80150DA4
+	.text       start:0x8014FAB4 end:0x80150830
+
+main/dll/newSeqObj.c:
+	.text       start:0x80150830 end:0x80151370
+
+main/dll/seqObj11D.c:
+	.text       start:0x80151370 end:0x801520FC
+
+main/dll/seqObj11E.c:
+	.text       start:0x801520FC end:0x80152F40
 
 main/dll/magicPlant.c:
-	.text       start:0x80153AEC end:0x80154D1C
+	.text       start:0x80152F40 end:0x80154D1C
 
 main/dll/duster.c:
 	.text       start:0x80154D1C end:0x801570E0
