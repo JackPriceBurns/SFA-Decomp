@@ -220,6 +220,21 @@ def choose_stub_decisions(
     return generated, skipped
 
 
+def matches_search_terms(candidate: RecoveryGroup, search_terms: list[str]) -> bool:
+    if not search_terms:
+        return True
+    haystacks = [
+        candidate.retail_source_name,
+        *candidate.retail_texts,
+        *candidate.retail_labels,
+        *candidate.retail_messages,
+        *candidate.debug_symbol_hits,
+        *(source.path for source in candidate.debug_sources),
+    ]
+    lowered = [value.lower() for value in haystacks]
+    return all(any(term in value for value in lowered) for term in search_terms)
+
+
 def cleaned_function_hints(candidate: RecoveryGroup, limit: int = 10) -> list[str]:
     result: list[str] = []
     seen: set[str] = set()
@@ -602,6 +617,12 @@ def build_argument_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Also emit weak EN candidates that are repeated across multiple bundled retail versions.",
     )
+    parser.add_argument(
+        "--search",
+        nargs="+",
+        default=[],
+        help="Case-insensitive terms used to filter source candidates before materialization.",
+    )
     return parser
 
 
@@ -619,6 +640,9 @@ def main() -> None:
         debug_srcfiles_path=args.debug_srcfiles,
     )
     groups = group_candidates(candidates)
+    if args.search:
+        search_terms = [term.lower() for term in args.search]
+        groups = [group for group in groups if matches_search_terms(group, search_terms)]
     source_evidence_by_name = build_source_variant_index(
         collect_all_bundle_source_hits(default_bundle_specs())
     )
