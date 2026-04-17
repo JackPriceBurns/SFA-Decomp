@@ -5,11 +5,20 @@
 #include "dolphin/os/__os.h"
 
 int vprintf(const char* format, va_list arg);
+extern void DBPrintf(char*, ...);
+extern volatile OSContext* __OSFPUContext;
+void OSSwitchFPUContext(__OSException exception, OSContext* context);
 
 OSErrorHandler __OSErrorTable[17];
 
 #define FPSCR_ENABLE (FPSCR_VE | FPSCR_OE | FPSCR_UE | FPSCR_ZE | FPSCR_XE)
 u32 __OSFpscrEnableBits = FPSCR_ENABLE;
+
+void __OSContextInit(void) {
+    __OSSetExceptionHandler(__OS_EXCEPTION_FLOATING_POINT, OSSwitchFPUContext);
+    __OSFPUContext = NULL;
+    DBPrintf("FPU-unavailable handler installed\n");
+}
 
 void OSPanic(const char* file, int line, const char* msg, ...) {
     va_list marker;

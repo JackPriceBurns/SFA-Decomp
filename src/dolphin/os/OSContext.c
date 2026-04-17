@@ -483,7 +483,7 @@ void OSDumpContext(OSContext* context) {
     }
 }
 
-static asm void OSSwitchFPUContext(register __OSException exception, register OSContext* context) {
+asm void OSSwitchFPUContext(register __OSException exception, register OSContext* context) {
     nofralloc
     mfmsr   r5
     ori     r5, r5, 0x2000
@@ -520,12 +520,6 @@ _restoreAndExit:
     lwz     r3, OS_CONTEXT_R3(context)
     lwz     r4, OS_CONTEXT_R4(context)
     rfi
-}
-
-void __OSContextInit(void) {
-    __OSSetExceptionHandler(__OS_EXCEPTION_FLOATING_POINT, OSSwitchFPUContext);
-    __OSFPUContext = NULL;
-    DBPrintf("FPU-unavailable handler installed\n");
 }
 
 asm void OSFillFPUContext(register OSContext* context) {
