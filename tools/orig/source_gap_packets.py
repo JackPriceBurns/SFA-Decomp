@@ -334,6 +334,51 @@ def packet_search_fields(packet: SourceGapPacket) -> list[str]:
     return fields
 
 
+def matching_gap_hints(packet: SourceGapPacket, patterns: list[str]) -> list[GapPathHint]:
+    lowered = [pattern.lower() for pattern in patterns]
+    matches: list[GapPathHint] = []
+    for hint in packet.gap_path_hints:
+        fields = [hint.basename.lower(), hint.resolution_status.lower()]
+        fields.extend(path.lower() for path in hint.resolved_paths)
+        if any(any(pattern in field for field in fields) for pattern in lowered):
+            matches.append(hint)
+    return matches
+
+
+def exact_interval_neighborhood(packet: SourceGapPacket, patterns: list[str], radius: int = 2) -> list[str]:
+    if not packet.exact_debug_interval_paths:
+        return []
+
+    lowered = [pattern.lower() for pattern in patterns]
+    matching_indices = [
+        index
+        for index, path in enumerate(packet.exact_debug_interval_paths)
+        if any(pattern in path.lower() for pattern in lowered)
+    ]
+    if not matching_indices:
+        return []
+
+    spans: list[tuple[int, int]] = []
+    for index in matching_indices:
+        start = max(0, index - radius)
+        end = min(len(packet.exact_debug_interval_paths), index + radius + 1)
+        if spans and start <= spans[-1][1]:
+            previous_start, previous_end = spans[-1]
+            spans[-1] = (previous_start, max(previous_end, end))
+        else:
+            spans.append((start, end))
+
+    lines: list[str] = []
+    for start, end in spans:
+        if lines:
+            lines.append("...")
+        for index in range(start, end):
+            path = packet.exact_debug_interval_paths[index]
+            marker = "=>" if index in matching_indices else "  "
+            lines.append(f"{marker} {path}")
+    return lines
+
+
 def filter_packets(packets: list[SourceGapPacket], patterns: list[str] | None) -> list[SourceGapPacket]:
     if not patterns:
         return packets
@@ -542,7 +587,7 @@ def summary_markdown(packets: list[SourceGapPacket], limit: int) -> str:
     return "\n".join(lines)
 
 
-def search_markdown(packets: list[SourceGapPacket]) -> str:
+def search_markdown(packets: list[SourceGapPacket], patterns: list[str]) -> str:
     lines = ["# Retail source gap packet search", ""]
     if not packets:
         lines.append("- No matching source gap packets.")
@@ -561,8 +606,21 @@ def search_markdown(packets: list[SourceGapPacket]) -> str:
             lines.append(f"- current EN gap: no uncovered functions between anchors (`{len(packet.gap_functions)}` functions)")
         lines.append("- current split status: " + describe_packet_gap(packet))
         lines.append("- gap path hints: " + gap_path_preview(packet, limit=12))
+        matched_hints = matching_gap_hints(packet, patterns)
+        if matched_hints:
+            rendered = "; ".join(resolution_line(hint) for hint in matched_hints[:6])
+            if len(matched_hints) > 6:
+                rendered += f"; ... (+{len(matched_hints) - 6} more)"
+            lines.append("- matched gap hints: " + rendered)
         lines.append("- gap EN functions: " + function_preview(packet.gap_functions))
         lines.append("- exact debug interval: " + exact_interval_preview(packet, limit=12))
+        interval_neighborhood = exact_interval_neighborhood(packet, patterns)
+        if interval_neighborhood:
+            lines.append("- exact debug neighborhood:")
+            for item in interval_neighborhood[:20]:
+                lines.append(f"  - `{item}`")
+            if len(interval_neighborhood) > 20:
+                lines.append(f"  - `... (+{len(interval_neighborhood) - 20} more lines)`")
         lines.append("")
     return "\n".join(lines).rstrip()
 
@@ -774,7 +832,7 @@ def main() -> None:
         elif args.format == "json":
             sys.stdout.write(rows_to_json(visible_packets))
         elif args.search:
-            sys.stdout.write(search_markdown(visible_packets))
+            sys.stdout.write(search_markdown(visible_packets, args.search))
             sys.stdout.write("\n")
         else:
             sys.stdout.write(summary_markdown(packets, args.limit))
