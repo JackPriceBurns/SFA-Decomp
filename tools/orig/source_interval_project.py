@@ -34,6 +34,14 @@ def build_argument_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def classify_ratio(ratio: float) -> str:
+    if 0.75 <= ratio <= 1.5:
+        return "near-fit"
+    if 0.5 <= ratio <= 2.0:
+        return "plausible"
+    return "stretched"
+
+
 def project_interval(
     current_functions: list[FunctionSymbol],
     current_start: int,
@@ -114,12 +122,18 @@ def main() -> None:
         f"size=`0x{args.current_end - args.current_start:X}`"
     )
     print(f"- debug total size: `0x{debug_total:X}`")
-    print(f"- scale ratio: `{scale_ratio:.3f}x`")
+    print(
+        f"- scale ratio: `{scale_ratio:.3f}x`"
+        f" verdict=`{classify_ratio(scale_ratio)}`"
+    )
     print("- projected windows:")
     for path, start, end, debug_size in projection:
+        current_size = end - start
+        file_ratio = current_size / debug_size if debug_size else 0.0
         print(
             f"  - `{path}` `0x{start:08X}-0x{end:08X}` "
-            f"size=`0x{end - start:X}` debug=`0x{debug_size:X}`"
+            f"size=`0x{current_size:X}` debug=`0x{debug_size:X}` "
+            f"ratio=`{file_ratio:.3f}x` verdict=`{classify_ratio(file_ratio)}`"
         )
 
 
