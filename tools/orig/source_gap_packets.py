@@ -35,6 +35,7 @@ class GapPathHint:
     basename: str
     resolution_status: str
     resolved_paths: tuple[str, ...]
+    debug_text_ranges: tuple[tuple[int, int] | None, ...]
 
 
 @dataclass(frozen=True)
@@ -126,20 +127,44 @@ def resolve_gap_path(
     basename: str,
     debug_paths_by_basename: dict[str, list[str]],
     interval_paths_by_basename: dict[str, list[str]],
+    debug_split_ranges: dict[str, tuple[int, int]],
 ) -> GapPathHint:
     key = Path(basename).name.lower()
     interval_matches = tuple(interval_paths_by_basename.get(key, []))
     global_matches = tuple(debug_paths_by_basename.get(key, []))
 
+    def ranges_for_paths(paths: tuple[str, ...]) -> tuple[tuple[int, int] | None, ...]:
+        return tuple(debug_split_ranges.get(path) for path in paths)
+
     if len(interval_matches) == 1:
-        return GapPathHint(basename=basename, resolution_status="exact-interval", resolved_paths=interval_matches)
+        return GapPathHint(
+            basename=basename,
+            resolution_status="exact-interval",
+            resolved_paths=interval_matches,
+            debug_text_ranges=ranges_for_paths(interval_matches),
+        )
     if len(interval_matches) > 1:
-        return GapPathHint(basename=basename, resolution_status="ambiguous-interval", resolved_paths=interval_matches)
+        return GapPathHint(
+            basename=basename,
+            resolution_status="ambiguous-interval",
+            resolved_paths=interval_matches,
+            debug_text_ranges=ranges_for_paths(interval_matches),
+        )
     if len(global_matches) == 1:
-        return GapPathHint(basename=basename, resolution_status="global-unique", resolved_paths=global_matches)
+        return GapPathHint(
+            basename=basename,
+            resolution_status="global-unique",
+            resolved_paths=global_matches,
+            debug_text_ranges=ranges_for_paths(global_matches),
+        )
     if len(global_matches) > 1:
-        return GapPathHint(basename=basename, resolution_status="ambiguous-global", resolved_paths=global_matches)
-    return GapPathHint(basename=basename, resolution_status="unresolved", resolved_paths=())
+        return GapPathHint(
+            basename=basename,
+            resolution_status="ambiguous-global",
+            resolved_paths=global_matches,
+            debug_text_ranges=ranges_for_paths(global_matches),
+        )
+    return GapPathHint(basename=basename, resolution_status="unresolved", resolved_paths=(), debug_text_ranges=())
 
 
 def packet_score(
@@ -182,6 +207,7 @@ def packet_score(
 def build_gap_packets(
     corridors: list[SourceCorridor],
     debug_split_paths: list[str],
+    debug_split_ranges: dict[str, tuple[int, int]],
     current_split_ranges,
 ) -> list[SourceGapPacket]:
     debug_path_index = debug_paths_by_basename(debug_split_paths)
@@ -197,6 +223,7 @@ def build_gap_packets(
                 basename=basename,
                 debug_paths_by_basename=debug_path_index,
                 interval_paths_by_basename=interval_path_index,
+                debug_split_ranges=debug_split_ranges,
             )
             for basename in corridor.srcfile_gap_paths
         )
@@ -249,7 +276,14 @@ def gap_path_preview(packet: SourceGapPacket, limit: int = 6) -> str:
     parts: list[str] = []
     for hint in packet.gap_path_hints[:limit]:
         if hint.resolved_paths:
-            rendered = ", ".join(f"`{path}`" for path in hint.resolved_paths[:2])
+            rendered_parts: list[str] = []
+            for path, debug_range in list(zip(hint.resolved_paths, hint.debug_text_ranges))[:2]:
+                if debug_range is None:
+                    rendered_parts.append(f"`{path}`")
+                else:
+                    start, end = debug_range
+                    rendered_parts.append(f"`{path}` `0x{start:08X}-0x{end:08X}`")
+            rendered = ", ".join(rendered_parts)
             if len(hint.resolved_paths) > 2:
                 rendered += f", ... (+{len(hint.resolved_paths) - 2} more)"
             parts.append(f"`{hint.basename}` -> {rendered} ({hint.resolution_status})")
@@ -319,7 +353,14 @@ def packet_filename(index: int, width: int, packet: SourceGapPacket) -> str:
 
 def resolution_line(hint: GapPathHint) -> str:
     if hint.resolved_paths:
-        rendered = ", ".join(f"`{path}`" for path in hint.resolved_paths)
+        rendered_parts: list[str] = []
+        for path, debug_range in zip(hint.resolved_paths, hint.debug_text_ranges):
+            if debug_range is None:
+                rendered_parts.append(f"`{path}`")
+            else:
+                start, end = debug_range
+                rendered_parts.append(f"`{path}` text=`0x{start:08X}-0x{end:08X}` size=`0x{end - start:X}`")
+        rendered = ", ".join(rendered_parts)
         return f"`{hint.basename}` status=`{hint.resolution_status}` paths={rendered}"
     return f"`{hint.basename}` status=`{hint.resolution_status}`"
 
@@ -540,6 +581,7 @@ def rows_to_csv(packets: list[SourceGapPacket]) -> str:
         "ambiguous_path_count",
         "unresolved_path_count",
         "resolved_paths",
+        "resolved_debug_ranges",
         "resolution_statuses",
         "en_gap_start",
         "en_gap_end",
@@ -574,6 +616,13 @@ def rows_to_csv(packets: list[SourceGapPacket]) -> str:
                 "ambiguous_path_count": packet.ambiguous_path_count,
                 "unresolved_path_count": packet.unresolved_path_count,
                 "resolved_paths": ",".join(path for hint in packet.gap_path_hints for path in hint.resolved_paths),
+                "resolved_debug_ranges": ",".join(
+                    ""
+                    if debug_range is None
+                    else f"0x{debug_range[0]:08X}-0x{debug_range[1]:08X}"
+                    for hint in packet.gap_path_hints
+                    for debug_range in hint.debug_text_ranges
+                ),
                 "resolution_statuses": ",".join(hint.resolution_status for hint in packet.gap_path_hints),
                 "en_gap_start": "" if packet.en_gap_start is None else f"0x{packet.en_gap_start:08X}",
                 "en_gap_end": "" if packet.en_gap_end is None else f"0x{packet.en_gap_end:08X}",
@@ -615,6 +664,16 @@ def rows_to_json(packets: list[SourceGapPacket]) -> str:
                         "basename": hint.basename,
                         "resolution_status": hint.resolution_status,
                         "resolved_paths": list(hint.resolved_paths),
+                        "debug_text_ranges": [
+                            None
+                            if debug_range is None
+                            else {
+                                "start": f"0x{debug_range[0]:08X}",
+                                "end": f"0x{debug_range[1]:08X}",
+                                "size": f"0x{debug_range[1] - debug_range[0]:X}",
+                            }
+                            for debug_range in hint.debug_text_ranges
+                        ],
                     }
                     for hint in packet.gap_path_hints
                 ],
@@ -679,7 +738,8 @@ def main() -> None:
         reference_object_xmls=tuple(args.reference_object_xml),
     )
     current_functions = load_function_symbols(args.symbols)
-    debug_split_paths = list(parse_debug_split_text_ranges(args.debug_splits))
+    debug_split_ranges = parse_debug_split_text_ranges(args.debug_splits)
+    debug_split_paths = list(debug_split_ranges)
     srcfiles_entries = parse_source_inventory(args.debug_srcfiles)
     current_split_ranges = build_split_ranges(args.splits)
 
@@ -691,7 +751,7 @@ def main() -> None:
         srcfiles_entries=srcfiles_entries,
     )
     corridors = build_corridors(anchors, srcfiles_entries, current_functions)
-    packets = build_gap_packets(corridors, debug_split_paths, current_split_ranges)
+    packets = build_gap_packets(corridors, debug_split_paths, debug_split_ranges, current_split_ranges)
     visible_packets = filter_packets(packets, args.search)
 
     if args.materialize_all:

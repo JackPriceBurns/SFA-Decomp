@@ -789,7 +789,8 @@ def main() -> None:
         split_ranges,
         args.dol,
     )
-    debug_split_paths = list(parse_debug_split_text_ranges(args.debug_splits))
+    debug_split_ranges = parse_debug_split_text_ranges(args.debug_splits)
+    debug_split_paths = list(debug_split_ranges)
     srcfiles_entries = parse_source_inventory(args.debug_srcfiles)
     anchors = build_anchors(
         groups=groups,
@@ -807,7 +808,7 @@ def main() -> None:
         max_gap_functions=8,
     )
     items = build_work_items(anchors, hints, corridors, islands, current_functions)
-    packets = build_gap_packets(corridors, debug_split_paths, split_ranges)
+    packets = build_gap_packets(corridors, debug_split_paths, debug_split_ranges, split_ranges)
     blueprint_anchors = build_blueprint_anchors(items)
     blocks = build_blocks(blueprint_anchors, packets, max_gap_paths=args.max_gap_paths)
 

@@ -771,7 +771,7 @@ def main() -> None:
         srcfiles_entries=srcfiles_entries,
     )
     corridors = build_corridors(anchors, srcfiles_entries, current_functions)
-    packets = build_gap_packets(corridors, debug_split_paths, current_split_ranges)
+    packets = build_gap_packets(corridors, debug_split_paths, debug_split_ranges, current_split_ranges)
     debug_info = debug_split_info_map(debug_split_ranges, debug_functions)
     plans = build_window_plans(
         packets,
