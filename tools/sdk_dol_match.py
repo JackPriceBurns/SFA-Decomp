@@ -8,6 +8,7 @@ from difflib import SequenceMatcher
 from functools import cached_property, lru_cache
 from itertools import zip_longest
 from pathlib import Path
+import re
 
 from dolphin_sdk_symbols import ConfigSymbol, SplitRange, load_config_symbols, load_splits
 from orig.dol_xrefs import DolFile
@@ -93,7 +94,14 @@ class ReferenceSpec:
         return self.root / "config" / self.config / "symbols.txt"
 
     @property
+    def config_yml_path(self) -> Path:
+        return self.root / "config" / self.config / "config.yml"
+
+    @property
     def dol_path(self) -> Path:
+        object_path = configured_reference_object_path(self.config_yml_path)
+        if object_path is not None:
+            return self.root / object_path
         return self.root / "orig" / self.config / "sys" / "main.dol"
 
 
@@ -243,7 +251,10 @@ def parse_reference_spec(value: str) -> ReferenceSpec:
     if not spec.symbols_path.is_file():
         raise argparse.ArgumentTypeError(f"Missing symbols file for {spec.label}: {spec.symbols_path}")
     if not spec.dol_path.is_file():
-        raise argparse.ArgumentTypeError(f"Missing DOL for {spec.label}: {spec.dol_path}")
+        raise argparse.ArgumentTypeError(
+            f"Missing DOL for {spec.label}: {spec.dol_path} "
+            f"(splits/symbols exist, so this ref is inventory-ready but not matcher-ready yet)"
+        )
     return spec
 
 
@@ -253,6 +264,19 @@ def parse_int(value: str) -> int:
 
 def normalize_path(value: str) -> str:
     return value.replace("\\", "/").strip()
+
+
+def configured_reference_object_path(config_yml_path: Path) -> Path | None:
+    if not config_yml_path.is_file():
+        return None
+    text = config_yml_path.read_text(encoding="utf-8", errors="replace")
+    object_base_match = re.search(r"^object_base:\s*(.+?)\s*$", text, re.MULTILINE)
+    object_match = re.search(r"^object:\s*(.+?)\s*$", text, re.MULTILINE)
+    if object_base_match is None or object_match is None:
+        return None
+    object_base = object_base_match.group(1).strip()
+    object_rel = object_match.group(1).strip()
+    return Path(object_base) / object_rel
 
 
 def matches_path_filters(path: str, filters: tuple[str, ...]) -> bool:
