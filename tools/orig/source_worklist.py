@@ -15,9 +15,11 @@ if __package__ in (None, ""):
 from tools.orig.dol_xrefs import FunctionSymbol, load_function_symbols
 from tools.orig.source_boundaries import (
     BoundaryHint,
+    SplitRange,
     build_boundary_hints,
     build_split_ranges,
     format_symbol_span,
+    overlapping_split_paths,
 )
 from tools.orig.source_corridors import (
     SourceAnchor,
@@ -370,16 +372,72 @@ def priority_score(action: str, confidence: str, hint: BoundaryHint, anchor: Sou
     return score
 
 
+def build_split_range_lookup(ranges: list[SplitRange]) -> dict[str, SplitRange]:
+    return {item.path: item for item in ranges}
+
+
+def find_matching_split_range(
+    suggested_path: str,
+    split_range_by_path: dict[str, SplitRange],
+) -> SplitRange | None:
+    direct = split_range_by_path.get(suggested_path)
+    if direct is not None:
+        return direct
+    normalized = suggested_path.replace("\\", "/").lstrip("./")
+    for path, split_range in split_range_by_path.items():
+        candidate = path.replace("\\", "/").lstrip("./")
+        if candidate.endswith("/" + normalized) or normalized.endswith("/" + candidate):
+            return split_range
+    return None
+
+
+def current_range_satisfies_action(
+    action: str,
+    anchor: SourceAnchor,
+    hint: BoundaryHint,
+    estimate: WindowEstimate | None,
+    island: SourceIsland | None,
+    split_ranges: list[SplitRange],
+    split_range_by_path: dict[str, SplitRange],
+) -> bool:
+    if action == "shared-island":
+        if island is None or island.span_start is None or island.span_end is None:
+            return False
+        overlapping = overlapping_split_paths(split_ranges, island.span_start, island.span_end)
+        return len(overlapping) > 1
+
+    if hint.split_status != "single-split":
+        return False
+
+    current_range = find_matching_split_range(anchor.suggested_path, split_range_by_path)
+    if current_range is None:
+        return False
+
+    if action in {"split-now", "expand-window"}:
+        if estimate is None:
+            return False
+        return current_range.start <= estimate.start and current_range.end >= estimate.end
+
+    if action == "shrink-window":
+        if estimate is None:
+            return False
+        return current_range.start >= estimate.start and current_range.end <= estimate.end
+
+    return False
+
+
 def build_work_items(
     anchors: list[SourceAnchor],
     hints: list[BoundaryHint],
     corridors: list[SourceCorridor],
     islands: list[SourceIsland],
     current_functions: list[FunctionSymbol],
+    current_split_ranges: list[SplitRange],
 ) -> list[WorkItem]:
     hint_by_name = lookup_by_name(hints)
     prev_corridor_by_name, next_corridor_by_name = build_corridor_lookup(corridors)
     island_by_name = build_island_lookup(islands)
+    split_range_by_path = build_split_range_lookup(current_split_ranges)
 
     items: list[WorkItem] = []
     for anchor in anchors:
@@ -390,6 +448,16 @@ def build_work_items(
         island = island_by_name.get(anchor.retail_source_name.lower())
         estimate = estimate_window(current_functions, anchor, hint, island)
         action, confidence, reason = classify_anchor(anchor, hint, island, prev_corridor, next_corridor, estimate)
+        if current_range_satisfies_action(
+            action,
+            anchor,
+            hint,
+            estimate,
+            island,
+            current_split_ranges,
+            split_range_by_path,
+        ):
+            continue
         suggested_start, suggested_end, suggested_size, window_delta, coverage = window_text(estimate)
 
         island_sources = ()
@@ -927,11 +995,12 @@ def main() -> None:
         reference_object_xmls=tuple(args.reference_object_xml),
     )
     current_functions = load_function_symbols(args.symbols)
+    current_splits = build_split_ranges(args.splits)
     hints = build_boundary_hints(
         groups,
         reference_hints,
         current_functions,
-        build_split_ranges(args.splits),
+        current_splits,
         args.dol,
     )
     debug_split_paths = list(parse_debug_split_text_ranges(args.debug_splits))
@@ -947,11 +1016,11 @@ def main() -> None:
     islands = build_islands(
         hints=hints,
         current_functions=current_functions,
-        split_ranges=build_split_ranges(args.splits),
+        split_ranges=current_splits,
         max_gap_bytes=0x3000,
         max_gap_functions=8,
     )
-    items = build_work_items(anchors, hints, corridors, islands, current_functions)
+    items = build_work_items(anchors, hints, corridors, islands, current_functions, current_splits)
     visible_items = filter_items(items, args.search)
 
     if args.materialize_all:
