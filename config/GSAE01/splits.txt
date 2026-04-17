@@ -575,13 +575,28 @@ main/dll/baddie/MMP_cratercritter.c:
 	.text       start:0x8013D92C end:0x8013DC78
 
 main/dll/baddie/MMP_critterspit.c:
-	.text       start:0x8013DC78 end:0x8013E458
+	.text       start:0x8013DC78 end:0x8013DEC4
+
+main/dll/dll_E2.c:
+	.text       start:0x8013DEC4 end:0x8013E010
+
+main/dll/dll_D1.c:
+	.text       start:0x8013E010 end:0x8013E458
+
+main/dll/animobjD2.c:
+	.text       start:0x8013E458 end:0x8013F20C
+
+main/dll/dll_D3.c:
+	.text       start:0x8013F20C end:0x8013F314
+
+main/dll/weaponE6.c:
+	.text       start:0x8013F314 end:0x80140340
 
 main/dll/cannon.c:
-	.text       start:0x8013E458 end:0x80140D64
+	.text       start:0x80140340 end:0x80141618
 
 main/dll/cannonball.c:
-	.text       start:0x80140D64 end:0x80141C08
+	.text       start:0x80141618 end:0x80141C08
 
 main/dll/grenade.c:
 	.text       start:0x80141C08 end:0x80144ED8
@@ -611,10 +626,16 @@ main/dll/seqObj11E.c:
 	.text       start:0x801520FC end:0x80152F40
 
 main/dll/magicPlant.c:
-	.text       start:0x80152F40 end:0x80154D1C
+	.text       start:0x80152F40 end:0x8015413C
+
+main/dll/dll_10A.c:
+	.text       start:0x8015413C end:0x80154A30
+
+main/dll/dll_10B.c:
+	.text       start:0x80154A30 end:0x80155460
 
 main/dll/duster.c:
-	.text       start:0x80154D1C end:0x801570E0
+	.text       start:0x80155460 end:0x801570E0
 
 main/dll/smallbasket.c:
 	.text       start:0x801570E0 end:0x8015ADD0
