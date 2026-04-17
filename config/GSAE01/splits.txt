@@ -430,8 +430,227 @@ main/dll/FRONT/picmenu.c:
 main/dll/tricky.c:
 	.text       start:0x8011DC94 end:0x8012434C
 
+main/dll/CF/robotpatrol.c:
+	.text       start:0x8012434C end:0x801265B0
+
+main/dll/baddie/baby_snowworm.c:
+	.text       start:0x801265B0 end:0x80130A6C
+
+main/dll/baddie/wall_crawler.c:
+	.text       start:0x80130A6C end:0x8013209C
+
+main/dll/baddie/TumbleweedBush.c:
+	.text       start:0x8013209C end:0x801338A4
+
+main/dll/baddie/Tumbleweed.c:
+	.text       start:0x801338A4 end:0x80139724
+
+main/dll/baddie/skeetla.c:
+	.text       start:0x80139724 end:0x8013D92C
+
+main/dll/baddie/MMP_cratercritter.c:
+	.text       start:0x8013D92C end:0x8013E458
+
+main/dll/cannon.c:
+	.text       start:0x8013E458 end:0x80140D64
+
+main/dll/cannonball.c:
+	.text       start:0x80140D64 end:0x80141C08
+
+main/dll/grenade.c:
+	.text       start:0x80141C08 end:0x80144ED8
+
+main/dll/collectable.c:
+	.text       start:0x80144ED8 end:0x8014ACCC
+
+main/dll/sidekickToy.c:
+	.text       start:0x8014ACCC end:0x8014D194
+
+main/dll/projswitch.c:
+	.text       start:0x8014D194 end:0x8014E604
+
+main/dll/pressureSwitch.c:
+	.text       start:0x8014E604 end:0x8014FAB4
+
+main/dll/seqObj.c:
+	.text       start:0x8014FAB4 end:0x80150DA4
+
+main/dll/magicPlant.c:
+	.text       start:0x80153AEC end:0x80154D1C
+
+main/dll/duster.c:
+	.text       start:0x80154D1C end:0x801570E0
+
+main/dll/smallbasket.c:
+	.text       start:0x801570E0 end:0x8015ADD0
+
+main/dll/mediumbasket.c:
+	.text       start:0x8015ADD0 end:0x8015D86C
+
+main/dll/scarab.c:
+	.text       start:0x8015D86C end:0x80161FA4
+
+main/dll/barrel.c:
+	.text       start:0x80161FA4 end:0x801630F0
+
+main/dll/ladders.c:
+	.text       start:0x801630F0 end:0x80163E3C
+
+main/dll/waterfallControl.c:
+	.text       start:0x80163E3C end:0x80164438
+
+main/dll/backpack.c:
+	.text       start:0x80164438 end:0x80165884
+
+main/dll/landedArwing.c:
+	.text       start:0x80165884 end:0x80165A38
+
+main/dll/staffAction.c:
+	.text       start:0x80165A38 end:0x801672E4
+
+main/dll/treasurechest.c:
+	.text       start:0x801672E4 end:0x80167C10
+
+main/dll/campfire.c:
+	.text       start:0x80167C10 end:0x80169A38
+
+main/dll/genprops.c:
+	.text       start:0x80169A38 end:0x801725F0
+
+main/dll/gfxEmit.c:
+	.text       start:0x801725F0 end:0x80174A34
+
+main/dll/transporter.c:
+	.text       start:0x80174A34 end:0x80178640
+
+main/dll/autoTransporter.c:
+	.text       start:0x80178640 end:0x8017B93C
+
+main/dll/screenOverlay.c:
+	.text       start:0x8017B93C end:0x8017CCFC
+
+main/dll/alphaanim.c:
+	.text       start:0x8017CCFC end:0x8017F494
+
+main/dll/crackanim.c:
+	.text       start:0x8017F494 end:0x80180464
+
+main/dll/exploder.c:
+	.text       start:0x80180464 end:0x801835EC
+
+main/dll/CF/CFguardian.c:
+	.text       start:0x801835EC end:0x80184D40
+
+main/dll/CF/windlift.c:
+	.text       start:0x80184D40 end:0x80186BA4
+
+main/dll/CF/CFcrystal.c:
+	.text       start:0x80186BA4 end:0x80187608
+
+main/dll/CF/CFBaby.c:
+	.text       start:0x80187608 end:0x80189B68
+
+main/dll/CF/CFPrisonGuard.c:
+	.text       start:0x80189B68 end:0x8018AE14
+
+main/dll/CF/CFtoggleswitch.c:
+	.text       start:0x8018AE14 end:0x8018BC64
+
+main/dll/CF/CFforcecontrol.c:
+	.text       start:0x8018BC64 end:0x8018CDAC
+
+main/dll/CF/CFTreasSharpy.c:
+	.text       start:0x8018CDAC end:0x8018F020
+
+main/dll/CF/CFchuckobj.c:
+	.text       start:0x8018F020 end:0x80191150
+
+main/dll/CF/CFwalltorch.c:
+	.text       start:0x80191150 end:0x801923CC
+
+main/dll/MMP/mmp_barrel.c:
+	.text       start:0x801923CC end:0x80194688
+
+main/dll/MMP/mmp_levelcontrol.c:
+	.text       start:0x80194688 end:0x801950D8
+
+main/dll/MMP/MMP_asteroid.c:
+	.text       start:0x801950D8 end:0x801978DC
+
+main/dll/MMP/MMP_moonrock.c:
+	.text       start:0x801978DC end:0x801990E4
+
+main/dll/MMP/MMP_gyservent.c:
+	.text       start:0x801990E4 end:0x8019992C
+
+main/dll/DR/hightop.c:
+	.text       start:0x8019992C end:0x8019B3B8
+
+main/dll/DR/sandwormBoss.c:
+	.text       start:0x8019B3B8 end:0x801A1380
+
+main/dll/DR/gasvent.c:
+	.text       start:0x801A1380 end:0x801A1A78
+
+main/dll/DR/cannontargetControl.c:
+	.text       start:0x801A1A78 end:0x801A2B9C
+
+main/dll/DR/gasventControl.c:
+	.text       start:0x801A2B9C end:0x801A3B18
+
+main/dll/IM/IMicicle.c:
+	.text       start:0x801A3B18 end:0x801A57EC
+
+main/dll/IM/IMspacecraft.c:
+	.text       start:0x801A57EC end:0x801A6AD0
+
+main/dll/DIM/DIMlavaball.c:
+	.text       start:0x801A6AD0 end:0x801A9044
+
+main/dll/DIM/DIMlogfire.c:
+	.text       start:0x801A9044 end:0x801AA584
+
+main/dll/DIM/DIMsnowball.c:
+	.text       start:0x801AA584 end:0x801AC4FC
+
+main/dll/DIM/DIMboulder.c:
+	.text       start:0x801AC4FC end:0x801AE124
+
+main/dll/DIM/DIMcannon.c:
+	.text       start:0x801AE124 end:0x801B0B58
+
+main/dll/DIM/DIMlavasmash.c:
+	.text       start:0x801B0B58 end:0x801B1398
+
 dolphin/TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.c:
 	.text       start:0x801B1398 end:0x801B13F0
+
+main/dll/DIM/DIMExplosion.c:
+	.text       start:0x801B13F0 end:0x801B206C
+
+main/dll/DIM/DIMwooddoor.c:
+	.text       start:0x801B206C end:0x801B2B04
+
+main/dll/DIM/DIMlevcontrol.c:
+	.text       start:0x801B2B04 end:0x801B367C
+
+main/dll/DIM/DIM2conveyor.c:
+	.text       start:0x801B367C end:0x801B4014
+
+main/dll/DIM/DIM2flameburst.c:
+	.text       start:0x801B4014 end:0x801B69A0
+
+main/dll/DIM/DIM2snowball.c:
+	.text       start:0x801B69A0 end:0x801B8980
+
+main/dll/DIM/DIM2projrock.c:
+	.text       start:0x801B8980 end:0x801BA3CC
+
+main/dll/DIM/DIM2lift.c:
+	.text       start:0x801BA3CC end:0x801BB99C
+
+main/dll/DIM/DIM2icicle.c:
+	.text       start:0x801BB99C end:0x801BD0E8
 
 main/dll/DIM/DIMboss.c:
 	.text       start:0x801BD0E8 end:0x801BDA04
