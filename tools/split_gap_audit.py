@@ -65,11 +65,18 @@ def unclaimed_recovery_stubs() -> list[dict]:
         text = path.read_text(encoding="utf-8", errors="ignore")
         if not any(marker in text[:800] for marker in RECOVERY_MARKERS):
             continue
+        projected_windows = []
+        for match in re.finditer(
+            r"projected current EN window:\s*0x([0-9A-Fa-f]+)-0x([0-9A-Fa-f]+)",
+            text[:2000],
+        ):
+            projected_windows.append((int(match.group(1), 16), int(match.group(2), 16)))
         items.append(
             {
                 "path": rel,
                 "text": text[:2000],
                 "norm_text": re.sub(r"[^a-z0-9]+", "", text[:2000].lower()),
+                "projected_windows": projected_windows,
             }
         )
     return items
@@ -152,16 +159,19 @@ def source_clue_summaries(left_path: str, right_path: str, limit: int):
     return summaries
 
 
-def recovery_stub_summaries(left_path: str, right_path: str, limit: int):
+def recovery_stub_summaries(
+    left_path: str,
+    right_path: str,
+    gap_start: int,
+    gap_end: int,
+    limit: int,
+):
     left_term = normalize_gap_term(left_path)
     right_term = normalize_gap_term(right_path)
     summaries: list[str] = []
-    for item in unclaimed_recovery_stubs():
-        norm_text = item["norm_text"]
-        if left_term and left_term not in norm_text:
-            continue
-        if right_term and right_term not in norm_text:
-            continue
+    seen_paths: set[str] = set()
+
+    def format_summary(item: dict, mode: str):
         lines = []
         for raw_line in item["text"].splitlines():
             line = raw_line.strip().lstrip("*").strip()
@@ -171,7 +181,28 @@ def recovery_stub_summaries(left_path: str, right_path: str, limit: int):
                 break
             lines.append(line)
         clue_suffix = f" clues=`{' ; '.join(lines)}`" if lines else ""
-        summaries.append(f"stub `{item['path']}`{clue_suffix}")
+        return f"stub `{item['path']}` mode=`{mode}`{clue_suffix}"
+
+    for item in unclaimed_recovery_stubs():
+        norm_text = item["norm_text"]
+        if left_term and left_term in norm_text and right_term and right_term in norm_text:
+            summaries.append(format_summary(item, "endpoint-match"))
+            seen_paths.add(item["path"])
+            if len(summaries) >= limit:
+                return summaries
+
+    for item in unclaimed_recovery_stubs():
+        if item["path"] in seen_paths:
+            continue
+        overlaps = [
+            (start, end)
+            for start, end in item["projected_windows"]
+            if start < gap_end and end > gap_start
+        ]
+        if not overlaps:
+            continue
+        span_text = ", ".join(f"0x{start:08X}-0x{end:08X}" for start, end in overlaps[:2])
+        summaries.append(f"{format_summary(item, 'projected-overlap')} windows=`{span_text}`")
         if len(summaries) >= limit:
             break
     return summaries
@@ -276,7 +307,13 @@ def main():
             elif left_category == "game" or right_category == "game":
                 print("  source-clue: none")
         if args.stub_clues:
-            stub_clues = recovery_stub_summaries(left_path, right_path, args.stub_clue_limit)
+            stub_clues = recovery_stub_summaries(
+                left_path,
+                right_path,
+                gap_start,
+                gap_end,
+                args.stub_clue_limit,
+            )
             if stub_clues:
                 for clue in stub_clues:
                     print(f"  stub-clue: {clue}")

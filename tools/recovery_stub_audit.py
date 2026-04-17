@@ -18,6 +18,9 @@ RECOVERY_MARKERS = (
 SPLIT_HEADER_RE = re.compile(r"^([^:\s][^:]*\.(?:c|cpp|s)):$", re.MULTILINE)
 INLINE_RETAIL_RE = re.compile(r"Retail source name:\s*([^\s*]+)")
 LIST_RETAIL_RE = re.compile(r"^\s*\*\s*-\s*([^\s*]+\.c)\s*$", re.MULTILINE)
+PROJECTED_WINDOW_RE = re.compile(
+    r"projected current EN window:\s*0x([0-9A-Fa-f]+)-0x([0-9A-Fa-f]+)"
+)
 
 
 @dataclass(frozen=True)
@@ -27,6 +30,7 @@ class StubEntry:
     claimed: bool
     category: str
     clues: tuple[str, ...]
+    projected_windows: tuple[tuple[int, int], ...]
 
 
 def classify_category(path: str) -> str:
@@ -36,6 +40,23 @@ def classify_category(path: str) -> str:
 def parse_claimed_paths(splits_path: Path) -> set[str]:
     text = splits_path.read_text(encoding="utf-8")
     return set(SPLIT_HEADER_RE.findall(text))
+
+
+def parse_text_ranges(splits_path: Path) -> list[tuple[int, int, str]]:
+    text = splits_path.read_text(encoding="utf-8")
+    entries: list[tuple[int, int, str]] = []
+    current_path: str | None = None
+    for line in text.splitlines():
+        if line and not line.startswith((" ", "\t")) and line.endswith(":"):
+            current_path = line[:-1]
+            continue
+        if current_path is None or ".text" not in line:
+            continue
+        match = re.search(r"start:0x([0-9A-Fa-f]+) end:0x([0-9A-Fa-f]+)", line)
+        if match:
+            entries.append((int(match.group(1), 16), int(match.group(2), 16), current_path))
+        current_path = None
+    return sorted(entries)
 
 
 def is_recovery_stub(text: str) -> bool:
@@ -81,7 +102,40 @@ def extract_clues(text: str) -> tuple[str, ...]:
     return tuple(clues)
 
 
-def collect_stubs(src_root: Path, claimed_paths: set[str], category_filter: str | None) -> list[StubEntry]:
+def extract_projected_windows(text: str) -> tuple[tuple[int, int], ...]:
+    return tuple(
+        (int(match.group(1), 16), int(match.group(2), 16))
+        for match in PROJECTED_WINDOW_RE.finditer(text)
+    )
+
+
+def summarize_projected_owners(
+    projected_windows: tuple[tuple[int, int], ...], text_ranges: list[tuple[int, int, str]]
+) -> tuple[str, ...]:
+    summaries: list[str] = []
+    for start, end in projected_windows[:2]:
+        overlaps = [
+            path
+            for range_start, range_end, path in text_ranges
+            if range_start < end and range_end > start
+        ]
+        if overlaps:
+            owners = ", ".join(overlaps[:3])
+            extra = "" if len(overlaps) <= 3 else f", ... (+{len(overlaps) - 3} more)"
+            summaries.append(
+                f"projected EN overlap: 0x{start:08X}-0x{end:08X} inside {owners}{extra}"
+            )
+        else:
+            summaries.append(f"projected EN overlap: 0x{start:08X}-0x{end:08X} uncovered")
+    return tuple(summaries)
+
+
+def collect_stubs(
+    src_root: Path,
+    claimed_paths: set[str],
+    text_ranges: list[tuple[int, int, str]],
+    category_filter: str | None,
+) -> list[StubEntry]:
     stubs: list[StubEntry] = []
     for path in sorted(src_root.rglob("*.c")):
         rel = path.relative_to(src_root).as_posix()
@@ -97,7 +151,9 @@ def collect_stubs(src_root: Path, claimed_paths: set[str], category_filter: str 
                 key=extract_stub_key(text[:1200], path.name),
                 claimed=rel in claimed_paths,
                 category=category,
-                clues=extract_clues(text[:1600]),
+                clues=extract_clues(text[:1600])
+                + summarize_projected_owners(extract_projected_windows(text[:1600]), text_ranges),
+                projected_windows=extract_projected_windows(text[:1600]),
             )
         )
     return stubs
@@ -148,7 +204,8 @@ def main() -> None:
     args = parser.parse_args()
 
     claimed_paths = parse_claimed_paths(args.splits)
-    stubs = collect_stubs(args.src_root, claimed_paths, args.category)
+    text_ranges = parse_text_ranges(args.splits)
+    stubs = collect_stubs(args.src_root, claimed_paths, text_ranges, args.category)
 
     duplicate_groups: dict[str, list[StubEntry]] = defaultdict(list)
     for entry in stubs:
