@@ -596,7 +596,10 @@ main/dll/SH/SHthorntail.c:
 	.text       start:0x801D5764 end:0x801D5AFC
 
 main/textblock.c:
-	.text       start:0x80209624 end:0x802096D8
+	.text       start:0x80209624 end:0x802096AC
+
+main/dll/CF/laser.c:
+	.text       start:0x802096AC end:0x80209FE0
 
 dolphin/base/PPCArch.c:
 	.text       start:0x80240A44 end:0x80240AD0
@@ -884,6 +887,11 @@ main/audio/synth_control.c:
 	extab       start:0x80005708 end:0x80005720
 	extabindex  start:0x80005E1C end:0x80005E40
 	.text       start:0x802721A0 end:0x8027273C
+
+dolphin/TRK_MINNOW_DOLPHIN/CircleBuffer.c:
+	extab       start:0x80005B50 end:0x80005B68
+	extabindex  start:0x80006488 end:0x800064AC
+	.text       start:0x80283744 end:0x802839B0
 
 dolphin/OdemuExi2/DebuggerDriver.c:
 	extab       start:0x80005CB0 end:0x80005CB8
