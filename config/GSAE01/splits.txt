@@ -415,8 +415,41 @@ main/dll/CAM/camshipbattle.c:
 main/dll/CAM/camclimb.c:
 	.text       start:0x80107398 end:0x80107718
 
+main/dll/CAM/dll_59.c:
+	.text       start:0x80107718 end:0x80107D80
+
+main/dll/CAM/camTalk.c:
+	.text       start:0x80107D80 end:0x80108718
+
+main/dll/CAM/dll_5B.c:
+	.text       start:0x80108718 end:0x8010A82C
+
+main/dll/CAM/camshipbattle5C.c:
+	.text       start:0x8010A82C end:0x8010AEE4
+
+main/dll/CAM/attentioncam.c:
+	.text       start:0x8010AEE4 end:0x8010B144
+
+main/dll/CAM/camcannon.c:
+	.text       start:0x8010B144 end:0x8010B6C0
+
+main/dll/CAM/dll_5F.c:
+	.text       start:0x8010B6C0 end:0x8010C19C
+
+main/dll/CAM/dll_60.c:
+	.text       start:0x8010C19C end:0x8010C374
+
+main/dll/CAM/camdrakor.c:
+	.text       start:0x8010C374 end:0x8010D608
+
+main/dll/CAM/dll_62.c:
+	.text       start:0x8010D608 end:0x8010DAAC
+
+main/dll/CAM/camDebug.c:
+	.text       start:0x8010DAAC end:0x8010DE18
+
 main/dll/baddieControl.c:
-	.text       start:0x80108EC8 end:0x80113590
+	.text       start:0x8010DE18 end:0x80113590
 
 main/dll/moveLib.c:
 	.text       start:0x80113590 end:0x80115318
