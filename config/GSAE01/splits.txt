@@ -1107,6 +1107,9 @@ dolphin/MSL_C/PPCEABI/bare/H/trigf.c:
 dolphin/TRK_MINNOW_DOLPHIN/main.c:
 	.text       start:0x802BB420 end:0x802BB768
 
+dolphin/TRK_MINNOW_DOLPHIN/main_gdev.c:
+	.text       start:0x802BB8C4 end:0x802BBC10
+
 Runtime.PPCEABI.H/__start.s: comment:0
 	.init       start:0x80003100 end:0x800033A8
 
