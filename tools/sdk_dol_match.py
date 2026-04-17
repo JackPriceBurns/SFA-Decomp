@@ -17,6 +17,7 @@ from sdk_import_probe import AsmTextFunction, find_assigned_text_split, load_tex
 
 DEFAULT_REFERENCE_SPECS = (
     "animal_crossing:GAFE01",
+    "final_fantasy_crystal_chronicles:GCCP01",
     "pikmin2:GPVE01",
     "marioparty4:GMPE01",
     "super_mario_sunshine:GMSJ01",
@@ -70,6 +71,34 @@ TOP16_MASK_OPCODES = {
     55,
 }
 TOP16_LOW2_MASK_OPCODES = {56, 57, 60, 61}
+SDK_ROOTS = {
+    "TRK_MINNOW_DOLPHIN",
+    "OdemuExi2",
+    "ai",
+    "amcExi2",
+    "amcnotstub",
+    "amcstubs",
+    "ar",
+    "ax",
+    "axfx",
+    "base",
+    "card",
+    "db",
+    "dsp",
+    "dvd",
+    "exi",
+    "gx",
+    "hio",
+    "mcc",
+    "mix",
+    "mtx",
+    "odenotstub",
+    "os",
+    "pad",
+    "si",
+    "thp",
+    "vi",
+}
 
 
 @dataclass(frozen=True)
@@ -271,7 +300,14 @@ def parse_int(value: str) -> int:
 
 
 def normalize_path(value: str) -> str:
-    return value.replace("\\", "/").strip()
+    path = value.replace("\\", "/").strip()
+    if path.startswith("src/"):
+        rel = path[len("src/") :]
+        if "/" in rel:
+            root, rest = rel.split("/", 1)
+            if root in SDK_ROOTS:
+                return f"dolphin/{root}/{rest}"
+    return path
 
 
 def configured_reference_object_path(config_yml_path: Path) -> Path | None:
