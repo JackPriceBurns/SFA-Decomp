@@ -773,7 +773,19 @@ main/dll/CF/CFBaby.c:
 	.text       start:0x80187608 end:0x80189B68
 
 main/dll/CF/CFPrisonGuard.c:
-	.text       start:0x80189B68 end:0x8018AE14
+	.text       start:0x80189B68 end:0x8018A1C0
+
+main/dll/CF/dll_163.c:
+	.text       start:0x8018A1C0 end:0x8018A7B8
+
+main/dll/CF/dll_164.c:
+	.text       start:0x8018A7B8 end:0x8018A7DC
+
+main/dll/CF/dll_165.c:
+	.text       start:0x8018A7DC end:0x8018AA94
+
+main/dll/CF/dll_166.c:
+	.text       start:0x8018AA94 end:0x8018AE14
 
 main/dll/CF/CFtoggleswitch.c:
 	.text       start:0x8018AE14 end:0x8018BC64
@@ -788,7 +800,19 @@ main/dll/CF/CFchuckobj.c:
 	.text       start:0x8018F020 end:0x80191150
 
 main/dll/CF/CFwalltorch.c:
-	.text       start:0x80191150 end:0x801923CC
+	.text       start:0x80191150 end:0x80191A1C
+
+main/dll/dll_17F.c:
+	.text       start:0x80191A1C end:0x80191A28
+
+main/dll/dll_180.c:
+	.text       start:0x80191A28 end:0x80191FEC
+
+main/dll/holoPoint.c:
+	.text       start:0x80191FEC end:0x801920D8
+
+main/dll/dll_182.c:
+	.text       start:0x801920D8 end:0x801923CC
 
 main/dll/MMP/mmp_barrel.c:
 	.text       start:0x801923CC end:0x80194688
