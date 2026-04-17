@@ -26,6 +26,7 @@ class StubEntry:
     key: str
     claimed: bool
     category: str
+    clues: tuple[str, ...]
 
 
 def classify_category(path: str) -> str:
@@ -56,6 +57,30 @@ def extract_stub_key(text: str, fallback_name: str) -> str:
     return fallback_name
 
 
+def extract_clues(text: str) -> tuple[str, ...]:
+    keywords = (
+        "source gap packet:",
+        "dark game gap:",
+        "projected debug-side order:",
+        "projected current EN window:",
+        "debug-side path:",
+        "debug-side text:",
+        "indirect neighborhood",
+        "best current evidence",
+    )
+    clues: list[str] = []
+    for raw_line in text.splitlines():
+        line = raw_line.strip().lstrip("*").strip()
+        if not line or line.startswith("/"):
+            continue
+        if not any(keyword in line for keyword in keywords):
+            continue
+        clues.append(line)
+        if len(clues) == 4:
+            break
+    return tuple(clues)
+
+
 def collect_stubs(src_root: Path, claimed_paths: set[str], category_filter: str | None) -> list[StubEntry]:
     stubs: list[StubEntry] = []
     for path in sorted(src_root.rglob("*.c")):
@@ -72,19 +97,23 @@ def collect_stubs(src_root: Path, claimed_paths: set[str], category_filter: str 
                 key=extract_stub_key(text[:1200], path.name),
                 claimed=rel in claimed_paths,
                 category=category,
+                clues=extract_clues(text[:1600]),
             )
         )
     return stubs
 
 
 def print_entries(title: str, entries: list[StubEntry]) -> None:
-    print(title)
+    if title:
+        print(title)
     if not entries:
         print("- none")
         return
     for entry in entries:
         state = "claimed" if entry.claimed else "unclaimed"
         print(f"- `{entry.path}` key=`{entry.key}` category=`{entry.category}` state=`{state}`")
+        for clue in entry.clues:
+            print(f"  clue: `{clue}`")
 
 
 def main() -> None:
