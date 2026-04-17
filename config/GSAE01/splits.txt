@@ -77,13 +77,13 @@ main/dll/df_partfx.c:
 	.text       start:0x800D6778 end:0x800D8FE0
 
 main/dll/objfsa.c:
-	.text       start:0x800D8FE0 end:0x800E556C
+	.text       start:0x800D8FE0 end:0x800E1DA8
 
 main/dll/curves.c:
-	.text       start:0x800E556C end:0x800E56A4
+	.text       start:0x800E1DA8 end:0x800E8118
 
 main/dll/gameplay.c:
-	.text       start:0x800E56A4 end:0x800F49C8
+	.text       start:0x800E8118 end:0x800F49C8
 
 main/dll/foodbag.c:
 	.text       start:0x800F49C8 end:0x800FA86C
@@ -382,44 +382,11 @@ main/dll/dll_C6.c:
 main/dll/dll_C0.c:
 	.text       start:0x80102440 end:0x801024E8
 
-main/dll/dll_C1.c:
-	.text       start:0x801024E8 end:0x80102B5C
-
-main/dll/dll_BE.c:
-	.text       start:0x80102B5C end:0x80102B78
-
-main/dll/dll_C2.c:
-	.text       start:0x80102B78 end:0x80102B84
-
-main/dll/dll_C3.c:
-	.text       start:0x80102B84 end:0x80102B98
-
-main/dll/dll_C7.c:
-	.text       start:0x80102B98 end:0x80102BA4
-
-main/dll/dll_C8.c:
-	.text       start:0x80102BA4 end:0x80102BB0
-
-main/dll/dll_C9.c:
-	.text       start:0x80102BB0 end:0x80102CA0
-
-main/dll/dll_CB.c:
-	.text       start:0x80102CA0 end:0x80102CC8
-
-main/dll/dll_CC.c:
-	.text       start:0x80102CC8 end:0x80102CFC
-
-main/dll/dll_CD.c:
-	.text       start:0x80102CFC end:0x80102D24
-
-main/dll/dll_CE.c:
-	.text       start:0x80102D24 end:0x80102D3C
-
 main/dll/CAM/camcontrol.c:
-	.text       start:0x80102D3C end:0x80103130
+	.text       start:0x801024E8 end:0x80103648
 
 main/dll/CAM/cutCam.c:
-	.text       start:0x80103130 end:0x801047DC
+	.text       start:0x80103648 end:0x801047DC
 
 main/dll/CAM/attention.c:
 	.text       start:0x801047DC end:0x80104C4C
