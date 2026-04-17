@@ -1,0 +1,20 @@
+/*
+ * Manual recovery stub based on claimed split coverage and the surrounding
+ * DF/SC/SH corridor.
+ *
+ * This file is intentionally not wired into the build yet.
+ *
+ * Current EN split:
+ * - main/dll/SC/SCtotemstrength.c
+ * - 0x801D8190-0x801D8284
+ *
+ * Nearby corridor context:
+ * - previous split: main/dll/SC/SCtotembondpuz.c
+ * - next split: main/dll/brokecannon.c
+ */
+
+/*
+ * No function names were promoted here yet.
+ * Start from the current EN split window and the surrounding corridor.
+ */
+
