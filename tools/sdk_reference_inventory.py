@@ -43,6 +43,7 @@ SDK_ROOTS = {
 }
 TEXT_RE = re.compile(r"\s*\.text\s+start:(0x[0-9A-Fa-f]+)\s+end:(0x[0-9A-Fa-f]+)")
 CANONICAL_EXTENSIONS = {".c", ".cpp", ".cp", ".cxx"}
+CONFIG_OBJECT_EXTENSIONS = "c|cpp|cp|cxx|s|S"
 PATH_ALIASES = {
     "dolphin/dvd/dvdfatal.c": "dolphin/dvd/dvdFatal.c",
     "dolphin/pad/PadClamp.c": "dolphin/pad/Padclamp.c",
@@ -102,6 +103,12 @@ def normalize_sdk_path(raw_path: str) -> str | None:
     return f"dolphin/{root}/{rest}"
 
 
+def split_header_path(line: str) -> str | None:
+    if not line or line.startswith((" ", "\t")) or ":" not in line:
+        return None
+    return line.split(":", 1)[0]
+
+
 def canonicalize_sdk_path(path: str) -> str:
     sdk_path = Path(path)
     if sdk_path.suffix.lower() in CANONICAL_EXTENSIONS:
@@ -114,8 +121,8 @@ def load_target_splits(version: str) -> tuple[set[str], set[str]]:
     exact_paths: set[str] = set()
     canonical_paths: set[str] = set()
     for line in splits_path.read_text().splitlines():
-        if line and not line.startswith(" ") and line.endswith(":"):
-            path = line[:-1]
+        path = split_header_path(line)
+        if path is not None:
             exact_paths.add(path)
             canonical_paths.add(canonicalize_sdk_path(path))
     return exact_paths, canonical_paths
@@ -125,7 +132,10 @@ def load_configured_objects() -> tuple[set[str], set[str]]:
     configure_path = ROOT / "configure.py"
     exact_paths: set[str] = set()
     canonical_paths: set[str] = set()
-    for match in re.finditer(r'Object\([^\n]*?,\s*"([^"]+\.(?:c|cpp|cp|cxx))"\)', configure_path.read_text()):
+    for match in re.finditer(
+        rf'Object\([^\n]*?,\s*"([^"]+\.(?:{CONFIG_OBJECT_EXTENSIONS}))"\)',
+        configure_path.read_text(),
+    ):
         path = match.group(1)
         exact_paths.add(path)
         canonical_paths.add(canonicalize_sdk_path(path))
@@ -143,10 +153,11 @@ def iter_reference_units(spec: RefSpec) -> Iterable[RefUnit]:
     current_unit: RefUnit | None = None
 
     for line in spec.splits_path.read_text().splitlines():
-        if line and not line.startswith(" ") and line.endswith(":"):
+        header_path = split_header_path(line)
+        if header_path is not None:
             if current_unit and current_unit.text_funcs > 0:
                 yield current_unit
-            current_path = normalize_sdk_path(line[:-1])
+            current_path = normalize_sdk_path(header_path)
             current_unit = RefUnit(path=current_path) if current_path else None
             continue
 
