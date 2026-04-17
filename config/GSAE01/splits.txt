@@ -680,19 +680,55 @@ main/dll/transporter.c:
 	.text       start:0x80174A34 end:0x80178640
 
 main/dll/autoTransporter.c:
-	.text       start:0x80178640 end:0x8017B93C
+	.text       start:0x80178640 end:0x80179864
+
+main/dll/dll_13E.c:
+	.text       start:0x80179864 end:0x80179B84
+
+main/dll/dll_140.c:
+	.text       start:0x80179B84 end:0x80179F40
+
+main/dll/tFrameAnimator.c:
+	.text       start:0x80179F40 end:0x8017A3F4
 
 main/dll/screenOverlay.c:
-	.text       start:0x8017B93C end:0x8017CCFC
+	.text       start:0x8017A3F4 end:0x8017AB28
+
+main/dll/dll_145.c:
+	.text       start:0x8017AB28 end:0x8017AC40
+
+main/dll/texScroll.c:
+	.text       start:0x8017AC40 end:0x8017B2CC
+
+main/dll/dll_147.c:
+	.text       start:0x8017B2CC end:0x8017B2F8
+
+main/dll/dll_148.c:
+	.text       start:0x8017B2F8 end:0x8017C250
 
 main/dll/alphaanim.c:
-	.text       start:0x8017CCFC end:0x8017F494
+	.text       start:0x8017C250 end:0x8017D12C
+
+main/dll/groundAnimator.c:
+	.text       start:0x8017D12C end:0x8017E6F8
 
 main/dll/crackanim.c:
-	.text       start:0x8017F494 end:0x80180464
+	.text       start:0x8017E6F8 end:0x8017EEBC
+
+main/dll/dll_14C.c:
+	.text       start:0x8017EEBC end:0x8017F1EC
+
+main/dll/dll_14D.c:
+	.text       start:0x8017F1EC end:0x8017F548
+
+main/dll/dll_14F.c:
+	.text       start:0x8017F548 end:0x80181C50
+
+main/dll/dll_150.c:
+	.text       start:0x80181C50 end:0x80182754
 
 main/dll/exploder.c:
-	.text       start:0x80180464 end:0x801835EC
+	.text       start:0x80182754 end:0x801835EC
 
 main/dll/CF/CFguardian.c:
 	.text       start:0x801835EC end:0x80184D40
