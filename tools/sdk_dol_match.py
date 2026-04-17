@@ -249,6 +249,27 @@ class ReferenceSourceAggregate:
 
 
 @dataclass(frozen=True)
+class SparseReferenceFunctionHit:
+    reference: FunctionSignature
+    target: FunctionSignature
+    result: MatchResult
+    reference_index: int
+
+
+@dataclass(frozen=True)
+class SparseReferenceCluster:
+    start: int
+    end: int
+    hits: tuple[SparseReferenceFunctionHit, ...]
+    average_score: float
+    best_score: float
+    coverage_bytes_ratio: float
+    coverage_function_ratio: float
+    order_ratio: float
+    overall_score: float
+
+
+@dataclass(frozen=True)
 class RawWindow:
     source_path: str
     game: str
@@ -931,6 +952,46 @@ def iter_target_windows(
     return tuple(windows)
 
 
+def iter_target_function_windows(
+    version: str,
+    dol_path: Path,
+    range_start: int | None,
+    range_end: int | None,
+    only_unassigned: bool = False,
+    min_function_size: int = 0,
+) -> tuple[WindowSignature, ...]:
+    functions = load_text_functions(version)
+    target_windows: list[WindowSignature] = []
+    for function in functions:
+        if range_start is not None and function.end <= range_start:
+            continue
+        if range_end is not None and function.start >= range_end:
+            break
+        if function.end - function.start < min_function_size:
+            continue
+        if only_unassigned and not window_is_unassigned(version, function.start, function.end):
+            continue
+        target_windows.append(
+            WindowSignature(
+                label=version,
+                source_path=f"range:0x{function.start:08X}-0x{function.end:08X}",
+                game=version,
+                start=function.start,
+                end=function.end,
+                functions=(
+                    build_target_function_signature(
+                        version,
+                        dol_path,
+                        function.start,
+                        function.end,
+                        function.name,
+                    ),
+                ),
+            )
+        )
+    return tuple(target_windows)
+
+
 def coarse_size_score(target: WindowSignature, candidate: WindowSignature) -> float:
     compared_pairs = list(zip(target.size_vector, candidate.size_vector))
     if not compared_pairs:
@@ -1011,6 +1072,178 @@ def rank_candidates(
         )
     )
     return results[:limit]
+
+
+def longest_increasing_subsequence_length(values: tuple[int, ...]) -> int:
+    if not values:
+        return 0
+    piles: list[int] = []
+    for value in values:
+        lo = 0
+        hi = len(piles)
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if piles[mid] <= value:
+                lo = mid + 1
+            else:
+                hi = mid
+        if lo == len(piles):
+            piles.append(value)
+        else:
+            piles[lo] = value
+    return len(piles)
+
+
+def cluster_sparse_reference_hits(
+    reference_window: WindowSignature,
+    hits: list[SparseReferenceFunctionHit],
+    cluster_gap: int,
+    limit: int,
+) -> list[SparseReferenceCluster]:
+    if not hits:
+        return []
+
+    hits_by_target = sorted(
+        hits,
+        key=lambda hit: (
+            hit.target.start,
+            hit.target.end,
+            hit.reference_index,
+            -hit.result.overall_score,
+        ),
+    )
+    grouped_hits: list[list[SparseReferenceFunctionHit]] = []
+    current_group: list[SparseReferenceFunctionHit] = []
+    current_end = 0
+    for hit in hits_by_target:
+        if not current_group or hit.target.start <= current_end + cluster_gap:
+            current_group.append(hit)
+            current_end = max(current_end, hit.target.end)
+            continue
+        grouped_hits.append(current_group)
+        current_group = [hit]
+        current_end = hit.target.end
+    if current_group:
+        grouped_hits.append(current_group)
+
+    reference_total_bytes = sum(function.size for function in reference_window.functions)
+    reference_total_functions = reference_window.function_count
+    clusters: list[SparseReferenceCluster] = []
+
+    for group in grouped_hits:
+        best_by_reference: dict[int, SparseReferenceFunctionHit] = {}
+        for hit in group:
+            existing = best_by_reference.get(hit.reference_index)
+            if existing is None or hit.result.overall_score > existing.result.overall_score:
+                best_by_reference[hit.reference_index] = hit
+        unique_hits = tuple(sorted(best_by_reference.values(), key=lambda hit: hit.reference_index))
+        if not unique_hits:
+            continue
+
+        coverage_bytes = sum(hit.reference.size for hit in unique_hits)
+        coverage_bytes_ratio = coverage_bytes / reference_total_bytes if reference_total_bytes else 0.0
+        coverage_function_ratio = (
+            len(unique_hits) / reference_total_functions if reference_total_functions else 0.0
+        )
+        order_ratio = 1.0
+        if len(unique_hits) > 1:
+            target_starts = tuple(hit.target.start for hit in unique_hits)
+            order_ratio = longest_increasing_subsequence_length(target_starts) / len(target_starts)
+        average_score = sum(hit.result.overall_score for hit in unique_hits) / len(unique_hits)
+        best_score = max(hit.result.overall_score for hit in unique_hits)
+        overall_score = (
+            average_score * 0.35
+            + coverage_bytes_ratio * 0.35
+            + order_ratio * 0.20
+            + coverage_function_ratio * 0.10
+        )
+        clusters.append(
+            SparseReferenceCluster(
+                start=min(hit.target.start for hit in unique_hits),
+                end=max(hit.target.end for hit in unique_hits),
+                hits=unique_hits,
+                average_score=average_score,
+                best_score=best_score,
+                coverage_bytes_ratio=coverage_bytes_ratio,
+                coverage_function_ratio=coverage_function_ratio,
+                order_ratio=order_ratio,
+                overall_score=overall_score,
+            )
+        )
+
+    clusters.sort(
+        key=lambda cluster: (
+            -cluster.overall_score,
+            -cluster.coverage_bytes_ratio,
+            -cluster.average_score,
+            cluster.start,
+        )
+    )
+    return clusters[:limit]
+
+
+def sparse_reference_source_matches(
+    version: str,
+    dol_path: Path,
+    reference_window: WindowSignature,
+    target_range_start: int | None,
+    target_range_end: int | None,
+    only_unassigned: bool,
+    coarse_limit: int | None,
+    limit_per_reference: int,
+    limit: int,
+    min_function_size: int,
+    min_anchor_score: float,
+    cluster_gap: int,
+) -> list[SparseReferenceCluster]:
+    reference_functions = [
+        WindowSignature(
+            label=reference_window.label,
+            source_path=f"{reference_window.source_path}::{function.name}",
+            game=reference_window.game,
+            start=function.start,
+            end=function.end,
+            functions=(function,),
+        )
+        for function in reference_window.functions
+        if function.size >= min_function_size
+    ]
+    if not reference_functions:
+        return []
+
+    target_functions = list(
+        iter_target_function_windows(
+            version=version,
+            dol_path=dol_path,
+            range_start=target_range_start,
+            range_end=target_range_end,
+            only_unassigned=only_unassigned,
+            min_function_size=min_function_size,
+        )
+    )
+    if not target_functions:
+        return []
+
+    hits: list[SparseReferenceFunctionHit] = []
+    for index, reference_function in enumerate(reference_functions):
+        ranked = rank_candidates(
+            reference_function,
+            target_functions,
+            limit_per_reference,
+            coarse_limit,
+        )
+        for result in ranked:
+            if result.overall_score < min_anchor_score:
+                continue
+            hits.append(
+                SparseReferenceFunctionHit(
+                    reference=reference_function.functions[0],
+                    target=result.candidate.functions[0],
+                    result=result,
+                    reference_index=index,
+                )
+            )
+    return cluster_sparse_reference_hits(reference_window, hits, cluster_gap, limit)
 
 
 def discover_reference_hits(
@@ -1375,6 +1608,69 @@ def print_aggregated_reference_source_matches(
             )
 
 
+def sparse_verdict_for_cluster(cluster: SparseReferenceCluster) -> str:
+    if (
+        cluster.overall_score >= 0.70
+        and cluster.coverage_bytes_ratio >= 0.45
+        and cluster.order_ratio >= 0.75
+    ):
+        return "sparse-source-likely"
+    if cluster.overall_score >= 0.50 and cluster.coverage_bytes_ratio >= 0.25:
+        return "sparse-structural"
+    return "sparse-weak"
+
+
+def print_sparse_reference_source_matches(
+    version: str,
+    reference_window: WindowSignature,
+    range_start: int | None,
+    range_end: int | None,
+    only_unassigned: bool,
+    min_anchor_score: float,
+    cluster_gap: int,
+    clusters: list[SparseReferenceCluster],
+) -> None:
+    assignment_mode = "unassigned-only" if only_unassigned else "all-windows"
+    range_label = "full-range"
+    if range_start is not None and range_end is not None:
+        range_label = f"0x{range_start:08X}-0x{range_end:08X}"
+    print(
+        f"sparse-reference-source: {reference_window.source_path} "
+        f"range={range_label} mode={assignment_mode} "
+        f"min-anchor-score={min_anchor_score * 100:.2f} "
+        f"cluster-gap=0x{cluster_gap:X}"
+    )
+    print_window("reference", reference_window)
+    if not clusters:
+        print("clusters:")
+        print("   none")
+        return
+    print("clusters:")
+    for index, cluster in enumerate(clusters, start=1):
+        print(
+            f"  {index:>2}. 0x{cluster.start:08X}-0x{cluster.end:08X} "
+            f"span=0x{cluster.end - cluster.start:X} "
+            f"hits={len(cluster.hits)} "
+            f"score={cluster.overall_score * 100:.2f} "
+            f"avg={cluster.average_score * 100:.2f} "
+            f"cover-bytes={cluster.coverage_bytes_ratio * 100:.2f} "
+            f"cover-funcs={cluster.coverage_function_ratio * 100:.2f} "
+            f"order={cluster.order_ratio * 100:.2f} "
+            f"{sparse_verdict_for_cluster(cluster)}"
+        )
+        print(f"      {describe_target_split_overlap(version, cluster.start, cluster.end)}")
+        for hit in cluster.hits:
+            print(
+                f"      ref[{hit.reference_index}] {hit.reference.name} "
+                f"0x{hit.reference.start:08X}-0x{hit.reference.end:08X} "
+                f"<-> 0x{hit.target.start:08X}-0x{hit.target.end:08X} "
+                f"{hit.target.name} "
+                f"score={hit.result.overall_score * 100:.2f} "
+                f"anchor={hit.result.anchor_score * 100:.2f} "
+                f"run={hit.result.anchor_run_score * 100:.2f}"
+            )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
@@ -1403,6 +1699,14 @@ def parse_args() -> argparse.Namespace:
         help=(
             "With --reference-source, aggregate repeated target windows across multiple "
             "reference games instead of requiring exactly one --reference"
+        ),
+    )
+    parser.add_argument(
+        "--sparse-reference-source",
+        action="store_true",
+        help=(
+            "With --reference-source, match individual reference functions and cluster "
+            "surviving target hits so dead-stripped object tails do not dominate"
         ),
     )
     parser.add_argument(
@@ -1493,6 +1797,18 @@ def parse_args() -> argparse.Namespace:
         help="Minimum reference/target function size for --discover-functions mode",
     )
     parser.add_argument(
+        "--min-anchor-score",
+        type=float,
+        default=0.70,
+        help="Minimum one-function score for sparse reference-source clustering",
+    )
+    parser.add_argument(
+        "--anchor-cluster-gap",
+        type=parse_int,
+        default=0x200,
+        help="Maximum byte gap between sparse anchor hits when clustering reference-source matches",
+    )
+    parser.add_argument(
         "--show-alignment",
         action="store_true",
         help="Print the strongest ordered function-match blocks for each reported result",
@@ -1518,15 +1834,20 @@ def parse_args() -> argparse.Namespace:
         parser.error("--range-end must be greater than --range-start")
     if args.aggregate_reference_source and args.reference_source is None:
         parser.error("--aggregate-reference-source requires --reference-source")
+    if args.sparse_reference_source and args.reference_source is None:
+        parser.error("--sparse-reference-source requires --reference-source")
     if (
         args.reference_source is not None
         and not args.aggregate_reference_source
+        and not args.sparse_reference_source
         and len(args.reference) != 1
     ):
         parser.error(
             "--reference-source mode requires exactly one --reference unless "
-            "--aggregate-reference-source is used"
+            "--aggregate-reference-source or --sparse-reference-source is used"
         )
+    if args.sparse_reference_source and len(args.reference) != 1:
+        parser.error("--sparse-reference-source currently requires exactly one --reference")
     if args.discover and (args.target_range_start is None or args.target_range_end is None):
         parser.error("--discover requires --target-range-start and --target-range-end")
     if args.discover_functions and not args.discover:
@@ -1608,6 +1929,35 @@ def main() -> None:
         return
 
     if args.reference_source is not None:
+        if args.sparse_reference_source:
+            spec = args.reference[0]
+            reference_window = select_reference_window(spec, args.reference_source)
+            clusters = sparse_reference_source_matches(
+                version=args.version,
+                dol_path=dol_path,
+                reference_window=reference_window,
+                target_range_start=args.target_range_start,
+                target_range_end=args.target_range_end,
+                only_unassigned=args.only_unassigned,
+                coarse_limit=args.coarse_limit,
+                limit_per_reference=args.limit_per_reference,
+                limit=args.limit,
+                min_function_size=args.min_function_size,
+                min_anchor_score=args.min_anchor_score,
+                cluster_gap=args.anchor_cluster_gap,
+            )
+            print_sparse_reference_source_matches(
+                version=args.version,
+                reference_window=reference_window,
+                range_start=args.target_range_start,
+                range_end=args.target_range_end,
+                only_unassigned=args.only_unassigned,
+                min_anchor_score=args.min_anchor_score,
+                cluster_gap=args.anchor_cluster_gap,
+                clusters=clusters,
+            )
+            return
+
         if args.aggregate_reference_source:
             aggregates, missing_specs = aggregate_reference_source_matches(
                 version=args.version,

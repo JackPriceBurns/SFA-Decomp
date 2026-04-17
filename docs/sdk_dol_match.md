@@ -64,6 +64,16 @@ For math hunting, it is usually best to narrow the target range around the suspe
 python tools/sdk_dol_match.py -v GSAE01 --reference pikmin2:GPVE01 --reference-source Dolphin/MSL_C/PPC_EABI/math_ppc.c --target-range-start 0x802928F4 --target-range-end 0x80295318 --limit 8
 ```
 
+3. Sparse reference source to current SFA functions
+
+This answers "if some functions from a reference SDK object survived but others were dead-stripped, where do the surviving anchors cluster in SFA?"
+
+```bash
+python tools/sdk_dol_match.py -v GSAE01 --reference twilight_princess:GZ2E01 --reference-source dolphin/os/OSExec.c --sparse-reference-source --target-range-start 0x8024142C --target-range-end 0x802473B4 --limit 6 --limit-per-reference 3 --min-function-size 0x40 --min-anchor-score 0.55
+```
+
+This mode breaks the reference source into individual functions, matches them against current EN one function at a time, and then clusters the surviving hits back into local target neighborhoods. It is meant for exactly the "whole-object matching gets confused by dead-stripped SDK functions" case.
+
 ## Reading the results
 
 Each match prints:
@@ -80,6 +90,12 @@ The tool also emits a simple verdict:
 - `source-likely`: strong candidate for retargeting or importing the reference source
 - `structural`: likely same family or same neighborhood, but still needs manual verification
 - `weak`: not strong enough to trust on its own
+
+Sparse reference-source mode prints cluster summaries instead:
+
+- `sparse-source-likely`: enough ordered anchor coverage to treat the neighborhood as a serious seam candidate
+- `sparse-structural`: same family/neighborhood evidence, but still incomplete
+- `sparse-weak`: too little surviving anchor coverage to trust
 
 Treat `source-likely` as evidence, not proof. Confirm with `sdk_import_probe.py`, the surrounding split layout, and a normal build / objdiff pass before changing ownership.
 
