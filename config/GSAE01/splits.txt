@@ -697,6 +697,159 @@ main/dll/WM/WMcrystal.c:
 main/dll/VF/VFlevcontrol.c:
 	.text       start:0x801DE458 end:0x801DEA20
 
+main/dll/VF/platform1.c:
+	.text       start:0x801DEA20 end:0x801DF444
+
+main/dll/VF/draghead.c:
+	.text       start:0x801DF444 end:0x801DF44C
+
+main/dll/VF/lavaflow.c:
+	.text       start:0x801DF44C end:0x801DF454
+
+main/dll/DB/DBrockfall.c:
+	.text       start:0x801DF454 end:0x801DFA2C
+
+main/dll/DB/DBpointmum.c:
+	.text       start:0x801DFA2C end:0x801DFE3C
+
+main/dll/DB/DBwaterflow.c:
+	.text       start:0x801DFE3C end:0x801E0010
+
+main/dll/DB/DBlightgo.c:
+	.text       start:0x801E0010 end:0x801E0014
+
+main/dll/DB/DBbullet.c:
+	.text       start:0x801E0014 end:0x801E0018
+
+main/dll/DB/DBprotection.c:
+	.text       start:0x801E0018 end:0x801E167C
+
+main/dll/DB/DBdustgeezer.c:
+	.text       start:0x801E167C end:0x801E18CC
+
+main/dll/DB/DBbonedust.c:
+	.text       start:0x801E18CC end:0x801E18DC
+
+main/dll/DB/DBstealerworm.c:
+	.text       start:0x801E18DC end:0x801E383C
+
+main/dll/CR/CRsnowClaw.c:
+	.text       start:0x801E383C end:0x801E3A44
+
+main/dll/CR/CRfueltank.c:
+	.text       start:0x801E3A44 end:0x801E3AB0
+
+main/dll/TREX/TREX_levelcontrol.c:
+	.text       start:0x801E3AB0 end:0x801E4304
+
+main/dll/TREX/TREX_trex.c:
+	.text       start:0x801E4304 end:0x801E6880
+
+main/dll/TREX/TREX_Lazerwall.c:
+	.text       start:0x801E6880 end:0x801E6CC4
+
+main/dll/DR/DRlaserturret.c:
+	.text       start:0x801E6CC4 end:0x801E7714
+
+main/dll/DR/DRpushcart.c:
+	.text       start:0x801E7714 end:0x801E8FA0
+
+main/dll/DR/DRCloudball.c:
+	.text       start:0x801E8FA0 end:0x801E93B4
+
+main/dll/DR/DRsimplehuman.c:
+	.text       start:0x801E93B4 end:0x801E9C74
+
+main/dll/DR/DRyoutube.c:
+	.text       start:0x801E9C74 end:0x801E9F38
+
+main/dll/DR/DRexplodeDoor.c:
+	.text       start:0x801E9F38 end:0x801EA238
+
+main/dll/DR/DRcloudcage.c:
+	.text       start:0x801EA238 end:0x801EA878
+
+main/dll/DR/DRshackle.c:
+	.text       start:0x801EA878 end:0x801EAE8C
+
+main/dll/DR/DRhightop.c:
+	.text       start:0x801EAE8C end:0x801EC398
+
+main/dll/DR/DRpickup.c:
+	.text       start:0x801EC398 end:0x801EC7E4
+
+main/dll/DR/DRcradle.c:
+	.text       start:0x801EC7E4 end:0x801ECF60
+
+main/dll/DR/DRpulley.c:
+	.text       start:0x801ECF60 end:0x801ED1FC
+
+main/dll/DR/DRhalolight.c:
+	.text       start:0x801ED1FC end:0x801ED5CC
+
+main/dll/DR/DRbarrelplace.c:
+	.text       start:0x801ED5CC end:0x801EDA60
+
+main/dll/BW/BWalphaanim.c:
+	.text       start:0x801EDA60 end:0x801EE104
+
+main/dll/WC/WCpushblock.c:
+	.text       start:0x801EE104 end:0x801EE880
+
+main/dll/WC/WClevcontrol.c:
+	.text       start:0x801EE880 end:0x801EF9DC
+
+main/dll/WC/WCbeacon.c:
+	.text       start:0x801EF9DC end:0x801EF9E0
+
+main/dll/WC/WCpressureSwitch.c:
+	.text       start:0x801EF9E0 end:0x801F056C
+
+main/dll/WC/WCdial.c:
+	.text       start:0x801F056C end:0x801F05AC
+
+main/dll/WC/WClaser.c:
+	.text       start:0x801F05AC end:0x801F0C0C
+
+main/dll/WC/WCfloortile.c:
+	.text       start:0x801F0C0C end:0x801F0DA4
+
+main/dll/ARW/ARWarwingattachment.c:
+	.text       start:0x801F0DA4 end:0x801F3824
+
+main/dll/LGT/LGTpointlight.c:
+	.text       start:0x801F3824 end:0x801F3E04
+
+main/dll/LGT/LGTdirectionallight.c:
+	.text       start:0x801F3E04 end:0x801F44C0
+
+main/dll/LGT/LGTprojectedlight.c:
+	.text       start:0x801F44C0 end:0x801F4C60
+
+main/dll/LGT/LGTcontrollight.c:
+	.text       start:0x801F4C60 end:0x801F4EF0
+
+main/dll/boulder.c:
+	.text       start:0x801F4EF0 end:0x801F5184
+
+main/dll/baddie/chuka.c:
+	.text       start:0x80206444 end:0x802069B4
+
+main/dll/tesla.c:
+	.text       start:0x802069B4 end:0x80207568
+
+main/dll/crate.c:
+	.text       start:0x80207568 end:0x802077C4
+
+main/dll/door.c:
+	.text       start:0x802077C4 end:0x80207BA4
+
+main/dll/fruit.c:
+	.text       start:0x80207BA4 end:0x80208C98
+
+main/dll/zBomb.c:
+	.text       start:0x80208C98 end:0x802093B4
+
 main/textblock.c:
 	.text       start:0x80209624 end:0x802096AC
 
