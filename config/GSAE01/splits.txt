@@ -16,14 +16,62 @@ Sections:
 dolphin/TRK_MINNOW_DOLPHIN/MWTrace.c:
 	.text       start:0x8001741C end:0x8001746C
 
+main/objanim.c:
+	.text       start:0x8002EC4C end:0x8002F604
+
+main/objhits.c:
+	.text       start:0x80030780 end:0x8003549C
+
+main/objHitReact.c:
+	.text       start:0x8003549C end:0x80035728
+
 dolphin/os/OSAddress.c:
 	.text       start:0x80080E28 end:0x80080E58
+
+main/expgfx.c:
+	.text       start:0x8009B36C end:0x8009FF68
+
+main/dll/modgfx.c:
+	.text       start:0x8009FF68 end:0x800C2BA8
+
+main/dll/modelfx.c:
+	.text       start:0x800C2BA8 end:0x800C8284
+
+main/dll/dim_partfx.c:
+	.text       start:0x800C8284 end:0x800D6778
+
+main/dll/df_partfx.c:
+	.text       start:0x800D6778 end:0x800D8FE0
+
+main/dll/objfsa.c:
+	.text       start:0x800D8FE0 end:0x800E556C
+
+main/dll/gameplay.c:
+	.text       start:0x800E56A4 end:0x800FD9E0
+
+main/dll/pickup.c:
+	.text       start:0x800FD9E0 end:0x80102CA0
+
+main/dll/modanimeflash1.c:
+	.text       start:0x80102CA0 end:0x80102CC8
+
+main/dll/modcloudrunner2.c:
+	.text       start:0x80102CC8 end:0x80102D3C
 
 dolphin/ax/AX.c:
 	.text       start:0x801177DC end:0x8011784C
 
 dolphin/TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.c:
 	.text       start:0x801B1398 end:0x801B13F0
+
+main/dll/DIM/DIMboss.c:
+	.text       start:0x801BD0E8 end:0x801BDA04
+
+main/dll/SH/SHthorntail.c:
+	.text       start:0x801D5764 end:0x801D5AFC
+
+main/textblock.c:
+	.text       start:0x80209624 end:0x802096D8
 
 dolphin/base/PPCArch.c:
 	.text       start:0x80240A44 end:0x80240AD0
