@@ -652,6 +652,27 @@ main/dll/SC/SCcollectables.c:
 main/dll/SC/SCanimobj.c:
 	.text       start:0x801D76A4 end:0x801D7C64
 
+main/dll/SC/SCtotemlogpuz.c:
+	.text       start:0x801D7C64 end:0x801D80F0
+
+main/dll/SC/SCtotembondpuz.c:
+	.text       start:0x801D80F0 end:0x801D8190
+
+main/dll/SC/SCtotemstrength.c:
+	.text       start:0x801D8190 end:0x801D8284
+
+main/dll/brokecannon.c:
+	.text       start:0x801D8284 end:0x801D84C4
+
+main/dll/SP/SPshop.c:
+	.text       start:0x801D84C4 end:0x801D88F8
+
+main/dll/SP/SPshopkeeper.c:
+	.text       start:0x801D88F8 end:0x801D8DE8
+
+main/dll/SP/SPdrape.c:
+	.text       start:0x801D8DE8 end:0x801D90F0
+
 main/textblock.c:
 	.text       start:0x80209624 end:0x802096AC
 
