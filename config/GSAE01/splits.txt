@@ -1364,10 +1364,10 @@ dolphin/exi/EXIUart.c:
 	.text       start:0x80254E78 end:0x80255430
 
 dolphin/gx/GXInit.c:
-	.text       start:0x80255430 end:0x8025665C
+	.text       start:0x80255430 end:0x80256520
 
 dolphin/gx/GXFifo.c:
-	.text       start:0x8025665C end:0x80256F84
+	.text       start:0x80256520 end:0x80256F84
 
 dolphin/gx/GXAttr.c:
 	.text       start:0x80256F84 end:0x8025898C
