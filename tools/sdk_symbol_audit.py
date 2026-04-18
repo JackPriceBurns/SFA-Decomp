@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import re
 import subprocess
-from collections import Counter
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -129,8 +129,24 @@ def is_placeholder(name: str) -> bool:
     return name.startswith(PLACEHOLDER_PREFIXES)
 
 
-def find_exact_symbol(symbols_by_addr: dict[int, ConfigSymbol], addr: int) -> ConfigSymbol | None:
-    return symbols_by_addr.get(addr)
+def symbol_type(symbol: ConfigSymbol) -> str:
+    match = re.search(r"\btype:(\w+)\b", symbol.meta)
+    return match.group(1) if match else ""
+
+
+def choose_exact_symbol(candidates: list[ConfigSymbol], donor_name: str) -> ConfigSymbol | None:
+    if not candidates:
+        return None
+
+    def score(symbol: ConfigSymbol) -> tuple[int, int, int]:
+        typ = symbol_type(symbol)
+        return (
+            0 if symbol.name == donor_name else 1,
+            0 if typ == "function" else 1,
+            0 if not is_placeholder(symbol.name) else 1,
+        )
+
+    return min(candidates, key=score)
 
 
 def find_cover_symbol(symbols: list[ConfigSymbol], addr: int) -> ConfigSymbol | None:
@@ -172,7 +188,10 @@ def audit_source(version: str, source: Path, splits: list[SplitRange], symbols: 
         raise SystemExit(f"Missing built object: {obj_path}")
 
     obj_functions = parse_text_symbols(obj_path)
-    symbols_by_addr = {symbol.address: symbol for symbol in symbols if symbol.section == ".text"}
+    symbols_by_addr: dict[int, list[ConfigSymbol]] = defaultdict(list)
+    for symbol in symbols:
+        if symbol.section == ".text":
+            symbols_by_addr[symbol.address].append(symbol)
     split_symbols = [
         symbol
         for symbol in symbols
@@ -189,7 +208,7 @@ def audit_source(version: str, source: Path, splits: list[SplitRange], symbols: 
     printed = 0
     for function in obj_functions:
         target_addr = anchor_delta + function.value
-        exact = find_exact_symbol(symbols_by_addr, target_addr)
+        exact = choose_exact_symbol(symbols_by_addr.get(target_addr, []), function.name)
         cover = find_cover_symbol(symbols, target_addr)
         size_match = exact is not None and exact.size == function.size
         if exact is None:
