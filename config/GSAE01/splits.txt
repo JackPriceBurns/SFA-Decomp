@@ -1532,10 +1532,10 @@ dolphin/si/SIBios.c:
 	.text       start:0x80252104 end:0x802537E4
 
 dolphin/si/SISamplingRate.c:
-	.text       start:0x802537E4 end:0x802539E0
+	.text       start:0x802537E4 end:0x802538EC
 
 dolphin/exi/EXIBios.c:
-	.text       start:0x802539E0 end:0x80254E78
+	.text       start:0x802538EC end:0x80254E78
 
 dolphin/exi/EXIUart.c:
 	.text       start:0x80254E78 end:0x80255430
