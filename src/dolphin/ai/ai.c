@@ -36,7 +36,7 @@ STRUCT_TIMELOG profile;
 #endif
 
 // prototypes
-void __AI_set_stream_sample_rate(u32 rate);
+void AISetStreamSampleRate(u32 rate);
 void __AIDHandler(__OSInterrupt interrupt, OSContext* context);
 void __AISHandler(__OSInterrupt interrupt, OSContext* context);
 void __AICallbackStackSwitch(void* cb);
@@ -137,7 +137,7 @@ u32 AIGetDSPSampleRate(void) {
     return GET_REG_FIELD(__AIRegs[0], 1, 6) ^ 1;
 }
 
-void __AI_set_stream_sample_rate(u32 rate) {
+void AISetStreamSampleRate(u32 rate) {
     BOOL old;
     u32 play_state;
     u8 vol_left;
@@ -198,7 +198,7 @@ void AIInit(u8* stack) {
         AISetStreamVolLeft(0);
         __AIRegs[3] = 0;
         __AIRegs[0] = (__AIRegs[0] & ~0x20) | 0x20;
-        __AI_set_stream_sample_rate(AI_SAMPLERATE_48KHZ);
+        AISetStreamSampleRate(AI_SAMPLERATE_48KHZ);
         AISetDSPSampleRate(AI_SAMPLERATE_32KHZ);
 #if DEBUG
         OSReport("AIInit(): DSP is 32KHz\n");
