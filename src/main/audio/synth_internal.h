@@ -256,19 +256,15 @@ extern u32 gSynthNextHandle;
 
 #define SYNTH_VOICE_RUNTIME() ((SynthVoiceRuntime*)(void*)gSynthCallbacks)
 
-/* Recovered semantics for external audio helpers that still use raw symbol names. */
-void fn_80278D74(SynthVoiceSlot* slot);
-u32 fn_80279C00(u32 callbackId);
-void fn_80282630(u32 controller, SynthVoiceSlot* dst, SynthVoiceSlot* src);
-void fn_802836E4(s32* value);
+/* Recovered semantics for external audio helpers. */
+void synthReleaseVoiceSlot(SynthVoiceSlot* slot);
+u32 synthLookupCallbackLinkId(u32 callbackId);
+void synthCopyControllerValue(u32 controller, SynthVoiceSlot* dst, SynthVoiceSlot* src);
+void synthScaleFadeTime(s32* value);
 extern const f32 lbl_803E8430;
 extern const f32 lbl_803E8440;
 extern const f32 lbl_803E846C;
 
-#define synthReleaseVoiceSlot fn_80278D74
-#define synthLookupCallbackLinkId fn_80279C00
-#define synthCopyControllerValue fn_80282630
-#define synthScaleFadeTime fn_802836E4
 #define sSynthFadeScale lbl_803E8430
 #define sSynthFadeUnit lbl_803E8440
 #define sSynthFadeTimeScale lbl_803E846C
