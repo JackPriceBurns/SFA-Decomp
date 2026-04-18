@@ -4,6 +4,7 @@ import argparse
 import heapq
 import struct
 from dataclasses import dataclass
+from dataclasses import replace
 from difflib import SequenceMatcher
 from functools import cached_property, lru_cache
 from itertools import zip_longest
@@ -99,6 +100,7 @@ SDK_ROOTS = {
     "thp",
     "vi",
 }
+
 PATH_ALIASES = {
     "dolphin/dvd/dvdfatal.c": "dolphin/dvd/dvdFatal.c",
     "dolphin/pad/PadClamp.c": "dolphin/pad/Padclamp.c",
@@ -149,6 +151,7 @@ class FunctionSignature:
     name: str
     words: tuple[int, ...]
     masked_words: tuple[int, ...]
+    internal_call_deltas: tuple[int, ...] = ()
 
     @cached_property
     def fingerprint(self) -> tuple[int, ...]:
@@ -190,6 +193,10 @@ class WindowSignature:
         return tuple(word for function in self.functions for word in function.masked_words)
 
     @cached_property
+    def flat_internal_call_deltas(self) -> tuple[int, ...]:
+        return tuple(delta for function in self.functions for delta in function.internal_call_deltas)
+
+    @cached_property
     def first_size(self) -> int:
         return self.functions[0].size
 
@@ -214,6 +221,7 @@ class MatchResult:
     window_mask_score: float
     anchor_score: float
     anchor_run_score: float
+    call_shape_score: float
     ngram_score: float
     size_score: float
     count_score: float
@@ -230,6 +238,7 @@ class DiscoveryHit:
     window_mask_score: float
     anchor_score: float
     anchor_run_score: float
+    call_shape_score: float
     ngram_score: float
     size_score: float
     count_score: float
@@ -437,6 +446,39 @@ def mask_instruction(word: int) -> int:
     return word
 
 
+def branch_link_target(pc: int, word: int) -> int | None:
+    opcode = word >> 26
+    if opcode != 18 or (word & 1) == 0:
+        return None
+    displacement = word & 0x03FFFFFC
+    if displacement & 0x02000000:
+        displacement -= 0x04000000
+    if word & 0x00000002:
+        return displacement
+    return pc + displacement
+
+
+def annotate_window_internal_calls(
+    functions: tuple[FunctionSignature, ...],
+) -> tuple[FunctionSignature, ...]:
+    if not functions:
+        return functions
+    start_to_index = {function.start: index for index, function in enumerate(functions)}
+    annotated: list[FunctionSignature] = []
+    for caller_index, function in enumerate(functions):
+        call_deltas: list[int] = []
+        for word_index, word in enumerate(function.words):
+            target = branch_link_target(function.start + word_index * 4, word)
+            if target is None:
+                continue
+            callee_index = start_to_index.get(target)
+            if callee_index is None:
+                continue
+            call_deltas.append(callee_index - caller_index)
+        annotated.append(replace(function, internal_call_deltas=tuple(call_deltas)))
+    return tuple(annotated)
+
+
 def build_function_signature(dol: DolFile, start: int, end: int, name: str) -> FunctionSignature:
     raw = read_dol_range(dol, start, end)
     words = tuple(struct.unpack_from(">I", raw, offset)[0] for offset in range(0, len(raw), 4))
@@ -472,6 +514,7 @@ def build_window_signature(
         build_function_signature(dol, start, end, name)
         for start, end, name in functions
     )
+    signature_functions = annotate_window_internal_calls(signature_functions)
     return WindowSignature(
         label=label,
         source_path=source_path,
@@ -506,6 +549,14 @@ def sequence_ratio(left: tuple[int, ...], right: tuple[int, ...]) -> float:
     if left == right:
         return 1.0
     return SequenceMatcher(None, left, right, autojunk=False).ratio()
+
+
+def call_sequence_ratio(left: tuple[int, ...], right: tuple[int, ...]) -> float:
+    if not left and not right:
+        return 0.5
+    if not left or not right:
+        return 0.0
+    return sequence_ratio(left, right)
 
 
 def build_ngrams(words: tuple[int, ...], size: int) -> set[tuple[int, ...]]:
@@ -604,6 +655,11 @@ def compare_windows(target: WindowSignature, candidate: WindowSignature) -> Matc
         if left is not None and right is not None
     ]
     compared_count = len(compared_pairs)
+    informative_call_pairs = [
+        (left, right)
+        for left, right in compared_pairs
+        if left.internal_call_deltas or right.internal_call_deltas
+    ]
 
     exact_size_matches = sum(left.size == right.size for left, right in compared_pairs)
     function_mask_score = (
@@ -611,6 +667,12 @@ def compare_windows(target: WindowSignature, candidate: WindowSignature) -> Matc
         / compared_count
         if compared_count
         else 0.0
+    )
+    function_call_score = (
+        sum(call_sequence_ratio(left.internal_call_deltas, right.internal_call_deltas) for left, right in informative_call_pairs)
+        / len(informative_call_pairs)
+        if informative_call_pairs
+        else 0.5
     )
     size_score = (
         sum(1.0 - (abs(left.size - right.size) / max(left.size, right.size)) for left, right in compared_pairs)
@@ -620,15 +682,18 @@ def compare_windows(target: WindowSignature, candidate: WindowSignature) -> Matc
     )
     count_score = 1.0 - (abs(target_count - candidate_count) / max(target_count, candidate_count))
     window_mask_score = sequence_ratio(target.flat_masked_words, candidate.flat_masked_words)
+    window_call_score = call_sequence_ratio(target.flat_internal_call_deltas, candidate.flat_internal_call_deltas)
     anchor_score, anchor_run_score = function_anchor_scores(target, candidate)
     ngram_score = jaccard_score(target.flat_masked_words, candidate.flat_masked_words)
+    call_shape_score = function_call_score * 0.65 + window_call_score * 0.35
     overall_score = (
-        function_mask_score * 0.28
-        + window_mask_score * 0.20
+        function_mask_score * 0.25
+        + window_mask_score * 0.18
         + anchor_score * 0.15
         + anchor_run_score * 0.10
-        + size_score * 0.17
-        + ngram_score * 0.10
+        + call_shape_score * 0.10
+        + size_score * 0.15
+        + ngram_score * 0.07
     )
     return MatchResult(
         candidate=candidate,
@@ -637,6 +702,7 @@ def compare_windows(target: WindowSignature, candidate: WindowSignature) -> Matc
         window_mask_score=window_mask_score,
         anchor_score=anchor_score,
         anchor_run_score=anchor_run_score,
+        call_shape_score=call_shape_score,
         ngram_score=ngram_score,
         size_score=size_score,
         count_score=count_score,
@@ -872,16 +938,18 @@ def build_target_window_signature(
     dol_path: Path,
     raw_window: RawWindow,
 ) -> WindowSignature:
+    signature_functions = tuple(
+        build_target_function_signature(version, dol_path, start, end, name)
+        for start, end, name in raw_window.function_defs
+    )
+    signature_functions = annotate_window_internal_calls(signature_functions)
     return WindowSignature(
         label=version,
         source_path=raw_window.source_path,
         game=version,
         start=raw_window.start,
         end=raw_window.end,
-        functions=tuple(
-            build_target_function_signature(version, dol_path, start, end, name)
-            for start, end, name in raw_window.function_defs
-        ),
+        functions=signature_functions,
     )
 
 
@@ -898,6 +966,7 @@ def build_target_window_from_range(
     )
     if not functions:
         raise SystemExit(f"No auto asm functions fully contained in 0x{start:08X}-0x{end:08X}")
+    functions = annotate_window_internal_calls(functions)
     return WindowSignature(
         label=version,
         source_path=f"range:0x{start:08X}-0x{end:08X}",
@@ -954,10 +1023,10 @@ def iter_target_windows(
             game=version,
             start=window_start,
             end=window_end,
-            functions=tuple(
+            functions=annotate_window_internal_calls(tuple(
                 build_target_function_signature(version, dol_path, function.start, function.end, function.name)
                 for function in chunk
-            ),
+            )),
         )
         if window.average_function_size < min_average_function_size:
             continue
@@ -1355,6 +1424,7 @@ def discover_reference_hits(
                 window_mask_score=result.window_mask_score,
                 anchor_score=result.anchor_score,
                 anchor_run_score=result.anchor_run_score,
+                call_shape_score=result.call_shape_score,
                 ngram_score=result.ngram_score,
                 size_score=result.size_score,
                 count_score=result.count_score,
@@ -1430,6 +1500,7 @@ def print_match_results(
             f"mask-win={result.window_mask_score * 100:.2f} "
             f"anchor={result.anchor_score * 100:.2f} "
             f"run={result.anchor_run_score * 100:.2f} "
+            f"calls={result.call_shape_score * 100:.2f} "
             f"ngram={result.ngram_score * 100:.2f} "
             f"size={result.size_score * 100:.2f} "
             f"count={result.count_score * 100:.2f} "
@@ -1482,6 +1553,7 @@ def print_discovery_hits(
             f"mask-win={hit.window_mask_score * 100:.2f} "
             f"anchor={hit.anchor_score * 100:.2f} "
             f"run={hit.anchor_run_score * 100:.2f} "
+            f"calls={hit.call_shape_score * 100:.2f} "
             f"ngram={hit.ngram_score * 100:.2f} "
             f"size={hit.size_score * 100:.2f} "
             f"count={hit.count_score * 100:.2f} "
@@ -1616,6 +1688,7 @@ def print_aggregated_reference_source_matches(
                 f"mask-win={result.window_mask_score * 100:.2f} "
                 f"anchor={result.anchor_score * 100:.2f} "
                 f"run={result.anchor_run_score * 100:.2f} "
+                f"calls={result.call_shape_score * 100:.2f} "
                 f"size={result.size_score * 100:.2f} "
                 f"exact-sizes={result.exact_size_matches}/{result.compared_function_count}"
             )
@@ -1680,7 +1753,8 @@ def print_sparse_reference_source_matches(
                 f"{hit.target.name} "
                 f"score={hit.result.overall_score * 100:.2f} "
                 f"anchor={hit.result.anchor_score * 100:.2f} "
-                f"run={hit.result.anchor_run_score * 100:.2f}"
+                f"run={hit.result.anchor_run_score * 100:.2f} "
+                f"calls={hit.result.call_shape_score * 100:.2f}"
             )
 
 
@@ -2025,6 +2099,7 @@ def main() -> None:
                 f"mask-win={result.window_mask_score * 100:.2f} "
                 f"anchor={result.anchor_score * 100:.2f} "
                 f"run={result.anchor_run_score * 100:.2f} "
+                f"calls={result.call_shape_score * 100:.2f} "
                 f"size={result.size_score * 100:.2f} "
                 f"exact-sizes={result.exact_size_matches}/{result.compared_function_count} "
                 f"{verdict_for_result(result)}"
