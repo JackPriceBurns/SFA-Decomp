@@ -149,7 +149,7 @@ int __OSReadROM(void* buffer, s32 length, s32 offset) {
     return offset;
 }
 
-void OSGetSoundMode(u32 mode) {
+void OSSetSoundMode(u32 mode) {
     OSSram* sram;
     int unused;
 
@@ -165,7 +165,7 @@ void OSGetSoundMode(u32 mode) {
     __OSUnlockSram(TRUE);
 }
 
-u32 OSSetSoundMode(void) {
+u32 OSGetSoundMode(void) {
     OSSram* sram;
     u32 on;
 
@@ -175,7 +175,7 @@ u32 OSSetSoundMode(void) {
     return on;
 }
 
-void OSGetProgressiveMode(u32 on) {
+void OSSetProgressiveMode(u32 on) {
     OSSram* sram;
 #ifndef DEBUG
     u16 padding;
@@ -193,7 +193,7 @@ void OSGetProgressiveMode(u32 on) {
     __OSUnlockSram(TRUE);
 }
 
-u32 OSSetProgressiveMode(void) {
+u32 OSGetProgressiveMode(void) {
     OSSram* sram;
     u8 language;
 
