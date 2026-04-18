@@ -36,6 +36,18 @@ class GapFunction:
         return self.address + self.size
 
 
+@dataclass(frozen=True)
+class MissingRun:
+    left: TextSpan
+    missing_paths: tuple[str, ...]
+    right: TextSpan
+    gap_start: int
+    gap_end: int
+    gap_size: int
+    function_summary: str
+    function_count: int
+
+
 def parse_config_order(configure_path: Path) -> list[str]:
     text = configure_path.read_text(encoding="utf-8")
     ordered: list[str] = []
@@ -160,6 +172,11 @@ def main() -> None:
         default=8,
         help="Maximum symbols to summarize per gap.",
     )
+    parser.add_argument(
+        "--show-missing-runs",
+        action="store_true",
+        help="Also report configured objects that are missing from splits between claimed neighbors.",
+    )
     args = parser.parse_args()
 
     config_order = parse_config_order(args.configure)
@@ -167,6 +184,7 @@ def main() -> None:
     functions = parse_gap_functions(args.symbols)
 
     matches: list[tuple[int, TextSpan, TextSpan, str, int]] = []
+    missing_runs: list[MissingRun] = []
     for left_path, right_path in zip(config_order, config_order[1:]):
         left = spans.get(left_path)
         right = spans.get(right_path)
@@ -196,6 +214,79 @@ def main() -> None:
 
     matches.sort(key=lambda item: (-item[0], item[1].end, item[2].start))
 
+    if args.show_missing_runs:
+        left_index = 0
+        while left_index < len(config_order):
+            left_path = config_order[left_index]
+            left = spans.get(left_path)
+            if left is None:
+                left_index += 1
+                continue
+
+            missing_paths: list[str] = []
+            right_index = left_index + 1
+            while right_index < len(config_order):
+                right_path = config_order[right_index]
+                right = spans.get(right_path)
+                if right is None:
+                    missing_paths.append(right_path)
+                    right_index += 1
+                    continue
+                break
+
+            if not missing_paths or right_index >= len(config_order):
+                left_index += 1
+                continue
+
+            right = spans.get(config_order[right_index])
+            if right is None:
+                left_index += 1
+                continue
+
+            if classify_category(left.path) != classify_category(right.path):
+                if args.category != "all":
+                    left_index = right_index
+                    continue
+            elif args.category != "all" and classify_category(left.path) != args.category:
+                left_index = right_index
+                continue
+
+            if args.path_contains and not any(
+                token in left.path
+                or token in right.path
+                or any(token in missing for missing in missing_paths)
+                for token in args.path_contains
+            ):
+                left_index = right_index
+                continue
+
+            gap_start = left.end
+            gap_end = right.start
+            gap_size = gap_end - gap_start
+            if gap_size < args.min_gap:
+                left_index = right_index
+                continue
+            if args.contains is not None and not (gap_start <= args.contains < gap_end):
+                left_index = right_index
+                continue
+
+            summary, count = function_summary(functions, gap_start, gap_end, args.function_limit)
+            missing_runs.append(
+                MissingRun(
+                    left=left,
+                    missing_paths=tuple(missing_paths),
+                    right=right,
+                    gap_start=gap_start,
+                    gap_end=gap_end,
+                    gap_size=gap_size,
+                    function_summary=summary,
+                    function_count=count,
+                )
+            )
+            left_index = right_index
+
+    missing_runs.sort(key=lambda item: (-item.gap_size, item.gap_start, item.gap_end))
+
     print("# Configure-order gap audit")
     print(f"- configure: `{args.configure.as_posix()}`")
     print(f"- splits: `{args.splits.as_posix()}`")
@@ -216,6 +307,19 @@ def main() -> None:
         )
         print(f"  functions: `{count}`")
         print(f"  summary: {summary}")
+
+    if args.show_missing_runs:
+        print(f"\n## Missing Configured Runs")
+        print(f"- matches: `{min(args.limit, len(missing_runs))}` / `{len(missing_runs)}`")
+        for run in missing_runs[: args.limit]:
+            category = f"{classify_category(run.left.path)}->{classify_category(run.right.path)}"
+            print(
+                f"- `0x{run.gap_start:08X}-0x{run.gap_end:08X}` gap=`0x{run.gap_size:X}` "
+                f"`{category}` `{run.left.path}` -> `{run.right.path}`"
+            )
+            print(f"  missing: " + ", ".join(f"`{path}`" for path in run.missing_paths))
+            print(f"  functions: `{run.function_count}`")
+            print(f"  summary: {run.function_summary}")
 
 
 if __name__ == "__main__":
