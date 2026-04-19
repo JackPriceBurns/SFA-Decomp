@@ -197,6 +197,14 @@ def format_signed_hex(value: int) -> str:
     return f"{sign}0x{abs(value):X}"
 
 
+def assigned_delta_value(assigned_split: str) -> int | None:
+    match = re.search(r"delta=([+-])0x([0-9A-Fa-f]+)", assigned_split)
+    if not match:
+        return None
+    value = int(match.group(2), 16)
+    return value if match.group(1) == "+" else -value
+
+
 def find_overlapping_split_spans(
     source_path: Path,
     target_range: tuple[int, int],
@@ -500,7 +508,17 @@ def summarize_probe(
         summary_parts.append("sections " + " ".join(parsed.sections))
     if parsed.assigned_split:
         summary_parts.append("assigned " + parsed.assigned_split)
-    if include_near and parsed.best_exact_hypothesis:
+    assigned_delta = assigned_delta_value(parsed.assigned_split)
+    should_summarize_best_exact = bool(
+        parsed.best_exact_hypothesis
+        and (
+            include_near
+            or (assigned_delta is not None and assigned_delta != 0)
+        )
+    )
+    if should_summarize_best_exact:
+        if not include_near:
+            summary_parts.append("report-exact subwindow only")
         summary_parts.append("best-exact " + parsed.best_exact_hypothesis)
         if parsed.likely_boundary_drift:
             summary_parts.append("likely boundary drift")
