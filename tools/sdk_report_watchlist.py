@@ -48,6 +48,9 @@ class ProbeSummary:
     assigned_split: str
     best_exact_hypothesis: str
     likely_boundary_drift: bool
+    leading_functions: list[str]
+    trailing_functions: list[str]
+    crossing_functions: list[str]
 
 
 def is_sdk(unit: dict) -> bool:
@@ -74,10 +77,21 @@ def unit_name_to_source_path(unit_name: str) -> Path | None:
     return None
 
 
-def parse_probe(source_path: Path) -> ProbeSummary | str:
+def parse_range(text: str) -> tuple[int, int] | None:
+    match = re.search(r"(0x[0-9A-Fa-f]+)-(0x[0-9A-Fa-f]+)", text)
+    if not match:
+        return None
+    return int(match.group(1), 16), int(match.group(2), 16)
+
+
+def parse_probe(source_path: Path, *, include_functions: bool = False) -> ProbeSummary | str:
+    command = [sys.executable, "tools/sdk_import_probe.py", str(source_path), "--show-assigned"]
+    if include_functions:
+        command.extend(["--show-functions", "--function-limit", "40"])
+
     try:
         result = subprocess.run(
-            [sys.executable, "tools/sdk_import_probe.py", str(source_path), "--show-assigned"],
+            command,
             check=True,
             capture_output=True,
             text=True,
@@ -90,9 +104,17 @@ def parse_probe(source_path: Path) -> ProbeSummary | str:
     assigned_split = ""
     best_exact_hypothesis = ""
     likely_boundary_drift = False
+    leading_functions: list[str] = []
+    trailing_functions: list[str] = []
+    crossing_functions: list[str] = []
     in_sections = False
     in_assigned_split = False
     in_start_hypotheses = False
+    in_anchor_details = False
+    in_projected_functions = False
+    best_hypothesis_locked = False
+    assigned_range: tuple[int, int] | None = None
+    projected_function_rows: list[tuple[int, int, str]] = []
 
     for line in result.stdout.splitlines():
         if line.startswith("sections:"):
@@ -101,11 +123,27 @@ def parse_probe(source_path: Path) -> ProbeSummary | str:
         if line.startswith("assigned split:"):
             in_assigned_split = True
             in_start_hypotheses = False
+            in_anchor_details = False
+            in_projected_functions = False
             continue
         if line.startswith("start hypotheses:"):
             in_start_hypotheses = True
             in_assigned_split = False
+            in_anchor_details = False
+            in_projected_functions = False
             continue
+        if line.startswith("  anchor details:"):
+            in_anchor_details = True
+            in_projected_functions = False
+            continue
+        if line.startswith("  projected functions:") and best_exact_hypothesis and not best_hypothesis_locked:
+            in_projected_functions = True
+            in_anchor_details = False
+            continue
+        if line.startswith("  0x") and best_exact_hypothesis:
+            best_hypothesis_locked = True
+            in_anchor_details = False
+            in_projected_functions = False
         if in_sections:
             if not line.startswith("  ."):
                 in_sections = False
@@ -121,6 +159,7 @@ def parse_probe(source_path: Path) -> ProbeSummary | str:
             )
             if assigned_match:
                 assigned_split = " ".join(assigned_match.group(1).split())
+                assigned_range = parse_range(assigned_split)
                 continue
         if in_start_hypotheses and not best_exact_hypothesis:
             hypothesis_match = re.match(
@@ -133,8 +172,29 @@ def parse_probe(source_path: Path) -> ProbeSummary | str:
                     best_exact_hypothesis.split()[0]
                 )
                 continue
+        if in_projected_functions and assigned_range:
+            function_match = re.match(
+                r"\s+\+0x[0-9A-Fa-f]+\s+(0x[0-9A-Fa-f]+)\s+size=(0x[0-9A-Fa-f]+)\s+(\S+)\s+\[",
+                line,
+            )
+            if function_match:
+                start = int(function_match.group(1), 16)
+                size = int(function_match.group(2), 16)
+                name = function_match.group(3)
+                projected_function_rows.append((start, start + size, name))
+                continue
         if not best_cluster and re.match(r"\s+0x[0-9A-Fa-f]+-0x[0-9A-Fa-f]+", line):
             best_cluster = " ".join(line.split())
+
+    if assigned_range and projected_function_rows:
+        split_start, split_end = assigned_range
+        for start, end, name in projected_function_rows:
+            if end <= split_start:
+                leading_functions.append(name)
+            elif start >= split_end:
+                trailing_functions.append(name)
+            elif start < split_start or end > split_end:
+                crossing_functions.append(name)
 
     return ProbeSummary(
         sections=sections,
@@ -142,11 +202,14 @@ def parse_probe(source_path: Path) -> ProbeSummary | str:
         assigned_split=assigned_split,
         best_exact_hypothesis=best_exact_hypothesis,
         likely_boundary_drift=likely_boundary_drift,
+        leading_functions=leading_functions,
+        trailing_functions=trailing_functions,
+        crossing_functions=crossing_functions,
     )
 
 
 def summarize_probe(source_path: Path, *, include_near: bool = False) -> str:
-    parsed = parse_probe(source_path)
+    parsed = parse_probe(source_path, include_functions=include_near)
     if isinstance(parsed, str):
         return parsed
 
@@ -159,6 +222,12 @@ def summarize_probe(source_path: Path, *, include_near: bool = False) -> str:
         summary_parts.append("best-exact " + parsed.best_exact_hypothesis)
         if parsed.likely_boundary_drift:
             summary_parts.append("likely boundary drift")
+        if parsed.leading_functions:
+            summary_parts.append("before-split " + ", ".join(parsed.leading_functions[:4]))
+        if parsed.crossing_functions:
+            summary_parts.append("crossing " + ", ".join(parsed.crossing_functions[:4]))
+        if parsed.trailing_functions:
+            summary_parts.append("after-split " + ", ".join(parsed.trailing_functions[:4]))
     elif parsed.best_cluster:
         summary_parts.append("best " + parsed.best_cluster)
     return "; ".join(summary_parts) if summary_parts else "probe produced no summary"
