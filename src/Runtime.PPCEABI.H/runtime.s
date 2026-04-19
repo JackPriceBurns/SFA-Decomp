@@ -593,7 +593,7 @@
     b .L_80286E24
 .L_80286DD8:
     cmpwi r5, 0xa
-    ble .L_80286E04
+    .4byte 0x40A10028
     clrrwi. r6, r6, 31
     beq .L_80286DF4
     lis r3, 0x8000
