@@ -337,7 +337,7 @@ config.libs = [
             Object(NonMatching, "dolphin/os/OSLink.c"),
             Object(NonMatching, "dolphin/os/OSMessage.c"),
             Object(NonMatching, "dolphin/os/OSMemory.c"),
-            Object(NonMatching, "dolphin/os/OSMutex.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/os/OSMutex.c"),
             Object(NonMatching, "dolphin/os/OSReboot.c"),
             Object(NonMatching, "dolphin/os/OSReset.c"),
             Object(NonMatching, "dolphin/os/OSResetSW.c"),
@@ -369,7 +369,7 @@ config.libs = [
             Object(NonMatching, "dolphin/mtx/vec.c", source="sdk/mtx/vec.c"),
             Object(NonMatching, "dolphin/mtx/mtx44.c"),
             Object(NonMatching, "dolphin/mtx/mtx44vec.c"),
-            Object(NonMatching, "dolphin/mtx/psmtx.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/mtx/psmtx.c"),
         ],
     ),
     DolphinLib(
