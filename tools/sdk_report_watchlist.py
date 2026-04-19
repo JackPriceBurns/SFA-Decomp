@@ -97,6 +97,7 @@ class SplitEntry:
 
 @dataclass
 class ObjectLinkHints:
+    defined_text_symbols: list[str]
     exported_data_symbols: dict[str, list[str]]
     local_data_symbols: dict[str, list[str]]
     undefined_symbols: list[str]
@@ -335,6 +336,7 @@ def collect_object_link_hints(
 
     exported_data_symbols: dict[str, list[str]] = {}
     local_data_symbols: dict[str, list[str]] = {}
+    defined_text_symbols: list[str] = []
     undefined_symbols: list[str] = []
     data_sections = {".data", ".rodata", ".sdata", ".sdata2", ".bss", ".sbss"}
 
@@ -346,6 +348,8 @@ def collect_object_link_hints(
         name = match.group(3)
         if symbol_type == "U":
             undefined_symbols.append(name)
+        elif symbol_type in {"T", "t"}:
+            defined_text_symbols.append(name)
 
     for line in objdump_result.stdout.splitlines():
         parts = line.split()
@@ -371,6 +375,7 @@ def collect_object_link_hints(
                 owner_hints.append(f"{name}->{owner}")
 
     return ObjectLinkHints(
+        defined_text_symbols=defined_text_symbols,
         exported_data_symbols=exported_data_symbols,
         local_data_symbols=local_data_symbols,
         undefined_symbols=undefined_symbols,
@@ -513,6 +518,7 @@ def summarize_probe(
     split_entries: list[SplitEntry] | None = None,
     link_hints: ObjectLinkHints | None = None,
     reference_split_hints: list[ReferenceSplitHint] | None = None,
+    known_functions: list[str] | None = None,
 ) -> str:
     parsed = parse_probe(source_path, include_functions=include_near)
     if isinstance(parsed, str):
@@ -594,6 +600,15 @@ def summarize_probe(
     elif parsed.best_cluster:
         summary_parts.append("best " + parsed.best_cluster)
     if link_hints:
+        if known_functions:
+            known_function_set = set(known_functions)
+            extra_text = [
+                name
+                for name in link_hints.defined_text_symbols
+                if name not in known_function_set
+            ]
+            if extra_text:
+                summary_parts.append("extra-text " + ", ".join(extra_text[:8]))
         for section in sorted(link_hints.exported_data_symbols):
             names = link_hints.exported_data_symbols[section]
             summary_parts.append(f"exports {section} " + ", ".join(names[:8]))
@@ -677,7 +692,7 @@ def main() -> int:
                         if isinstance(parsed_hints, ObjectLinkHints):
                             link_hints = parsed_hints
                     print(
-                        f"    probe: {summarize_probe(source_path, split_entries=split_entries, link_hints=link_hints, reference_split_hints=reference_split_hints)}"
+                        f"    probe: {summarize_probe(source_path, split_entries=split_entries, link_hints=link_hints, reference_split_hints=reference_split_hints, known_functions=[fn['name'] for fn in unit.get('functions', [])])}"
                     )
     else:
         print("  (none)")
@@ -700,9 +715,20 @@ def main() -> int:
                 if source_path is None:
                     print("    probe: no source path found")
                 else:
+                    link_hints = None
+                    object_path = unit_name_to_object_path(unit["name"])
+                    if object_path is not None:
+                        parsed_hints = collect_object_link_hints(
+                            object_path,
+                            symbol_owners,
+                            address_owners,
+                            symbol_addresses,
+                        )
+                        if isinstance(parsed_hints, ObjectLinkHints):
+                            link_hints = parsed_hints
                     reference_split_hints = collect_reference_split_hints(source_path) if args.reference_splits else None
                     print(
-                        f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries, reference_split_hints=reference_split_hints)}"
+                        f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries, link_hints=link_hints, reference_split_hints=reference_split_hints, known_functions=[fn['name'] for fn in unit.get('functions', [])])}"
                     )
     else:
         print("  (none)")
@@ -721,9 +747,20 @@ def main() -> int:
             if source_path is None:
                 print("    probe: no source path found")
             else:
+                link_hints = None
+                object_path = unit_name_to_object_path(unit["name"])
+                if object_path is not None:
+                    parsed_hints = collect_object_link_hints(
+                        object_path,
+                        symbol_owners,
+                        address_owners,
+                        symbol_addresses,
+                    )
+                    if isinstance(parsed_hints, ObjectLinkHints):
+                        link_hints = parsed_hints
                 reference_split_hints = collect_reference_split_hints(source_path) if args.reference_splits else None
                 print(
-                    f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries, reference_split_hints=reference_split_hints)}"
+                    f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries, link_hints=link_hints, reference_split_hints=reference_split_hints, known_functions=[fn['name'] for fn in unit.get('functions', [])])}"
                 )
 
     return 0
