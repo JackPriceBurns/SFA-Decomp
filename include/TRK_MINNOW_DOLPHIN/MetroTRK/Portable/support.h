@@ -13,7 +13,7 @@ DSError TRKSuppAccessFile(u32 file_handle, u8* data, size_t* count,
 DSError HandleOpenFileSupportRequest(const char* path, u8 replyError, u32* param_3,
                                      DSIOResult* ioResult);
 DSError HandleCloseFileSupportRequest(int replyError, DSIOResult* ioResult);
-DSError HandlePositionFileSupportRequest(DSReplyError replyErr, u32* param_2,
+DSError HandlePositionFileSupportRequest(DSReplyError replyErr, u32 param_2,
                                          u8 param_3, DSIOResult* ioResult);
 
 #ifdef __cplusplus
