@@ -171,6 +171,32 @@ def find_adjacent_split_names(source_path: Path, split_entries: list[SplitEntry]
     return None, None
 
 
+def format_signed_hex(value: int) -> str:
+    sign = "+" if value >= 0 else "-"
+    return f"{sign}0x{abs(value):X}"
+
+
+def find_overlapping_split_spans(
+    source_path: Path,
+    target_range: tuple[int, int],
+    split_entries: list[SplitEntry],
+) -> list[str]:
+    split_name = source_path_to_split_name(source_path)
+    target_start, target_end = target_range
+    overlaps: list[str] = []
+
+    for entry in split_entries:
+        if entry.name == split_name:
+            continue
+
+        overlap_start = max(target_start, entry.start)
+        overlap_end = min(target_end, entry.end)
+        if overlap_start < overlap_end:
+            overlaps.append(f"{entry.name}=0x{overlap_end - overlap_start:X}")
+
+    return overlaps
+
+
 def load_symbol_owners(map_path: Path) -> tuple[dict[str, str], dict[int, str]]:
     owners: dict[str, str] = {}
     address_owners: dict[int, str] = {}
@@ -416,6 +442,14 @@ def summarize_probe(
         if parsed.likely_boundary_drift:
             summary_parts.append("likely boundary drift")
         if split_entries and parsed.assigned_range and parsed.best_exact_range:
+            start_shift = parsed.best_exact_range[0] - parsed.assigned_range[0]
+            end_shift = parsed.best_exact_range[1] - parsed.assigned_range[1]
+            if start_shift or end_shift:
+                summary_parts.append(
+                    "shift "
+                    + f"start={format_signed_hex(start_shift)} "
+                    + f"end={format_signed_hex(end_shift)}"
+                )
             previous_name, next_name = find_adjacent_split_names(source_path, split_entries)
             touches = []
             if parsed.best_exact_range[0] < parsed.assigned_range[0] and previous_name:
@@ -424,6 +458,9 @@ def summarize_probe(
                 touches.append("next " + next_name)
             if touches:
                 summary_parts.append("touches " + ", ".join(touches))
+            overlaps = find_overlapping_split_spans(source_path, parsed.best_exact_range, split_entries)
+            if overlaps:
+                summary_parts.append("overlaps " + ", ".join(overlaps[:4]))
         if parsed.leading_functions:
             summary_parts.append("before-split " + ", ".join(parsed.leading_functions[:4]))
         if parsed.crossing_functions:
