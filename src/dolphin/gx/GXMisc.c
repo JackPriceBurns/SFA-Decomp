@@ -13,28 +13,19 @@ static OSThreadQueue FinishQueue;
 extern GXData* gx;
 
 void GXSetMisc(GXMiscToken token, u32 val) {
-    if (token == GX_MT_XF_FLUSH) {
-        goto set_xf_flush;
-    }
+    switch (token) {
+    case GX_MT_XF_FLUSH:
+        gx->vNum = val;
+        gx->vNumNot = !gx->vNum;
+        gx->bpSentNot = 1;
 
-    if (token < GX_MT_XF_FLUSH) {
-        return;
-    }
-
-    if (token >= GX_MT_ABORT_WAIT_COPYOUT) {
-        return;
-    }
-
-    gx->dlSaveContext = (val != 0);
-    return;
-
-set_xf_flush:
-    gx->vNum = val;
-    gx->vNumNot = !gx->vNum;
-    gx->bpSentNot = 1;
-
-    if (gx->vNum != 0) {
-        gx->dirtyState |= 8;
+        if (gx->vNum != 0) {
+            gx->dirtyState |= 8;
+        }
+        break;
+    case GX_MT_DL_SAVE_CONTEXT:
+        gx->dlSaveContext = (val != 0);
+        break;
     }
 }
 

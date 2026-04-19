@@ -171,18 +171,19 @@ u32 OSGetSoundMode(void) {
 }
 
 void OSSetSoundMode(u32 mode) {
+    u32 flag;
     OSSram* sram;
-    u32 newFlags;
+    u32 m;
 
     ASSERTLINE(617, mode == OS_SOUND_MODE_MONO || mode == OS_SOUND_MODE_STEREO);
-    newFlags = (mode & 1) << 2;
+    flag = (mode & 1) << 2;
     sram = __OSLockSram();
-    if (newFlags == (sram->flags & 4)) {
+    if (flag == (sram->flags & 4)) {
         __OSUnlockSram(FALSE);
         return;
     }
     sram->flags &= ~4;
-    sram->flags |= newFlags;
+    sram->flags |= flag;
     __OSUnlockSram(TRUE);
 }
 
@@ -197,18 +198,19 @@ u32 OSGetProgressiveMode(void) {
 }
 
 void OSSetProgressiveMode(u32 on) {
+    u32 flag;
     OSSram* sram;
-    u32 newFlags;
+    u32 m;
 
     ASSERTLINE(670, on == OS_PROGRESSIVE_MODE_OFF || on == OS_PROGRESSIVE_MODE_ON);
-    newFlags = (on & 1) << 7;
+    flag = (on & 1) << 7;
     sram = __OSLockSram();
-    if (newFlags == (sram->flags & 0x80)) {
+    if (flag == (sram->flags & 0x80)) {
         __OSUnlockSram(FALSE);
         return;
     }
     sram->flags &= ~0x80;
-    sram->flags |= newFlags;
+    sram->flags |= flag;
     __OSUnlockSram(TRUE);
 }
 
