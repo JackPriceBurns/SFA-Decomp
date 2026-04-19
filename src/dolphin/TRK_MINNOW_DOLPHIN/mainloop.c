@@ -7,7 +7,6 @@
 void TRKNubMainLoop(void) {
     void* msg;
     TRKEvent event;
-    u8 eventType;
     BOOL isShutdownRequested;
     BOOL isNewInput;
 
@@ -16,9 +15,8 @@ void TRKNubMainLoop(void) {
     while (isShutdownRequested == FALSE) {
         if (TRKGetNextEvent(&event) != FALSE) {
             isNewInput = FALSE;
-            eventType = event.eventType;
 
-            switch (eventType) {
+            switch (event.eventType) {
             case NUBEVENT_Null:
                 break;
 

@@ -1,6 +1,4 @@
-#include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/dispatch.h"
-#include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/msgbuf.h"
-#include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/msghndlr.h"
+#include "PowerPC_EABI_Support/MetroTRK/trk.h"
 
 u32 gTRKDispatchTableSize;
 
@@ -11,25 +9,23 @@ struct DispatchEntry {
 struct DispatchEntry gTRKDispatchTable[33] = {
     { &TRKDoUnsupported },   { &TRKDoConnect },        { &TRKDoDisconnect },
     { &TRKDoReset },         { &TRKDoVersions },       { &TRKDoSupportMask },
-    { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoUnsupported },
+    { &TRKDoCPUType },       { &TRKDoUnsupported },    { &TRKDoUnsupported },
     { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoUnsupported },
     { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoUnsupported },
     { &TRKDoUnsupported },   { &TRKDoReadMemory },     { &TRKDoWriteMemory },
     { &TRKDoReadRegisters }, { &TRKDoWriteRegisters }, { &TRKDoUnsupported },
-    { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoSetOption },
+    { &TRKDoUnsupported },   { &TRKDoFlushCache },     { &TRKDoSetOption },
     { &TRKDoContinue },      { &TRKDoStep },           { &TRKDoStop },
     { &TRKDoUnsupported },   { &TRKDoUnsupported },    { &TRKDoUnsupported },
     { &TRKDoUnsupported },   { &TRKDoUnsupported },
 };
 
-DSError TRKInitializeDispatcher(void)
-{
+DSError TRKInitializeDispatcher() {
     gTRKDispatchTableSize = 32;
     return DS_NoError;
 }
 
-BOOL TRKDispatchMessage(TRKBuffer* buffer)
-{
+DSError TRKDispatchMessage(TRKBuffer* buffer) {
     DSError error;
     u8 command;
 
