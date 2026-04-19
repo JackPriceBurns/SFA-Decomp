@@ -1576,6 +1576,8 @@ dolphin/gx/GXLight.c:
 
 dolphin/gx/GXTexture.c:
 	.text       start:0x8025A7EC end:0x8025B94C
+	.data       start:0x8032F3C8 end:0x8032F6E0
+	.sdata2     start:0x803E8368 end:0x803E8390
 
 dolphin/gx/GXBump.c:
 	.text       start:0x8025B94C end:0x8025C000
