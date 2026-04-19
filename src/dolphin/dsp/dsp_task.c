@@ -41,120 +41,120 @@ void __DSPHandler(__OSInterrupt intr, OSContext* context) {
         ;
 
     mail = DSPReadMailFromDSP();
-    if ((__DSP_curr_task->flags & (1<<(31-0x1E))) && (mail + 0x232F0000) == 2)
+    if ((__DSP_first_task->flags & (1 << (31 - 0x1E))) && (mail + 0x232F0000) == 2)
         mail = 0xDCD10003;
 
     switch (mail) {
     case 0xDCD10000:
-        __DSP_curr_task->state = 1;
-        if (__DSP_curr_task->init_cb != NULL)
-            __DSP_curr_task->init_cb(__DSP_curr_task);
+        __DSP_first_task->state = 1;
+        if (__DSP_first_task->init_cb != NULL)
+            __DSP_first_task->init_cb(__DSP_first_task);
         break;
     case 0xDCD10001:
-        __DSP_curr_task->state = 1;
-        if (__DSP_curr_task->res_cb != NULL)
-            __DSP_curr_task->res_cb(__DSP_curr_task);
+        __DSP_first_task->state = 1;
+        if (__DSP_first_task->res_cb != NULL)
+            __DSP_first_task->res_cb(__DSP_first_task);
         break;
     case 0xDCD10002:
         if (__DSP_rude_task_pending) {
-            if (__DSP_curr_task == __DSP_rude_task) {
+            if (__DSP_first_task == __DSP_rude_task) {
                 DSPSendMailToDSP(0xCDD10003);
                 while (DSPCheckMailToDSP() != 0)
                     ;
                 __DSP_rude_task = NULL;
                 __DSP_rude_task_pending = 0;
 
-                if (__DSP_curr_task->res_cb != NULL)
-                    __DSP_curr_task->res_cb(__DSP_curr_task);
+                if (__DSP_first_task->res_cb != NULL)
+                    __DSP_first_task->res_cb(__DSP_first_task);
             } else {
                 DSPSendMailToDSP(0xCDD10001);
                 while (DSPCheckMailToDSP() != 0)
                     ;
-                __DSP_exec_task(__DSP_curr_task, __DSP_rude_task);
-                __DSP_curr_task->state = 2;
-                __DSP_curr_task = __DSP_rude_task;
+                __DSP_exec_task(__DSP_first_task, __DSP_rude_task);
+                __DSP_first_task->state = 2;
+                __DSP_first_task = __DSP_rude_task;
                 __DSP_rude_task = NULL;
                 __DSP_rude_task_pending = 0;
             }
         } else {
-            if (__DSP_curr_task->next == NULL) {
-                if (__DSP_curr_task == __DSP_first_task) {
+            if (__DSP_first_task->next == NULL) {
+                if (__DSP_first_task == __DSP_curr_task) {
                     DSPSendMailToDSP(0xCDD10003);
                     while (DSPCheckMailToDSP() != 0)
                         ;
-                    if (__DSP_curr_task->res_cb != NULL)
-                        __DSP_curr_task->res_cb(__DSP_curr_task);
+                    if (__DSP_first_task->res_cb != NULL)
+                        __DSP_first_task->res_cb(__DSP_first_task);
                 } else {
                     DSPSendMailToDSP(0xCDD10001);
                     while (DSPCheckMailToDSP() != 0)
                         ;
-                    __DSP_exec_task(__DSP_curr_task, __DSP_first_task);
-                    __DSP_curr_task->state = 2;
-                    __DSP_curr_task = __DSP_first_task;
+                    __DSP_exec_task(__DSP_first_task, __DSP_curr_task);
+                    __DSP_first_task->state = 2;
+                __DSP_first_task = __DSP_curr_task;
                 }
             } else {
                 DSPSendMailToDSP(0xCDD10001);
                 while (DSPCheckMailToDSP() != 0)
                     ;
-                __DSP_exec_task(__DSP_curr_task, __DSP_curr_task->next);
-                __DSP_curr_task->state = 2;
-                __DSP_curr_task = __DSP_curr_task->next;
+                __DSP_exec_task(__DSP_first_task, __DSP_first_task->next);
+                __DSP_first_task->state = 2;
+                __DSP_first_task = __DSP_first_task->next;
             }
         }
         break;
     case 0xDCD10003:
         if (__DSP_rude_task_pending) {
-            if (__DSP_curr_task->done_cb != NULL)
-                __DSP_curr_task->done_cb(__DSP_curr_task);
+            if (__DSP_first_task->done_cb != NULL)
+                __DSP_first_task->done_cb(__DSP_first_task);
 
             DSPSendMailToDSP(0xCDD10001);
             while (DSPCheckMailToDSP() != 0)
                 ;
             __DSP_exec_task(NULL, __DSP_rude_task);
-            __DSP_remove_task(__DSP_curr_task);
-            __DSP_curr_task = __DSP_rude_task;
+            __DSP_remove_task(__DSP_first_task);
+            __DSP_first_task = __DSP_rude_task;
             __DSP_rude_task = NULL;
             __DSP_rude_task_pending = 0;
         } else {
-            if (__DSP_curr_task->next == NULL) {
-                if (__DSP_curr_task == __DSP_first_task) {
-                    if (__DSP_curr_task->done_cb != NULL)
-                        __DSP_curr_task->done_cb(__DSP_curr_task);
+            if (__DSP_first_task->next == NULL) {
+                if (__DSP_first_task == __DSP_curr_task) {
+                    if (__DSP_first_task->done_cb != NULL)
+                        __DSP_first_task->done_cb(__DSP_first_task);
 
                     DSPSendMailToDSP(0xCDD10002);
                     while (DSPCheckMailToDSP() != 0)
                         ;
-                    __DSP_curr_task->state = 3;
-                    __DSP_remove_task(__DSP_curr_task);
+                    __DSP_first_task->state = 3;
+                    __DSP_remove_task(__DSP_first_task);
                 } else {
-                    if (__DSP_curr_task->done_cb != NULL)
-                        __DSP_curr_task->done_cb(__DSP_curr_task);
+                    if (__DSP_first_task->done_cb != NULL)
+                        __DSP_first_task->done_cb(__DSP_first_task);
 
                     DSPSendMailToDSP(0xCDD10001);
                     while (DSPCheckMailToDSP() != 0)
                         ;
-                    __DSP_curr_task->state = 3;
-                    __DSP_exec_task(NULL, __DSP_first_task);
-                    __DSP_curr_task = __DSP_first_task;
+                    __DSP_first_task->state = 3;
+                    __DSP_exec_task(NULL, __DSP_curr_task);
+                    __DSP_first_task = __DSP_curr_task;
                     __DSP_remove_task(__DSP_last_task);
                 }
             } else {
-                if (__DSP_curr_task->done_cb != NULL)
-                    __DSP_curr_task->done_cb(__DSP_curr_task);
+                if (__DSP_first_task->done_cb != NULL)
+                    __DSP_first_task->done_cb(__DSP_first_task);
 
                 DSPSendMailToDSP(0xCDD10001);
                 while (DSPCheckMailToDSP() != 0)
                     ;
-                __DSP_curr_task->state = 3;
-                __DSP_exec_task(NULL, __DSP_curr_task->next);
-                __DSP_curr_task = __DSP_curr_task->next;
-                __DSP_remove_task(__DSP_curr_task->prev);
+                __DSP_first_task->state = 3;
+                __DSP_exec_task(NULL, __DSP_first_task->next);
+                __DSP_first_task = __DSP_first_task->next;
+                __DSP_remove_task(__DSP_first_task->prev);
             }
         }
         break;
     case 0xDCD10004:
-        if (__DSP_curr_task->req_cb != NULL)
-            __DSP_curr_task->req_cb(__DSP_curr_task);
+        if (__DSP_first_task->req_cb != NULL)
+            __DSP_first_task->req_cb(__DSP_first_task);
         break;
     default:
         ASSERTMSGLINEV(519, 0, "__DSPHandler(): Unknown msg from DSP 0x%08X - task sync failed!\n", mail);
@@ -234,6 +234,7 @@ void __DSP_exec_task(DSPTaskInfo* curr, DSPTaskInfo* next) {
 }
 
 void __DSP_boot_task(DSPTaskInfo* task) {
+    register const DSPTaskStrings* taskStrings = &sDSPTaskStrings;
     volatile u32 mail;
 
     ASSERTMSGLINE(634, task != NULL, "__DSP_boot_task(): NULL task!\n");
@@ -283,12 +284,12 @@ void __DSP_boot_task(DSPTaskInfo* task) {
     while (DSPCheckMailToDSP() != 0)
         ;
 
-    __DSP_debug_printf(sDSPTaskStrings.bootingTask, (u32)task);
-    __DSP_debug_printf(sDSPTaskStrings.iramMmemAddr, (u32)task->iram_mmem_addr);
-    __DSP_debug_printf(sDSPTaskStrings.iramDspAddr, task->iram_addr);
-    __DSP_debug_printf(sDSPTaskStrings.iramLength, task->iram_length);
-    __DSP_debug_printf(sDSPTaskStrings.dramMmemAddr, task->dram_length);
-    __DSP_debug_printf(sDSPTaskStrings.startVector, task->dsp_init_vector);
+    __DSP_debug_printf(taskStrings->bootingTask, (u32)task);
+    __DSP_debug_printf(taskStrings->iramMmemAddr, (u32)task->iram_mmem_addr);
+    __DSP_debug_printf(taskStrings->iramDspAddr, task->iram_addr);
+    __DSP_debug_printf(taskStrings->iramLength, task->iram_length);
+    __DSP_debug_printf(taskStrings->dramMmemAddr, task->dram_length);
+    __DSP_debug_printf(taskStrings->startVector, task->dsp_init_vector);
 }
 
 void __DSP_add_task(DSPTaskInfo* task) {
