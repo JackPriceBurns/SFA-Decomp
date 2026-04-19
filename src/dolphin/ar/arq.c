@@ -3,12 +3,6 @@
 
 #include "dolphin/ar/__ar.h"
 
-#ifdef DEBUG
-const char* __ARQVersion = "<< Dolphin SDK - ARQ\tdebug build: Apr  5 2004 03:56:20 (0x2301) >>";
-#else
-const char* __ARQVersion = "<< Dolphin SDK - ARQ\trelease build: Sep  5 2002 05:34:29 (0x2301) >>";
-#endif
-
 static ARQRequest* __ARQRequestQueueHi;
 static ARQRequest* __ARQRequestTailHi;
 static ARQRequest* __ARQRequestQueueLo;
@@ -81,8 +75,6 @@ void __ARQInterruptServiceRoutine() {
 
 void ARQInit(void) {
     if (__ARQ_init_flag != TRUE) {
-        OSRegisterVersion(__ARQVersion);
-
         __ARQRequestQueueHi = __ARQRequestQueueLo = NULL;
         __ARQChunkSize = 0x1000;
         ARRegisterDMACallback(__ARQInterruptServiceRoutine);
@@ -142,16 +134,5 @@ void ARQPostRequest(ARQRequest* request, u32 owner, u32 type, u32 priority, u32 
     }
 
     OSRestoreInterrupts(level);
-}
-
-void ARQSetChunkSize(u32 size) {
-    u32 i;
-
-    i = size & 0x1F;
-    if (i) {
-        __ARQChunkSize = size + (0x20 - i);
-        return;
-    }
-    __ARQChunkSize = size;
 }
 

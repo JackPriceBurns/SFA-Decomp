@@ -1527,6 +1527,7 @@ dolphin/ar/ar.c:
 
 dolphin/ar/arq.c:
 	.text       start:0x80251290 end:0x80251624
+	.sbss       start:0x803DECB8 end:0x803DECE0
 
 dolphin/dsp/dsp.c:
 	.text       start:0x80251624 end:0x80251830
