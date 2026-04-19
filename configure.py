@@ -569,7 +569,7 @@ config.libs = [
             Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/msg.c"),
             Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/msgbuf.c"),
             Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/serpoll.c"),
-            Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/usr_put.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/TRK_MINNOW_DOLPHIN/usr_put.c"),
             Object(
                 MatchingFor("GSAE01"),
                 "dolphin/TRK_MINNOW_DOLPHIN/dispatch.c",
@@ -588,7 +588,7 @@ config.libs = [
             Object(MatchingFor("GSAE01"), "dolphin/TRK_MINNOW_DOLPHIN/main_TRK.c"),
             Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/dolphin_trk_glue.c"),
             Object(MatchingFor("GSAE01"), "dolphin/TRK_MINNOW_DOLPHIN/targcont.c"),
-            Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/target_options.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/TRK_MINNOW_DOLPHIN/target_options.c"),
             Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/mslsupp.c"),
             Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/MWTrace.c"),
             Object(NonMatching, "dolphin/TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.c"),

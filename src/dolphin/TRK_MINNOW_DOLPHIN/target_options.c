@@ -1,11 +1,11 @@
 #include "PowerPC_EABI_Support/MetroTRK/trk.h"
 
-static u8 bUseSerialIO;
+extern u8 lbl_803DB710[8];
 
 void SetUseSerialIO(u8 sio) {
-    bUseSerialIO = sio;
+    lbl_803DB710[0] = sio;
 }
 
 u8 GetUseSerialIO(void) {
-    return bUseSerialIO;
+    return lbl_803DB710[0];
 }
