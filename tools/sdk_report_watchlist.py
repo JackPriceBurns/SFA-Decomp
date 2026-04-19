@@ -42,7 +42,12 @@ def get_argparser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--probe-near",
         action="store_true",
-        help="Run sdk_import_probe.py for boundary-only and near-miss SDK files and summarize split/boundary drift clues.",
+        help="Run sdk_import_probe.py for SDK near-miss files and summarize split/boundary drift clues.",
+    )
+    parser.add_argument(
+        "--probe-boundary",
+        action="store_true",
+        help="Run sdk_import_probe.py for boundary-only SDK files and summarize split/boundary drift clues.",
     )
     parser.add_argument(
         "--boundary-limit",
@@ -690,7 +695,7 @@ def main() -> int:
             print(
                 f"  {unit['name']}: code={matched_code:.2f}% funcs={matched_funcs:.2f}% fuzzy={fuzzy:.3f}"
             )
-            if args.probe_near:
+            if args.probe_boundary:
                 source_path = unit_name_to_source_path(unit["name"])
                 if source_path is None:
                     print("    probe: no source path found")
