@@ -80,6 +80,8 @@ void __DVDInterruptHandler(__OSInterrupt interrupt, OSContext* context) {
 	u32 intr;
 	u32 mask;
 
+	OSCancelAlarm(&AlarmForTimeout);
+
 	if (LastCommandWasRead) {
 		LastReadFinished = __OSGetSystemTime();
 		FirstRead = FALSE;
@@ -112,7 +114,6 @@ void __DVDInterruptHandler(__OSInterrupt interrupt, OSContext* context) {
 
 	if (cause) {
 		ResetOccurred = FALSE;
-		OSCancelAlarm(&AlarmForTimeout);
 	}
 
 	__DIRegs[0] = intr | mask;
