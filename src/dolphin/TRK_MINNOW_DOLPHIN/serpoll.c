@@ -8,23 +8,6 @@ static TRKFramingState gTRKFramingState;
 
 void* gTRKInputPendingPtr;
 
-static inline BOOL serpoll_inline_00(TRKBuffer* buffer) {
-    if (buffer->length < 2) {
-        TRKStandardACK(buffer, DSMSG_ReplyNAK, DSREPLY_PacketSizeError);
-        if (gTRKFramingState.msgBufID != -1) {
-            TRKReleaseBuffer(gTRKFramingState.msgBufID);
-            gTRKFramingState.msgBufID = -1;
-        }
-        gTRKFramingState.buffer = NULL;
-        gTRKFramingState.receiveState = DSRECV_Wait;
-        return FALSE;
-    }
-
-    buffer->position = 0;
-    buffer->length--;
-    return TRUE;
-}
-
 DSError TRKTerminateSerialHandler(void) {
     return DS_NoError;
 }
@@ -48,6 +31,7 @@ void TRKProcessInput(int bufferIdx) {
 
 void TRKGetInput(void) {
     TRKBuffer* msgBuffer;
+    TRKEvent event;
     int id;
     u8 command;
 
@@ -60,7 +44,10 @@ void TRKGetInput(void) {
     TRKSetBufferPosition(msgBuffer, 0);
     TRKReadBuffer1_ui8(msgBuffer, &command);
     if (command < DSMSG_ReplyACK) {
-        TRKProcessInput(id);
+        TRKConstructEvent(&event, NUBEVENT_Request);
+        gTRKFramingState.msgBufID = -1;
+        event.msgBufID = id;
+        TRKPostEvent(&event);
     } else {
         TRKReleaseBuffer(id);
     }
@@ -71,6 +58,7 @@ MessageBufferID TRKTestForPacket(void) {
     s32 err;
     u8 c;
     s32 msgBufID;
+    TRKBuffer* buffer;
 
     result = 0;
     err = TRKReadUARTPoll(&c);
@@ -107,15 +95,24 @@ MessageBufferID TRKTestForPacket(void) {
                         break;
                     }
 
-                    if (serpoll_inline_00(gTRKFramingState.buffer)) {
+                    buffer = gTRKFramingState.buffer;
+                    if (buffer->length < 2) {
+                        TRKStandardACK(buffer, DSMSG_ReplyNAK, DSREPLY_PacketSizeError);
+                        if (gTRKFramingState.msgBufID != -1) {
+                            TRKReleaseBuffer(gTRKFramingState.msgBufID);
+                            gTRKFramingState.msgBufID = -1;
+                        }
+                        gTRKFramingState.buffer = NULL;
+                        gTRKFramingState.receiveState = DSRECV_Wait;
+                    } else {
+                        buffer->position = 0;
+                        buffer->length--;
                         msgBufID = gTRKFramingState.msgBufID;
                         gTRKFramingState.msgBufID = -1;
                         gTRKFramingState.buffer = NULL;
                         gTRKFramingState.receiveState = DSRECV_Wait;
                         return msgBufID;
                     }
-
-                    gTRKFramingState.receiveState = DSRECV_Wait;
                 } else {
                     if (gTRKFramingState.isEscape) {
                         c ^= 0x20;
@@ -125,7 +122,14 @@ MessageBufferID TRKTestForPacket(void) {
                         break;
                     }
 
-                    result = TRKAppendBuffer1_ui8(gTRKFramingState.buffer, c);
+                    buffer = gTRKFramingState.buffer;
+                    if (buffer->position >= 0x880) {
+                        result = DS_MessageBufferOverflow;
+                    } else {
+                        buffer->data[buffer->position++] = c;
+                        buffer->length++;
+                        result = DS_NoError;
+                    }
                     gTRKFramingState.fcsType += c;
                 }
                 break;
