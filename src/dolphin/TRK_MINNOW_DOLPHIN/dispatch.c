@@ -6,7 +6,7 @@ struct DispatchEntry {
     DSError (*fn)(TRKBuffer*);
 };
 
-struct DispatchEntry gTRKDispatchTable[33] = {
+struct DispatchEntry gTRKDispatchTable[34] = {
     { &TRKDoUnsupported },   { &TRKDoConnect },        { &TRKDoDisconnect },
     { &TRKDoReset },         { &TRKDoVersions },       { &TRKDoSupportMask },
     { &TRKDoCPUType },       { &TRKDoUnsupported },    { &TRKDoUnsupported },
