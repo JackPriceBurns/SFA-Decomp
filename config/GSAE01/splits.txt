@@ -1451,6 +1451,7 @@ dolphin/os/OSResetSW.c:
 
 dolphin/os/OSRtc.c:
 	.text       start:0x802455D4 end:0x80246190
+	.bss        start:0x803AE040 end:0x803AE094
 
 dolphin/os/OSStopwatch.c:
 	.text       start:0x80246190 end:0x80246308
