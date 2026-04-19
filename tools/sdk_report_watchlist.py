@@ -55,6 +55,11 @@ def get_argparser() -> argparse.ArgumentParser:
         default=None,
         help="Only include SDK units whose name contains this substring.",
     )
+    parser.add_argument(
+        "--reference-splits",
+        action="store_true",
+        help="Include matching donor split spans from reference_projects for the same normalized source path.",
+    )
     return parser
 
 
@@ -85,6 +90,14 @@ class ObjectLinkHints:
     local_data_symbols: dict[str, list[str]]
     undefined_symbols: list[str]
     owner_hints: list[str]
+
+
+@dataclass
+class ReferenceSplitHint:
+    repo: str
+    version: str
+    path: str
+    span: int
 
 
 def is_sdk(unit: dict) -> bool:
@@ -160,6 +173,14 @@ def source_path_to_split_name(source_path: Path) -> str:
     return source_path.relative_to("src").as_posix()
 
 
+def normalize_split_name_candidates(split_name: str) -> list[str]:
+    candidates = [split_name]
+    for prefix in ("dolphin/", "Runtime.PPCEABI.H/", "MSL_C/PPCEABI/bare/H/"):
+        if split_name.startswith(prefix):
+            candidates.append(split_name.removeprefix(prefix))
+    return candidates
+
+
 def find_adjacent_split_names(source_path: Path, split_entries: list[SplitEntry]) -> tuple[str | None, str | None]:
     split_name = source_path_to_split_name(source_path)
     for index, entry in enumerate(split_entries):
@@ -195,6 +216,47 @@ def find_overlapping_split_spans(
             overlaps.append(f"{entry.name}=0x{overlap_end - overlap_start:X}")
 
     return overlaps
+
+
+def collect_reference_split_hints(source_path: Path, root: Path = Path("reference_projects")) -> list[ReferenceSplitHint]:
+    split_name = source_path_to_split_name(source_path)
+    candidates = set(normalize_split_name_candidates(split_name))
+    hints: list[ReferenceSplitHint] = []
+
+    if not root.exists():
+        return hints
+
+    for splits_path in root.glob("*/config/*/splits.txt"):
+        repo = splits_path.parents[2].name
+        version = splits_path.parent.name
+        current_name: str | None = None
+
+        for raw_line in splits_path.read_text(errors="replace").splitlines():
+            line = raw_line.strip()
+            if not line:
+                continue
+            if line.endswith(":"):
+                current_name = line[:-1]
+                continue
+            if current_name not in candidates:
+                continue
+
+            match = re.match(r"\.text\s+start:(0x[0-9A-Fa-f]+)\s+end:(0x[0-9A-Fa-f]+)", line)
+            if match:
+                start = int(match.group(1), 16)
+                end = int(match.group(2), 16)
+                hints.append(
+                    ReferenceSplitHint(
+                        repo=repo,
+                        version=version,
+                        path=current_name,
+                        span=end - start,
+                    )
+                )
+                break
+
+    hints.sort(key=lambda hint: (hint.path != split_name, hint.span, hint.repo, hint.version))
+    return hints
 
 
 def load_symbol_owners(map_path: Path) -> tuple[dict[str, str], dict[int, str]]:
@@ -427,6 +489,7 @@ def summarize_probe(
     include_near: bool = False,
     split_entries: list[SplitEntry] | None = None,
     link_hints: ObjectLinkHints | None = None,
+    reference_split_hints: list[ReferenceSplitHint] | None = None,
 ) -> str:
     parsed = parse_probe(source_path, include_functions=include_near)
     if isinstance(parsed, str):
@@ -480,6 +543,12 @@ def summarize_probe(
             summary_parts.append("owners " + ", ".join(link_hints.owner_hints))
         if link_hints.undefined_symbols:
             summary_parts.append("undef " + ", ".join(link_hints.undefined_symbols))
+    if reference_split_hints:
+        refs = [
+            f"{hint.repo}:{hint.version} {hint.path}=0x{hint.span:X}"
+            for hint in reference_split_hints[:4]
+        ]
+        summary_parts.append("refs " + ", ".join(refs))
     return "; ".join(summary_parts) if summary_parts else "probe produced no summary"
 
 
@@ -526,6 +595,7 @@ def main() -> int:
                     print("    probe: no source path found")
                 else:
                     link_hints = None
+                    reference_split_hints = collect_reference_split_hints(source_path) if args.reference_splits else None
                     object_path = unit_name_to_object_path(unit["name"])
                     if object_path is not None:
                         parsed_hints = collect_object_link_hints(
@@ -537,7 +607,7 @@ def main() -> int:
                         if isinstance(parsed_hints, ObjectLinkHints):
                             link_hints = parsed_hints
                     print(
-                        f"    probe: {summarize_probe(source_path, split_entries=split_entries, link_hints=link_hints)}"
+                        f"    probe: {summarize_probe(source_path, split_entries=split_entries, link_hints=link_hints, reference_split_hints=reference_split_hints)}"
                     )
     else:
         print("  (none)")
@@ -556,8 +626,9 @@ def main() -> int:
             if source_path is None:
                 print("    probe: no source path found")
             else:
+                reference_split_hints = collect_reference_split_hints(source_path) if args.reference_splits else None
                 print(
-                    f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries)}"
+                    f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries, reference_split_hints=reference_split_hints)}"
                 )
 
     return 0
