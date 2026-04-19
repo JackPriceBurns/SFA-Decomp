@@ -36,9 +36,9 @@ asm void PPCMtl2cr(register u32 value) {
     blr
 }
 
-asm void PPCMtdec(register u32 value) {
+asm void fn_80240A74(void) {
     nofralloc
-    mtdec value
+    sc
     blr
 }
 
