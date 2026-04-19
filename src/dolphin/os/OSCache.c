@@ -145,8 +145,10 @@ asm void DCInvalidateRange(register void* addr, register u32 nBytes) {
     nofralloc
     cmplwi nBytes, 0
     blelr
-    clrlwi r5, addr, 27
-    add    nBytes, nBytes, r5
+    clrlwi. r5, addr, 27
+    beq @2
+    addi   nBytes, nBytes, 32
+@2
     addi   nBytes, nBytes, 31
     srwi   nBytes, nBytes, 5
     mtctr  nBytes
@@ -162,8 +164,10 @@ asm void DCFlushRange(register void* addr, register u32 nBytes) {
     nofralloc
     cmplwi nBytes, 0
     blelr
-    clrlwi r5, addr, 27
-    add nBytes, nBytes, r5
+    clrlwi. r5, addr, 27
+    beq @2
+    addi nBytes, nBytes, 32
+@2
     addi nBytes, nBytes, 31
     srwi nBytes, nBytes, 5
     mtctr nBytes
@@ -180,8 +184,10 @@ asm void DCStoreRange(register void* addr, register u32 nBytes) {
     nofralloc
     cmplwi nBytes, 0
     blelr
-    clrlwi r5, addr, 27
-    add nBytes, nBytes, r5
+    clrlwi. r5, addr, 27
+    beq @2
+    addi nBytes, nBytes, 32
+@2
     addi nBytes, nBytes, 31
     srwi nBytes, nBytes, 5
     mtctr nBytes
@@ -199,8 +205,10 @@ asm void DCFlushRangeNoSync(register void* addr, register u32 nBytes) {
     nofralloc
     cmplwi nBytes, 0
     blelr
-    clrlwi r5, addr, 27
-    add nBytes, nBytes, r5
+    clrlwi. r5, addr, 27
+    beq @2
+    addi nBytes, nBytes, 32
+@2
     addi nBytes, nBytes, 31
     srwi nBytes, nBytes, 5
     mtctr nBytes
@@ -216,8 +224,10 @@ asm void DCStoreRangeNoSync(register void* addr, register u32 nBytes) {
     nofralloc
     cmplwi nBytes, 0
     blelr
-    clrlwi r5, addr, 27
-    add nBytes, nBytes, r5
+    clrlwi. r5, addr, 27
+    beq @2
+    addi nBytes, nBytes, 32
+@2
     addi nBytes, nBytes, 31
     srwi nBytes, nBytes, 5
     mtctr nBytes
@@ -234,8 +244,10 @@ asm void DCZeroRange(register void* addr, register u32 nBytes) {
   nofralloc
   cmplwi nBytes, 0
   blelr
-  clrlwi r5, addr, 27
-  add nBytes, nBytes, r5
+  clrlwi. r5, addr, 27
+  beq @2
+  addi nBytes, nBytes, 32
+@2
   addi nBytes, nBytes, 31
   srwi nBytes, nBytes, 5
   mtctr nBytes
@@ -252,8 +264,10 @@ asm void DCTouchRange(register void* addr, register u32 nBytes) {
     nofralloc
     cmplwi nBytes, 0
     blelr
-    clrlwi r5, addr, 27
-    add nBytes, nBytes, r5
+    clrlwi. r5, addr, 27
+    beq @2
+    addi nBytes, nBytes, 32
+@2
     addi nBytes, nBytes, 31
     srwi nBytes, nBytes, 5
     mtctr nBytes
@@ -270,8 +284,10 @@ asm void ICInvalidateRange(register void* addr, register u32 nBytes) {
     nofralloc
     cmplwi nBytes, 0
     blelr
-    clrlwi r5, addr, 27
-    add nBytes, nBytes, r5
+    clrlwi. r5, addr, 27
+    beq @2
+    addi nBytes, nBytes, 32
+@2
     addi nBytes, nBytes, 31
     srwi nBytes, nBytes, 5
     mtctr nBytes
