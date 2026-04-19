@@ -177,7 +177,14 @@ def choose_anchor_delta(functions: list[ObjectFunction], split_symbols: list[Con
     return dominant_delta, anchors
 
 
-def audit_source(version: str, source: Path, splits: list[SplitRange], symbols: list[ConfigSymbol], only_mismatched: bool) -> None:
+def audit_source(
+    version: str,
+    source: Path,
+    splits: list[SplitRange],
+    symbols: list[ConfigSymbol],
+    only_mismatched: bool,
+    allowed_statuses: set[str],
+) -> None:
     split_path = split_path_for_source(source)
     text_split = next((entry for entry in splits if entry.path == split_path and entry.section == ".text"), None)
     if text_split is None:
@@ -219,6 +226,8 @@ def audit_source(version: str, source: Path, splits: list[SplitRange], symbols: 
             status = "rename"
         else:
             status = "conflict"
+        if allowed_statuses and status not in allowed_statuses:
+            continue
         if only_mismatched and status == "matched":
             continue
         extra = ""
@@ -243,6 +252,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Audit donor object .text symbols against current SDK split ownership.")
     parser.add_argument("-v", "--version", default="GSAE01")
     parser.add_argument("--only-mismatched", action="store_true")
+    parser.add_argument(
+        "--status",
+        action="append",
+        choices=["matched", "missing", "inside-placeholder", "rename", "conflict"],
+        help="Only show selected status classes. May be passed multiple times.",
+    )
     parser.add_argument("sources", nargs="+", help="Source file paths under src/")
     return parser.parse_args()
 
@@ -253,8 +268,9 @@ def main() -> None:
     source_paths = [Path(path) for path in args.sources]
     splits = load_splits(repo_root / "config" / args.version / "splits.txt")
     symbols = load_config_symbols(repo_root / "config" / args.version / "symbols.txt")
+    allowed_statuses = set(args.status or [])
     for source in source_paths:
-        audit_source(args.version, source, splits, symbols, args.only_mismatched)
+        audit_source(args.version, source, splits, symbols, args.only_mismatched, allowed_statuses)
 
 
 if __name__ == "__main__":
