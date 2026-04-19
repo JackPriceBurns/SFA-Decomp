@@ -15,9 +15,9 @@ DSError TRKSuppAccessFile(u32 file_handle, u8* data, size_t* count, DSIOResult* 
     TRKBuffer* buffer;
     u32 i;
     u8 replyIOResult;
-    u32 replyLength;
+    u16 replyLength;
     BOOL exit;
-    CommandReply reply;
+    BOOL waitForReply;
 
     if (data == NULL || *count == 0) {
         return DS_ParameterError;
@@ -27,28 +27,26 @@ DSError TRKSuppAccessFile(u32 file_handle, u8* data, size_t* count, DSIOResult* 
     *io_result = DS_IONoError;
     i = 0;
     error = DS_NoError;
-    while (!exit && i < *count && error == DS_NoError && *io_result == 0) {
-        memset(&reply, 0, sizeof(CommandReply));
-
+    while (!exit && i < *count && error == DS_NoError && *io_result == DS_IONoError) {
         if (*count - i <= 0x800) {
             length = *count - i;
         } else {
             length = 0x800;
         }
 
-        reply.commandID.b = read ? DSMSG_ReadFile : DSMSG_WriteFile;
+        error = TRKGetFreeBuffer(&bufferId, &buffer);
 
-        if (read) {
-            reply._00 = 0x40;
-        } else {
-            reply._00 = length + 0x40;
+        if (error == DS_NoError) {
+            error = TRKAppendBuffer1_ui8(buffer, read ? DSMSG_ReadFile : DSMSG_WriteFile);
         }
 
-        reply.replyError.r = file_handle;
-        *(u16*)&reply._0C = length;
+        if (error == DS_NoError) {
+            error = TRKAppendBuffer1_ui32(buffer, file_handle);
+        }
 
-        TRKGetFreeBuffer(&bufferId, &buffer);
-        error = TRKAppendBuffer_ui8(buffer, (u8*)&reply, 0x40);
+        if (error == DS_NoError) {
+            error = TRKAppendBuffer1_ui16(buffer, (u16)length);
+        }
 
         if (!read && error == DS_NoError) {
             error = TRKAppendBuffer_ui8(buffer, data + i, length);
@@ -56,23 +54,43 @@ DSError TRKSuppAccessFile(u32 file_handle, u8* data, size_t* count, DSIOResult* 
 
         if (error == DS_NoError) {
             if (need_reply) {
-                BOOL b = read && file_handle == 0;
+                replyLength = 0;
+                replyIOResult = DS_IONoError;
+                waitForReply = !(read && file_handle == 0);
 
-                error = TRKRequestSend(buffer, &replyBufferId, read ? 5 : 5, 3, !b);
+                error = TRKRequestSend(buffer, &replyBufferId, 5, 3, waitForReply);
                 if (error == DS_NoError) {
-                    replyBuffer = (TRKBuffer*)TRKGetBuffer(replyBufferId);
+                    replyBuffer = TRKGetBuffer(replyBufferId);
+                    TRKSetBufferPosition(replyBuffer, 2);
                 }
-                replyIOResult = *(u32*)(replyBuffer->data + 0x10);
-                replyLength = *(u16*)(replyBuffer->data + 0x14);
-                if (read && error == DS_NoError && replyLength <= length) {
-                    TRKSetBufferPosition(replyBuffer, 0x40);
-                    error = TRKReadBuffer_ui8(replyBuffer, data + i, replyLength);
-                    if (error == DS_MessageBufferReadError) {
-                        error = DS_NoError;
+
+                if (error == DS_NoError) {
+                    error = TRKReadBuffer1_ui8(replyBuffer, &replyIOResult);
+                }
+
+                if (error == DS_NoError) {
+                    error = TRKReadBuffer1_ui16(replyBuffer, &replyLength);
+                }
+
+                if (read && error == DS_NoError) {
+                    if (replyBuffer->length != replyLength + 5) {
+                        replyLength = replyBuffer->length - 5;
+
+                        if (replyIOResult == DS_IONoError) {
+                            replyIOResult = DS_IOError;
+                        }
                     }
                 }
 
+                if (read && error == DS_NoError && replyLength <= length) {
+                    error = TRKReadBuffer_ui8(replyBuffer, data + i, replyLength);
+                }
+
                 if (replyLength != length) {
+                    if ((!read || replyLength > length) && replyIOResult == DS_IONoError) {
+                        replyIOResult = DS_IOError;
+                    }
+
                     length = replyLength;
                     exit = TRUE;
                 }
