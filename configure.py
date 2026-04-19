@@ -379,7 +379,7 @@ config.libs = [
             Object(NonMatching, "dolphin/dvd/dvdfs.c"),
             Object(NonMatching, "dolphin/dvd/dvd.c"),
             Object(MatchingFor("GSAE01"), "dolphin/dvd/dvdqueue.c"),
-            Object(NonMatching, "dolphin/dvd/dvderror.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/dvd/dvderror.c"),
             Object(MatchingFor("GSAE01"), "dolphin/dvd/fstload.c"),
             Object(NonMatching, "dolphin/dvd/dvdFatal.c"),
             Object(NonMatching, "dolphin/dvd/dvdidutils.c"),
