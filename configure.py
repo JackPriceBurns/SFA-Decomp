@@ -309,7 +309,7 @@ config.libs = [
         "cflags": cflags_runtime,
         "progress_category": "sdk",  # str | List[str]
         "objects": [
-            Object(NonMatching, "Runtime.PPCEABI.H/__start.s"),
+            Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/__start.s"),
             Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/__mem.s"),
             Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/mem_TRK.s"),
             Object(MatchingFor("GSAE01"), "Runtime.PPCEABI.H/__exception.s"),

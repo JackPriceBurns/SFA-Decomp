@@ -27,13 +27,15 @@ blr
 .endfn __check_pad3
 
 .fn __start, weak
-bl __init_registers
+.long 0x48000001
+.reloc .-4, R_PPC_REL24, __init_registers
 bl __init_hardware
 li r0, -0x1
 stwu r1, -0x8(r1)
 stw r0, 0x4(r1)
 stw r0, 0x0(r1)
-bl __init_data
+.long 0x48000001
+.reloc .-4, R_PPC_REL24, __init_data
 li r0, 0x0
 lis r6, 0x8000
 addi r6, r6, 0x44
@@ -107,7 +109,8 @@ andi. r3, r3, 0x7fff
 cmplwi r3, 0x1
 bne .L_80003264
 .L_80003260:
-bl __check_pad3
+.long 0x48000001
+.reloc .-4, R_PPC_REL24, __check_pad3
 .L_80003264:
 bl __init_user
 mr r3, r14
