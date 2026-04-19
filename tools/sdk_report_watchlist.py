@@ -29,6 +29,12 @@ def get_argparser() -> argparse.ArgumentParser:
         help="Maximum number of near-miss files to print.",
     )
     parser.add_argument(
+        "--exact-limit",
+        type=int,
+        default=None,
+        help="Maximum number of exact-report-but-unlinked files to print. Defaults to all matching exact files.",
+    )
+    parser.add_argument(
         "--probe-exact",
         action="store_true",
         help="Run sdk_import_probe.py for exact-report SDK files that are still not linked.",
@@ -43,6 +49,11 @@ def get_argparser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("config/GSAE01/splits.txt"),
         help="Path to the splits file used for adjacent-file boundary hints.",
+    )
+    parser.add_argument(
+        "--match",
+        default=None,
+        help="Only include SDK units whose name contains this substring.",
     )
     return parser
 
@@ -442,6 +453,9 @@ def main() -> int:
     symbol_owners, address_owners = load_symbol_owners(Path("build/GSAE01/main.elf.MAP"))
     symbol_addresses = load_symbol_addresses(Path("config/GSAE01/symbols.txt"))
     sdk_units = [unit for unit in data["units"] if is_sdk(unit)]
+    if args.match:
+        match_lower = args.match.lower()
+        sdk_units = [unit for unit in sdk_units if match_lower in unit["name"].lower()]
 
     exact_unlinked = []
     near_misses = []
@@ -464,7 +478,10 @@ def main() -> int:
 
     print("Exact-report SDK files still not linked:")
     if exact_unlinked:
-        for _, _, _, unit in exact_unlinked:
+        exact_rows = exact_unlinked
+        if args.exact_limit is not None:
+            exact_rows = exact_unlinked[: args.exact_limit]
+        for _, _, _, unit in exact_rows:
             print(f"  {unit['name']}")
             if args.probe_exact:
                 source_path = unit_name_to_source_path(unit["name"])
