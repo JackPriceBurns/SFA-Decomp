@@ -504,9 +504,46 @@ DSError TRKDoWriteRegisters(TRKBuffer* b) {
     }
 }
 
-void TRKDoFlushCache(void) {
-    MWTRACE(1, "DoFlushCache unimplemented!!!\n");
-    // UNUSED FUNCTION
+DSError TRKDoFlushCache(TRKBuffer* b) {
+    DSError err;
+    u8 command;
+    u8 options;
+    u32 rangeStart;
+    u32 rangeEnd;
+
+    if (b->length != 0xA) {
+        return TRKStandardACK(b, DSMSG_ReplyACK, DSREPLY_PacketSizeError);
+    }
+
+    TRKSetBufferPosition(b, 0);
+
+    err = TRKReadBuffer1_ui8(b, &command);
+    if (err == DS_NoError) {
+        err = TRKReadBuffer1_ui8(b, &options);
+    }
+    if (err == DS_NoError) {
+        err = TRKReadBuffer1_ui32(b, &rangeStart);
+    }
+    if (err == DS_NoError) {
+        err = TRKReadBuffer1_ui32(b, &rangeEnd);
+    }
+
+    if (err == DS_NoError && rangeStart > rangeEnd) {
+        return TRKStandardACK(b, DSMSG_ReplyACK, DSREPLY_InvalidMemoryRange);
+    }
+
+    if (err == DS_NoError) {
+        err = TRKTargetFlushCache(options, (void*)rangeStart, (void*)rangeEnd);
+    }
+
+    if (err != DS_NoError) {
+        if (err == DS_UnsupportedError) {
+            return TRKStandardACK(b, DSMSG_ReplyACK, DSREPLY_UnsupportedOptionError);
+        }
+        return TRKStandardACK(b, DSMSG_ReplyACK, DSREPLY_CWDSError);
+    }
+
+    return TRKStandardACK(b, DSMSG_ReplyACK, DSREPLY_NoError);
 }
 
 DSError TRKDoContinue(TRKBuffer*) {

@@ -772,9 +772,16 @@ DSError TRKTargetSupportRequest()
  * @note Address: TODO
  * @note Size: TODO
  */
-void TRKTargetFlushCache(void)
+DSError TRKTargetFlushCache(u8 options, void* start, void* end)
 {
-	// UNUSED FUNCTION
+	(void)options;
+
+	if ((u32)start < (u32)end) {
+		TRK_flush_cache(start, (u32)end - (u32)start);
+		return DS_NoError;
+	}
+
+	return DS_InvalidMemory;
 }
 
 /**
