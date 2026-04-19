@@ -23,7 +23,6 @@ void OSInitAlarm(void) {
 
 void OSCreateAlarm(OSAlarm* alarm) {
     alarm->handler = 0;
-    alarm->tag = 0;
 }
 
 static inline void SetTimer(OSAlarm* alarm) {
