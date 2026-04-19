@@ -38,6 +38,12 @@ def get_argparser() -> argparse.ArgumentParser:
         action="store_true",
         help="Run sdk_import_probe.py for near-miss SDK files and summarize split/boundary drift clues.",
     )
+    parser.add_argument(
+        "--splits",
+        type=Path,
+        default=Path("config/GSAE01/splits.txt"),
+        help="Path to the splits file used for adjacent-file boundary hints.",
+    )
     return parser
 
 
@@ -51,6 +57,15 @@ class ProbeSummary:
     leading_functions: list[str]
     trailing_functions: list[str]
     crossing_functions: list[str]
+    assigned_range: tuple[int, int] | None
+    best_exact_range: tuple[int, int] | None
+
+
+@dataclass
+class SplitEntry:
+    name: str
+    start: int
+    end: int
 
 
 def is_sdk(unit: dict) -> bool:
@@ -84,6 +99,50 @@ def parse_range(text: str) -> tuple[int, int] | None:
     return int(match.group(1), 16), int(match.group(2), 16)
 
 
+def load_text_splits(splits_path: Path) -> list[SplitEntry]:
+    entries: list[SplitEntry] = []
+    current_name: str | None = None
+
+    for raw_line in splits_path.read_text().splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        if line.endswith(":"):
+            current_name = line[:-1]
+            continue
+        if current_name is None:
+            continue
+
+        match = re.match(
+            r"\.text\s+start:(0x[0-9A-Fa-f]+)\s+end:(0x[0-9A-Fa-f]+)",
+            line,
+        )
+        if match:
+            entries.append(
+                SplitEntry(
+                    name=current_name,
+                    start=int(match.group(1), 16),
+                    end=int(match.group(2), 16),
+                )
+            )
+    return entries
+
+
+def source_path_to_split_name(source_path: Path) -> str:
+    return source_path.relative_to("src").as_posix()
+
+
+def find_adjacent_split_names(source_path: Path, split_entries: list[SplitEntry]) -> tuple[str | None, str | None]:
+    split_name = source_path_to_split_name(source_path)
+    for index, entry in enumerate(split_entries):
+        if entry.name != split_name:
+            continue
+        previous_name = split_entries[index - 1].name if index > 0 else None
+        next_name = split_entries[index + 1].name if index + 1 < len(split_entries) else None
+        return previous_name, next_name
+    return None, None
+
+
 def parse_probe(source_path: Path, *, include_functions: bool = False) -> ProbeSummary | str:
     command = [sys.executable, "tools/sdk_import_probe.py", str(source_path), "--show-assigned"]
     if include_functions:
@@ -114,6 +173,7 @@ def parse_probe(source_path: Path, *, include_functions: bool = False) -> ProbeS
     in_projected_functions = False
     best_hypothesis_locked = False
     assigned_range: tuple[int, int] | None = None
+    best_exact_range: tuple[int, int] | None = None
     projected_function_rows: list[tuple[int, int, str]] = []
 
     for line in result.stdout.splitlines():
@@ -168,6 +228,7 @@ def parse_probe(source_path: Path, *, include_functions: bool = False) -> ProbeS
             )
             if hypothesis_match and hypothesis_match.group(2) != "0":
                 best_exact_hypothesis = " ".join(hypothesis_match.group(1).split())
+                best_exact_range = parse_range(best_exact_hypothesis)
                 likely_boundary_drift = "delta=" in assigned_split and not assigned_split.startswith(
                     best_exact_hypothesis.split()[0]
                 )
@@ -205,10 +266,17 @@ def parse_probe(source_path: Path, *, include_functions: bool = False) -> ProbeS
         leading_functions=leading_functions,
         trailing_functions=trailing_functions,
         crossing_functions=crossing_functions,
+        assigned_range=assigned_range,
+        best_exact_range=best_exact_range,
     )
 
 
-def summarize_probe(source_path: Path, *, include_near: bool = False) -> str:
+def summarize_probe(
+    source_path: Path,
+    *,
+    include_near: bool = False,
+    split_entries: list[SplitEntry] | None = None,
+) -> str:
     parsed = parse_probe(source_path, include_functions=include_near)
     if isinstance(parsed, str):
         return parsed
@@ -222,6 +290,15 @@ def summarize_probe(source_path: Path, *, include_near: bool = False) -> str:
         summary_parts.append("best-exact " + parsed.best_exact_hypothesis)
         if parsed.likely_boundary_drift:
             summary_parts.append("likely boundary drift")
+        if split_entries and parsed.assigned_range and parsed.best_exact_range:
+            previous_name, next_name = find_adjacent_split_names(source_path, split_entries)
+            touches = []
+            if parsed.best_exact_range[0] < parsed.assigned_range[0] and previous_name:
+                touches.append("prev " + previous_name)
+            if parsed.best_exact_range[1] > parsed.assigned_range[1] and next_name:
+                touches.append("next " + next_name)
+            if touches:
+                summary_parts.append("touches " + ", ".join(touches))
         if parsed.leading_functions:
             summary_parts.append("before-split " + ", ".join(parsed.leading_functions[:4]))
         if parsed.crossing_functions:
@@ -236,6 +313,7 @@ def summarize_probe(source_path: Path, *, include_near: bool = False) -> str:
 def main() -> int:
     args = get_argparser().parse_args()
     data = json.loads(args.report.read_text())
+    split_entries = load_text_splits(args.splits)
     sdk_units = [unit for unit in data["units"] if is_sdk(unit)]
 
     exact_unlinked = []
@@ -266,7 +344,7 @@ def main() -> int:
                 if source_path is None:
                     print("    probe: no source path found")
                 else:
-                    print(f"    probe: {summarize_probe(source_path)}")
+                    print(f"    probe: {summarize_probe(source_path, split_entries=split_entries)}")
     else:
         print("  (none)")
 
@@ -284,7 +362,9 @@ def main() -> int:
             if source_path is None:
                 print("    probe: no source path found")
             else:
-                print(f"    probe: {summarize_probe(source_path, include_near=True)}")
+                print(
+                    f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries)}"
+                )
 
     return 0
 
