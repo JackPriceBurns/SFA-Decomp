@@ -42,7 +42,13 @@ def get_argparser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--probe-near",
         action="store_true",
-        help="Run sdk_import_probe.py for near-miss SDK files and summarize split/boundary drift clues.",
+        help="Run sdk_import_probe.py for boundary-only and near-miss SDK files and summarize split/boundary drift clues.",
+    )
+    parser.add_argument(
+        "--boundary-limit",
+        type=int,
+        default=None,
+        help="Maximum number of boundary-only SDK files to print. Defaults to the near-miss limit.",
     )
     parser.add_argument(
         "--splits",
@@ -614,6 +620,7 @@ def main() -> int:
         sdk_units = [unit for unit in sdk_units if match_lower in unit["name"].lower()]
 
     exact_unlinked = []
+    boundary_only = []
     near_misses = []
 
     for unit in sdk_units:
@@ -623,13 +630,21 @@ def main() -> int:
         matched_funcs = measures.get("matched_functions_percent", 0.0)
         fuzzy = measures.get("fuzzy_match_percent", 0.0)
         entry = (matched_code, matched_funcs, fuzzy, unit)
+        misses = [
+            fn
+            for fn in unit.get("functions", [])
+            if fn.get("fuzzy_match_percent", 100.0) != 100.0
+        ]
 
         if not complete and matched_code == 100.0 and matched_funcs == 100.0:
             exact_unlinked.append(entry)
+        elif not complete and not misses:
+            boundary_only.append(entry)
         elif not complete:
             near_misses.append(entry)
 
     exact_unlinked.sort(key=lambda row: row[:3], reverse=True)
+    boundary_only.sort(key=lambda row: row[:3], reverse=True)
     near_misses.sort(key=lambda row: row[:3], reverse=True)
 
     print("Exact-report SDK files still not linked:")
@@ -658,6 +673,31 @@ def main() -> int:
                             link_hints = parsed_hints
                     print(
                         f"    probe: {summarize_probe(source_path, split_entries=split_entries, link_hints=link_hints, reference_split_hints=reference_split_hints)}"
+                    )
+    else:
+        print("  (none)")
+
+    print()
+    boundary_rows = boundary_only
+    if args.boundary_limit is not None:
+        boundary_rows = boundary_only[: args.boundary_limit]
+    else:
+        boundary_rows = boundary_only[: args.limit]
+
+    print(f"Top {min(len(boundary_rows), len(boundary_only))} boundary-only SDK files:")
+    if boundary_rows:
+        for matched_code, matched_funcs, fuzzy, unit in boundary_rows:
+            print(
+                f"  {unit['name']}: code={matched_code:.2f}% funcs={matched_funcs:.2f}% fuzzy={fuzzy:.3f}"
+            )
+            if args.probe_near:
+                source_path = unit_name_to_source_path(unit["name"])
+                if source_path is None:
+                    print("    probe: no source path found")
+                else:
+                    reference_split_hints = collect_reference_split_hints(source_path) if args.reference_splits else None
+                    print(
+                        f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries, reference_split_hints=reference_split_hints)}"
                     )
     else:
         print("  (none)")
