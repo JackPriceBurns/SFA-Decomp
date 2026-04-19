@@ -335,7 +335,7 @@ config.libs = [
             Object(NonMatching, "dolphin/os/OSFont.c"),
             Object(NonMatching, "dolphin/os/OSInterrupt.c"),
             Object(NonMatching, "dolphin/os/OSLink.c"),
-            Object(NonMatching, "dolphin/os/OSMessage.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/os/OSMessage.c"),
             Object(NonMatching, "dolphin/os/OSMemory.c"),
             Object(MatchingFor("GSAE01"), "dolphin/os/OSMutex.c"),
             Object(NonMatching, "dolphin/os/OSReboot.c"),
@@ -365,7 +365,7 @@ config.libs = [
         "mtx",
         [
             Object(NonMatching, "dolphin/mtx/mtx.c", source="dolphin/mtx/mtx.c"),
-            Object(NonMatching, "dolphin/mtx/mtxvec.c", source="dolphin/mtx/mtxvec.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/mtx/mtxvec.c", source="dolphin/mtx/mtxvec.c"),
             Object(NonMatching, "dolphin/mtx/vec.c", source="sdk/mtx/vec.c"),
             Object(NonMatching, "dolphin/mtx/mtx44.c"),
             Object(NonMatching, "dolphin/mtx/mtx44vec.c"),
