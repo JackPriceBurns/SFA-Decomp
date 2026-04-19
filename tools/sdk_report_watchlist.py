@@ -197,6 +197,10 @@ def format_signed_hex(value: int) -> str:
     return f"{sign}0x{abs(value):X}"
 
 
+def format_hex(value: int) -> str:
+    return f"0x{value:X}"
+
+
 def assigned_delta_value(assigned_split: str) -> int | None:
     match = re.search(r"delta=([+-])0x([0-9A-Fa-f]+)", assigned_split)
     if not match:
@@ -525,13 +529,41 @@ def summarize_probe(
         if split_entries and parsed.assigned_range and parsed.best_exact_range:
             start_shift = parsed.best_exact_range[0] - parsed.assigned_range[0]
             end_shift = parsed.best_exact_range[1] - parsed.assigned_range[1]
+            previous_name, next_name = find_adjacent_split_names(source_path, split_entries)
+            tiny_limit = 0x20
+
             if start_shift or end_shift:
                 summary_parts.append(
                     "shift "
                     + f"start={format_signed_hex(start_shift)} "
                     + f"end={format_signed_hex(end_shift)}"
                 )
-            previous_name, next_name = find_adjacent_split_names(source_path, split_entries)
+
+            if (
+                start_shift == 0
+                and 0 < end_shift <= tiny_limit
+                and not parsed.leading_functions
+                and not parsed.trailing_functions
+            ):
+                overhang = "tiny tail overhang " + format_hex(end_shift)
+                if next_name:
+                    overhang += " into " + next_name
+                if parsed.crossing_functions:
+                    overhang += " via " + ", ".join(parsed.crossing_functions[:2])
+                summary_parts.append(overhang)
+            elif (
+                end_shift == 0
+                and -tiny_limit <= start_shift < 0
+                and not parsed.leading_functions
+                and not parsed.trailing_functions
+            ):
+                overhang = "tiny head overhang " + format_hex(-start_shift)
+                if previous_name:
+                    overhang += " into " + previous_name
+                if parsed.crossing_functions:
+                    overhang += " via " + ", ".join(parsed.crossing_functions[:2])
+                summary_parts.append(overhang)
+
             touches = []
             if parsed.best_exact_range[0] < parsed.assigned_range[0] and previous_name:
                 touches.append("prev " + previous_name)
