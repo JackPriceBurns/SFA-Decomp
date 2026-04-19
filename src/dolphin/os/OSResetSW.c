@@ -3,26 +3,26 @@
 
 #include "dolphin/os/__os.h"
 
-static OSResetCallback ResetCallback;
-static BOOL Down;
-static BOOL LastState;
-static OSTime HoldUp;
-static OSTime HoldDown;
+extern OSResetCallback bootThisDol_803DEAE8;
+extern BOOL lbl_803DEAEC;
+extern BOOL lbl_803DEAF0;
+extern OSTime lbl_803DEAF8;
+extern OSTime lbl_803DEB00;
 
 void __OSResetSWInterruptHandler(s16 exception, OSContext* context) {
     OSResetCallback callback;
 
-    HoldDown = __OSGetSystemTime();
-    while (__OSGetSystemTime() - HoldDown < OSMicrosecondsToTicks(100) &&
+    lbl_803DEB00 = __OSGetSystemTime();
+    while (__OSGetSystemTime() - lbl_803DEB00 < OSMicrosecondsToTicks(100) &&
            !(__PIRegs[0] & 0x00010000)) {
         ;
     }
     if (!(__PIRegs[0] & 0x00010000)) {
-        LastState = Down = TRUE;
+        lbl_803DEAF0 = lbl_803DEAEC = TRUE;
         __OSMaskInterrupts(OS_INTERRUPTMASK_PI_RSW);
-        if (ResetCallback) {
-            callback = ResetCallback;
-            ResetCallback = NULL;
+        if (bootThisDol_803DEAE8) {
+            callback = bootThisDol_803DEAE8;
+            bootThisDol_803DEAE8 = NULL;
             callback();
         }
     }
@@ -39,31 +39,31 @@ BOOL OSGetResetButtonState(void) {
 
     reg = __PIRegs[0];
     if (!(reg & 0x00010000)) {
-        if (!Down) {
-            Down = TRUE;
-            state = HoldUp ? TRUE : FALSE;
-            HoldDown = now;
+        if (!lbl_803DEAEC) {
+            lbl_803DEAEC = TRUE;
+            state = lbl_803DEAF8 ? TRUE : FALSE;
+            lbl_803DEB00 = now;
         } else {
-            state = HoldUp || (OSMicrosecondsToTicks(100) < now - HoldDown)
+            state = lbl_803DEAF8 || (OSMicrosecondsToTicks(100) < now - lbl_803DEB00)
                         ? TRUE
                         : FALSE;
         }
-    } else if (Down) {
-        Down = FALSE;
-        state = LastState;
+    } else if (lbl_803DEAEC) {
+        lbl_803DEAEC = FALSE;
+        state = lbl_803DEAF0;
         if (state) {
-            HoldUp = now;
+            lbl_803DEAF8 = now;
         } else {
-            HoldUp = 0;
+            lbl_803DEAF8 = 0;
         }
-    } else if (HoldUp && (now - HoldUp < OSMillisecondsToTicks(40))) {
+    } else if (lbl_803DEAF8 && (now - lbl_803DEAF8 < OSMillisecondsToTicks(40))) {
         state = TRUE;
     } else {
         state = FALSE;
-        HoldUp = 0;
+        lbl_803DEAF8 = 0;
     }
 
-    LastState = state;
+    lbl_803DEAF0 = state;
 
     if (__gUnknown800030E3 & 0x3F) {
         OSTime fire = (__gUnknown800030E3 & 0x3F) * 60;

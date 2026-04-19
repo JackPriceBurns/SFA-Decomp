@@ -340,7 +340,7 @@ config.libs = [
             Object(MatchingFor("GSAE01"), "dolphin/os/OSMutex.c"),
             Object(NonMatching, "dolphin/os/OSReboot.c"),
             Object(NonMatching, "dolphin/os/OSReset.c"),
-            Object(NonMatching, "dolphin/os/OSResetSW.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/os/OSResetSW.c"),
             Object(NonMatching, "dolphin/os/OSRtc.c"),
             Object(NonMatching, "dolphin/os/OSStopwatch.c"),
             Object(NonMatching, "dolphin/os/OSSync.c"),
@@ -358,7 +358,7 @@ config.libs = [
     DolphinLib(
         "db",
         [
-            Object(NonMatching, "dolphin/db/db.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/db/db.c"),
         ],
     ),
     DolphinLib(
