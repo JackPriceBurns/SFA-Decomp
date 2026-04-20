@@ -108,11 +108,17 @@ class SplitEntry:
 
 
 @dataclass
-class ObjectLinkHints:
+class ObjectSymbolShape:
     defined_text_symbols: list[str]
     exported_data_symbols: dict[str, list[str]]
     local_data_symbols: dict[str, list[str]]
     undefined_symbols: list[str]
+
+
+@dataclass
+class ObjectLinkHints:
+    current: ObjectSymbolShape
+    target: ObjectSymbolShape | None
     owner_hints: list[str]
 
 
@@ -209,6 +215,15 @@ def unit_name_to_object_path(unit_name: str) -> Path | None:
         return None
 
     base = Path("build/GSAE01/src") / unit_name.removeprefix("main/")
+    candidate = base.with_suffix(".o")
+    return candidate if candidate.exists() else None
+
+
+def unit_name_to_target_object_path(unit_name: str) -> Path | None:
+    if not unit_name.startswith("main/"):
+        return None
+
+    base = Path("build/GSAE01/obj") / unit_name.removeprefix("main/")
     candidate = base.with_suffix(".o")
     return candidate if candidate.exists() else None
 
@@ -373,12 +388,7 @@ def load_symbol_addresses(symbols_path: Path) -> dict[str, int]:
     return addresses
 
 
-def collect_object_link_hints(
-    object_path: Path,
-    symbol_owners: dict[str, str],
-    address_owners: dict[int, str],
-    symbol_addresses: dict[str, int],
-) -> ObjectLinkHints | str:
+def inspect_object_symbols(object_path: Path) -> ObjectSymbolShape | str:
     try:
         nm_result = subprocess.run(
             ["build/binutils/powerpc-eabi-nm.exe", "-n", str(object_path)],
@@ -424,8 +434,34 @@ def collect_object_link_hints(
         elif bind == "l":
             local_data_symbols.setdefault(section, []).append(name)
 
+    return ObjectSymbolShape(
+        defined_text_symbols=defined_text_symbols,
+        exported_data_symbols=exported_data_symbols,
+        local_data_symbols=local_data_symbols,
+        undefined_symbols=undefined_symbols,
+    )
+
+
+def collect_object_link_hints(
+    object_path: Path,
+    target_object_path: Path | None,
+    symbol_owners: dict[str, str],
+    address_owners: dict[int, str],
+    symbol_addresses: dict[str, int],
+) -> ObjectLinkHints | str:
+    current_symbols = inspect_object_symbols(object_path)
+    if isinstance(current_symbols, str):
+        return current_symbols
+
+    target_symbols = None
+    if target_object_path is not None:
+        parsed_target = inspect_object_symbols(target_object_path)
+        if isinstance(parsed_target, str):
+            return parsed_target
+        target_symbols = parsed_target
+
     owner_hints = []
-    for names in exported_data_symbols.values():
+    for names in current_symbols.exported_data_symbols.values():
         for name in names:
             owner = symbol_owners.get(name)
             if owner is None:
@@ -436,10 +472,8 @@ def collect_object_link_hints(
                 owner_hints.append(f"{name}->{owner}")
 
     return ObjectLinkHints(
-        defined_text_symbols=defined_text_symbols,
-        exported_data_symbols=exported_data_symbols,
-        local_data_symbols=local_data_symbols,
-        undefined_symbols=undefined_symbols,
+        current=current_symbols,
+        target=target_symbols,
         owner_hints=owner_hints,
     )
 
@@ -584,16 +618,59 @@ def object_shape_issue_names(
     known_function_set = set(known_functions or [])
     extra_text = [
         name
-        for name in link_hints.defined_text_symbols
+        for name in link_hints.current.defined_text_symbols
         if name not in known_function_set
     ]
-    if extra_text:
-        issue_names.append("extra-text")
-    if link_hints.exported_data_symbols:
-        issue_names.append("exports-data")
-    if link_hints.local_data_symbols:
-        issue_names.append("locals-data")
+    if link_hints.target is not None:
+        target_text = set(link_hints.target.defined_text_symbols)
+        current_text = set(link_hints.current.defined_text_symbols)
+        if current_text != target_text:
+            issue_names.append("text-shape")
+
+        target_undef = set(link_hints.target.undefined_symbols)
+        current_undef = set(link_hints.current.undefined_symbols)
+        if current_undef != target_undef:
+            issue_names.append("undef-shape")
+
+        if link_hints.current.exported_data_symbols != link_hints.target.exported_data_symbols:
+            issue_names.append("exports-data")
+        if link_hints.current.local_data_symbols != link_hints.target.local_data_symbols:
+            issue_names.append("locals-data")
+    else:
+        if extra_text:
+            issue_names.append("extra-text")
+        if link_hints.current.exported_data_symbols:
+            issue_names.append("exports-data")
+        if link_hints.current.local_data_symbols:
+            issue_names.append("locals-data")
     return issue_names, bool(extra_text)
+
+
+def ordered_symbol_diff(current: list[str], target: list[str]) -> tuple[list[str], list[str]]:
+    target_set = set(target)
+    current_set = set(current)
+    current_only = [name for name in current if name not in target_set]
+    target_only = [name for name in target if name not in current_set]
+    return current_only, target_only
+
+
+def ordered_section_symbol_diff(
+    current: dict[str, list[str]],
+    target: dict[str, list[str]],
+) -> tuple[dict[str, list[str]], dict[str, list[str]]]:
+    current_only: dict[str, list[str]] = {}
+    target_only: dict[str, list[str]] = {}
+
+    for section in sorted(set(current) | set(target)):
+        current_names = current.get(section, [])
+        target_names = target.get(section, [])
+        current_diff, target_diff = ordered_symbol_diff(current_names, target_names)
+        if current_diff:
+            current_only[section] = current_diff
+        if target_diff:
+            target_only[section] = target_diff
+
+    return current_only, target_only
 
 
 def summarize_probe(
@@ -690,20 +767,63 @@ def summarize_probe(
             known_function_set = set(known_functions or [])
             extra_text = [
                 name
-                for name in link_hints.defined_text_symbols
+                for name in link_hints.current.defined_text_symbols
                 if name not in known_function_set
             ]
             summary_parts.append("extra-text " + ", ".join(extra_text[:8]))
-        for section in sorted(link_hints.exported_data_symbols):
-            names = link_hints.exported_data_symbols[section]
-            summary_parts.append(f"exports {section} " + ", ".join(names[:8]))
-        for section in sorted(link_hints.local_data_symbols):
-            names = link_hints.local_data_symbols[section]
-            summary_parts.append(f"locals {section} " + ", ".join(names[:8]))
+        if link_hints.target is not None:
+            current_only_text, target_only_text = ordered_symbol_diff(
+                link_hints.current.defined_text_symbols,
+                link_hints.target.defined_text_symbols,
+            )
+            current_only_undef, target_only_undef = ordered_symbol_diff(
+                link_hints.current.undefined_symbols,
+                link_hints.target.undefined_symbols,
+            )
+            current_only_exports, target_only_exports = ordered_section_symbol_diff(
+                link_hints.current.exported_data_symbols,
+                link_hints.target.exported_data_symbols,
+            )
+            current_only_locals, target_only_locals = ordered_section_symbol_diff(
+                link_hints.current.local_data_symbols,
+                link_hints.target.local_data_symbols,
+            )
+
+            if current_only_text:
+                summary_parts.append("cur-only-text " + ", ".join(current_only_text[:8]))
+            if target_only_text:
+                summary_parts.append("target-only-text " + ", ".join(target_only_text[:8]))
+            for section in sorted(current_only_exports):
+                summary_parts.append(
+                    f"cur-only-exports {section} " + ", ".join(current_only_exports[section][:8])
+                )
+            for section in sorted(target_only_exports):
+                summary_parts.append(
+                    f"target-only-exports {section} " + ", ".join(target_only_exports[section][:8])
+                )
+            for section in sorted(current_only_locals):
+                summary_parts.append(
+                    f"cur-only-locals {section} " + ", ".join(current_only_locals[section][:8])
+                )
+            for section in sorted(target_only_locals):
+                summary_parts.append(
+                    f"target-only-locals {section} " + ", ".join(target_only_locals[section][:8])
+                )
+            if current_only_undef:
+                summary_parts.append("cur-only-undef " + ", ".join(current_only_undef[:8]))
+            if target_only_undef:
+                summary_parts.append("target-only-undef " + ", ".join(target_only_undef[:8]))
+        else:
+            for section in sorted(link_hints.current.exported_data_symbols):
+                names = link_hints.current.exported_data_symbols[section]
+                summary_parts.append(f"exports {section} " + ", ".join(names[:8]))
+            for section in sorted(link_hints.current.local_data_symbols):
+                names = link_hints.current.local_data_symbols[section]
+                summary_parts.append(f"locals {section} " + ", ".join(names[:8]))
         if link_hints.owner_hints:
             summary_parts.append("owners " + ", ".join(link_hints.owner_hints))
-        if link_hints.undefined_symbols:
-            summary_parts.append("undef " + ", ".join(link_hints.undefined_symbols))
+        if link_hints.target is None and link_hints.current.undefined_symbols:
+            summary_parts.append("undef " + ", ".join(link_hints.current.undefined_symbols))
     if reference_split_hints:
         refs = [
             f"{hint.repo}:{hint.version} {hint.path}=0x{hint.span:X}"
@@ -789,8 +909,10 @@ def main() -> int:
                     reference_split_hints = collect_reference_split_hints(source_path) if args.reference_splits else None
                     object_path = unit_name_to_object_path(unit["name"])
                     if object_path is not None:
+                        target_object_path = unit_name_to_target_object_path(unit["name"])
                         parsed_hints = collect_object_link_hints(
                             object_path,
+                            target_object_path,
                             symbol_owners,
                             address_owners,
                             symbol_addresses,
@@ -824,8 +946,10 @@ def main() -> int:
                     link_hints = None
                     object_path = unit_name_to_object_path(unit["name"])
                     if object_path is not None:
+                        target_object_path = unit_name_to_target_object_path(unit["name"])
                         parsed_hints = collect_object_link_hints(
                             object_path,
+                            target_object_path,
                             symbol_owners,
                             address_owners,
                             symbol_addresses,
@@ -863,8 +987,10 @@ def main() -> int:
                 link_hints = None
                 object_path = unit_name_to_object_path(unit["name"])
                 if object_path is not None:
+                    target_object_path = unit_name_to_target_object_path(unit["name"])
                     parsed_hints = collect_object_link_hints(
                         object_path,
+                        target_object_path,
                         symbol_owners,
                         address_owners,
                         symbol_addresses,
@@ -892,6 +1018,7 @@ def main() -> int:
 
             parsed_hints = collect_object_link_hints(
                 object_path,
+                unit_name_to_target_object_path(unit["name"]),
                 symbol_owners,
                 address_owners,
                 symbol_addresses,
