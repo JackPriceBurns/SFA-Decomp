@@ -60,44 +60,13 @@
 static OSResetFunctionQueue ResetFunctionQueue;
 static u32 bootThisDol;
 
-// prototypes
-static int CallResetFunctions(int final);
-static void Reset(u32 resetCode);
-
 void OSRegisterResetFunction(OSResetFunctionInfo* info) {
     ASSERTLINE(208, info->func);
 
     ENQUEUE_INFO_PRIO(info, &ResetFunctionQueue);
 }
 
-void OSUnregisterResetFunction(OSResetFunctionInfo* info) {
-    DEQUEUE_INFO(info, &ResetFunctionQueue);
-}
-
-int __OSCallResetFunctions(BOOL final) {
-    OSResetFunctionInfo* info;
-    int err;
-    u32 priority;
-
-    priority = 0;
-    err = 0;
-
-    for (info = ResetFunctionQueue.head; info != 0;) {
-        if (err != 0 && priority != info->priority)
-            break;
-        err |= !info->func(final);
-        priority = info->priority;
-        info = info->next;
-    }
-
-    err |= !__OSSyncSram();
-    if (err) {
-        return 0;
-    }
-    return 1;
-}
-
-static asm void Reset(u32 resetCode) {
+asm void OSUnregisterResetFunction(u32 resetCode) {
     nofralloc
     b L_000001BC
 L_000001A0:
@@ -138,54 +107,11 @@ L_00000208:
     b L_000001A0
 }
 
-static void KillThreads(void) {
-    OSThread* thread;
-    OSThread* next;
-
-    for (thread = __OSActiveThreadQueue.head; thread; thread = next) {
-        next = thread->linkActive.next;
-        switch (thread->state) {
-        case 1:
-        case 4:
-            OSCancelThread(thread);
-            continue;
-        default:
-            continue;
-        }
-    }
-}
-
 void __OSDoHotReset(u32 resetCode) {
     OSDisableInterrupts();
     __VIRegs[1] = 0;
     ICFlashInvalidate();
-    Reset(resetCode << 3);
-}
-
-void __OSShutdownDevices(BOOL doRecal) {
-    int rc;
-    BOOL disableRecalibration;
-
-    __OSStopAudioSystem();
-
-    if (!doRecal) {
-        disableRecalibration = __PADDisableRecalibration(TRUE);
-    }
-
-    do {} while (!__OSCallResetFunctions(FALSE));
-    do {} while (!__OSSyncSram());
-
-    OSDisableInterrupts();
-
-    rc = __OSCallResetFunctions(TRUE);
-    ASSERTLINE(408, rc);
-
-    LCDisable();
-    if (!doRecal) {
-        __PADDisableRecalibration(disableRecalibration);
-    }
-
-    KillThreads();
+    OSUnregisterResetFunction(resetCode << 3);
 }
 
 void OSResetSystem(BOOL reset, u32 resetCode, BOOL forceMenu) {
@@ -208,7 +134,7 @@ void OSResetSystem(BOOL reset, u32 resetCode, BOOL forceMenu) {
     do {
         info = ResetFunctionQueue.head;
         err = 0;
-        while (info != NULL && err == 0) {
+        while (info != NULL) {
             err |= !info->func(FALSE);
             info = info->next;
         }
@@ -230,7 +156,7 @@ void OSResetSystem(BOOL reset, u32 resetCode, BOOL forceMenu) {
     OSDisableInterrupts();
     info = ResetFunctionQueue.head;
     err = 0;
-    while (info != NULL && err == 0) {
+    while (info != NULL) {
         err |= !info->func(TRUE);
         info = info->next;
     }
@@ -241,7 +167,7 @@ void OSResetSystem(BOOL reset, u32 resetCode, BOOL forceMenu) {
         OSDisableInterrupts();
         __VIRegs[1] = 0;
         ICFlashInvalidate();
-        Reset(resetCode << 3);
+        OSUnregisterResetFunction(resetCode << 3);
     } else if (reset == OS_RESET_RESTART) {
         for (thread = __OSActiveThreadQueue.head; thread != NULL; thread = next) {
             next = thread->linkActive.next;
@@ -289,10 +215,3 @@ u32 OSGetResetCode() {
     return (__PIRegs[PI_RESETCODE] & ~7) >> 3;
 }
 
-u32 OSSetBootDol(u32 dolOffset) {
-    u32 oldDol;
-
-    oldDol = bootThisDol;
-    bootThisDol = dolOffset;
-    return oldDol;
-}
