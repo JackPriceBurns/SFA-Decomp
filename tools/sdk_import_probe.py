@@ -296,6 +296,22 @@ def resolve_extra_include_dirs(
                 for header_dir in header_dirs:
                     add(header_dir)
 
+            # Reference projects often rely on flat MSL/header include layouts
+            # that differ from this repo's local tree. Mirror our local include
+            # subdirectories so donor sources can resolve headers like "ctype.h"
+            # without requiring per-project manual include lists.
+            local_include = Path("include")
+            add(local_include)
+            if local_include.is_dir():
+                local_header_dirs = sorted(
+                    {
+                        header.parent
+                        for header in local_include.rglob("*.h")
+                    }
+                )
+                for header_dir in local_header_dirs:
+                    add(header_dir)
+
     include_root = Path("include")
     search_root = include_root if include_root.is_dir() else None
     if search_root is None:
