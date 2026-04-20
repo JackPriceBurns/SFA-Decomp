@@ -3,7 +3,7 @@
 
 #include "dolphin/gx/__gx.h"
 
-#define gx __GXData
+extern GXData* gx;
 
 void __GXSetDirtyState(void) {
     if (gx->dirtyState & 1) {

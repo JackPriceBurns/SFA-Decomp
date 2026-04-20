@@ -3,7 +3,7 @@
 
 #include "dolphin/gx/__gx.h"
 
-#define gx __GXData
+extern GXData* gx;
 
 void GXSetDispCopySrc(u16 left, u16 top, u16 wd, u16 ht) {
     CHECK_GXBEGIN(1235, "GXSetDispCopySrc");
