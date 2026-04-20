@@ -21,7 +21,7 @@ int __DVDTestAlarm(const OSAlarm* alarm);
 void __DVDStoreErrorCode(u32 error);
 
 // DVD FATAL
-void __DVDPrintFatalMessage(void);
+void __DVDPrintFatalMessage(s32 result, DVDFileInfo* fileInfo);
 
 // DVD FS
 extern OSThreadQueue __DVDThreadQueue;

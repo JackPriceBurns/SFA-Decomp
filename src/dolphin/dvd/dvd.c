@@ -6,7 +6,6 @@
 #include "dolphin/dvd/__dvd.h"
 
 // externs
-extern void __DVDPrintFatalMessage();
 extern int DVDCompareDiskID(const struct DVDDiskID * id1 /* r29 */, const struct DVDDiskID * id2 /* r30 */);
 extern int __DVDLowTestAlarm(const OSAlarm * alarm /* r3 */);
 
@@ -27,10 +26,10 @@ static BOOL autoInvalidation = TRUE;
 static void defaultOptionalCommandChecker(DVDCommandBlock*, DVDCommandCheckerCallback);
 static DVDCommandChecker checkOptionalCommand = defaultOptionalCommandChecker;
 
-static DVDBB2 BB2;
-static DVDDiskID CurrDiskID;
+static u8 tmpBuffer[0x80] ATTRIBUTE_ALIGN(32);
 static DVDCommandBlock DummyCommandBlock;
 static OSAlarm ResetAlarm;
+static DVDDiskID CurrDiskID;
 
 u32 __DVDLongFileNameFlag;
 OSThreadQueue __DVDThreadQueue;
@@ -141,12 +140,15 @@ void DVDInit(void) {
 }
 
 static void stateReadingFST() {
+    u32 fstLength;
+
     LastState = stateReadingFST;
     ASSERTLINE(652, ((u32)(bootInfo->FSTLocation) & (32 - 1)) == 0);
-    if (bootInfo->FSTMaxLength < BB2.FSTLength) {
+    fstLength = ((u32*)tmpBuffer)[2];
+    if (bootInfo->FSTMaxLength < fstLength) {
         OSPanic(s_dvd_c, 647, s_DVDChangeDiskFSTTooBig);
     }
-    DVDLowRead(bootInfo->FSTLocation, (u32)(BB2.FSTLength + 0x1F) & 0xFFFFFFE0, BB2.FSTPosition, cbForStateReadingFST);
+    DVDLowRead(bootInfo->FSTLocation, OSRoundUp32B(fstLength), ((u32*)tmpBuffer)[1], cbForStateReadingFST);
 }
 
 static u32 DmaCommand[1] = {0xFFFFFFFF};
@@ -190,8 +192,6 @@ static void cbForStateError(u32 intType) {
 		stateTimeout();
 		return;
 	}
-	
-    __DVDPrintFatalMessage();
 
 	FatalErrorFlag = TRUE;
 	finished = executing;
@@ -433,7 +433,7 @@ static void stateCheckID() {
         if (DVDCompareDiskID(&CurrDiskID, executing->id)) {
             memcpy(IDShouldBe, &CurrDiskID, sizeof(DVDDiskID));
             executing->state = DVD_STATE_BUSY;
-            DCInvalidateRange(&BB2.bootFilePosition, 0x20);
+            DCInvalidateRange(tmpBuffer, sizeof(DVDBB2));
             LastState = stateCheckID2a;
             stateCheckID2a(executing);
         } else {
@@ -480,7 +480,7 @@ void cbForStateCheckID2a(u32 intType) {
 }
 
 static void stateCheckID2() {
-    DVDLowRead(&BB2, 0x20, 0x420, cbForStateCheckID2);
+    DVDLowRead(tmpBuffer, OSRoundUp32B(sizeof(DVDBB2)), 0x420, cbForStateCheckID2);
 }
 
 static void cbForStateCheckID1(u32 intType) {
@@ -1225,7 +1225,7 @@ static void cbForGetStreamErrorStatusSync(s32 result, DVDCommandBlock* block) {
 int DVDGetStreamPlayAddrAsync(DVDCommandBlock* block, DVDCBCallback callback) {
     int idle;
 
-    block->command = DVD_COMMAND_REQUEST_PLAY_ADDR;
+    block->command = DVD_COMMAND_REQUEST_AUDIO_ERROR;
     block->callback = callback;
     idle = issueCommand(1, block);
     return idle;
