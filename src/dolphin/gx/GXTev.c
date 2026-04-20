@@ -3,6 +3,9 @@
 
 #include "dolphin/gx/__gx.h"
 
+extern GXData* gx;
+#define __GXData gx
+
 void GXSetTevOp(GXTevStageID id, GXTevMode mode) {
     GXTevColorArg carg = GX_CC_RASC;
     GXTevAlphaArg aarg = GX_CA_RASA;
