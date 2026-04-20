@@ -605,13 +605,6 @@ void __OSPSInit(void) {
     {
         li      r3, 0
         mtspr   GQR0, r3
-        mtspr   GQR1, r3
-        mtspr   GQR2, r3
-        mtspr   GQR3, r3
-        mtspr   GQR4, r3
-        mtspr   GQR5, r3
-        mtspr   GQR6, r3
-        mtspr   GQR7, r3
     }
 }
 #endif
