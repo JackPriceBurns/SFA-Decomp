@@ -4,7 +4,10 @@
 
 #include "dolphin/gx/__gx.h"
 
-#define gx __GXData
+extern GXData* gx;
+extern const f32 lbl_803E83E8;
+extern const f32 lbl_803E83EC;
+extern const f32 lbl_803E83F0;
 
 extern u32 __cvt_fp2unsigned(f64 d);
 
@@ -204,6 +207,7 @@ void GXLoadTexMtxImm(const f32 mtx[][4], u32 id, GXTexMtxType type) {
  */
 void GXSetViewportJitter(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz, u32 field) {
     f32 sx;
+    f32 halfHeight;
     f32 sy;
     f32 sz;
     f32 ox;
@@ -216,26 +220,27 @@ void GXSetViewportJitter(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz,
     CHECK_GXBEGIN(903, "GXSetViewport");  // not the correct function name
 
     if (field == 0) {
-        top -= 0.5f;
+        top -= lbl_803E83E8;
     }
 
-    sx = wd / 2.0f;
-    sy = -ht / 2.0f;
-    ox = 342.0f + (left + (wd / 2.0f));
-    oy = 342.0f + (top + (ht / 2.0f));
-    zmin = 1.6777215e7f * nearz;
-    zmax = 1.6777215e7f * farz;
+    sx = wd * lbl_803E83E8;
+    halfHeight = ht * lbl_803E83E8;
+    sy = -halfHeight;
+    ox = lbl_803E83EC + (left + sx);
+    oy = lbl_803E83EC + (top + halfHeight);
+    zmin = lbl_803E83F0 * nearz;
+    zmax = lbl_803E83F0 * farz;
     sz = zmax - zmin;
     oz = zmax;
-    __GXData->vpLeft = left;
-    __GXData->vpTop = top;
-    __GXData->vpWd = wd;
-    __GXData->vpHt = ht;
-    __GXData->vpNearz = nearz;
-    __GXData->vpFarz = farz;
+    gx->vpLeft = left;
+    gx->vpTop = top;
+    gx->vpWd = wd;
+    gx->vpHt = ht;
+    gx->vpNearz = nearz;
+    gx->vpFarz = farz;
 
-    if (__GXData->fgRange != 0) {
-        __GXSetRange(nearz, __GXData->fgSideX);
+    if (gx->fgRange != 0) {
+        __GXSetRange(nearz, gx->fgSideX);
     }
 
     reg = 0x5101A;
@@ -247,7 +252,7 @@ void GXSetViewportJitter(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz,
     GX_WRITE_XF_REG_F(29, ox);
     GX_WRITE_XF_REG_F(30, oy);
     GX_WRITE_XF_REG_F(31, oz);
-    __GXData->bpSentNot = 1;
+    gx->bpSentNot = 1;
 }
 
 #pragma dont_inline reset
@@ -273,14 +278,14 @@ void GXSetScissor(u32 left, u32 top, u32 wd, u32 ht) {
     right = (leftOrigin + wd) - 1;
     bottom = (topOrigin + ht) - 1;
 
-    __GXData->suScis0 = (__GXData->suScis0 & 0xFFFFF800) | topOrigin;
-    __GXData->suScis0 = (__GXData->suScis0 & 0xFF800FFF) | (leftOrigin << 12);
-    __GXData->suScis1 = (__GXData->suScis1 & 0xFFFFF800) | bottom;
-    __GXData->suScis1 = (__GXData->suScis1 & 0xFF800FFF) | (right << 12);
+    gx->suScis0 = (gx->suScis0 & 0xFFFFF800) | topOrigin;
+    gx->suScis0 = (gx->suScis0 & 0xFF800FFF) | (leftOrigin << 12);
+    gx->suScis1 = (gx->suScis1 & 0xFFFFF800) | bottom;
+    gx->suScis1 = (gx->suScis1 & 0xFF800FFF) | (right << 12);
 
-    GX_WRITE_RAS_REG(__GXData->suScis0);
-    GX_WRITE_RAS_REG(__GXData->suScis1);
-    __GXData->bpSentNot = 0;
+    GX_WRITE_RAS_REG(gx->suScis0);
+    GX_WRITE_RAS_REG(gx->suScis1);
+    gx->bpSentNot = 0;
 }
 
 void GXGetScissor(u32* left, u32* top, u32* wd, u32* ht) {
@@ -291,13 +296,13 @@ void GXGetScissor(u32* left, u32* top, u32* wd, u32* ht) {
     u32 bottom;
     u32 right;
 
-    suScis0 = __GXData->suScis0;
-    suScis1 = __GXData->suScis1;
+    suScis0 = gx->suScis0;
+    suScis1 = gx->suScis1;
 
     topOrigin = suScis0 & 0x7FF;
-    leftOrigin = (suScis0 >> 12) & 0x7FF;
+    leftOrigin = (suScis0 & 0x7FF000) >> 12;
     bottom = suScis1 & 0x7FF;
-    right = (suScis1 >> 12) & 0x7FF;
+    right = (suScis1 & 0x7FF000) >> 12;
 
     *left = leftOrigin - 0x156;
     *top = topOrigin - 0x156;
@@ -329,23 +334,23 @@ void GXSetScissorBoxOffset(s32 x_off, s32 y_off) {
     reg = ((u32)x_off | (u32)y_off) & 0x00FFFFFF;
     reg |= 0x59000000;
     GX_WRITE_RAS_REG(reg);
-    __GXData->bpSentNot = 0;
+    gx->bpSentNot = 0;
 }
 
 void GXSetClipMode(GXClipMode mode) {
     CHECK_GXBEGIN(1151, "GXSetClipMode");
     GX_WRITE_XF_REG(5, mode);
-    __GXData->bpSentNot = 1;
+    gx->bpSentNot = 1;
 }
 
 void __GXSetMatrixIndex(GXAttr matIdxAttr) {
     if (matIdxAttr < GX_VA_TEX4MTXIDX) {
-        GX_WRITE_SOME_REG4(8, 0x30, __GXData->matIdxA, -12);
-        GX_WRITE_XF_REG(24, __GXData->matIdxA);
+        GX_WRITE_SOME_REG4(8, 0x30, gx->matIdxA, -12);
+        GX_WRITE_XF_REG(24, gx->matIdxA);
     } else {
-        GX_WRITE_SOME_REG4(8, 0x40, __GXData->matIdxB, -12);
-        GX_WRITE_XF_REG(25, __GXData->matIdxB);
+        GX_WRITE_SOME_REG4(8, 0x40, gx->matIdxB, -12);
+        GX_WRITE_XF_REG(25, gx->matIdxB);
     }
 
-    __GXData->bpSentNot = GX_TRUE;
+    gx->bpSentNot = GX_TRUE;
 }
