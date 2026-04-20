@@ -9,6 +9,7 @@ import re
 import subprocess
 import sys
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 
 
@@ -78,6 +79,11 @@ def get_argparser() -> argparse.ArgumentParser:
         help="Include matching donor split spans from reference_projects for the same normalized source path.",
     )
     parser.add_argument(
+        "--reference-sources",
+        action="store_true",
+        help="Show matching donor source files from reference_projects for the same SDK path or basename.",
+    )
+    parser.add_argument(
         "--objdump-top",
         action="store_true",
         help="Run function_objdump.py --diff for the top miss of each printed near-miss/codegen entry. Best paired with --match.",
@@ -130,6 +136,13 @@ class ReferenceSplitHint:
     version: str
     path: str
     span: int
+
+
+@dataclass
+class ReferenceSourceHint:
+    repo: str
+    path: str
+    match_kind: str
 
 
 def is_sdk(unit: dict) -> bool:
@@ -358,6 +371,44 @@ def collect_reference_split_hints(source_path: Path, root: Path = Path("referenc
                 break
 
     hints.sort(key=lambda hint: (hint.path != split_name, hint.span, hint.repo, hint.version))
+    return hints
+
+
+@lru_cache(maxsize=1)
+def index_reference_sources(root: str = "reference_projects") -> tuple[tuple[str, str], ...]:
+    root_path = Path(root)
+    if not root_path.exists():
+        return ()
+
+    indexed: list[tuple[str, str]] = []
+    for source_path in root_path.rglob("*.c"):
+        try:
+            relative_path = source_path.relative_to(root_path)
+        except ValueError:
+            continue
+        if len(relative_path.parts) < 2:
+            continue
+        repo = relative_path.parts[0]
+        indexed.append((repo, "/".join(relative_path.parts[1:])))
+    return tuple(indexed)
+
+
+def collect_reference_source_hints(
+    source_path: Path,
+    root: Path = Path("reference_projects"),
+) -> list[ReferenceSourceHint]:
+    split_name = source_path_to_split_name(source_path)
+    suffixes = tuple(f"/{candidate}" for candidate in normalize_split_name_candidates(split_name))
+    basename = source_path.name
+    hints: list[ReferenceSourceHint] = []
+
+    for repo, relative_path in index_reference_sources(str(root)):
+        if any(relative_path.endswith(suffix) for suffix in suffixes):
+            hints.append(ReferenceSourceHint(repo=repo, path=relative_path, match_kind="suffix"))
+        elif relative_path.endswith(f"/{basename}"):
+            hints.append(ReferenceSourceHint(repo=repo, path=relative_path, match_kind="basename"))
+
+    hints.sort(key=lambda hint: (hint.match_kind != "suffix", hint.repo, hint.path))
     return hints
 
 
@@ -898,6 +949,16 @@ def summarize_probe(
     return "; ".join(summary_parts) if summary_parts else "probe produced no summary"
 
 
+def format_reference_source_hints(hints: list[ReferenceSourceHint], limit: int = 6) -> str:
+    if not hints:
+        return "none"
+
+    formatted = []
+    for hint in hints[:limit]:
+        formatted.append(f"{hint.repo}:{hint.path} ({hint.match_kind})")
+    return ", ".join(formatted)
+
+
 def describe_codegen_seam(parsed: ProbeSummary, link_hints: ObjectLinkHints | None, known_functions: list[str]) -> str:
     issue_names, _ = object_shape_issue_names(link_hints, known_functions)
 
@@ -972,6 +1033,7 @@ def main() -> int:
                 else:
                     link_hints = None
                     reference_split_hints = collect_reference_split_hints(source_path) if args.reference_splits else None
+                    reference_source_hints = collect_reference_source_hints(source_path) if args.reference_sources else None
                     object_path = unit_name_to_object_path(unit["name"])
                     if object_path is not None:
                         target_object_path = unit_name_to_target_object_path(unit["name"])
@@ -987,6 +1049,8 @@ def main() -> int:
                     print(
                         f"    probe: {summarize_probe(source_path, split_entries=split_entries, link_hints=link_hints, reference_split_hints=reference_split_hints, known_functions=[fn['name'] for fn in unit.get('functions', [])])}"
                     )
+                    if reference_source_hints is not None:
+                        print(f"    reference-sources: {format_reference_source_hints(reference_source_hints)}")
     else:
         print("  (none)")
 
@@ -1009,6 +1073,7 @@ def main() -> int:
                     print("    probe: no source path found")
                 else:
                     link_hints = None
+                    reference_source_hints = collect_reference_source_hints(source_path) if args.reference_sources else None
                     object_path = unit_name_to_object_path(unit["name"])
                     if object_path is not None:
                         target_object_path = unit_name_to_target_object_path(unit["name"])
@@ -1025,6 +1090,8 @@ def main() -> int:
                     print(
                         f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries, link_hints=link_hints, reference_split_hints=reference_split_hints, known_functions=[fn['name'] for fn in unit.get('functions', [])])}"
                     )
+                    if reference_source_hints is not None:
+                        print(f"    reference-sources: {format_reference_source_hints(reference_source_hints)}")
     else:
         print("  (none)")
 
@@ -1050,6 +1117,7 @@ def main() -> int:
                 print("    probe: no source path found")
             else:
                 link_hints = None
+                reference_source_hints = collect_reference_source_hints(source_path) if args.reference_sources else None
                 object_path = unit_name_to_object_path(unit["name"])
                 if object_path is not None:
                     target_object_path = unit_name_to_target_object_path(unit["name"])
@@ -1066,6 +1134,8 @@ def main() -> int:
                 print(
                     f"    probe: {summarize_probe(source_path, include_near=True, split_entries=split_entries, link_hints=link_hints, reference_split_hints=reference_split_hints, known_functions=[fn['name'] for fn in unit.get('functions', [])])}"
                 )
+                if reference_source_hints is not None:
+                    print(f"    reference-sources: {format_reference_source_hints(reference_source_hints)}")
 
     if args.codegen_limit is not None:
         print()
