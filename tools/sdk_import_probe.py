@@ -115,12 +115,14 @@ class SourceReport:
     mw_version: str
     build_ninja: Path
     sections: tuple[ObjectSection, ...]
+    compiled_symbols: tuple[ObjectSymbol, ...]
     compiled_functions: tuple[ObjectSymbol, ...]
     text_size: int
     anchors: tuple[AnchorCandidate, ...]
     hypotheses: tuple[StartHypothesis, ...]
     built_object_path: Path | None = None
     built_sections: tuple[ObjectSection, ...] = ()
+    built_symbols: tuple[ObjectSymbol, ...] = ()
     size_windows: tuple["TextWindowMatch", ...] = ()
     asm_pattern_windows: tuple["AsmPatternWindowMatch", ...] = ()
     translated_clusters: tuple["TranslatedCluster", ...] = ()
@@ -228,6 +230,51 @@ def section_size_diffs(
         if probe_size == built_size:
             continue
         diffs.append(f"{name} probe=0x{probe_size:X} build=0x{built_size:X}")
+    return tuple(diffs)
+
+
+def is_reportable_data_symbol(symbol: ObjectSymbol) -> bool:
+    if symbol.section in {"", "Undefined", ".text"}:
+        return False
+    if symbol.size <= 0:
+        return False
+    if symbol.name.startswith("@"):
+        return False
+    return True
+
+
+def collect_data_symbol_sizes(symbols: tuple[ObjectSymbol, ...]) -> dict[str, dict[str, int]]:
+    section_sizes: dict[str, dict[str, int]] = {}
+    for symbol in symbols:
+        if not is_reportable_data_symbol(symbol):
+            continue
+        section_sizes.setdefault(symbol.section, {})[symbol.name] = symbol.size
+    return section_sizes
+
+
+def data_symbol_diffs(
+    probe_symbols: tuple[ObjectSymbol, ...],
+    built_symbols: tuple[ObjectSymbol, ...],
+) -> tuple[str, ...]:
+    probe_by_section = collect_data_symbol_sizes(probe_symbols)
+    built_by_section = collect_data_symbol_sizes(built_symbols)
+    diffs: list[str] = []
+
+    for section in sorted(set(probe_by_section) | set(built_by_section)):
+        probe_sizes = probe_by_section.get(section, {})
+        built_sizes = built_by_section.get(section, {})
+
+        for name in sorted(probe_sizes.keys() - built_sizes.keys()):
+            diffs.append(f"probe-only-data {section} {name}")
+        for name in sorted(built_sizes.keys() - probe_sizes.keys()):
+            diffs.append(f"build-only-data {section} {name}")
+        for name in sorted(probe_sizes.keys() & built_sizes.keys()):
+            probe_size = probe_sizes[name]
+            built_size = built_sizes[name]
+            if probe_size == built_size:
+                continue
+            diffs.append(f"data-size {section} {name} probe=0x{probe_size:X} build=0x{built_size:X}")
+
     return tuple(diffs)
 
 
@@ -1097,19 +1144,24 @@ def analyze_source(
     )
     built_object_path = current_build_object_path(version, source)
     built_sections: tuple[ObjectSection, ...] = ()
+    built_symbols: tuple[ObjectSymbol, ...] = ()
     if built_object_path is not None:
-        built_sections = tuple(parse_llvm_readobj(built_object_path)[0])
+        built_sections_list, built_symbols_list = parse_llvm_readobj(built_object_path)
+        built_sections = tuple(built_sections_list)
+        built_symbols = tuple(built_symbols_list)
     return SourceReport(
         source=source,
         mw_version=build_config.mw_version,
         build_ninja=build_resolution.build_ninja,
         sections=tuple(sections),
+        compiled_symbols=tuple(symbols),
         compiled_functions=compiled_functions,
         text_size=text_size,
         anchors=tuple(anchors),
         hypotheses=tuple(build_start_hypotheses(anchors)),
         built_object_path=built_object_path,
         built_sections=built_sections,
+        built_symbols=built_symbols,
         size_windows=size_windows,
         asm_pattern_windows=asm_pattern_windows,
         translated_clusters=normalized_clusters,
@@ -1249,10 +1301,13 @@ def print_report(
         print(f"  {section.name:<8} 0x{section.size:X}")
     if report.built_object_path is not None and report.built_sections:
         build_diffs = section_size_diffs(report.sections, report.built_sections)
-        if build_diffs:
+        build_data_diffs = data_symbol_diffs(report.compiled_symbols, report.built_symbols)
+        if build_diffs or build_data_diffs:
             print("build object:")
             print(f"  {report.built_object_path.as_posix()}")
             for diff in build_diffs[:6]:
+                print(f"  drift {diff}")
+            for diff in build_data_diffs[:6]:
                 print(f"  drift {diff}")
 
     if report.translated_clusters:
@@ -1426,8 +1481,10 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
                     f"boundary-conflicts={audit.boundary_conflict_count}"
                 )
             build_diffs = section_size_diffs(report.sections, report.built_sections)
-            if build_diffs:
-                print(f"  probe-vs-build {', '.join(build_diffs[:4])}")
+            build_data_diffs = data_symbol_diffs(report.compiled_symbols, report.built_symbols)
+            probe_build_diffs = build_diffs + build_data_diffs
+            if probe_build_diffs:
+                print(f"  probe-vs-build {', '.join(probe_build_diffs[:4])}")
             if window is not None:
                 print(
                     f"  size-window=0x{window.start:08X}-0x{window.end:08X} "
@@ -1472,8 +1529,10 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
                 f"boundary-conflicts={audit.boundary_conflict_count}"
             )
         build_diffs = section_size_diffs(report.sections, report.built_sections)
-        if build_diffs:
-            print(f"  probe-vs-build {', '.join(build_diffs[:4])}")
+        build_data_diffs = data_symbol_diffs(report.compiled_symbols, report.built_symbols)
+        probe_build_diffs = build_diffs + build_data_diffs
+        if probe_build_diffs:
+            print(f"  probe-vs-build {', '.join(probe_build_diffs[:4])}")
 
 
 def print_assigned_rank_summary(reports: list[SourceReport]) -> None:
