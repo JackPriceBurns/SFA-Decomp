@@ -5,7 +5,7 @@
 
 TRKBuffer gTRKMessageBuffers[3];
 
-void TRKSetBufferUsed(TRKBuffer* msg, BOOL state) {
+static inline void TRKSetBufferUsed(TRKBuffer* msg, BOOL state) {
     msg->isInUse = state;
 }
 
