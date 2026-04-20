@@ -857,6 +857,64 @@ def split_gap_symbols(symbols_by_section: dict[str, list[str]]) -> tuple[dict[st
     return gap_symbols, other_symbols
 
 
+def is_anonymous_local_symbol(name: str) -> bool:
+    return name.startswith("@")
+
+
+def padding_only_section_deltas(
+    current: ObjectSymbolShape,
+    target: ObjectSymbolShape,
+    current_only_exports: dict[str, list[str]],
+    target_only_exports: dict[str, list[str]],
+    current_gap_exports: dict[str, list[str]],
+    target_gap_exports: dict[str, list[str]],
+    export_size_deltas: dict[str, list[str]],
+    current_only_locals: dict[str, list[str]],
+    target_only_locals: dict[str, list[str]],
+    local_size_deltas: dict[str, list[str]],
+) -> list[str]:
+    padding_sections: list[str] = []
+
+    for section in sorted(set(current.section_sizes) | set(target.section_sizes)):
+        current_size = current.section_sizes.get(section)
+        target_size = target.section_sizes.get(section)
+        if current_size is None or target_size is None or target_size <= current_size:
+            continue
+
+        target_gap_names = target_gap_exports.get(section, [])
+        if not target_gap_names:
+            continue
+
+        if current_only_exports.get(section) or target_only_exports.get(section):
+            continue
+        if export_size_deltas.get(section) or local_size_deltas.get(section):
+            continue
+
+        current_local_names = current_only_locals.get(section, [])
+        target_local_names = target_only_locals.get(section, [])
+        if any(not is_anonymous_local_symbol(name) for name in current_local_names):
+            continue
+        if any(not is_anonymous_local_symbol(name) for name in target_local_names):
+            continue
+
+        target_gap_total = sum(
+            target.exported_data_symbol_sizes.get(section, {}).get(name, 0)
+            for name in target_gap_names
+        )
+        current_gap_total = sum(
+            current.exported_data_symbol_sizes.get(section, {}).get(name, 0)
+            for name in current_gap_exports.get(section, [])
+        )
+        expected_delta = target_gap_total - current_gap_total
+        actual_delta = target_size - current_size
+        if expected_delta != actual_delta:
+            continue
+
+        padding_sections.append(f"{section} +0x{actual_delta:X}")
+
+    return padding_sections
+
+
 def section_symbol_size_diff(
     current: dict[str, dict[str, int]],
     target: dict[str, dict[str, int]],
@@ -1051,9 +1109,23 @@ def summarize_probe(
                 link_hints.current.local_data_symbol_sizes,
                 link_hints.target.local_data_symbol_sizes,
             )
+            padding_sections = padding_only_section_deltas(
+                link_hints.current,
+                link_hints.target,
+                current_only_exports,
+                target_only_exports,
+                current_gap_exports,
+                target_gap_exports,
+                export_size_deltas,
+                current_only_locals,
+                target_only_locals,
+                local_size_deltas,
+            )
 
             if section_deltas:
                 summary_parts.append("section-sizes " + ", ".join(section_deltas[:6]))
+            if padding_sections:
+                summary_parts.append("target-end-padding " + ", ".join(padding_sections[:6]))
             if current_only_text:
                 summary_parts.append("cur-only-text " + ", ".join(current_only_text[:8]))
             if target_only_text:
