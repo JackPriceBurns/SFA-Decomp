@@ -3,7 +3,14 @@
 
 #include "dolphin/gx/__gx.h"
 
-#define gx __GXData
+extern GXData* gx;
+#define __GXData gx
+
+#define GX_WRITE_BP_REG(val) \
+do { \
+    GX_WRITE_U8(0x61); \
+    GX_WRITE_U32(val); \
+} while (0)
 
 void __GXSetDirtyState(void) {
     if (gx->dirtyState & 1) {
