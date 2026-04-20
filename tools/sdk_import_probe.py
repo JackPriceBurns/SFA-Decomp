@@ -86,6 +86,7 @@ class StartHypothesis:
 @dataclass(frozen=True)
 class SourceReport:
     source: Path
+    mw_version: str
     sections: tuple[ObjectSection, ...]
     compiled_functions: tuple[ObjectSymbol, ...]
     text_size: int
@@ -980,6 +981,7 @@ def analyze_source(
     )
     return SourceReport(
         source=source,
+        mw_version=build_config.mw_version,
         sections=tuple(sections),
         compiled_functions=compiled_functions,
         text_size=text_size,
@@ -1102,6 +1104,7 @@ def print_report(
     function_limit: int,
 ) -> None:
     print(f"# {report.source.as_posix()}")
+    print(f"compiler: {report.mw_version}")
     print("sections:")
     for section in report.sections:
         if section.name.startswith(".rela") or section.name in {".symtab", ".strtab", ".shstrtab", ".comment"}:
@@ -1386,6 +1389,13 @@ def parse_args() -> argparse.Namespace:
         help="Directory used for temporary object output",
     )
     parser.add_argument(
+        "--mw-version",
+        help=(
+            "Override the recovered Metrowerks compiler version for every probe, "
+            "for example 'GC/1.2.5n' or 'GC\\1.2.5n'."
+        ),
+    )
+    parser.add_argument(
         "--extra-include",
         action="append",
         type=Path,
@@ -1520,6 +1530,8 @@ def main() -> None:
         object_dir = output_root / source.with_suffix("")
         try:
             build_config = resolve_build_config(build_ninja, args.version, source)
+            if args.mw_version:
+                build_config = BuildConfig(mw_version=args.mw_version, cflags=build_config.cflags)
             translated_clusters = build_translated_clusters(
                 version=args.version,
                 source=source,
