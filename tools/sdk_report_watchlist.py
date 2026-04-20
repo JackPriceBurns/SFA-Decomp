@@ -88,6 +88,7 @@ def get_argparser() -> argparse.ArgumentParser:
 @dataclass
 class ProbeSummary:
     sections: list[str]
+    section_sizes: dict[str, int]
     best_cluster: str
     assigned_split: str
     best_exact_hypothesis: str
@@ -512,6 +513,7 @@ def parse_probe(source_path: Path, *, include_functions: bool = False) -> ProbeS
         return f"probe failed ({exc.returncode})"
 
     sections: list[str] = []
+    section_sizes: dict[str, int] = {}
     best_cluster = ""
     assigned_split = ""
     best_exact_hypothesis = ""
@@ -563,7 +565,10 @@ def parse_probe(source_path: Path, *, include_functions: bool = False) -> ProbeS
             else:
                 section_match = re.match(r"\s+(\.\S+)\s+(0x[0-9A-Fa-f]+)", line)
                 if section_match:
-                    sections.append(f"{section_match.group(1)}={section_match.group(2)}")
+                    section_name = section_match.group(1)
+                    section_size = int(section_match.group(2), 16)
+                    sections.append(f"{section_name}={section_match.group(2)}")
+                    section_sizes[section_name] = section_size
                 continue
         if in_assigned_split and not assigned_split:
             assigned_match = re.match(
@@ -612,6 +617,7 @@ def parse_probe(source_path: Path, *, include_functions: bool = False) -> ProbeS
 
     return ProbeSummary(
         sections=sections,
+        section_sizes=section_sizes,
         best_cluster=best_cluster,
         assigned_split=assigned_split,
         best_exact_hypothesis=best_exact_hypothesis,
@@ -694,6 +700,9 @@ def ordered_section_symbol_diff(
 def section_size_diff(
     current: dict[str, int],
     target: dict[str, int],
+    *,
+    current_label: str = "cur",
+    target_label: str = "target",
 ) -> list[str]:
     deltas: list[str] = []
 
@@ -703,12 +712,12 @@ def section_size_diff(
         if current_size == target_size:
             continue
         if current_size is None:
-            deltas.append(f"{section} cur=missing target={format_hex(target_size)}")
+            deltas.append(f"{section} {current_label}=missing {target_label}={format_hex(target_size)}")
         elif target_size is None:
-            deltas.append(f"{section} cur={format_hex(current_size)} target=missing")
+            deltas.append(f"{section} {current_label}={format_hex(current_size)} {target_label}=missing")
         else:
             deltas.append(
-                f"{section} cur={format_hex(current_size)} target={format_hex(target_size)}"
+                f"{section} {current_label}={format_hex(current_size)} {target_label}={format_hex(target_size)}"
             )
 
     return deltas
@@ -803,6 +812,15 @@ def summarize_probe(
     elif parsed.best_cluster:
         summary_parts.append("best " + parsed.best_cluster)
     if link_hints:
+        if parsed.section_sizes:
+            probe_vs_build = section_size_diff(
+                parsed.section_sizes,
+                link_hints.current.section_sizes,
+                current_label="probe",
+                target_label="build",
+            )
+            if probe_vs_build:
+                summary_parts.append("probe-vs-build " + ", ".join(probe_vs_build[:6]))
         issue_names, has_extra_text = object_shape_issue_names(link_hints, known_functions)
         if has_extra_text:
             known_function_set = set(known_functions or [])
