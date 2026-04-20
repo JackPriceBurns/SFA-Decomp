@@ -7,14 +7,14 @@
 
 extern GXData* gx;
 
-__GXFifoObj* lbl_803DED38;
-__GXFifoObj* lbl_803DED3C;
-OSThread* lbl_803DED40;
-GXBool lbl_803DED44;
-BOOL lbl_803DED48;
-GXBreakPtCallback lbl_803DED4C;
-u32 lbl_803DED50;
-void* lbl_803DED54;
+extern __GXFifoObj* lbl_803DED38;
+extern __GXFifoObj* lbl_803DED3C;
+extern OSThread* lbl_803DED40;
+extern GXBool lbl_803DED44;
+extern BOOL lbl_803DED48;
+extern GXBreakPtCallback lbl_803DED4C;
+extern u32 lbl_803DED50;
+extern void* lbl_803DED54;
 
 #define CPUFifo lbl_803DED38
 #define GPFifo lbl_803DED3C
