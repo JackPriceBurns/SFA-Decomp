@@ -3,6 +3,9 @@
 
 #include "dolphin/gx/__gx.h"
 
+extern GXData* gx;
+#define __GXData gx
+
 extern const f32 GXIndTexMtxScale1024;
 
 #if DEBUG
@@ -105,112 +108,28 @@ void GXSetIndTexCoordScale(GXIndTexStageID ind_state, GXIndTexScale scale_s,
 
     switch (ind_state) {
     case GX_INDTEXSTAGE0:
-        {
-            volatile GXData* gx;
-            u32 reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale0;
-            reg &= 0xFFFFFFF0;
-            reg |= (u32)scale_s;
-            gx->IndTexScale0 = reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale0;
-            reg &= 0xFFFFFF0F;
-            reg |= ((u32)scale_t << 4);
-            gx->IndTexScale0 = reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale0;
-            reg &= 0x00FFFFFF;
-            reg |= 0x25000000;
-            gx->IndTexScale0 = reg;
-
-            gx = __GXData;
-            GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, gx->IndTexScale0);
-        }
+        SET_REG_FIELD(0xEB, __GXData->IndTexScale0, 4, 0, scale_s);
+        SET_REG_FIELD(0xEC, __GXData->IndTexScale0, 4, 4, scale_t);
+        SET_REG_FIELD(0xED, __GXData->IndTexScale0, 8, 24, 0x25);
+        GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, __GXData->IndTexScale0);
         break;
     case GX_INDTEXSTAGE1:
-        {
-            volatile GXData* gx;
-            u32 reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale0;
-            reg &= 0xFFFFF0FF;
-            reg |= ((u32)scale_s << 8);
-            gx->IndTexScale0 = reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale0;
-            reg &= 0xFFFF0FFF;
-            reg |= ((u32)scale_t << 12);
-            gx->IndTexScale0 = reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale0;
-            reg &= 0x00FFFFFF;
-            reg |= 0x25000000;
-            gx->IndTexScale0 = reg;
-
-            gx = __GXData;
-            GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, gx->IndTexScale0);
-        }
+        SET_REG_FIELD(0xF2, __GXData->IndTexScale0, 4, 8, scale_s);
+        SET_REG_FIELD(0xF3, __GXData->IndTexScale0, 4, 12, scale_t);
+        SET_REG_FIELD(0xF4, __GXData->IndTexScale0, 8, 24, 0x25);
+        GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, __GXData->IndTexScale0);
         break;
     case GX_INDTEXSTAGE2:
-        {
-            volatile GXData* gx;
-            u32 reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale1;
-            reg &= 0xFFFFFFF0;
-            reg |= (u32)scale_s;
-            gx->IndTexScale1 = reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale1;
-            reg &= 0xFFFFFF0F;
-            reg |= ((u32)scale_t << 4);
-            gx->IndTexScale1 = reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale1;
-            reg &= 0x00FFFFFF;
-            reg |= 0x26000000;
-            gx->IndTexScale1 = reg;
-
-            gx = __GXData;
-            GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, gx->IndTexScale1);
-        }
+        SET_REG_FIELD(0xF9, __GXData->IndTexScale1, 4, 0, scale_s);
+        SET_REG_FIELD(0xFA, __GXData->IndTexScale1, 4, 4, scale_t);
+        SET_REG_FIELD(0xFB, __GXData->IndTexScale1, 8, 24, 0x26);
+        GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, __GXData->IndTexScale1);
         break;
     case GX_INDTEXSTAGE3:
-        {
-            volatile GXData* gx;
-            u32 reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale1;
-            reg &= 0xFFFFF0FF;
-            reg |= ((u32)scale_s << 8);
-            gx->IndTexScale1 = reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale1;
-            reg &= 0xFFFF0FFF;
-            reg |= ((u32)scale_t << 12);
-            gx->IndTexScale1 = reg;
-
-            gx = __GXData;
-            reg = gx->IndTexScale1;
-            reg &= 0x00FFFFFF;
-            reg |= 0x26000000;
-            gx->IndTexScale1 = reg;
-
-            gx = __GXData;
-            GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, gx->IndTexScale1);
-        }
+        SET_REG_FIELD(0x100, __GXData->IndTexScale1, 4, 8, scale_s);
+        SET_REG_FIELD(0x101, __GXData->IndTexScale1, 4, 12, scale_t);
+        SET_REG_FIELD(0x102, __GXData->IndTexScale1, 8, 24, 0x26);
+        GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, __GXData->IndTexScale1);
         break;
     default:
         ASSERTMSGLINE(0x102, 0, "GXSetIndTexCoordScale: Invalid Indirect Stage Id");
@@ -236,96 +155,28 @@ void GXSetIndTexOrder(GXIndTexStageID ind_stage, GXTexCoordID tex_coord, GXTexMa
 
     switch (ind_stage) {
     case GX_INDTEXSTAGE0:
-        {
-            volatile GXData* gx;
-            u32 reg;
-
-            gx = __GXData;
-            reg = gx->iref;
-            reg &= 0xFFFFFFF8;
-            reg |= (u32)tex_map;
-            gx->iref = reg;
-
-            gx = __GXData;
-            reg = gx->iref;
-            reg &= 0xFFFFFFC7;
-            reg |= ((u32)tex_coord << 3);
-            gx->iref = reg;
-        }
+        SET_REG_FIELD(0x120, __GXData->iref, 3, 0, tex_map);
+        SET_REG_FIELD(0x121, __GXData->iref, 3, 3, tex_coord);
         break;
     case GX_INDTEXSTAGE1:
-        {
-            volatile GXData* gx;
-            u32 reg;
-
-            gx = __GXData;
-            reg = gx->iref;
-            reg &= 0xFFFFFE3F;
-            reg |= ((u32)tex_map << 6);
-            gx->iref = reg;
-
-            gx = __GXData;
-            reg = gx->iref;
-            reg &= 0xFFFFF1FF;
-            reg |= ((u32)tex_coord << 9);
-            gx->iref = reg;
-        }
+        SET_REG_FIELD(0x125, __GXData->iref, 3, 6, tex_map);
+        SET_REG_FIELD(0x126, __GXData->iref, 3, 9, tex_coord);
         break;
     case GX_INDTEXSTAGE2:
-        {
-            volatile GXData* gx;
-            u32 reg;
-
-            gx = __GXData;
-            reg = gx->iref;
-            reg &= 0xFFFF8FFF;
-            reg |= ((u32)tex_map << 12);
-            gx->iref = reg;
-
-            gx = __GXData;
-            reg = gx->iref;
-            reg &= 0xFFFC7FFF;
-            reg |= ((u32)tex_coord << 15);
-            gx->iref = reg;
-        }
+        SET_REG_FIELD(0x12A, __GXData->iref, 3, 12, tex_map);
+        SET_REG_FIELD(0x12B, __GXData->iref, 3, 15, tex_coord);
         break;
     case GX_INDTEXSTAGE3:
-        {
-            volatile GXData* gx;
-            u32 reg;
-
-            gx = __GXData;
-            reg = gx->iref;
-            reg &= 0xFFE3FFFF;
-            reg |= ((u32)tex_map << 18);
-            gx->iref = reg;
-
-            gx = __GXData;
-            reg = gx->iref;
-            reg &= 0xFF1FFFFF;
-            reg |= ((u32)tex_coord << 21);
-            gx->iref = reg;
-        }
+        SET_REG_FIELD(0x12F, __GXData->iref, 3, 18, tex_map);
+        SET_REG_FIELD(0x130, __GXData->iref, 3, 21, tex_coord);
         break;
     default:
         ASSERTMSGLINE(0x132, 0, "GXSetIndTexOrder: Invalid Indirect Stage Id");
         break;
     }
-    {
-        volatile GXData* gx;
-        u32 reg;
-
-        gx = __GXData;
-        GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, gx->iref);
-
-        gx = __GXData;
-        reg = gx->dirtyState;
-        reg |= 3;
-        gx->dirtyState = reg;
-
-        gx = __GXData;
-        gx->bpSentNot = 0;
-    }
+    GX_WRITE_SOME_REG5(GX_LOAD_BP_REG, __GXData->iref);
+    __GXData->dirtyState |= 3;
+    __GXData->bpSentNot = 0;
 }
 
 void GXSetNumIndStages(u8 nIndStages) {
