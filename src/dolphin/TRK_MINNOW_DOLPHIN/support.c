@@ -223,27 +223,37 @@ DSError HandleOpenFileSupportRequest(const char* path, u8 replyError, u32* param
     error = TRKGetFreeBuffer(&bufferId, &buffer);
 
     if (error == DS_NoError) {
-        u32 position = buffer->position;
+        DSError appendError;
+        TRKBuffer* msgBuffer = buffer;
+        u32 position = msgBuffer->position;
 
         if (position >= sizeof(buffer->data)) {
-            error = DS_MessageBufferOverflow;
+            appendError = DS_MessageBufferOverflow;
         } else {
-            buffer->position = position + 1;
-            buffer->data[position] = DSMSG_OpenFile;
-            buffer->length++;
+            msgBuffer->position = position + 1;
+            appendError = DS_NoError;
+            msgBuffer->data[position] = DSMSG_OpenFile;
+            msgBuffer->length++;
         }
+
+        error = appendError;
     }
 
     if (error == DS_NoError) {
-        u32 position = buffer->position;
+        DSError appendError;
+        TRKBuffer* msgBuffer = buffer;
+        u32 position = msgBuffer->position;
 
         if (position >= sizeof(buffer->data)) {
-            error = DS_MessageBufferOverflow;
+            appendError = DS_MessageBufferOverflow;
         } else {
-            buffer->position = position + 1;
-            buffer->data[position] = replyError;
-            buffer->length++;
+            msgBuffer->position = position + 1;
+            appendError = DS_NoError;
+            msgBuffer->data[position] = replyError;
+            msgBuffer->length++;
         }
+
+        error = appendError;
     }
 
     if (error == DS_NoError) {
@@ -288,15 +298,20 @@ DSError HandleCloseFileSupportRequest(int replyError, u8* ioResult) {
     error = TRKGetFreeBuffer(&bufferId, &buffer);
 
     if (error == DS_NoError) {
-        u32 position = buffer->position;
+        DSError appendError;
+        TRKBuffer* msgBuffer = buffer;
+        u32 position = msgBuffer->position;
 
         if (position >= sizeof(buffer->data)) {
-            error = DS_MessageBufferOverflow;
+            appendError = DS_MessageBufferOverflow;
         } else {
-            buffer->position = position + 1;
-            buffer->data[position] = DSMSG_CloseFile;
-            buffer->length++;
+            msgBuffer->position = position + 1;
+            appendError = DS_NoError;
+            msgBuffer->data[position] = DSMSG_CloseFile;
+            msgBuffer->length++;
         }
+
+        error = appendError;
     }
 
     if (error == DS_NoError) {
@@ -334,15 +349,20 @@ DSError HandlePositionFileSupportRequest(u32 replyErr, u32 param_2, u8 param_3,
     error = TRKGetFreeBuffer(&bufferId, &buffer);
 
     if (error == DS_NoError) {
-        u32 position = buffer->position;
+        DSError appendError;
+        TRKBuffer* msgBuffer = buffer;
+        u32 position = msgBuffer->position;
 
         if (position >= sizeof(buffer->data)) {
-            error = DS_MessageBufferOverflow;
+            appendError = DS_MessageBufferOverflow;
         } else {
-            buffer->position = position + 1;
-            buffer->data[position] = DSMSG_PositionFile;
-            buffer->length++;
+            msgBuffer->position = position + 1;
+            appendError = DS_NoError;
+            msgBuffer->data[position] = DSMSG_PositionFile;
+            msgBuffer->length++;
         }
+
+        error = appendError;
     }
 
     if (error == DS_NoError) {
@@ -354,15 +374,20 @@ DSError HandlePositionFileSupportRequest(u32 replyErr, u32 param_2, u8 param_3,
     }
 
     if (error == DS_NoError) {
-        u32 position = buffer->position;
+        DSError appendError;
+        TRKBuffer* msgBuffer = buffer;
+        u32 position = msgBuffer->position;
 
         if (position >= sizeof(buffer->data)) {
-            error = DS_MessageBufferOverflow;
+            appendError = DS_MessageBufferOverflow;
         } else {
-            buffer->position = position + 1;
-            buffer->data[position] = param_3;
-            buffer->length++;
+            msgBuffer->position = position + 1;
+            appendError = DS_NoError;
+            msgBuffer->data[position] = param_3;
+            msgBuffer->length++;
         }
+
+        error = appendError;
     }
 
     if (error == DS_NoError) {
