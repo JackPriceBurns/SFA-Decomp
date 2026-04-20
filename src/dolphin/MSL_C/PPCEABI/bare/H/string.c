@@ -12,8 +12,8 @@ const unsigned char strtok_delimiter_table_init[32] = { 0 };
 
 size_t strlen(const char* str)
 {
-	size_t len       = -1;
 	unsigned char* p = (unsigned char*)str - 1;
+	size_t len       = -1;
 
 	do {
 		len++;
