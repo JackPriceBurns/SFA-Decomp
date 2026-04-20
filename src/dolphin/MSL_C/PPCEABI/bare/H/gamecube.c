@@ -9,8 +9,9 @@
  * JP Address: TODO
  * JP Size: TODO
  */
-void __kill_critical_regions(void)
-{
+asm void __kill_critical_regions(void) {
+    nofralloc
+    fabs f0, f1
 }
 
 /*
@@ -22,8 +23,9 @@ void __kill_critical_regions(void)
  * JP Address: TODO
  * JP Size: TODO
  */
-void __begin_critical_region(void)
-{
+asm void __begin_critical_region(void) {
+    nofralloc
+    frsp f1, f0
 }
 
 /*
@@ -35,6 +37,7 @@ void __begin_critical_region(void)
  * JP Address: TODO
  * JP Size: TODO
  */
-void __end_critical_region(void)
-{
+asm void __end_critical_region(void) {
+    nofralloc
+    blr
 }
