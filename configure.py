@@ -538,12 +538,15 @@ config.libs = [
             Object(MatchingFor("GSAE01"), "dolphin/thp/THPAudio.c"),
         ],
     ),
-    DolphinLib(
-        "OdemuExi2",
-        [
+    {
+        "lib": "OdemuExi2",
+        "mw_version": "GC/1.2.5",
+        "cflags": cflags_base,
+        "progress_category": "sdk",
+        "objects": [
             Object(NonMatching, "dolphin/OdemuExi2/DebuggerDriver.c"),
         ],
-    ),
+    },
     DolphinLib(
         "odenotstub",
         [

@@ -98,7 +98,6 @@ static BOOL DBGWriteMailbox(u32 p1) {
     return !error;
 }
 
-#pragma dont_inline on
 static BOOL DBGReadMailbox(u32* p1) {
     BOOL error;
     u32 v;
@@ -117,7 +116,6 @@ static BOOL DBGReadMailbox(u32* p1) {
 
     return !error;
 }
-#pragma dont_inline reset
 
 static BOOL DBGRead(u32 count, u32* buffer, s32 param3) {
     BOOL error;
@@ -188,7 +186,7 @@ static BOOL DBGWrite(u32 count, void* buffer, s32 param3) {
     return !total;
 }
 
-inline static BOOL _DBGReadStatus(u32* p1) {
+static BOOL _DBGReadStatus(u32* p1) {
     BOOL error;
     u32 cmd;
 
@@ -206,11 +204,9 @@ inline static BOOL _DBGReadStatus(u32* p1) {
 
     return !error;
 }
-#pragma dont_inline on
 static BOOL DBGReadStatus(u32* p1) {
     return _DBGReadStatus(p1);
 }
-#pragma dont_inline reset
 
 static void MWCallback(u32 a, OSContext* b) {
     EXIInputFlag = TRUE;
@@ -264,11 +260,11 @@ u32 DBQueryData(void) {
     BOOL interrupts;
 
     EXIInputFlag = 0;
-    if (!RecvDataLeng) {
-        interrupts = OSDisableInterrupts();
-        CheckMailBox();
-        OSRestoreInterrupts(interrupts);
-    }
+    if (RecvDataLeng) goto end;
+    interrupts = OSDisableInterrupts();
+    CheckMailBox();
+end:
+    OSRestoreInterrupts(interrupts);
     return RecvDataLeng;
 }
 
