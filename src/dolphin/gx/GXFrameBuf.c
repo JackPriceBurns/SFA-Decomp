@@ -3,7 +3,10 @@
 
 #include "dolphin/gx/__gx.h"
 
-#define gx __GXData
+extern GXData* gx;
+#define __GXData gx
+
+extern const f32 GX_F32_256;
 
 void GXSetDispCopySrc(u16 left, u16 top, u16 wd, u16 ht) {
     CHECK_GXBEGIN(1235, "GXSetDispCopySrc");
@@ -123,7 +126,7 @@ u32 GXSetDispCopyYScale(f32 vscale) {
 
     ASSERTMSGLINE(1559, vscale >= 1.0f, "GXSetDispCopyYScale: Vertical scale must be >= 1.0");
 
-    iScale = (u32)(256.0f / vscale) & 0x1FF;
+    iScale = (u32)(GX_F32_256 / vscale) & 0x1FF;
     reg = 0;
     SET_REG_FIELD(1566, reg, 9, 0, iScale);
     SET_REG_FIELD(1566, reg, 8, 24, 0x4E);
