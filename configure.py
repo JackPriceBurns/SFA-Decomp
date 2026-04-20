@@ -470,7 +470,7 @@ config.libs = [
             Object(MatchingFor("GSAE01"), "dolphin/gx/GXTexture.c"),
             Object(NonMatching, "dolphin/gx/GXBump.c"),
             Object(NonMatching, "dolphin/gx/GXAttr.c"),
-            Object(NonMatching, "dolphin/gx/GXDisplayList.c"),
+            Object(NonMatching, "dolphin/gx/GXDisplayList.c", extra_cflags=["-sdata", "16"]),
             Object(NonMatching, "dolphin/gx/GXFrameBuf.c"),
             Object(NonMatching, "dolphin/gx/GXDraw.c"),
             Object(NonMatching, "dolphin/gx/GXPerf.c"),
