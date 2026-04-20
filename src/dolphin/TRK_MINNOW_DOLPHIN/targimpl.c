@@ -747,7 +747,6 @@ u32 TRKTargetGetPC(void)
 
 DSError TRKTargetSupportRequest()
 {
-	u32 position;
 	size_t* length;
 	MessageCommandID commandId;
 	DSError error;
@@ -778,16 +777,14 @@ DSError TRKTargetSupportRequest()
 
 		gTRKCPUState.Default.GPR[3] = ioResult;
 	} else if (commandId == DSMSG_PositionFile) {
-		position = *(u32*)gTRKCPUState.Default.GPR[5];
-		error    = HandlePositionFileSupportRequest(gTRKCPUState.Default.GPR[4], &position,
-		                                            (u8)gTRKCPUState.Default.GPR[6], &ioResult);
+		error = HandlePositionFileSupportRequest(gTRKCPUState.Default.GPR[4], gTRKCPUState.Default.GPR[5],
+		                                         (u8)gTRKCPUState.Default.GPR[6], &ioResult);
 
 		if (ioResult == DS_IONoError && error != DS_NoError) {
 			ioResult = DS_IOError;
 		}
 
 		gTRKCPUState.Default.GPR[3] = ioResult;
-		*(u32*)gTRKCPUState.Default.GPR[5] = position;
 	} else {
 		length = (size_t*)gTRKCPUState.Default.GPR[5];
 		error  = TRKSuppAccessFile(gTRKCPUState.Default.GPR[4], (u8*)gTRKCPUState.Default.GPR[6], length, &ioResult, TRUE,
