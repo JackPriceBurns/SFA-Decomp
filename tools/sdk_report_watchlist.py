@@ -967,6 +967,44 @@ def padding_only_section_deltas(
     return padding_sections
 
 
+def shared_gap_offset_deltas(
+    current: ObjectSymbolShape,
+    target: ObjectSymbolShape,
+) -> list[str]:
+    deltas: list[str] = []
+
+    for section in sorted(set(current.data_symbol_records) | set(target.data_symbol_records)):
+        current_gap_records = {
+            record.name: record
+            for record in current.data_symbol_records.get(section, [])
+            if record.name.startswith("gap_")
+        }
+        target_gap_records = {
+            record.name: record
+            for record in target.data_symbol_records.get(section, [])
+            if record.name.startswith("gap_")
+        }
+
+        for name in sorted(set(current_gap_records) & set(target_gap_records)):
+            current_record = current_gap_records[name]
+            target_record = target_gap_records[name]
+            if current_record.value == target_record.value and current_record.size == target_record.size:
+                continue
+
+            owner_name = describe_padding_owner(target, section, [name])
+            delta = (
+                f"{section} {name} cur=+0x{current_record.value:X} "
+                f"target=+0x{target_record.value:X}"
+            )
+            if current_record.size != target_record.size:
+                delta += f" size=0x{current_record.size:X}/0x{target_record.size:X}"
+            if owner_name is not None:
+                delta += f" after {owner_name}"
+            deltas.append(delta)
+
+    return deltas
+
+
 def section_symbol_size_diff(
     current: dict[str, dict[str, int]],
     target: dict[str, dict[str, int]],
@@ -1173,11 +1211,14 @@ def summarize_probe(
                 target_only_locals,
                 local_size_deltas,
             )
+            gap_offset_deltas = shared_gap_offset_deltas(link_hints.current, link_hints.target)
 
             if section_deltas:
                 summary_parts.append("section-sizes " + ", ".join(section_deltas[:6]))
             if padding_sections:
                 summary_parts.append("target-end-padding " + ", ".join(padding_sections[:6]))
+            if gap_offset_deltas:
+                summary_parts.append("gap-placement " + ", ".join(gap_offset_deltas[:6]))
             if current_only_text:
                 summary_parts.append("cur-only-text " + ", ".join(current_only_text[:8]))
             if target_only_text:
