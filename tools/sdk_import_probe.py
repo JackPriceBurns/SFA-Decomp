@@ -226,6 +226,8 @@ def compile_source(
     version: str,
     output_root: Path,
     extra_include_dirs: tuple[Path, ...] = (),
+    extra_cflags: tuple[str, ...] = (),
+    prepend_extra_includes: bool = True,
 ) -> Path:
     output_root.mkdir(parents=True, exist_ok=True)
     compiler = Path("build") / "compilers" / build_config.mw_version / "mwcceppc.exe"
@@ -235,21 +237,28 @@ def compile_source(
     if not sjiswrap.is_file():
         raise SystemExit(f"Missing sjiswrap: {sjiswrap}")
 
-    compile_args = [
-        str(sjiswrap),
-        str(compiler),
-        *(
-            arg
-            for include_dir in extra_include_dirs
-            for arg in ("-i", str(include_dir).replace("/", "\\"))
-        ),
-        *build_config.cflags,
-        "-MMD",
-        "-c",
-        str(source).replace("/", "\\"),
-        "-o",
-        str(output_root).replace("/", "\\"),
+    include_args = [
+        arg
+        for include_dir in extra_include_dirs
+        for arg in ("-i", str(include_dir).replace("/", "\\"))
     ]
+    compile_args = [str(sjiswrap), str(compiler)]
+    if prepend_extra_includes:
+        compile_args.extend(include_args)
+        compile_args.extend(build_config.cflags)
+    else:
+        compile_args.extend(build_config.cflags)
+        compile_args.extend(include_args)
+    compile_args.extend(extra_cflags)
+    compile_args.extend(
+        [
+            "-MMD",
+            "-c",
+            str(source).replace("/", "\\"),
+            "-o",
+            str(output_root).replace("/", "\\"),
+        ]
+    )
     subprocess.run(compile_args, check=True)
 
     object_path = output_root / f"{source.stem}.o"
@@ -852,6 +861,8 @@ def analyze_source(
     build_config: BuildConfig,
     output_root: Path,
     extra_include_dirs: tuple[Path, ...],
+    extra_cflags: tuple[str, ...],
+    prepend_extra_includes: bool,
     translated_clusters: tuple[TranslatedCluster, ...],
     size_window_limit: int,
     asm_pattern_limit: int,
@@ -865,6 +876,8 @@ def analyze_source(
         version,
         output_root,
         extra_include_dirs=include_dirs,
+        extra_cflags=extra_cflags,
+        prepend_extra_includes=prepend_extra_includes,
     )
     sections, symbols = parse_llvm_readobj(object_path)
     anchors = find_anchor_candidates(symbols, config_symbols_path)
@@ -1330,6 +1343,17 @@ def parse_args() -> argparse.Namespace:
         help="Additional include directory passed as '-i'. Can be repeated.",
     )
     parser.add_argument(
+        "--extra-cflag",
+        action="append",
+        default=[],
+        help="Additional compiler flag appended after recovered build flags. Can be repeated.",
+    )
+    parser.add_argument(
+        "--append-extra-includes",
+        action="store_true",
+        help="Append discovered/explicit include dirs after recovered build flags instead of before them.",
+    )
+    parser.add_argument(
         "--keep-going",
         action="store_true",
         help="Continue after compile failures when probing multiple sources.",
@@ -1430,6 +1454,8 @@ def main() -> None:
     output_root = Path(args.output_root)
     config_symbols_path = Path("config") / args.version / "symbols.txt"
     extra_include_dirs = tuple(args.extra_include)
+    extra_cflags = tuple(args.extra_cflag)
+    prepend_extra_includes = not args.append_extra_includes
     reports: list[SourceReport] = []
 
     for source in expand_source_args(args.sources):
@@ -1457,6 +1483,8 @@ def main() -> None:
                 build_config=build_config,
                 output_root=object_dir,
                 extra_include_dirs=extra_include_dirs,
+                extra_cflags=extra_cflags,
+                prepend_extra_includes=prepend_extra_includes,
                 translated_clusters=translated_clusters,
                 size_window_limit=args.size_window_limit if (args.show_size_windows or args.rank) else 0,
                 asm_pattern_limit=args.asm_pattern_limit if (args.show_asm_pattern_windows or args.rank) else 0,
