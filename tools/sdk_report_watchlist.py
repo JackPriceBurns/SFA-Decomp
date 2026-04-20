@@ -77,6 +77,11 @@ def get_argparser() -> argparse.ArgumentParser:
         action="store_true",
         help="Include matching donor split spans from reference_projects for the same normalized source path.",
     )
+    parser.add_argument(
+        "--objdump-top",
+        action="store_true",
+        help="Run function_objdump.py --diff for the top miss of each printed near-miss/codegen entry. Best paired with --match.",
+    )
     return parser
 
 
@@ -164,6 +169,32 @@ def objdump_hint_for_unit(unit: dict) -> str | None:
         "python tools/function_objdump.py "
         f"{source_path.relative_to('src').as_posix()} {top_miss} --diff"
     )
+
+
+def run_objdump_for_unit(unit: dict) -> str:
+    source_path = unit_name_to_source_path(unit["name"])
+    top_miss = top_miss_function(unit)
+    if source_path is None or top_miss is None:
+        return "objdump unavailable"
+
+    command = [
+        sys.executable,
+        "tools/function_objdump.py",
+        source_path.relative_to("src").as_posix(),
+        top_miss,
+        "--diff",
+    ]
+    try:
+        result = subprocess.run(
+            command,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        return f"objdump failed ({exc.returncode})"
+
+    return result.stdout.rstrip()
 
 
 def parse_range(text: str) -> tuple[int, int] | None:
@@ -820,6 +851,10 @@ def main() -> int:
         objdump_hint = objdump_hint_for_unit(unit)
         if objdump_hint:
             print(f"    objdump: {objdump_hint}")
+        if args.objdump_top and objdump_hint:
+            objdump_output = run_objdump_for_unit(unit)
+            for line in objdump_output.splitlines():
+                print(f"      {line}")
         if args.probe_near:
             source_path = unit_name_to_source_path(unit["name"])
             if source_path is None:
@@ -881,6 +916,10 @@ def main() -> int:
                 objdump_hint = objdump_hint_for_unit(unit)
                 if objdump_hint:
                     print(f"    objdump: {objdump_hint}")
+                if args.objdump_top and objdump_hint:
+                    objdump_output = run_objdump_for_unit(unit)
+                    for line in objdump_output.splitlines():
+                        print(f"      {line}")
         else:
             print("  (none)")
 
