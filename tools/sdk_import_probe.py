@@ -119,6 +119,8 @@ class SourceReport:
     text_size: int
     anchors: tuple[AnchorCandidate, ...]
     hypotheses: tuple[StartHypothesis, ...]
+    built_object_path: Path | None = None
+    built_sections: tuple[ObjectSection, ...] = ()
     size_windows: tuple["TextWindowMatch", ...] = ()
     asm_pattern_windows: tuple["AsmPatternWindowMatch", ...] = ()
     translated_clusters: tuple["TranslatedCluster", ...] = ()
@@ -201,6 +203,32 @@ class BoundaryConflict:
     symbol_name: str
     symbol_start: int
     symbol_end: int
+
+
+def current_build_object_path(version: str, source: Path) -> Path | None:
+    try:
+        relative_source = source.resolve().relative_to((Path.cwd() / "src").resolve())
+    except ValueError:
+        return None
+
+    candidate = Path("build") / version / "src" / relative_source.with_suffix(".o")
+    return candidate if candidate.is_file() else None
+
+
+def section_size_diffs(
+    probe_sections: tuple[ObjectSection, ...],
+    built_sections: tuple[ObjectSection, ...],
+) -> tuple[str, ...]:
+    probe_sizes = {section.name: section.size for section in probe_sections}
+    built_sizes = {section.name: section.size for section in built_sections}
+    diffs: list[str] = []
+    for name in sorted(set(probe_sizes) | set(built_sizes)):
+        probe_size = probe_sizes.get(name, 0)
+        built_size = built_sizes.get(name, 0)
+        if probe_size == built_size:
+            continue
+        diffs.append(f"{name} probe=0x{probe_size:X} build=0x{built_size:X}")
+    return tuple(diffs)
 
 
 def load_build_ninja_lines(build_ninja: Path) -> tuple[list[str], list[tuple[int, str]]]:
@@ -1067,6 +1095,10 @@ def analyze_source(
         text_size=text_size,
         compiled_functions=compiled_functions,
     )
+    built_object_path = current_build_object_path(version, source)
+    built_sections: tuple[ObjectSection, ...] = ()
+    if built_object_path is not None:
+        built_sections = tuple(parse_llvm_readobj(built_object_path)[0])
     return SourceReport(
         source=source,
         mw_version=build_config.mw_version,
@@ -1076,6 +1108,8 @@ def analyze_source(
         text_size=text_size,
         anchors=tuple(anchors),
         hypotheses=tuple(build_start_hypotheses(anchors)),
+        built_object_path=built_object_path,
+        built_sections=built_sections,
         size_windows=size_windows,
         asm_pattern_windows=asm_pattern_windows,
         translated_clusters=normalized_clusters,
@@ -1213,6 +1247,13 @@ def print_report(
         if section.name.startswith(".rela") or section.name in {".symtab", ".strtab", ".shstrtab", ".comment"}:
             continue
         print(f"  {section.name:<8} 0x{section.size:X}")
+    if report.built_object_path is not None and report.built_sections:
+        build_diffs = section_size_diffs(report.sections, report.built_sections)
+        if build_diffs:
+            print("build object:")
+            print(f"  {report.built_object_path.as_posix()}")
+            for diff in build_diffs[:6]:
+                print(f"  drift {diff}")
 
     if report.translated_clusters:
         print("translated clusters:")
@@ -1384,6 +1425,9 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
                     f"{max(audit.compiled_function_count, audit.assigned_function_count)} "
                     f"boundary-conflicts={audit.boundary_conflict_count}"
                 )
+            build_diffs = section_size_diffs(report.sections, report.built_sections)
+            if build_diffs:
+                print(f"  probe-vs-build {', '.join(build_diffs[:4])}")
             if window is not None:
                 print(
                     f"  size-window=0x{window.start:08X}-0x{window.end:08X} "
@@ -1427,6 +1471,9 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
                 f"{max(audit.compiled_function_count, audit.assigned_function_count)} "
                 f"boundary-conflicts={audit.boundary_conflict_count}"
             )
+        build_diffs = section_size_diffs(report.sections, report.built_sections)
+        if build_diffs:
+            print(f"  probe-vs-build {', '.join(build_diffs[:4])}")
 
 
 def print_assigned_rank_summary(reports: list[SourceReport]) -> None:
