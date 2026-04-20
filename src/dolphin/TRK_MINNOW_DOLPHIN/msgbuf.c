@@ -4,6 +4,7 @@
 #include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/nubinit.h"
 
 TRKBuffer gTRKMessageBuffers[3];
+const char lbl_802C30D8[] = "ERROR : No buffer available\n";
 
 static inline void TRKSetBufferUsed(TRKBuffer* msg, BOOL state) {
     msg->isInUse = state;
@@ -44,7 +45,7 @@ DSError TRKGetFreeBuffer(int* msgID, TRKBuffer** outMsg) {
     }
 
     if (error == DS_NoMessageBufferAvailable) {
-        usr_puts_serial("ERROR : No buffer available\n");
+        usr_puts_serial(lbl_802C30D8);
     }
 
     return error;
@@ -151,16 +152,6 @@ DSError TRKReadBuffer(TRKBuffer* msg, void* data, unsigned int length) {
     TRK_memcpy(data, msg->data + msg->position, length);
     msg->position += length;
     return error;
-}
-
-DSError TRKAppendBuffer1_ui8(TRKBuffer* buffer, const u8 data) {
-    if (buffer->position >= 0x880) {
-        return DS_MessageBufferOverflow;
-    }
-
-    buffer->data[buffer->position++] = data;
-    buffer->length++;
-    return DS_NoError;
 }
 
 DSError TRKAppendBuffer1_ui16(TRKBuffer* buffer, const u16 data) {

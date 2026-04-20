@@ -118,7 +118,9 @@ class SplitEntry:
 class ObjectSymbolShape:
     defined_text_symbols: list[str]
     exported_data_symbols: dict[str, list[str]]
+    exported_data_symbol_sizes: dict[str, dict[str, int]]
     local_data_symbols: dict[str, list[str]]
+    local_data_symbol_sizes: dict[str, dict[str, int]]
     undefined_symbols: list[str]
     section_sizes: dict[str, int]
 
@@ -543,7 +545,9 @@ def inspect_object_symbols(object_path: Path) -> ObjectSymbolShape | str:
         return f"object inspection failed ({exc.returncode})"
 
     exported_data_symbols: dict[str, list[str]] = {}
+    exported_data_symbol_sizes: dict[str, dict[str, int]] = {}
     local_data_symbols: dict[str, list[str]] = {}
+    local_data_symbol_sizes: dict[str, dict[str, int]] = {}
     defined_text_symbols: list[str] = []
     undefined_symbols: list[str] = []
     section_sizes: dict[str, int] = {}
@@ -576,15 +580,20 @@ def inspect_object_symbols(object_path: Path) -> ObjectSymbolShape | str:
         _, bind, symbol_kind, section, _, name = parts
         if symbol_kind != "O" or section not in data_sections:
             continue
+        size = int(parts[4], 16)
         if bind == "g":
             exported_data_symbols.setdefault(section, []).append(name)
+            exported_data_symbol_sizes.setdefault(section, {})[name] = size
         elif bind == "l":
             local_data_symbols.setdefault(section, []).append(name)
+            local_data_symbol_sizes.setdefault(section, {})[name] = size
 
     return ObjectSymbolShape(
         defined_text_symbols=defined_text_symbols,
         exported_data_symbols=exported_data_symbols,
+        exported_data_symbol_sizes=exported_data_symbol_sizes,
         local_data_symbols=local_data_symbols,
+        local_data_symbol_sizes=local_data_symbol_sizes,
         undefined_symbols=undefined_symbols,
         section_sizes=section_sizes,
     )
@@ -787,8 +796,12 @@ def object_shape_issue_names(
 
         if link_hints.current.exported_data_symbols != link_hints.target.exported_data_symbols:
             issue_names.append("exports-data")
+        if link_hints.current.exported_data_symbol_sizes != link_hints.target.exported_data_symbol_sizes:
+            issue_names.append("exports-size")
         if link_hints.current.local_data_symbols != link_hints.target.local_data_symbols:
             issue_names.append("locals-data")
+        if link_hints.current.local_data_symbol_sizes != link_hints.target.local_data_symbol_sizes:
+            issue_names.append("locals-size")
     else:
         if extra_text:
             issue_names.append("extra-text")
@@ -824,6 +837,36 @@ def ordered_section_symbol_diff(
             target_only[section] = target_diff
 
     return current_only, target_only
+
+
+def section_symbol_size_diff(
+    current: dict[str, dict[str, int]],
+    target: dict[str, dict[str, int]],
+    *,
+    current_label: str = "cur",
+    target_label: str = "target",
+) -> dict[str, list[str]]:
+    deltas: dict[str, list[str]] = {}
+
+    for section in sorted(set(current) | set(target)):
+        current_sizes = current.get(section, {})
+        target_sizes = target.get(section, {})
+        shared_names = [name for name in current_sizes if name in target_sizes]
+        section_deltas = []
+
+        for name in shared_names:
+            current_size = current_sizes[name]
+            target_size = target_sizes[name]
+            if current_size == target_size:
+                continue
+            section_deltas.append(
+                f"{name} {current_label}={format_hex(current_size)} {target_label}={format_hex(target_size)}"
+            )
+
+        if section_deltas:
+            deltas[section] = section_deltas
+
+    return deltas
 
 
 def section_size_diff(
@@ -976,9 +1019,17 @@ def summarize_probe(
                 link_hints.current.exported_data_symbols,
                 link_hints.target.exported_data_symbols,
             )
+            export_size_deltas = section_symbol_size_diff(
+                link_hints.current.exported_data_symbol_sizes,
+                link_hints.target.exported_data_symbol_sizes,
+            )
             current_only_locals, target_only_locals = ordered_section_symbol_diff(
                 link_hints.current.local_data_symbols,
                 link_hints.target.local_data_symbols,
+            )
+            local_size_deltas = section_symbol_size_diff(
+                link_hints.current.local_data_symbol_sizes,
+                link_hints.target.local_data_symbol_sizes,
             )
 
             if section_deltas:
@@ -995,6 +1046,10 @@ def summarize_probe(
                 summary_parts.append(
                     f"target-only-exports {section} " + ", ".join(target_only_exports[section][:8])
                 )
+            for section in sorted(export_size_deltas):
+                summary_parts.append(
+                    f"export-size {section} " + ", ".join(export_size_deltas[section][:8])
+                )
             for section in sorted(current_only_locals):
                 summary_parts.append(
                     f"cur-only-locals {section} " + ", ".join(current_only_locals[section][:8])
@@ -1002,6 +1057,10 @@ def summarize_probe(
             for section in sorted(target_only_locals):
                 summary_parts.append(
                     f"target-only-locals {section} " + ", ".join(target_only_locals[section][:8])
+                )
+            for section in sorted(local_size_deltas):
+                summary_parts.append(
+                    f"local-size {section} " + ", ".join(local_size_deltas[section][:8])
                 )
             if current_only_undef:
                 summary_parts.append("cur-only-undef " + ", ".join(current_only_undef[:8]))
