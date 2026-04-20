@@ -4,7 +4,8 @@
 
 #include "dolphin/gx/__gx.h"
 
-#define gx __GXData
+extern GXData* gx;
+#define __GXData gx
 
 extern u32 __cvt_fp2unsigned(f64 d);
 
@@ -193,6 +194,7 @@ void GXLoadTexMtxImm(const f32 mtx[][4], u32 id, GXTexMtxType type) {
 }
 
 #pragma dont_inline on
+#pragma fp_contract off
 /*
  * --INFO--
  * PAL Address: TODO
@@ -251,6 +253,7 @@ void GXSetViewportJitter(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz,
 }
 
 #pragma dont_inline reset
+#pragma fp_contract on
 
 void GXSetViewport(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz) {
     GXSetViewportJitter(left, top, wd, ht, nearz, farz, 1);
@@ -295,9 +298,9 @@ void GXGetScissor(u32* left, u32* top, u32* wd, u32* ht) {
     suScis1 = __GXData->suScis1;
 
     topOrigin = suScis0 & 0x7FF;
-    leftOrigin = (suScis0 >> 12) & 0x7FF;
+    leftOrigin = (suScis0 & 0x7FF000) >> 12;
     bottom = suScis1 & 0x7FF;
-    right = (suScis1 >> 12) & 0x7FF;
+    right = (suScis1 & 0x7FF000) >> 12;
 
     *left = leftOrigin - 0x156;
     *top = topOrigin - 0x156;
@@ -325,7 +328,7 @@ void GXSetScissorBoxOffset(s32 x_off, s32 y_off) {
     x_off += 0x156;
     y_off += 0x156;
     x_off = ((u32)x_off >> 1) & 0xFFF003FF;
-    y_off = (y_off << 9) & 0xFFFFFC00;
+    y_off = ((u32)y_off >> 1) << 10;
     reg = ((u32)x_off | (u32)y_off) & 0x00FFFFFF;
     reg |= 0x59000000;
     GX_WRITE_RAS_REG(reg);

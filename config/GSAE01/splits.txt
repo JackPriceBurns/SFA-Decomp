@@ -1614,6 +1614,7 @@ dolphin/gx/GXDisplayList.c:
 
 dolphin/gx/GXTransform.c:
 	.text       start:0x8025D6AC end:0x8025DC78
+	.sdata2     start:0x803E83E8 end:0x803E83F4
 
 dolphin/gx/GXPerf.c:
 	.text       start:0x8025DC78 end:0x8025E5E4
