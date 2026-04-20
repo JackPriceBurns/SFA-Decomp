@@ -70,6 +70,13 @@ class BuildConfig:
 
 
 @dataclass(frozen=True)
+class BuildConfigResolution:
+    build_config: BuildConfig
+    build_ninja: Path
+    matched_source: bool
+
+
+@dataclass(frozen=True)
 class ObjectSection:
     name: str
     size: int
@@ -106,6 +113,7 @@ class StartHypothesis:
 class SourceReport:
     source: Path
     mw_version: str
+    build_ninja: Path
     sections: tuple[ObjectSection, ...]
     compiled_functions: tuple[ObjectSymbol, ...]
     text_size: int
@@ -262,17 +270,77 @@ def candidate_source_keys(source: Path) -> tuple[str, ...]:
 
 
 def parse_build_config(build_ninja: Path, version: str) -> BuildConfig:
-    return resolve_build_config(build_ninja, version, Path("src/dolphin/base/PPCArch.c"))
+    return resolve_build_config(build_ninja, version, Path("src/dolphin/base/PPCArch.c")).build_config
 
 
-def resolve_build_config(build_ninja: Path, version: str, source: Path) -> BuildConfig:
+def strip_include_cflags(cflags: tuple[str, ...]) -> tuple[str, ...]:
+    stripped: list[str] = []
+    index = 0
+    while index < len(cflags):
+        flag = cflags[index]
+        if flag in {"-i", "-I"}:
+            index += 2
+            continue
+        if (
+            (flag.startswith("-i") and len(flag) > 2 and flag[2] in "\\/.")
+            or (flag.startswith("-I") and len(flag) > 2)
+        ):
+            index += 1
+            continue
+        stripped.append(flag)
+        index += 1
+    return tuple(stripped)
+
+
+def find_nearest_build_ninja(source: Path) -> Path | None:
+    for parent in (source.parent, *source.parents):
+        candidate = parent / "build.ninja"
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def resolve_build_config_for_source(build_ninja: Path, version: str, source: Path) -> BuildConfigResolution:
+    primary = resolve_build_config(build_ninja, version, source)
+    if primary.matched_source:
+        return primary
+
+    donor_build_ninja = find_nearest_build_ninja(source)
+    if donor_build_ninja is None:
+        return primary
+    try:
+        if donor_build_ninja.resolve() == build_ninja.resolve():
+            return primary
+    except OSError:
+        pass
+
+    try:
+        donor = resolve_build_config(donor_build_ninja, None, source)
+    except SystemExit:
+        return primary
+    if not donor.matched_source:
+        return primary
+
+    return BuildConfigResolution(
+        build_config=BuildConfig(
+            mw_version=donor.build_config.mw_version,
+            cflags=strip_include_cflags(donor.build_config.cflags),
+        ),
+        build_ninja=donor_build_ninja,
+        matched_source=True,
+    )
+
+
+def resolve_build_config(build_ninja: Path, version: str | None, source: Path) -> BuildConfigResolution:
     lines, logical_lines = load_build_ninja_lines(build_ninja)
     target_sources = set(candidate_source_keys(source))
     fallback: BuildConfig | None = None
 
     for start_index, line in logical_lines:
         match = BUILD_LINE_RE.match(line)
-        if match is None or match.group("version") != version:
+        if match is None:
+            continue
+        if version is not None and match.group("version") != version:
             continue
 
         config = parse_rule_config(lines, start_index)
@@ -283,10 +351,10 @@ def resolve_build_config(build_ninja: Path, version: str, source: Path) -> Build
         if ninja_source.endswith(r"src\dolphin\base\ppcarch.c") and fallback is None:
             fallback = config
         if ninja_source in target_sources:
-            return config
+            return BuildConfigResolution(build_config=config, build_ninja=build_ninja, matched_source=True)
 
     if fallback is not None:
-        return fallback
+        return BuildConfigResolution(build_config=fallback, build_ninja=build_ninja, matched_source=False)
     raise SystemExit(f"Unable to locate Dolphin C build flags for {version} in {build_ninja}")
 
 
@@ -928,7 +996,7 @@ def analyze_source(
     version: str,
     config_symbols_path: Path,
     source: Path,
-    build_config: BuildConfig,
+    build_resolution: BuildConfigResolution,
     output_root: Path,
     extra_include_dirs: tuple[Path, ...],
     extra_cflags: tuple[str, ...],
@@ -939,6 +1007,7 @@ def analyze_source(
     range_start: int | None,
     range_end: int | None,
 ) -> SourceReport:
+    build_config = build_resolution.build_config
     include_dirs = resolve_extra_include_dirs(source, extra_include_dirs)
     object_path = compile_source(
         source,
@@ -1001,6 +1070,7 @@ def analyze_source(
     return SourceReport(
         source=source,
         mw_version=build_config.mw_version,
+        build_ninja=build_resolution.build_ninja,
         sections=tuple(sections),
         compiled_functions=compiled_functions,
         text_size=text_size,
@@ -1112,7 +1182,18 @@ def format_signed_hex(value: int) -> str:
 
 
 def report_label(report: SourceReport) -> str:
-    return f"{report.source.as_posix()} [{report.mw_version}]"
+    try:
+        default_build_ninja = Path("build.ninja").resolve()
+        active_build_ninja = report.build_ninja.resolve()
+    except OSError:
+        default_build_ninja = Path("build.ninja")
+        active_build_ninja = report.build_ninja
+
+    if active_build_ninja == default_build_ninja:
+        return f"{report.source.as_posix()} [{report.mw_version}]"
+
+    build_label = report.build_ninja.as_posix()
+    return f"{report.source.as_posix()} [{report.mw_version} via {build_label}]"
 
 
 def print_report(
@@ -1560,7 +1641,7 @@ def main() -> None:
 
         object_dir = output_root / source.with_suffix("")
         try:
-            build_config = resolve_build_config(build_ninja, args.version, source)
+            build_resolution = resolve_build_config_for_source(build_ninja, args.version, source)
             translated_clusters = build_translated_clusters(
                 version=args.version,
                 source=source,
@@ -1572,18 +1653,29 @@ def main() -> None:
                 dict.fromkeys(
                     requested_mw_versions
                     + discovered_mw_versions
-                    + ((build_config.mw_version,) if not requested_mw_versions and not discovered_mw_versions else ())
+                    + (
+                        (build_resolution.build_config.mw_version,)
+                        if not requested_mw_versions and not discovered_mw_versions
+                        else ()
+                    )
                 )
             )
             for mw_version in probe_mw_versions:
-                active_build_config = build_config
-                if mw_version != build_config.mw_version:
-                    active_build_config = BuildConfig(mw_version=mw_version, cflags=build_config.cflags)
+                active_build_resolution = build_resolution
+                if mw_version != build_resolution.build_config.mw_version:
+                    active_build_resolution = BuildConfigResolution(
+                        build_config=BuildConfig(
+                            mw_version=mw_version,
+                            cflags=build_resolution.build_config.cflags,
+                        ),
+                        build_ninja=build_resolution.build_ninja,
+                        matched_source=build_resolution.matched_source,
+                    )
                 report = analyze_source(
                     version=args.version,
                     config_symbols_path=config_symbols_path,
                     source=source,
-                    build_config=active_build_config,
+                    build_resolution=active_build_resolution,
                     output_root=object_dir,
                     extra_include_dirs=extra_include_dirs,
                     extra_cflags=extra_cflags,
