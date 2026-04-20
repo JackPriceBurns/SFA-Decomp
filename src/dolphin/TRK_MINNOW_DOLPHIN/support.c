@@ -38,13 +38,20 @@ DSError TRKSuppAccessFile(u32 file_handle, u8* data, size_t* count, u8* io_resul
         error = TRKGetFreeBuffer(&bufferId, &buffer);
 
         if (error == DS_NoError) {
-            u8 command = read ? DSMSG_ReadFile : DSMSG_WriteFile;
-            u32 position = buffer->position;
+            int command;
+            u32 position;
 
+            command = DSMSG_WriteFile;
+            if (read) {
+                command = DSMSG_ReadFile;
+            }
+
+            position = buffer->position;
             if (position >= sizeof(buffer->data)) {
                 error = DS_MessageBufferOverflow;
             } else {
                 buffer->position = position + 1;
+                error = DS_NoError;
                 buffer->data[position] = command;
                 buffer->length++;
             }
@@ -64,11 +71,18 @@ DSError TRKSuppAccessFile(u32 file_handle, u8* data, size_t* count, u8* io_resul
 
         if (error == DS_NoError) {
             if (need_reply) {
+                int wait_for_reply;
+
                 replyLength = 0;
                 replyIOResult = DS_IONoError;
+                wait_for_reply = 0;
+
+                if (read && file_handle == 0) {
+                    wait_for_reply = 1;
+                }
 
                 error = TRKRequestSend(buffer, &replyBufferId, 5, 3,
-                                       !(read && file_handle == 0));
+                                       wait_for_reply == 0);
                 if (error == DS_NoError) {
                     replyBuffer = TRKGetBuffer(replyBufferId);
                     TRKSetBufferPosition(replyBuffer, 2);
