@@ -7,9 +7,10 @@
 
 #include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/nubinit.h"
 #include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/serpoll.h"
-#include "TRK_MINNOW_DOLPHIN/MetroTRK/Portable/MWTrace.h"
 
 BOOL gTRKBigEndian;
+
+static inline BOOL TRKInitializeEndian(void);
 
 DSError TRKInitializeNub(void) {
     DSError ret;
@@ -17,7 +18,6 @@ DSError TRKInitializeNub(void) {
 
     ret = TRKInitializeEndian();
 
-    MWTRACE(1, "Initialize NUB\n");
     if (ret == DS_NoError) {
         usr_put_initialize();
     }
@@ -30,19 +30,18 @@ DSError TRKInitializeNub(void) {
     if (ret == DS_NoError) {
         ret = TRKInitializeDispatcher();
     }
-    InitializeProgramEndTrap();
-    if (ret == DS_NoError) {
-        ret = TRKInitializeSerialHandler();
-    }
-    if (ret == DS_NoError) {
-        ret = TRKInitializeTarget();
-    }
     if (ret == DS_NoError) {
         uartErr = TRKInitializeIntDrivenUART(0x0000e100, 1, 0, &gTRKInputPendingPtr);
         TRKTargetSetInputPendingPtr(gTRKInputPendingPtr);
         if (uartErr != DS_NoError) {
             ret = uartErr;
         }
+    }
+    if (ret == DS_NoError) {
+        ret = TRKInitializeSerialHandler();
+    }
+    if (ret == DS_NoError) {
+        ret = TRKInitializeTarget();
     }
     return ret;
 }
@@ -57,7 +56,7 @@ void TRKNubWelcome(void) {
     return;
 }
 
-BOOL TRKInitializeEndian(void) {
+static inline BOOL TRKInitializeEndian(void) {
     u8 bendian[4];
     BOOL result = FALSE;
     gTRKBigEndian = TRUE;
