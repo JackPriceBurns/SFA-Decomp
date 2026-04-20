@@ -3,7 +3,8 @@
 
 #include "dolphin/gx/__gx.h"
 
-#define gx __GXData
+extern GXData* gx;
+#define __GXData gx
 
 #define CHECK_ATTRPTR(line, attrPtr) ASSERTMSGLINE(line, (attrPtr) != NULL, "GXSetVtxDescv: attrPtr is NULL")
 #define CHECK_ATTRNAME(line, attr)   ASSERTMSGLINE(line, (attr) >= GX_VA_PNMTXIDX && (attr) < GX_VA_MAX_ATTR, "GXSetVtxDesc: Invalid vertex attribute name")
@@ -125,7 +126,7 @@ void __GXSetVCD(void)
 void __GXCalculateVLim() {
     static u8 tbl1[] = { 0, 4, 1, 2 };
     static u8 tbl2[] = { 0, 8, 1, 2 };
-    static u8 tbl3[] = { 0, 12, 1, 2 };
+    static u8 tbl3[8] = { 0, 12, 1, 2 };
 
     GXCompCnt nc = 0;
     unsigned long vlm;
@@ -458,6 +459,7 @@ void GXSetArray(GXAttr attr, void* base_ptr, u8 stride)
 {
     GXAttr cpAttr;
     unsigned long phyAddr;
+    long regAddr;
 
     attr;  // needed to match
 
@@ -468,8 +470,20 @@ void GXSetArray(GXAttr attr, void* base_ptr, u8 stride)
     CHECK_ATTRNAME3(0x352, attr);
     cpAttr = attr - GX_VA_POS;
     phyAddr = (u32)base_ptr & 0x3FFFFFFF;
-    GX_WRITE_SOME_REG2(8, cpAttr | 0xA0, phyAddr, cpAttr - 12);
-    GX_WRITE_SOME_REG3(8, cpAttr | 0xB0, stride, cpAttr - 12);
+    GX_WRITE_U8(8);
+    GX_WRITE_U8(cpAttr | 0xA0);
+    GX_WRITE_U32(phyAddr);
+    regAddr = cpAttr - 12;
+    if (regAddr >= 0 && regAddr < 4) {
+        __GXData->indexBase[regAddr] = phyAddr;
+    }
+    GX_WRITE_U8(8);
+    GX_WRITE_U8(cpAttr | 0xB0);
+    GX_WRITE_U32(stride);
+    regAddr = cpAttr - 12;
+    if (regAddr >= 0 && regAddr < 4) {
+        __GXData->indexStride[regAddr] = stride;
+    }
 }
 
 void GXInvalidateVtxCache(void)

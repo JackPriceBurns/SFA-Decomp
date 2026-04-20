@@ -1561,6 +1561,8 @@ dolphin/gx/GXFifo.c:
 
 dolphin/gx/GXAttr.c:
 	.text       start:0x80256F84 end:0x8025898C
+	.data       start:0x8032F000 end:0x8032F274
+	.sdata      start:0x803DD218 end:0x803DD228
 
 dolphin/gx/GXMisc.c:
 	.text       start:0x8025898C end:0x80258F60
