@@ -132,6 +132,18 @@ def format_misses(unit: dict) -> str:
     return ", ".join(misses[:5])
 
 
+def top_miss_function(unit: dict) -> str | None:
+    misses = [
+        fn
+        for fn in unit.get("functions", [])
+        if fn.get("fuzzy_match_percent", 100.0) != 100.0
+    ]
+    if not misses:
+        return None
+    misses.sort(key=lambda fn: fn.get("fuzzy_match_percent", 100.0))
+    return misses[0]["name"]
+
+
 def unit_name_to_source_path(unit_name: str) -> Path | None:
     if not unit_name.startswith("main/"):
         return None
@@ -141,6 +153,17 @@ def unit_name_to_source_path(unit_name: str) -> Path | None:
         if candidate.exists():
             return candidate
     return None
+
+
+def objdump_hint_for_unit(unit: dict) -> str | None:
+    source_path = unit_name_to_source_path(unit["name"])
+    top_miss = top_miss_function(unit)
+    if source_path is None or top_miss is None:
+        return None
+    return (
+        "python tools/function_objdump.py "
+        f"{source_path.relative_to('src').as_posix()} {top_miss} --diff"
+    )
 
 
 def parse_range(text: str) -> tuple[int, int] | None:
@@ -794,6 +817,9 @@ def main() -> int:
         )
         if miss_summary:
             print(f"    misses: {miss_summary}")
+        objdump_hint = objdump_hint_for_unit(unit)
+        if objdump_hint:
+            print(f"    objdump: {objdump_hint}")
         if args.probe_near:
             source_path = unit_name_to_source_path(unit["name"])
             if source_path is None:
@@ -843,15 +869,18 @@ def main() -> int:
             if seam.startswith("object-shape") or seam == "boundary-first":
                 continue
 
-            shortlist.append((matched_code, fuzzy, unit["name"], format_misses(unit), seam))
+            shortlist.append((matched_code, fuzzy, unit, format_misses(unit), seam))
 
         print(f"Top {min(args.codegen_limit, len(shortlist))} SDK codegen-first files:")
         if shortlist:
-            shortlist.sort(reverse=True)
-            for matched_code, fuzzy, name, miss_summary, seam in shortlist[: args.codegen_limit]:
-                print(f"  {name}: code={matched_code:.2f}% fuzzy={fuzzy:.3f} {seam}")
+            shortlist.sort(key=lambda row: (row[0], row[1], row[2]["name"]), reverse=True)
+            for matched_code, fuzzy, unit, miss_summary, seam in shortlist[: args.codegen_limit]:
+                print(f"  {unit['name']}: code={matched_code:.2f}% fuzzy={fuzzy:.3f} {seam}")
                 if miss_summary:
                     print(f"    misses: {miss_summary}")
+                objdump_hint = objdump_hint_for_unit(unit)
+                if objdump_hint:
+                    print(f"    objdump: {objdump_hint}")
         else:
             print("  (none)")
 
