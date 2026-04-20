@@ -113,6 +113,7 @@ class ObjectSymbolShape:
     exported_data_symbols: dict[str, list[str]]
     local_data_symbols: dict[str, list[str]]
     undefined_symbols: list[str]
+    section_sizes: dict[str, int]
 
 
 @dataclass
@@ -396,6 +397,12 @@ def inspect_object_symbols(object_path: Path) -> ObjectSymbolShape | str:
             capture_output=True,
             text=True,
         )
+        section_result = subprocess.run(
+            ["build/binutils/powerpc-eabi-objdump.exe", "-h", str(object_path)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
         objdump_result = subprocess.run(
             ["build/binutils/powerpc-eabi-objdump.exe", "-t", str(object_path)],
             check=True,
@@ -409,7 +416,9 @@ def inspect_object_symbols(object_path: Path) -> ObjectSymbolShape | str:
     local_data_symbols: dict[str, list[str]] = {}
     defined_text_symbols: list[str] = []
     undefined_symbols: list[str] = []
+    section_sizes: dict[str, int] = {}
     data_sections = {".data", ".rodata", ".sdata", ".sdata2", ".bss", ".sbss"}
+    tracked_sections = data_sections | {".text"}
 
     for line in nm_result.stdout.splitlines():
         match = re.match(r"\s*(\S+)?\s+([A-Za-z])\s+(\S+)$", line)
@@ -421,6 +430,14 @@ def inspect_object_symbols(object_path: Path) -> ObjectSymbolShape | str:
             undefined_symbols.append(name)
         elif symbol_type in {"T", "t"}:
             defined_text_symbols.append(name)
+
+    for line in section_result.stdout.splitlines():
+        parts = line.split()
+        if len(parts) < 7 or not parts[0].isdigit():
+            continue
+        section = parts[1]
+        if section in tracked_sections:
+            section_sizes[section] = int(parts[2], 16)
 
     for line in objdump_result.stdout.splitlines():
         parts = line.split()
@@ -439,6 +456,7 @@ def inspect_object_symbols(object_path: Path) -> ObjectSymbolShape | str:
         exported_data_symbols=exported_data_symbols,
         local_data_symbols=local_data_symbols,
         undefined_symbols=undefined_symbols,
+        section_sizes=section_sizes,
     )
 
 
@@ -673,6 +691,29 @@ def ordered_section_symbol_diff(
     return current_only, target_only
 
 
+def section_size_diff(
+    current: dict[str, int],
+    target: dict[str, int],
+) -> list[str]:
+    deltas: list[str] = []
+
+    for section in sorted(set(current) | set(target)):
+        current_size = current.get(section)
+        target_size = target.get(section)
+        if current_size == target_size:
+            continue
+        if current_size is None:
+            deltas.append(f"{section} cur=missing target={format_hex(target_size)}")
+        elif target_size is None:
+            deltas.append(f"{section} cur={format_hex(current_size)} target=missing")
+        else:
+            deltas.append(
+                f"{section} cur={format_hex(current_size)} target={format_hex(target_size)}"
+            )
+
+    return deltas
+
+
 def summarize_probe(
     source_path: Path,
     *,
@@ -772,6 +813,10 @@ def summarize_probe(
             ]
             summary_parts.append("extra-text " + ", ".join(extra_text[:8]))
         if link_hints.target is not None:
+            section_deltas = section_size_diff(
+                link_hints.current.section_sizes,
+                link_hints.target.section_sizes,
+            )
             current_only_text, target_only_text = ordered_symbol_diff(
                 link_hints.current.defined_text_symbols,
                 link_hints.target.defined_text_symbols,
@@ -789,6 +834,8 @@ def summarize_probe(
                 link_hints.target.local_data_symbols,
             )
 
+            if section_deltas:
+                summary_parts.append("section-sizes " + ", ".join(section_deltas[:6]))
             if current_only_text:
                 summary_parts.append("cur-only-text " + ", ".join(current_only_text[:8]))
             if target_only_text:
