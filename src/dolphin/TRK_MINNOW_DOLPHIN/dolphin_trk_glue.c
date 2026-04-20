@@ -104,10 +104,7 @@ int InitMetroTRKCommTable(int hwId)
         gDBCommTable.close_func           = udp_cc_close;
         gDBCommTable.read_func            = udp_cc_read;
         gDBCommTable.write_func           = udp_cc_write;
-        gDBCommTable.shutdown_func        = udp_cc_shutdown;
         gDBCommTable.peek_func            = udp_cc_peek;
-        gDBCommTable.pre_continue_func    = udp_cc_pre_continue;
-        gDBCommTable.post_stop_func       = udp_cc_post_stop;
         gDBCommTable.init_interrupts_func = NULL;
         return 0;
     }
@@ -121,10 +118,7 @@ int InitMetroTRKCommTable(int hwId)
         gDBCommTable.close_func           = gdev_cc_close;
         gDBCommTable.read_func            = gdev_cc_read;
         gDBCommTable.write_func           = gdev_cc_write;
-        gDBCommTable.shutdown_func        = gdev_cc_shutdown;
         gDBCommTable.peek_func            = gdev_cc_peek;
-        gDBCommTable.pre_continue_func    = gdev_cc_pre_continue;
-        gDBCommTable.post_stop_func       = gdev_cc_post_stop;
         gDBCommTable.init_interrupts_func = gdev_cc_initinterrupts;
     } else if (hwId == HARDWARE_AMC_DDH) {
 
@@ -136,10 +130,7 @@ int InitMetroTRKCommTable(int hwId)
         gDBCommTable.close_func           = ddh_cc_close;
         gDBCommTable.read_func            = ddh_cc_read;
         gDBCommTable.write_func           = ddh_cc_write;
-        gDBCommTable.shutdown_func        = ddh_cc_shutdown;
         gDBCommTable.peek_func            = ddh_cc_peek;
-        gDBCommTable.pre_continue_func    = ddh_cc_pre_continue;
-        gDBCommTable.post_stop_func       = ddh_cc_post_stop;
         gDBCommTable.init_interrupts_func = ddh_cc_initinterrupts;
     } else {
         OSReport("MetroTRK : Set to UNKNOWN hardware. (%ld)\n", hwId);
@@ -180,9 +171,9 @@ UARTError TRKWriteUARTN(const void* bytes, u32 length)
     return writeErr == 0 ? 0 : -1;
 }
 
-void ReserveEXI2Port(void) { gDBCommTable.post_stop_func(); }
+void ReserveEXI2Port(void) { gDBCommTable.open_func(); }
 
-void UnreserveEXI2Port(void) { gDBCommTable.pre_continue_func(); }
+void UnreserveEXI2Port(void) { gDBCommTable.close_func(); }
 
 void TRK_board_display(char* str) { OSReport("%s\n", str); }
 

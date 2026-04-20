@@ -8,20 +8,28 @@
 extern GXData* gx;
 #define __GXData gx
 
-static __GXFifoObj* CPUFifo;
-static __GXFifoObj* GPFifo;
+extern __GXFifoObj* lbl_803DED38;
+extern __GXFifoObj* lbl_803DED3C;
+extern OSThread* lbl_803DED40;
+extern GXBool lbl_803DED44;
+extern BOOL lbl_803DED48;
+extern GXBreakPtCallback lbl_803DED4C;
+extern u32 lbl_803DED50;
+extern void* lbl_803DED54;
 
-static OSThread* __GXCurrentThread;
-static GXBool CPGPLinked;
-static BOOL GXOverflowSuspendInProgress;
-static GXBreakPtCallback BreakPointCB;
-static u32 __GXOverflowCount;
+#define CPUFifo lbl_803DED38
+#define GPFifo lbl_803DED3C
+#define __GXCurrentThread lbl_803DED40
+#define CPGPLinked lbl_803DED44
+#define GXOverflowSuspendInProgress lbl_803DED48
+#define BreakPointCB lbl_803DED4C
+#define __GXOverflowCount lbl_803DED50
 
 #if DEBUG
 static BOOL IsWGPipeRedirected;
 #endif
 
-void* __GXCurrentBP;
+#define __GXCurrentBP lbl_803DED54
 
 static void __GXFifoReadEnable(void);
 static void __GXFifoReadDisable(void);

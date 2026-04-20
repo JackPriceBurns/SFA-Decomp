@@ -27,8 +27,8 @@ from dolphin_sdk_symbols import (
 
 
 BUILD_LINE_RE = re.compile(
-    r"^build build\\(?P<version>[^\\]+)\\src\\(?:dolphin\\)?base\\PPCArch\.o: \S+\s+"
-    r"src\\(?:dolphin\\)?base\\PPCArch\.c(?:\s+\|.*)?$"
+    r"^build build\\(?P<version>[^\\]+)\\src\\.+?\.o: \S+\s+"
+    r"(?P<source>src\\.+?\.c)(?:\s+\|.*)?$"
 )
 NAME_RE = re.compile(r"^\s+Name: (?P<name>.*?)(?: \(\d+\))?$")
 SIZE_RE = re.compile(r"^\s+Size: (?P<size>0x[0-9A-Fa-f]+|\d+)$")
@@ -44,10 +44,36 @@ ASM_FN_HEADER_RE = re.compile(
 ASM_FN_NAME_RE = re.compile(r"^\.fn (?P<name>[^,\s]+),")
 
 
+def normalize_mw_version(mw_version: str) -> str:
+    return mw_version.replace("\\", "/")
+
+
+def build_compiler_path(mw_version: str) -> Path:
+    return Path("build") / "compilers" / Path(*normalize_mw_version(mw_version).split("/")) / "mwcceppc.exe"
+
+
+def discover_mw_versions() -> tuple[str, ...]:
+    gc_root = Path("build") / "compilers" / "GC"
+    if not gc_root.is_dir():
+        return ()
+    return tuple(
+        f"GC/{entry.name}"
+        for entry in sorted(gc_root.iterdir(), key=lambda item: item.name)
+        if entry.is_dir()
+    )
+
+
 @dataclass(frozen=True)
 class BuildConfig:
     mw_version: str
     cflags: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class BuildConfigResolution:
+    build_config: BuildConfig
+    build_ninja: Path
+    matched_source: bool
 
 
 @dataclass(frozen=True)
@@ -86,11 +112,17 @@ class StartHypothesis:
 @dataclass(frozen=True)
 class SourceReport:
     source: Path
+    mw_version: str
+    build_ninja: Path
     sections: tuple[ObjectSection, ...]
+    compiled_symbols: tuple[ObjectSymbol, ...]
     compiled_functions: tuple[ObjectSymbol, ...]
     text_size: int
     anchors: tuple[AnchorCandidate, ...]
     hypotheses: tuple[StartHypothesis, ...]
+    built_object_path: Path | None = None
+    built_sections: tuple[ObjectSection, ...] = ()
+    built_symbols: tuple[ObjectSymbol, ...] = ()
     size_windows: tuple["TextWindowMatch", ...] = ()
     asm_pattern_windows: tuple["AsmPatternWindowMatch", ...] = ()
     translated_clusters: tuple["TranslatedCluster", ...] = ()
@@ -175,7 +207,78 @@ class BoundaryConflict:
     symbol_end: int
 
 
-def parse_build_config(build_ninja: Path, version: str) -> BuildConfig:
+def current_build_object_path(version: str, source: Path) -> Path | None:
+    try:
+        relative_source = source.resolve().relative_to((Path.cwd() / "src").resolve())
+    except ValueError:
+        return None
+
+    candidate = Path("build") / version / "src" / relative_source.with_suffix(".o")
+    return candidate if candidate.is_file() else None
+
+
+def section_size_diffs(
+    probe_sections: tuple[ObjectSection, ...],
+    built_sections: tuple[ObjectSection, ...],
+) -> tuple[str, ...]:
+    probe_sizes = {section.name: section.size for section in probe_sections}
+    built_sizes = {section.name: section.size for section in built_sections}
+    diffs: list[str] = []
+    for name in sorted(set(probe_sizes) | set(built_sizes)):
+        probe_size = probe_sizes.get(name, 0)
+        built_size = built_sizes.get(name, 0)
+        if probe_size == built_size:
+            continue
+        diffs.append(f"{name} probe=0x{probe_size:X} build=0x{built_size:X}")
+    return tuple(diffs)
+
+
+def is_reportable_data_symbol(symbol: ObjectSymbol) -> bool:
+    if symbol.section in {"", "Undefined", ".text"}:
+        return False
+    if symbol.size <= 0:
+        return False
+    if symbol.name.startswith("@"):
+        return False
+    return True
+
+
+def collect_data_symbol_sizes(symbols: tuple[ObjectSymbol, ...]) -> dict[str, dict[str, int]]:
+    section_sizes: dict[str, dict[str, int]] = {}
+    for symbol in symbols:
+        if not is_reportable_data_symbol(symbol):
+            continue
+        section_sizes.setdefault(symbol.section, {})[symbol.name] = symbol.size
+    return section_sizes
+
+
+def data_symbol_diffs(
+    probe_symbols: tuple[ObjectSymbol, ...],
+    built_symbols: tuple[ObjectSymbol, ...],
+) -> tuple[str, ...]:
+    probe_by_section = collect_data_symbol_sizes(probe_symbols)
+    built_by_section = collect_data_symbol_sizes(built_symbols)
+    diffs: list[str] = []
+
+    for section in sorted(set(probe_by_section) | set(built_by_section)):
+        probe_sizes = probe_by_section.get(section, {})
+        built_sizes = built_by_section.get(section, {})
+
+        for name in sorted(probe_sizes.keys() - built_sizes.keys()):
+            diffs.append(f"probe-only-data {section} {name}")
+        for name in sorted(built_sizes.keys() - probe_sizes.keys()):
+            diffs.append(f"build-only-data {section} {name}")
+        for name in sorted(probe_sizes.keys() & built_sizes.keys()):
+            probe_size = probe_sizes[name]
+            built_size = built_sizes[name]
+            if probe_size == built_size:
+                continue
+            diffs.append(f"data-size {section} {name} probe=0x{probe_size:X} build=0x{built_size:X}")
+
+    return tuple(diffs)
+
+
+def load_build_ninja_lines(build_ninja: Path) -> tuple[list[str], list[tuple[int, str]]]:
     lines = build_ninja.read_text(encoding="utf-8").splitlines()
     logical_lines: list[tuple[int, str]] = []
     index = 0
@@ -188,35 +291,145 @@ def parse_build_config(build_ninja: Path, version: str) -> BuildConfig:
             index += 1
         logical_lines.append((start_index, line))
         index += 1
+    return lines, logical_lines
+
+
+def parse_rule_config(lines: list[str], start_index: int) -> BuildConfig | None:
+    mw_version = ""
+    cflags_parts: list[str] = []
+    cursor = start_index + 1
+    while cursor < len(lines) and lines[cursor].startswith("  "):
+        entry = lines[cursor]
+        if entry.startswith("  mw_version = "):
+            mw_version = entry.split("=", 1)[1].strip()
+        elif entry.startswith("  cflags = "):
+            value = entry.split("=", 1)[1].strip()
+            cflags_parts.append(value.removesuffix("$").strip())
+            cursor += 1
+            while cursor < len(lines) and lines[cursor].startswith("      "):
+                continuation = lines[cursor].strip()
+                cflags_parts.append(continuation.removesuffix("$").strip())
+                cursor += 1
+            continue
+        cursor += 1
+    if not mw_version or not cflags_parts:
+        return None
+    cflags = tuple(shlex.split(" ".join(cflags_parts), posix=True))
+    return BuildConfig(mw_version=normalize_mw_version(mw_version), cflags=cflags)
+
+
+def candidate_source_keys(source: Path) -> tuple[str, ...]:
+    candidates: list[str] = []
+    seen: set[str] = set()
+
+    def add(path: Path) -> None:
+        normalized = str(path).replace("/", "\\").casefold()
+        if normalized in seen:
+            return
+        seen.add(normalized)
+        candidates.append(normalized)
+
+    try:
+        add(source.resolve().relative_to(Path.cwd().resolve()))
+    except ValueError:
+        pass
+
+    add(source)
+
+    parts = source.parts
+    if "src" in parts:
+        src_index = parts.index("src")
+        add(Path(*parts[src_index:]))
+
+    return tuple(candidates)
+
+
+def parse_build_config(build_ninja: Path, version: str) -> BuildConfig:
+    return resolve_build_config(build_ninja, version, Path("src/dolphin/base/PPCArch.c")).build_config
+
+
+def strip_include_cflags(cflags: tuple[str, ...]) -> tuple[str, ...]:
+    stripped: list[str] = []
+    index = 0
+    while index < len(cflags):
+        flag = cflags[index]
+        if flag in {"-i", "-I"}:
+            index += 2
+            continue
+        if (
+            (flag.startswith("-i") and len(flag) > 2 and flag[2] in "\\/.")
+            or (flag.startswith("-I") and len(flag) > 2)
+        ):
+            index += 1
+            continue
+        stripped.append(flag)
+        index += 1
+    return tuple(stripped)
+
+
+def find_nearest_build_ninja(source: Path) -> Path | None:
+    for parent in (source.parent, *source.parents):
+        candidate = parent / "build.ninja"
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def resolve_build_config_for_source(build_ninja: Path, version: str, source: Path) -> BuildConfigResolution:
+    primary = resolve_build_config(build_ninja, version, source)
+    if primary.matched_source:
+        return primary
+
+    donor_build_ninja = find_nearest_build_ninja(source)
+    if donor_build_ninja is None:
+        return primary
+    try:
+        if donor_build_ninja.resolve() == build_ninja.resolve():
+            return primary
+    except OSError:
+        pass
+
+    try:
+        donor = resolve_build_config(donor_build_ninja, None, source)
+    except SystemExit:
+        return primary
+    if not donor.matched_source:
+        return primary
+
+    return BuildConfigResolution(
+        build_config=BuildConfig(
+            mw_version=donor.build_config.mw_version,
+            cflags=strip_include_cflags(donor.build_config.cflags),
+        ),
+        build_ninja=donor_build_ninja,
+        matched_source=True,
+    )
+
+
+def resolve_build_config(build_ninja: Path, version: str | None, source: Path) -> BuildConfigResolution:
+    lines, logical_lines = load_build_ninja_lines(build_ninja)
+    target_sources = set(candidate_source_keys(source))
+    fallback: BuildConfig | None = None
 
     for start_index, line in logical_lines:
         match = BUILD_LINE_RE.match(line)
-        if match is None or match.group("version") != version:
+        if match is None:
+            continue
+        if version is not None and match.group("version") != version:
             continue
 
-        mw_version = ""
-        cflags_parts: list[str] = []
-        cursor = start_index + 1
-        while cursor < len(lines) and lines[cursor].startswith("  "):
-            entry = lines[cursor]
-            if entry.startswith("  mw_version = "):
-                mw_version = entry.split("=", 1)[1].strip()
-            elif entry.startswith("  cflags = "):
-                value = entry.split("=", 1)[1].strip()
-                cflags_parts.append(value.removesuffix("$").strip())
-                cursor += 1
-                while cursor < len(lines) and lines[cursor].startswith("      "):
-                    continuation = lines[cursor].strip()
-                    cflags_parts.append(continuation.removesuffix("$").strip())
-                    cursor += 1
-                continue
-            cursor += 1
+        config = parse_rule_config(lines, start_index)
+        if config is None:
+            continue
 
-        if not mw_version or not cflags_parts:
-            break
-        cflags = tuple(shlex.split(" ".join(cflags_parts), posix=True))
-        return BuildConfig(mw_version=mw_version, cflags=cflags)
+        ninja_source = match.group("source").casefold()
+        if ninja_source.endswith(r"src\dolphin\base\ppcarch.c") and fallback is None:
+            fallback = config
+        if ninja_source in target_sources:
+            return BuildConfigResolution(build_config=config, build_ninja=build_ninja, matched_source=True)
 
+    if fallback is not None:
+        return BuildConfigResolution(build_config=fallback, build_ninja=build_ninja, matched_source=False)
     raise SystemExit(f"Unable to locate Dolphin C build flags for {version} in {build_ninja}")
 
 
@@ -226,30 +439,39 @@ def compile_source(
     version: str,
     output_root: Path,
     extra_include_dirs: tuple[Path, ...] = (),
+    extra_cflags: tuple[str, ...] = (),
+    prepend_extra_includes: bool = True,
 ) -> Path:
     output_root.mkdir(parents=True, exist_ok=True)
-    compiler = Path("build") / "compilers" / build_config.mw_version / "mwcceppc.exe"
+    compiler = build_compiler_path(build_config.mw_version)
     sjiswrap = Path("build") / "tools" / "sjiswrap.exe"
     if not compiler.is_file():
         raise SystemExit(f"Missing compiler: {compiler}")
     if not sjiswrap.is_file():
         raise SystemExit(f"Missing sjiswrap: {sjiswrap}")
 
-    compile_args = [
-        str(sjiswrap),
-        str(compiler),
-        *(
-            arg
-            for include_dir in extra_include_dirs
-            for arg in ("-i", str(include_dir).replace("/", "\\"))
-        ),
-        *build_config.cflags,
-        "-MMD",
-        "-c",
-        str(source).replace("/", "\\"),
-        "-o",
-        str(output_root).replace("/", "\\"),
+    include_args = [
+        arg
+        for include_dir in extra_include_dirs
+        for arg in ("-i", str(include_dir).replace("/", "\\"))
     ]
+    compile_args = [str(sjiswrap), str(compiler)]
+    if prepend_extra_includes:
+        compile_args.extend(include_args)
+        compile_args.extend(build_config.cflags)
+    else:
+        compile_args.extend(build_config.cflags)
+        compile_args.extend(include_args)
+    compile_args.extend(extra_cflags)
+    compile_args.extend(
+        [
+            "-MMD",
+            "-c",
+            str(source).replace("/", "\\"),
+            "-o",
+            str(output_root).replace("/", "\\"),
+        ]
+    )
     subprocess.run(compile_args, check=True)
 
     object_path = output_root / f"{source.stem}.o"
@@ -294,6 +516,22 @@ def resolve_extra_include_dirs(
                     }
                 )
                 for header_dir in header_dirs:
+                    add(header_dir)
+
+            # Reference projects often rely on flat MSL/header include layouts
+            # that differ from this repo's local tree. Mirror our local include
+            # subdirectories so donor sources can resolve headers like "ctype.h"
+            # without requiring per-project manual include lists.
+            local_include = Path("include")
+            add(local_include)
+            if local_include.is_dir():
+                local_header_dirs = sorted(
+                    {
+                        header.parent
+                        for header in local_include.rglob("*.h")
+                    }
+                )
+                for header_dir in local_header_dirs:
                     add(header_dir)
 
     include_root = Path("include")
@@ -833,15 +1071,18 @@ def analyze_source(
     version: str,
     config_symbols_path: Path,
     source: Path,
-    build_config: BuildConfig,
+    build_resolution: BuildConfigResolution,
     output_root: Path,
     extra_include_dirs: tuple[Path, ...],
+    extra_cflags: tuple[str, ...],
+    prepend_extra_includes: bool,
     translated_clusters: tuple[TranslatedCluster, ...],
     size_window_limit: int,
     asm_pattern_limit: int,
     range_start: int | None,
     range_end: int | None,
 ) -> SourceReport:
+    build_config = build_resolution.build_config
     include_dirs = resolve_extra_include_dirs(source, extra_include_dirs)
     object_path = compile_source(
         source,
@@ -849,6 +1090,8 @@ def analyze_source(
         version,
         output_root,
         extra_include_dirs=include_dirs,
+        extra_cflags=extra_cflags,
+        prepend_extra_includes=prepend_extra_includes,
     )
     sections, symbols = parse_llvm_readobj(object_path)
     anchors = find_anchor_candidates(symbols, config_symbols_path)
@@ -899,13 +1142,26 @@ def analyze_source(
         text_size=text_size,
         compiled_functions=compiled_functions,
     )
+    built_object_path = current_build_object_path(version, source)
+    built_sections: tuple[ObjectSection, ...] = ()
+    built_symbols: tuple[ObjectSymbol, ...] = ()
+    if built_object_path is not None:
+        built_sections_list, built_symbols_list = parse_llvm_readobj(built_object_path)
+        built_sections = tuple(built_sections_list)
+        built_symbols = tuple(built_symbols_list)
     return SourceReport(
         source=source,
+        mw_version=build_config.mw_version,
+        build_ninja=build_resolution.build_ninja,
         sections=tuple(sections),
+        compiled_symbols=tuple(symbols),
         compiled_functions=compiled_functions,
         text_size=text_size,
         anchors=tuple(anchors),
         hypotheses=tuple(build_start_hypotheses(anchors)),
+        built_object_path=built_object_path,
+        built_sections=built_sections,
+        built_symbols=built_symbols,
         size_windows=size_windows,
         asm_pattern_windows=asm_pattern_windows,
         translated_clusters=normalized_clusters,
@@ -1011,6 +1267,21 @@ def format_signed_hex(value: int) -> str:
     return f"{sign}0x{abs(value):X}"
 
 
+def report_label(report: SourceReport) -> str:
+    try:
+        default_build_ninja = Path("build.ninja").resolve()
+        active_build_ninja = report.build_ninja.resolve()
+    except OSError:
+        default_build_ninja = Path("build.ninja")
+        active_build_ninja = report.build_ninja
+
+    if active_build_ninja == default_build_ninja:
+        return f"{report.source.as_posix()} [{report.mw_version}]"
+
+    build_label = report.build_ninja.as_posix()
+    return f"{report.source.as_posix()} [{report.mw_version} via {build_label}]"
+
+
 def print_report(
     version: str,
     report: SourceReport,
@@ -1022,12 +1293,22 @@ def print_report(
     show_functions: bool,
     function_limit: int,
 ) -> None:
-    print(f"# {report.source.as_posix()}")
+    print(f"# {report_label(report)}")
     print("sections:")
     for section in report.sections:
         if section.name.startswith(".rela") or section.name in {".symtab", ".strtab", ".shstrtab", ".comment"}:
             continue
         print(f"  {section.name:<8} 0x{section.size:X}")
+    if report.built_object_path is not None and report.built_sections:
+        build_diffs = section_size_diffs(report.sections, report.built_sections)
+        build_data_diffs = data_symbol_diffs(report.compiled_symbols, report.built_symbols)
+        if build_diffs or build_data_diffs:
+            print("build object:")
+            print(f"  {report.built_object_path.as_posix()}")
+            for diff in build_diffs[:6]:
+                print(f"  drift {diff}")
+            for diff in build_data_diffs[:6]:
+                print(f"  drift {diff}")
 
     if report.translated_clusters:
         print("translated clusters:")
@@ -1188,7 +1469,7 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
             asm_window = report.asm_pattern_windows[0] if report.asm_pattern_windows else None
             print(
                 f"anchors=0 exact=0 blockers=0 overlaps=0 text=0x{report.text_size:X} "
-                f"{report.source.as_posix()} -"
+                    f"{report_label(report)} -"
             )
             if report.assigned_audit is not None:
                 audit = report.assigned_audit
@@ -1199,6 +1480,11 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
                     f"{max(audit.compiled_function_count, audit.assigned_function_count)} "
                     f"boundary-conflicts={audit.boundary_conflict_count}"
                 )
+            build_diffs = section_size_diffs(report.sections, report.built_sections)
+            build_data_diffs = data_symbol_diffs(report.compiled_symbols, report.built_symbols)
+            probe_build_diffs = build_diffs + build_data_diffs
+            if probe_build_diffs:
+                print(f"  probe-vs-build {', '.join(probe_build_diffs[:4])}")
             if window is not None:
                 print(
                     f"  size-window=0x{window.start:08X}-0x{window.end:08X} "
@@ -1221,7 +1507,7 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
         print(
             f"anchors={anchor_count} exact={exact_count} blockers={boundary_conflict_count} "
             f"overlaps={overlap_count} "
-            f"text=0x{report.text_size:X} {report.source.as_posix()} "
+            f"text=0x{report.text_size:X} {report_label(report)} "
             f"0x{best.start:08X}-0x{span_end:08X}"
         )
         if names:
@@ -1242,6 +1528,11 @@ def print_ranked_summary(version: str, reports: list[SourceReport]) -> None:
                 f"{max(audit.compiled_function_count, audit.assigned_function_count)} "
                 f"boundary-conflicts={audit.boundary_conflict_count}"
             )
+        build_diffs = section_size_diffs(report.sections, report.built_sections)
+        build_data_diffs = data_symbol_diffs(report.compiled_symbols, report.built_symbols)
+        probe_build_diffs = build_diffs + build_data_diffs
+        if probe_build_diffs:
+            print(f"  probe-vs-build {', '.join(probe_build_diffs[:4])}")
 
 
 def print_assigned_rank_summary(reports: list[SourceReport]) -> None:
@@ -1266,7 +1557,7 @@ def print_assigned_rank_summary(reports: list[SourceReport]) -> None:
             f"mismatches={audit.size_mismatch_count} "
             f"delta={format_signed_hex(audit.size_delta)} "
             f"boundary-conflicts={audit.boundary_conflict_count} "
-            f"{report.source.as_posix()} "
+            f"{report_label(report)} "
             f"0x{audit.start:08X}-0x{audit.end:08X}"
         )
         print(
@@ -1307,11 +1598,36 @@ def parse_args() -> argparse.Namespace:
         help="Directory used for temporary object output",
     )
     parser.add_argument(
+        "--mw-version",
+        action="append",
+        default=[],
+        help=(
+            "Override the recovered Metrowerks compiler version. Can be repeated, "
+            "for example 'GC/1.2.5n' or 'GC\\1.2.5n'."
+        ),
+    )
+    parser.add_argument(
+        "--all-mw-versions",
+        action="store_true",
+        help="Probe each source with every installed GC compiler under build/compilers/GC.",
+    )
+    parser.add_argument(
         "--extra-include",
         action="append",
         type=Path,
         default=[],
         help="Additional include directory passed as '-i'. Can be repeated.",
+    )
+    parser.add_argument(
+        "--extra-cflag",
+        action="append",
+        default=[],
+        help="Additional compiler flag appended after recovered build flags. Can be repeated.",
+    )
+    parser.add_argument(
+        "--append-extra-includes",
+        action="store_true",
+        help="Append discovered/explicit include dirs after recovered build flags instead of before them.",
     )
     parser.add_argument(
         "--keep-going",
@@ -1410,10 +1726,14 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    build_config = parse_build_config(Path(args.build_ninja), args.version)
+    build_ninja = Path(args.build_ninja)
     output_root = Path(args.output_root)
     config_symbols_path = Path("config") / args.version / "symbols.txt"
     extra_include_dirs = tuple(args.extra_include)
+    extra_cflags = tuple(args.extra_cflag)
+    prepend_extra_includes = not args.append_extra_includes
+    requested_mw_versions = tuple(dict.fromkeys(normalize_mw_version(version) for version in args.mw_version))
+    discovered_mw_versions = discover_mw_versions() if args.all_mw_versions else ()
     reports: list[SourceReport] = []
 
     for source in expand_source_args(args.sources):
@@ -1427,6 +1747,7 @@ def main() -> None:
 
         object_dir = output_root / source.with_suffix("")
         try:
+            build_resolution = resolve_build_config_for_source(build_ninja, args.version, source)
             translated_clusters = build_translated_clusters(
                 version=args.version,
                 source=source,
@@ -1434,19 +1755,44 @@ def main() -> None:
                 require_provenance=args.require_cluster_provenance,
                 gap=args.cluster_gap,
             )
-            report = analyze_source(
-                version=args.version,
-                config_symbols_path=config_symbols_path,
-                source=source,
-                build_config=build_config,
-                output_root=object_dir,
-                extra_include_dirs=extra_include_dirs,
-                translated_clusters=translated_clusters,
-                size_window_limit=args.size_window_limit if (args.show_size_windows or args.rank) else 0,
-                asm_pattern_limit=args.asm_pattern_limit if (args.show_asm_pattern_windows or args.rank) else 0,
-                range_start=args.range_start,
-                range_end=args.range_end,
+            probe_mw_versions = tuple(
+                dict.fromkeys(
+                    requested_mw_versions
+                    + discovered_mw_versions
+                    + (
+                        (build_resolution.build_config.mw_version,)
+                        if not requested_mw_versions and not discovered_mw_versions
+                        else ()
+                    )
+                )
             )
+            for mw_version in probe_mw_versions:
+                active_build_resolution = build_resolution
+                if mw_version != build_resolution.build_config.mw_version:
+                    active_build_resolution = BuildConfigResolution(
+                        build_config=BuildConfig(
+                            mw_version=mw_version,
+                            cflags=build_resolution.build_config.cflags,
+                        ),
+                        build_ninja=build_resolution.build_ninja,
+                        matched_source=build_resolution.matched_source,
+                    )
+                report = analyze_source(
+                    version=args.version,
+                    config_symbols_path=config_symbols_path,
+                    source=source,
+                    build_resolution=active_build_resolution,
+                    output_root=object_dir,
+                    extra_include_dirs=extra_include_dirs,
+                    extra_cflags=extra_cflags,
+                    prepend_extra_includes=prepend_extra_includes,
+                    translated_clusters=translated_clusters,
+                    size_window_limit=args.size_window_limit if (args.show_size_windows or args.rank) else 0,
+                    asm_pattern_limit=args.asm_pattern_limit if (args.show_asm_pattern_windows or args.rank) else 0,
+                    range_start=args.range_start,
+                    range_end=args.range_end,
+                )
+                reports.append(report)
         except subprocess.CalledProcessError as exc:
             if args.keep_going:
                 print(f"# {source.as_posix()}")
@@ -1454,7 +1800,6 @@ def main() -> None:
                 print()
                 continue
             raise
-        reports.append(report)
 
     if args.rank:
         print_ranked_summary(args.version, reports)

@@ -8,25 +8,112 @@ static TRKFramingState gTRKFramingState;
 
 void* gTRKInputPendingPtr;
 
-DSError TRKTerminateSerialHandler(void) {
-    return DS_NoError;
-}
+MessageBufferID TRKTestForPacket(void) {
+    s32 result;
+    s32 err;
+    u8 c;
+    s32 msgBufID;
+    TRKBuffer* buffer;
 
-DSError TRKInitializeSerialHandler(void) {
-    gTRKFramingState.msgBufID = -1;
-    gTRKFramingState.receiveState = DSRECV_Wait;
-    gTRKFramingState.isEscape = FALSE;
+    result = 0;
+    err = TRKReadUARTPoll(&c);
+    while (err == 0 && result == 0) {
+        if (gTRKFramingState.receiveState != DSRECV_InFrame) {
+            gTRKFramingState.isEscape = FALSE;
+        }
 
-    return DS_NoError;
-}
+        switch (gTRKFramingState.receiveState) {
+            case DSRECV_Wait:
+                if ((s8)c == 0x7E) {
+                    result = TRKGetFreeBuffer(&gTRKFramingState.msgBufID, &gTRKFramingState.buffer);
+                    gTRKFramingState.fcsType = 0;
+                    gTRKFramingState.receiveState = DSRECV_Found;
+                }
+                break;
 
-void TRKProcessInput(int bufferIdx) {
-    TRKEvent event;
+            case DSRECV_Found:
+                if ((s8)c == 0x7E) {
+                    break;
+                }
+                gTRKFramingState.receiveState = DSRECV_InFrame;
 
-    TRKConstructEvent(&event, NUBEVENT_Request);
-    gTRKFramingState.msgBufID = -1;
-    event.msgBufID = bufferIdx;
-    TRKPostEvent(&event);
+            case DSRECV_InFrame:
+                if ((s8)c == 0x7E) {
+                    BOOL packetComplete;
+
+                    if (gTRKFramingState.isEscape) {
+                        TRKStandardACK(gTRKFramingState.buffer, DSMSG_ReplyNAK, DSREPLY_EscapeError);
+                        if (gTRKFramingState.msgBufID != -1) {
+                            TRKReleaseBuffer(gTRKFramingState.msgBufID);
+                            gTRKFramingState.msgBufID = -1;
+                        }
+                        gTRKFramingState.buffer = NULL;
+                        gTRKFramingState.receiveState = DSRECV_Wait;
+                        break;
+                    }
+
+                    buffer = gTRKFramingState.buffer;
+                    if (buffer->length < 2) {
+                        TRKStandardACK(buffer, DSMSG_ReplyNAK, DSREPLY_PacketSizeError);
+                        if (gTRKFramingState.msgBufID != -1) {
+                            TRKReleaseBuffer(gTRKFramingState.msgBufID);
+                            gTRKFramingState.msgBufID = -1;
+                        }
+                        gTRKFramingState.buffer = NULL;
+                        gTRKFramingState.receiveState = DSRECV_Wait;
+                        packetComplete = FALSE;
+                    } else {
+                        buffer->position = 0;
+                        buffer->length--;
+                        packetComplete = TRUE;
+                    }
+
+                    if (packetComplete) {
+                        msgBufID = gTRKFramingState.msgBufID;
+                        gTRKFramingState.msgBufID = -1;
+                        gTRKFramingState.buffer = NULL;
+                        gTRKFramingState.receiveState = DSRECV_Wait;
+                        return msgBufID;
+                    }
+
+                    gTRKFramingState.receiveState = DSRECV_Wait;
+                } else {
+                    if (gTRKFramingState.isEscape) {
+                        c ^= 0x20;
+                        gTRKFramingState.isEscape = FALSE;
+                    } else if ((s8)c == 0x7D) {
+                        gTRKFramingState.isEscape = TRUE;
+                        break;
+                    }
+
+                    buffer = gTRKFramingState.buffer;
+                    if (buffer->position >= 0x880) {
+                        result = DS_MessageBufferOverflow;
+                    } else {
+                        buffer->data[buffer->position++] = c;
+                        buffer->length++;
+                        result = DS_NoError;
+                    }
+                    gTRKFramingState.fcsType += c;
+                }
+                break;
+
+            case DSRECV_FrameOverflow:
+                if ((s8)c == 0x7E) {
+                    if (gTRKFramingState.msgBufID != -1) {
+                        TRKReleaseBuffer(gTRKFramingState.msgBufID);
+                        gTRKFramingState.msgBufID = -1;
+                    }
+                    gTRKFramingState.buffer = NULL;
+                    gTRKFramingState.receiveState = DSRECV_Wait;
+                }
+                break;
+        }
+
+        err = TRKReadUARTPoll(&c);
+    }
+
+    return -1;
 }
 
 void TRKGetInput(void) {
@@ -53,101 +140,23 @@ void TRKGetInput(void) {
     }
 }
 
-MessageBufferID TRKTestForPacket(void) {
-    s32 result;
-    s32 err;
-    u8 c;
-    s32 msgBufID;
-    TRKBuffer* buffer;
+void TRKProcessInput(int bufferIdx) {
+    TRKEvent event;
 
-    result = 0;
-    err = TRKReadUARTPoll(&c);
-    while (err == 0 && result == 0) {
-        if (gTRKFramingState.receiveState != DSRECV_InFrame) {
-            gTRKFramingState.isEscape = FALSE;
-        }
+    TRKConstructEvent(&event, NUBEVENT_Request);
+    gTRKFramingState.msgBufID = -1;
+    event.msgBufID = bufferIdx;
+    TRKPostEvent(&event);
+}
 
-        switch (gTRKFramingState.receiveState) {
-            case DSRECV_Wait:
-                if (c == 0x7E) {
-                    result = TRKGetFreeBuffer(&gTRKFramingState.msgBufID, &gTRKFramingState.buffer);
-                    gTRKFramingState.fcsType = 0;
-                    gTRKFramingState.receiveState = DSRECV_Found;
-                }
-                break;
+DSError TRKInitializeSerialHandler(void) {
+    gTRKFramingState.msgBufID = -1;
+    gTRKFramingState.receiveState = DSRECV_Wait;
+    gTRKFramingState.isEscape = FALSE;
 
-            case DSRECV_Found:
-                if (c == 0x7E) {
-                    break;
-                }
-                gTRKFramingState.receiveState = DSRECV_InFrame;
+    return DS_NoError;
+}
 
-            case DSRECV_InFrame:
-                if (c == 0x7E) {
-                    if (gTRKFramingState.isEscape) {
-                        TRKStandardACK(gTRKFramingState.buffer, DSMSG_ReplyNAK, DSREPLY_EscapeError);
-                        if (gTRKFramingState.msgBufID != -1) {
-                            TRKReleaseBuffer(gTRKFramingState.msgBufID);
-                            gTRKFramingState.msgBufID = -1;
-                        }
-                        gTRKFramingState.buffer = NULL;
-                        gTRKFramingState.receiveState = DSRECV_Wait;
-                        break;
-                    }
-
-                    buffer = gTRKFramingState.buffer;
-                    if (buffer->length < 2) {
-                        TRKStandardACK(buffer, DSMSG_ReplyNAK, DSREPLY_PacketSizeError);
-                        if (gTRKFramingState.msgBufID != -1) {
-                            TRKReleaseBuffer(gTRKFramingState.msgBufID);
-                            gTRKFramingState.msgBufID = -1;
-                        }
-                        gTRKFramingState.buffer = NULL;
-                        gTRKFramingState.receiveState = DSRECV_Wait;
-                    } else {
-                        buffer->position = 0;
-                        buffer->length--;
-                        msgBufID = gTRKFramingState.msgBufID;
-                        gTRKFramingState.msgBufID = -1;
-                        gTRKFramingState.buffer = NULL;
-                        gTRKFramingState.receiveState = DSRECV_Wait;
-                        return msgBufID;
-                    }
-                } else {
-                    if (gTRKFramingState.isEscape) {
-                        c ^= 0x20;
-                        gTRKFramingState.isEscape = FALSE;
-                    } else if (c == 0x7D) {
-                        gTRKFramingState.isEscape = TRUE;
-                        break;
-                    }
-
-                    buffer = gTRKFramingState.buffer;
-                    if (buffer->position >= 0x880) {
-                        result = DS_MessageBufferOverflow;
-                    } else {
-                        buffer->data[buffer->position++] = c;
-                        buffer->length++;
-                        result = DS_NoError;
-                    }
-                    gTRKFramingState.fcsType += c;
-                }
-                break;
-
-            case DSRECV_FrameOverflow:
-                if (c == 0x7E) {
-                    if (gTRKFramingState.msgBufID != -1) {
-                        TRKReleaseBuffer(gTRKFramingState.msgBufID);
-                        gTRKFramingState.msgBufID = -1;
-                    }
-                    gTRKFramingState.buffer = NULL;
-                    gTRKFramingState.receiveState = DSRECV_Wait;
-                }
-                break;
-        }
-
-        err = TRKReadUARTPoll(&c);
-    }
-
-    return -1;
+DSError TRKTerminateSerialHandler(void) {
+    return DS_NoError;
 }

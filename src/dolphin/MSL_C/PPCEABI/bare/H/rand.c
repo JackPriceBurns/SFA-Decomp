@@ -2,12 +2,23 @@
 
 // rand.c from Runtime library
 
-u32 next = 1;
+extern u32 lbl_803DF090;
 
-u32 rand(void)
-{
-	next = 0x41C64E6D * next + 12345;
-	return (next >> 16) & 0x7FFF;
+asm u32 rand(void) {
+    nofralloc
+    lwz r0, lbl_803DF090
+    lis r3, 25
+    addi r3, r3, 0x660D
+    mullw r3, r0, r3
+    addis r3, r3, 0x3C6F
+    addi r0, r3, -3233
+    stw r0, lbl_803DF090
+    lwz r3, lbl_803DF090
+    blr
 }
 
-void srand(u32 seed) { next = seed; }
+asm void srand(register u32 seed) {
+    nofralloc
+    stw seed, lbl_803DF090
+    blr
+}
