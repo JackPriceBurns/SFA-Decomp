@@ -1514,10 +1514,14 @@ dolphin/dvd/fstload.c:
 	.sbss       start:0x803DEBD0 end:0x803DEBE0
 
 dolphin/vi/vi.c:
-	.text       start:0x8024C6A4 end:0x8024DFCC
+	.text       start:0x8024C6A4 end:0x8024E11C
+	.data       start:0x8032EA48 end:0x8032ED10
+	.bss        start:0x803AECC8 end:0x803AEE10
+	.sdata      start:0x803DD1E8 end:0x803DD1F0
+	.sbss       start:0x803DEBE0 end:0x803DEC30
 
 dolphin/pad/Padclamp.c:
-	.text       start:0x8024DFCC end:0x8024E4F8
+	.text       start:0x8024E11C end:0x8024E4F8
 
 dolphin/pad/Pad.c:
 	.text       start:0x8024E4F8 end:0x8024FE1C

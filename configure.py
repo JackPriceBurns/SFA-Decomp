@@ -516,15 +516,21 @@ config.libs = [
             Object(NonMatching, "dolphin/axfx/reverb_std.c"),
         ],
     ),
-    DolphinLib(
-        "vi",
-        [
+    {
+        "lib": "vi",
+        "mw_version": "GC/1.2.5n",
+        "cflags": [
+            *cflags_base,
+            "-use_lmw_stmw on",
+        ],
+        "progress_category": "sdk",
+        "objects": [
             Object(NonMatching, "dolphin/vi/vi.c"),
             Object(NonMatching, "dolphin/vi/gpioexi.c"),
             Object(NonMatching, "dolphin/vi/i2c.c"),
             Object(NonMatching, "dolphin/vi/initphilips.c"),
         ],
-    ),
+    },
     DolphinLib(
         "thp",
         [
