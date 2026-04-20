@@ -160,11 +160,14 @@ void GXInitFifoLimits(GXFifoObj* fifo, u32 hiWatermark, u32 loWatermark) {
 // NONMATCHING DEBUG
 void GXSetCPUFifo(GXFifoObj* fifo) {
     __GXFifoObj* realFifo = (__GXFifoObj*)fifo;
+    __GXFifoObj* gpFifo;
     u32 writePtr;
-    BOOL enabled = OSDisableInterrupts();
+    BOOL enabled;
 
+    enabled = OSDisableInterrupts();
+    gpFifo = GPFifo;
     CPUFifo = realFifo;
-    if (CPUFifo == GPFifo) {
+    if (realFifo == gpFifo) {
         GX_SET_PI_REG(3, (u32)realFifo->base & 0x3FFFFFFF);
         GX_SET_PI_REG(4, (u32)realFifo->top & 0x3FFFFFFF);
         writePtr = (u32)realFifo->wrPtr & 0x3FFFFFE0;
@@ -443,9 +446,12 @@ void GXEnableBreakPt(void* break_pt) {
 
 void GXDisableBreakPt(void) {
     BOOL enabled = OSDisableInterrupts();
+    u32* cpEnable;
 
-    gx->cpEnable &= ~0x2;
-    gx->cpEnable &= ~0x20;
+    cpEnable = &gx->cpEnable;
+    *cpEnable &= ~0x2;
+    cpEnable = &gx->cpEnable;
+    *cpEnable &= ~0x20;
     GX_SET_CP_REG(1, gx->cpEnable);
     __GXCurrentBP = NULL;
     OSRestoreInterrupts(enabled);
@@ -470,7 +476,9 @@ static void __GXFifoReadEnable(void) {
 }
 
 static void __GXFifoReadDisable(void) {
-    gx->cpEnable &= ~1;
+    u32* cpEnable = &gx->cpEnable;
+
+    *cpEnable &= ~1;
     GX_SET_CP_REG(1, gx->cpEnable);
 }
 
@@ -490,19 +498,33 @@ static void __GXFifoLink(u8 en) {
 }
 
 static void __GXWriteFifoIntEnable(u8 hiWatermarkEn, u8 loWatermarkEn) {
-    GXData* data = gx;
+    u32 reg;
+    u32* cpEnable;
 
-    data->cpEnable = (data->cpEnable & ~4) | ((u32)(u8)hiWatermarkEn << 2);
-    data->cpEnable = (data->cpEnable & ~8) | ((u32)(u8)loWatermarkEn << 3);
-    GX_SET_CP_REG(1, data->cpEnable);
+    cpEnable = &gx->cpEnable;
+    reg = *cpEnable;
+    reg = (reg & ~4) | ((u32)(u8)hiWatermarkEn << 2);
+    *cpEnable = reg;
+    cpEnable = &gx->cpEnable;
+    reg = *cpEnable;
+    reg = (reg & ~8) | ((u32)(u8)loWatermarkEn << 3);
+    *cpEnable = reg;
+    GX_SET_CP_REG(1, gx->cpEnable);
 }
 
 static void __GXWriteFifoIntReset(u8 hiWatermarkClr, u8 loWatermarkClr) {
-    GXData* data = gx;
+    u32 reg;
+    u32* cpClr;
 
-    data->cpClr = (data->cpClr & ~1) | (u32)(u8)hiWatermarkClr;
-    data->cpClr = (data->cpClr & ~2) | ((u32)(u8)loWatermarkClr << 1);
-    GX_SET_CP_REG(2, data->cpClr);
+    cpClr = &gx->cpClr;
+    reg = *cpClr;
+    reg = (reg & ~1) | (u32)(u8)hiWatermarkClr;
+    *cpClr = reg;
+    cpClr = &gx->cpClr;
+    reg = *cpClr;
+    reg = (reg & ~2) | ((u32)(u8)loWatermarkClr << 1);
+    *cpClr = reg;
+    GX_SET_CP_REG(2, gx->cpClr);
 }
 
 void __GXInsaneWatermark(void) {
