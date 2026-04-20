@@ -6,6 +6,9 @@
 
 #include "dolphin/gx/__gx.h"
 
+extern GXData* gx;
+#define __GXData gx
+
 extern GXDrawSyncCallback TokenCB_803DED58;
 extern GXDrawDoneCallback DrawDoneCB_803DED5C;
 extern u8 DrawDone_803DED60;
@@ -16,29 +19,36 @@ extern OSThreadQueue FinishQueue_803DED64;
 #define DrawDone DrawDone_803DED60
 #define FinishQueue FinishQueue_803DED64
 
-extern GXData* gx;
-extern void fn_80240A74(void);
-
 void GXSetMisc(GXMiscToken token, u32 val) {
-    switch (token) {
-    case GX_MT_XF_FLUSH:
-        gx->vNum = val;
-        gx->vNumNot = !gx->vNum;
-        gx->bpSentNot = 1;
-
-        if (gx->vNum != 0) {
-            gx->dirtyState |= 8;
-        }
-        break;
-    case GX_MT_DL_SAVE_CONTEXT:
-        gx->dlSaveContext = (val != 0);
-        break;
+    if (token == GX_MT_XF_FLUSH) {
+        goto case1;
     }
+    if (token < GX_MT_XF_FLUSH) {
+        goto out;
+    }
+    if (token >= 3) {
+        goto out;
+    }
+    goto case2;
+
+case1:
+    gx->vNum = val;
+    gx->vNumNot = !gx->vNum;
+    gx->bpSentNot = 1;
+
+    if (gx->vNum != 0) {
+        gx->dirtyState |= 8;
+    }
+    goto out;
+
+case2:
+    gx->dlSaveContext = (val != 0);
+out:;
 }
 
 void GXFlush(void) {
     CHECK_GXBEGIN(270, "GXFlush");
-    if (gx->dirtyState) {
+    if (__GXData->dirtyState) {
         __GXSetDirtyState();
     }
     
@@ -51,7 +61,7 @@ void GXFlush(void) {
     GX_WRITE_U32(0);
     GX_WRITE_U32(0);
 
-    fn_80240A74();
+    PPCSync();
 }
 
 void GXResetWriteGatherPipe(void) {
@@ -90,7 +100,7 @@ static void __GXAbortWaitPECopyDone_80258A94(void) {
 }
 
 void __GXAbort(void) {
-    if (gx->abtWaitPECopy && GXGetGPFifo() != (GXFifoObj*)NULL) {
+    if (__GXData->abtWaitPECopy && GXGetGPFifo() != (GXFifoObj*)NULL) {
         __GXAbortWaitPECopyDone_80258A94();
     }
 
@@ -106,7 +116,7 @@ void GXAbortFrame(void) {
     if (GXGetGPFifo() != (GXFifoObj*)NULL) {
         __GXCleanGPFifo();
         __GXInitRevisionBits();
-        gx->dirtyState = 0;
+        __GXData->dirtyState = 0;
         GXFlush();
     }
 }
@@ -125,7 +135,7 @@ void GXSetDrawSync(u16 token) {
     GX_WRITE_RAS_REG(reg);
     GXFlush();
     OSRestoreInterrupts(enabled);
-    gx->bpSentNot = 0;
+    __GXData->bpSentNot = 0;
 }
 
 u16 GXReadDrawSync(void) {
@@ -166,8 +176,8 @@ void GXDrawDone(void) {
 
 void GXPixModeSync(void) {
     CHECK_GXBEGIN(601, "GXPixModeSync");
-    GX_WRITE_RAS_REG(gx->peCtrl);
-    gx->bpSentNot = 0;
+    GX_WRITE_RAS_REG(__GXData->peCtrl);
+    __GXData->bpSentNot = 0;
 }
 
 void GXTexModeSync(void) {
@@ -176,14 +186,14 @@ void GXTexModeSync(void) {
     CHECK_GXBEGIN(625, "GXTexModeSync");
     reg = 0x63000000;
     GX_WRITE_RAS_REG(reg);
-    gx->bpSentNot = 0;
+    __GXData->bpSentNot = 0;
 }
 
 #if DEBUG
 void __GXBypass(u32 reg) {
     CHECK_GXBEGIN(647, "__GXBypass");
     GX_WRITE_RAS_REG(reg);
-    gx->bpSentNot = 0;
+    __GXData->bpSentNot = 0;
 }
 
 u16 __GXReadPEReg(u32 reg) {

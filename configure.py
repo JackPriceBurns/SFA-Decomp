@@ -344,7 +344,7 @@ config.libs = [
             Object(MatchingFor("GSAE01"), "dolphin/os/OSRtc.c"),
             Object(MatchingFor("GSAE01"), "dolphin/os/OSStopwatch.c"),
             Object(MatchingFor("GSAE01"), "dolphin/os/OSSync.c"),
-            Object(NonMatching, "dolphin/os/OSThread.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/os/OSThread.c", extra_cflags=["-use_lmw_stmw", "on"]),
             Object(MatchingFor("GSAE01"), "dolphin/os/OSTime.c"),
             Object(MatchingFor("GSAE01"), "dolphin/os/__ppc_eabi_init.c"),
         ],
@@ -377,7 +377,7 @@ config.libs = [
         [
             Object(NonMatching, "dolphin/dvd/dvdlow.c"),
             Object(NonMatching, "dolphin/dvd/dvdfs.c"),
-            Object(NonMatching, "dolphin/dvd/dvd.c"),
+            Object(NonMatching, "dolphin/dvd/dvd.c", extra_cflags=["-str", "pool"]),
             Object(MatchingFor("GSAE01"), "dolphin/dvd/dvdqueue.c"),
             Object(MatchingFor("GSAE01"), "dolphin/dvd/dvderror.c"),
             Object(MatchingFor("GSAE01"), "dolphin/dvd/fstload.c"),
@@ -423,7 +423,7 @@ config.libs = [
     DolphinLib(
         "si",
         [
-            Object(NonMatching, "dolphin/si/SIBios.c"),
+            Object(NonMatching, "dolphin/si/SIBios.c", extra_cflags=["-str", "reuse,pool,readonly"]),
             Object(MatchingFor("GSAE01"), "dolphin/si/SISamplingRate.c"),
         ],
     ),
@@ -470,10 +470,10 @@ config.libs = [
             Object(MatchingFor("GSAE01"), "dolphin/gx/GXTexture.c"),
             Object(NonMatching, "dolphin/gx/GXBump.c"),
             Object(NonMatching, "dolphin/gx/GXAttr.c"),
-            Object(NonMatching, "dolphin/gx/GXDisplayList.c"),
+            Object(NonMatching, "dolphin/gx/GXDisplayList.c", extra_cflags=["-sdata", "16"]),
             Object(NonMatching, "dolphin/gx/GXFrameBuf.c"),
             Object(NonMatching, "dolphin/gx/GXDraw.c"),
-            Object(NonMatching, "dolphin/gx/GXPerf.c"),
+            Object(MatchingFor("GSAE01"), "dolphin/gx/GXPerf.c"),
             Object(NonMatching, "dolphin/gx/GXPixel.c"),
             Object(NonMatching, "dolphin/gx/GXSave.c"),
             Object(MatchingFor("GSAE01"), "dolphin/gx/GXStubs.c"),
@@ -516,15 +516,21 @@ config.libs = [
             Object(NonMatching, "dolphin/axfx/reverb_std.c"),
         ],
     ),
-    DolphinLib(
-        "vi",
-        [
+    {
+        "lib": "vi",
+        "mw_version": "GC/1.2.5n",
+        "cflags": [
+            *cflags_base,
+            "-use_lmw_stmw on",
+        ],
+        "progress_category": "sdk",
+        "objects": [
             Object(NonMatching, "dolphin/vi/vi.c"),
             Object(NonMatching, "dolphin/vi/gpioexi.c"),
             Object(NonMatching, "dolphin/vi/i2c.c"),
             Object(NonMatching, "dolphin/vi/initphilips.c"),
         ],
-    ),
+    },
     DolphinLib(
         "thp",
         [
@@ -532,12 +538,15 @@ config.libs = [
             Object(MatchingFor("GSAE01"), "dolphin/thp/THPAudio.c"),
         ],
     ),
-    DolphinLib(
-        "OdemuExi2",
-        [
+    {
+        "lib": "OdemuExi2",
+        "mw_version": "GC/1.2.5",
+        "cflags": cflags_base,
+        "progress_category": "sdk",
+        "objects": [
             Object(NonMatching, "dolphin/OdemuExi2/DebuggerDriver.c"),
         ],
-    ),
+    },
     DolphinLib(
         "odenotstub",
         [
@@ -609,13 +618,13 @@ config.libs = [
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/alloc.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/ansi_files.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/ansi_fp.c"),
-            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/buffer_io.c"),
+            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/buffer_io.c", mw_version="GC/1.3"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/direct_io.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/file_io.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/FILE_POS.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/mbstring.c"),
-            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/mem.c"),
-            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/mem_funcs.c"),
+            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/mem.c", mw_version="GC/1.3"),
+            Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/mem_funcs.c", mw_version="GC/1.3"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/misc_io.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/printf.c"),
             Object(NonMatching, "dolphin/MSL_C/PPCEABI/bare/H/string.c"),

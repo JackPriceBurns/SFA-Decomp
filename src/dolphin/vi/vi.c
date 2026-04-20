@@ -8,11 +8,6 @@
 #include "dolphin/os/__os.h"
 #include "dolphin/vi/__vi.h"
 
-#ifdef DEBUG
-const char* __VIVersion = "<< Dolphin SDK - VI\tdebug build: Apr  7 2004 03:55:59 (0x2301) >>";
-#else
-const char* __VIVersion = "<< Dolphin SDK - VI\trelease build: Sep  5 2002 05:33:13 (0x2301) >>";
-#endif
 
 typedef struct {
     u8 equ;
@@ -74,9 +69,7 @@ typedef struct {
     VITiming* timing;
 } SomeVIStruct;
 
-static BOOL IsInitialized;
 static volatile u32 retraceCount;
-
 static volatile u32 flushFlag;
 static OSThreadQueue retraceQueue;
 static void (*PreCB)(u32);
@@ -87,17 +80,17 @@ static s16 displayOffsetV;
 static volatile u32 changeMode;
 static volatile u64 changed;
 static volatile u32 shdwChangeMode;
-static volatile u16 regs[59];
+static volatile u16 regs[60];
 static volatile u64 shdwChanged;
 static VITiming* CurrTiming;
 static u32 CurrTvMode;
 static u32 NextBufAddr;
 static u32 CurrBufAddr;
-static volatile u16 shdwRegs[59];
+static volatile u16 shdwRegs[60];
 
 #define MARK_CHANGED(index) (changed |= 1LL << (63 - (index)))
 
-static VITiming timing[10] = {
+static VITiming timing[8] = {
     { 6, 240, 24, 25, 3, 2, 12, 13, 12, 13, 520, 519, 520, 519, 525, 429, 64, 71, 105, 162, 373, 122, 412 },
     { 6, 240, 24, 24, 4, 4, 12, 12, 12, 12, 520, 520, 520, 520, 526, 429, 64, 71, 105, 162, 373, 122, 412 },
     { 5, 287, 35, 36, 1, 0, 13, 12, 11, 10, 619, 618, 617, 620, 625, 432, 64, 75, 106, 172, 380, 133, 420 },
@@ -105,9 +98,7 @@ static VITiming timing[10] = {
     { 6, 240, 24, 25, 3, 2, 16, 15, 14, 13, 518, 517, 516, 519, 525, 429, 64, 78, 112, 162, 373, 122, 412 },
     { 6, 240, 24, 24, 4, 4, 16, 14, 16, 14, 518, 520, 518, 520, 526, 429, 64, 78, 112, 162, 373, 122, 412 },
     { 12, 480, 48, 48, 6, 6, 24, 24, 24, 24, 1038, 1038, 1038, 1038, 1050, 429, 64, 71, 105, 162, 373, 122, 412 },
-    { 12, 480, 44, 44, 10, 10, 24, 24, 24, 24, 1038, 1038, 1038, 1038, 1050, 429, 64, 71, 105, 168, 379, 122, 412 },
-    { 6, 241, 24, 25, 1, 0, 12, 13, 12, 13, 520, 519, 520, 519, 525, 429, 64, 71, 105, 159, 370, 122, 412 },
-    { 12, 480, 48, 48, 6, 6, 24, 24, 24, 24, 1038, 1038, 1038, 1038, 1050, 429, 64, 71, 105, 180, 391, 122, 412 }
+    { 12, 480, 44, 44, 10, 10, 24, 24, 24, 24, 1038, 1038, 1038, 1038, 1050, 429, 64, 71, 105, 168, 379, 122, 412 }
 };
 
 static u16 taps[25] = {
@@ -170,7 +161,6 @@ static int VISetRegs(void) {
         shdwChangeMode = 0;
         CurrTiming = HorVer.timing;
         CurrTvMode = HorVer.tv;
-        CurrBufAddr = NextBufAddr;
         return 1;
     }
 
@@ -288,11 +278,9 @@ static VITiming* getTiming(VITVMode mode) {
     case VI_TVMODE_MPAL_INT:        return &timing[4];
     case VI_TVMODE_MPAL_DS:         return &timing[5];
     case VI_TVMODE_NTSC_PROG:       return &timing[6];
-    case 3:                         return &timing[7];
+    case VI_TVMODE_NTSC_3D:         return &timing[7];
     case VI_TVMODE_DEBUG_PAL_INT:   return &timing[2];
     case VI_TVMODE_DEBUG_PAL_DS:    return &timing[3];
-    case 24:                        return &timing[8];
-    case 26:                        return &timing[9];
     default:
         return NULL;
     }
@@ -347,7 +335,7 @@ void __VIInit(VITVMode mode) {
     __VIRegs[25] = (u16)(u32)hct;
     __VIRegs[24] = vct | 0x1000;
 
-    if (mode != VI_TVMODE_NTSC_PROG && mode != VI_TVMODE_NTSC_3D && mode != VI_TVMODE_GCA_PROG) {
+    if (mode != VI_TVMODE_NTSC_PROG && mode != VI_TVMODE_NTSC_3D) {
         __VIRegs[1] = (ds << 2) | 1 | (tv << 8);
         __VIRegs[54] = 0;
         return;
@@ -392,16 +380,8 @@ void VIInit(void) {
     u16 dspCfg;
     u32 value;
     u32 tv;
-    u32 tvInBootrom;
 
-    if (IsInitialized) {
-        return;
-    }
-
-    OSRegisterVersion(__VIVersion);
-    IsInitialized = TRUE;
-
-    encoderType = getEncoderType();
+    encoderType = 1;
     if (!(__VIRegs[1] & 1)) {
         __VIInit(VI_TVMODE_NTSC_INT);
     }
@@ -430,14 +410,9 @@ void VIInit(void) {
     __VIRegs[56] = 0x280;
     ImportAdjustingValues();
 
-    tvInBootrom = *(u32*)OSPhysicalToCached(0xCC);
     dspCfg = __VIRegs[1];
     HorVer.nonInter = (s32) ((dspCfg >> 2U) & 1);
     HorVer.tv = ((u32)(dspCfg) & 0x300) >> 8;
-
-    if (tvInBootrom == VI_PAL && HorVer.tv == VI_NTSC) {
-        HorVer.tv = VI_EURGB60;
-    }
 
     tv = (HorVer.tv == 3) ? 0 : HorVer.tv;
     HorVer.timing = getTiming((tv << 2) + HorVer.nonInter);
@@ -655,7 +630,7 @@ static void setVerticalRegs(u16 dispPosY, u16 dispSizeY, u8 equ, u16 acv, u16 pr
     u16 c;
     u16 d;
 
-    if (regs[54] & 1) {
+    if (equ >= 10) {
         c = 1;
         d = 2;
     } else {
@@ -760,26 +735,6 @@ void VIConfigure(const GXRenderModeObj* rm) {
         PrintDebugPalCaution();
     }
 
-    switch (tvInBootrom) {
-    case VI_MPAL:
-    case VI_NTSC:
-    case VI_GCA:
-        if (tvInGame == VI_NTSC || tvInGame == VI_MPAL || tvInGame == VI_GCA) {
-            break;
-        }
-        goto panic;
-    case VI_PAL:
-    case VI_EURGB60:
-        if (tvInGame == VI_PAL || tvInGame == VI_EURGB60) {
-            break;
-        }
-    default:
-    panic:
-        OSPanic(__FILE__, 1884,
-                "VIConfigure(): Tried to change mode from (%d) to (%d), which is forbidden\n",
-                tvInBootrom, tvInGame);
-    }
-
     if ((tvInGame == VI_NTSC) || (tvInGame == VI_MPAL)) {
         HorVer.tv = tvInBootrom;
     } else {
@@ -827,7 +782,7 @@ void VIConfigure(const GXRenderModeObj* rm) {
 
     regDspCfg = (((u32)(regDspCfg)) & ~0x00000008) | (((u32)(HorVer.threeD)) << 3);
 
-    if ((HorVer.tv == VI_DEBUG_PAL) || (HorVer.tv == VI_EURGB60) || (HorVer.tv == VI_GCA)) {
+    if ((HorVer.tv == VI_DEBUG_PAL) || (HorVer.tv == VI_EURGB60)) {
         regDspCfg = (((u32)(regDspCfg)) & ~0x00000300);
     } else {
         regDspCfg = (((u32)(regDspCfg)) & ~0x00000300) | (((u32)(HorVer.tv)) << 8);
@@ -838,8 +793,7 @@ void VIConfigure(const GXRenderModeObj* rm) {
 
     regDspCfg = regs[54];
     if (rm->viTVmode == VI_TVMODE_NTSC_PROG ||
-        rm->viTVmode == VI_TVMODE_NTSC_3D ||
-        rm->viTVmode == VI_TVMODE_GCA_PROG) {
+        rm->viTVmode == VI_TVMODE_NTSC_3D) {
         regDspCfg = (u32)(regDspCfg & ~0x1) | 1;
     } else {
         regDspCfg = (u32)(regDspCfg & ~0x1);
@@ -908,7 +862,6 @@ void VIFlush(void) {
     }
 
     flushFlag = 1;
-    NextBufAddr = HorVer.bufAddr;
     OSRestoreInterrupts(enabled);
 }
 
@@ -1045,7 +998,6 @@ u32 VIGetTvFormat(void) {
     switch (CurrTvMode) {
     case VI_NTSC:
     case VI_DEBUG:
-    case 6:
         format = VI_NTSC;
         break;
     case VI_PAL:

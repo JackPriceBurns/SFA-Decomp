@@ -3,6 +3,28 @@
 
 #include "dolphin/gx/__gx.h"
 
+#pragma fp_contract off
+
+extern GXData* gx;
+#define __GXData gx
+
+const f32 lbl_803E8318 = 0.0f;
+const f32 lbl_803E831C = 90.0f;
+const f32 lbl_803E8320 = 3.1415927f;
+const f32 lbl_803E8324 = 180.0f;
+const f32 lbl_803E8328 = -1000.0f;
+const f32 lbl_803E832C = 1000.0f;
+const f32 lbl_803E8330 = 1.0f;
+const f32 lbl_803E8334 = 2.0f;
+const f32 lbl_803E8338 = -1.0f;
+const f32 lbl_803E833C = -4.0f;
+const f32 lbl_803E8340 = 4.0f;
+const f32 lbl_803E8344 = -2.0f;
+const f32 lbl_803E8348 = 0.5f;
+const double lbl_803E8350 = 0.5;
+const double lbl_803E8358 = 3.0;
+const f32 lbl_803E8360[2] = {1048576.0f, 0.0f};
+
 extern f32 cosf(f32);
 
 static inline float sqrtf(float x) {
@@ -80,9 +102,9 @@ void GXGetLightAttnK(const GXLightObj* lt_obj, f32* k0, f32* k1, f32* k2) {
 }
 
 void GXInitLightSpot(GXLightObj* lt_obj, f32 cutoff, GXSpotFn spot_func) {
-    f32 a0, a1, a2;
-    f32 d;
     f32 cr;
+    f32 d;
+    f32 a0, a1, a2;
     __GXLightObjInt_struct* obj;
 
     ASSERTMSGLINE(198, lt_obj != NULL, "Light Object Pointer is null");
@@ -162,8 +184,8 @@ void GXInitLightDistAttn(GXLightObj* lt_obj, f32 ref_dist, f32 ref_br, GXDistAtt
         break;
     case GX_DA_MEDIUM:
         k0 = 1.0f;
-        k1 = (1.0f - ref_br) / (2.0f * ref_br * ref_dist);
-        k2 = (1.0f - ref_br) / (2.0f * ref_br * ref_dist * ref_dist);
+        k1 = 0.5f * (1.0f - ref_br) / (ref_br * ref_dist);
+        k2 = 0.5f * (1.0f - ref_br) / (ref_br * ref_dist * ref_dist);
         break;
     case GX_DA_STEEP:
         k0 = 1.0f;
@@ -229,9 +251,9 @@ void GXInitSpecularDir(GXLightObj* lt_obj, f32 nx, f32 ny, f32 nz) {
     obj->ldir[0] = vx * mag;
     obj->ldir[1] = vy * mag;
     obj->ldir[2] = vz * mag;
-    obj->lpos[0] = nx * -1.0e18f;
-    obj->lpos[1] = ny * -1.0e18f;
-    obj->lpos[2] = nz * -1.0e18f;
+    obj->lpos[0] = vx * 1048576.0f;
+    obj->lpos[1] = vy * 1048576.0f;
+    obj->lpos[2] = -nz * 1048576.0f;
 }
 
 void GXInitLightColor(GXLightObj* lt_obj, GXColor color) {
@@ -241,7 +263,7 @@ void GXInitLightColor(GXLightObj* lt_obj, GXColor color) {
     obj = (__GXLightObjInt_struct*)lt_obj;
     CHECK_GXBEGIN(463, "GXInitLightColor");
 
-    *(u32*)&obj->Color = *(u32*)&color;
+    obj->Color = ((u32)color.r << 24) | ((u32)color.g << 16) | ((u32)color.b << 8) | (u32)color.a;
 }
 
 #if DEBUG
@@ -273,7 +295,7 @@ static inline u32 ConvLightID2Num(GXLightID id) {
     case GX_LIGHT5: return 5;
     case GX_LIGHT6: return 6;
     case GX_LIGHT7: return 7;
-    default:        return 8;
+    default:        return 0;
     }
 }
 
@@ -315,39 +337,30 @@ void GXLoadLightObjImm(const GXLightObj* lt_obj, GXLightID light) {
     obj = (__GXLightObjInt_struct*)lt_obj;
     CHECK_GXBEGIN(569, "GXLoadLightObjImm");
 
-#if DEBUG
     idx = ConvLightID2Num(light);
-#else
-    idx = 31 - __cntlzw(light);
-#endif
 
     ASSERTMSGLINE(575, idx < 8, "GXLoadLightObjImm: Invalid Light Id");
-    idx &= 7;
 
     addr = idx * 0x10 + 0x600;
     GX_WRITE_U8(0x10);
     GX_WRITE_U32(addr | 0xF0000);
 
-#if DEBUG
-    WRITE_SOME_LIGHT_REG1(0, addr);
-    WRITE_SOME_LIGHT_REG1(0, addr + 1);
-    WRITE_SOME_LIGHT_REG1(0, addr + 2);
-    WRITE_SOME_LIGHT_REG1(obj->Color, addr + 3);
-    WRITE_SOME_LIGHT_REG2(obj->a[0], addr + 4);
-    WRITE_SOME_LIGHT_REG2(obj->a[1], addr + 5);
-    WRITE_SOME_LIGHT_REG2(obj->a[2], addr + 6);
-    WRITE_SOME_LIGHT_REG2(obj->k[0], addr + 7);
-    WRITE_SOME_LIGHT_REG2(obj->k[1], addr + 8);
-    WRITE_SOME_LIGHT_REG2(obj->k[2], addr + 9);
-    WRITE_SOME_LIGHT_REG2(obj->lpos[0], addr + 10);
-    WRITE_SOME_LIGHT_REG2(obj->lpos[1], addr + 11);
-    WRITE_SOME_LIGHT_REG2(obj->lpos[2], addr + 12);
-    WRITE_SOME_LIGHT_REG2(obj->ldir[0], addr + 13);
-    WRITE_SOME_LIGHT_REG2(obj->ldir[1], addr + 14);
-    WRITE_SOME_LIGHT_REG2(obj->ldir[2], addr + 15);
-#else
-    PushLight(lt_obj, (void*)GXFIFO_ADDR);
-#endif
+    GX_WRITE_U32(0);
+    GX_WRITE_U32(0);
+    GX_WRITE_U32(0);
+    GX_WRITE_U32(obj->Color);
+    GX_WRITE_F32(obj->a[0]);
+    GX_WRITE_F32(obj->a[1]);
+    GX_WRITE_F32(obj->a[2]);
+    GX_WRITE_F32(obj->k[0]);
+    GX_WRITE_F32(obj->k[1]);
+    GX_WRITE_F32(obj->k[2]);
+    GX_WRITE_F32(obj->lpos[0]);
+    GX_WRITE_F32(obj->lpos[1]);
+    GX_WRITE_F32(obj->lpos[2]);
+    GX_WRITE_F32(obj->ldir[0]);
+    GX_WRITE_F32(obj->ldir[1]);
+    GX_WRITE_F32(obj->ldir[2]);
 
     __GXData->bpSentNot = 1;
 }
@@ -363,12 +376,16 @@ void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color) {
     switch (chan) {
     case GX_COLOR0:
         reg = __GXData->ambColor[GX_COLOR0] & 0xFF;
-        reg |= GXCOLOR_AS_U32(amb_color) & 0xFFFFFF00;
+        SET_REG_FIELD(0, reg, 8, 8, amb_color.b);
+        SET_REG_FIELD(0, reg, 8, 16, amb_color.g);
+        SET_REG_FIELD(0, reg, 8, 24, amb_color.r);
         colIdx = 0;
         break;
     case GX_COLOR1:
         reg = __GXData->ambColor[GX_COLOR1] & 0xFF;
-        reg |= GXCOLOR_AS_U32(amb_color) & 0xFFFFFF00;
+        SET_REG_FIELD(0, reg, 8, 8, amb_color.b);
+        SET_REG_FIELD(0, reg, 8, 16, amb_color.g);
+        SET_REG_FIELD(0, reg, 8, 24, amb_color.r);
         colIdx = 1;
         break;
     case GX_ALPHA0:
@@ -380,11 +397,11 @@ void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color) {
         colIdx = 1;
         break;
     case GX_COLOR0A0:
-        reg = GXCOLOR_AS_U32(amb_color);
+        reg = (u32)amb_color.a | ((u32)amb_color.b << 8) | ((u32)amb_color.g << 16) | ((u32)amb_color.r << 24);
         colIdx = 0;
         break;
     case GX_COLOR1A1:
-        reg = GXCOLOR_AS_U32(amb_color);
+        reg = (u32)amb_color.a | ((u32)amb_color.b << 8) | ((u32)amb_color.g << 16) | ((u32)amb_color.r << 24);
         colIdx = 1;
         break;
     default:
@@ -406,12 +423,16 @@ void GXSetChanMatColor(GXChannelID chan, GXColor mat_color) {
     switch (chan) {
     case GX_COLOR0:
         reg = __GXData->matColor[GX_COLOR0] & 0xFF;
-        reg |= GXCOLOR_AS_U32(mat_color) & 0xFFFFFF00;
+        SET_REG_FIELD(0, reg, 8, 8, mat_color.b);
+        SET_REG_FIELD(0, reg, 8, 16, mat_color.g);
+        SET_REG_FIELD(0, reg, 8, 24, mat_color.r);
         colIdx = 0;
         break;
     case GX_COLOR1:
         reg = __GXData->matColor[GX_COLOR1] & 0xFF;
-        reg |= GXCOLOR_AS_U32(mat_color) & 0xFFFFFF00;
+        SET_REG_FIELD(0, reg, 8, 8, mat_color.b);
+        SET_REG_FIELD(0, reg, 8, 16, mat_color.g);
+        SET_REG_FIELD(0, reg, 8, 24, mat_color.r);
         colIdx = 1;
         break;
     case GX_ALPHA0:
@@ -423,11 +444,11 @@ void GXSetChanMatColor(GXChannelID chan, GXColor mat_color) {
         colIdx = 1;
         break;
     case GX_COLOR0A0:
-        reg = GXCOLOR_AS_U32(mat_color);
+        reg = (u32)mat_color.a | ((u32)mat_color.b << 8) | ((u32)mat_color.g << 16) | ((u32)mat_color.r << 24);
         colIdx = 0;
         break;
     case GX_COLOR1A1:
-        reg = GXCOLOR_AS_U32(mat_color);
+        reg = (u32)mat_color.a | ((u32)mat_color.b << 8) | ((u32)mat_color.g << 16) | ((u32)mat_color.r << 24);
         colIdx = 1;
         break;
     default:
@@ -441,19 +462,19 @@ void GXSetChanMatColor(GXChannelID chan, GXColor mat_color) {
 }
 
 void GXSetNumChans(u8 nChans) {
+    u32* reg;
     u32 n;
-    GXData* data;
 
     CHECK_GXBEGIN(857, "GXSetNumChans");
     ASSERTMSGLINE(858, nChans <= 2, "GXSetNumChans: nChans > 2");
 
-    data = __GXData;
     n = nChans;
-    data->genMode = (data->genMode & ~0x70) | (n << 4);
+    reg = &__GXData->genMode;
+    *reg = (*reg & ~0x70U) | (n << 4);
     GX_WRITE_U8(0x10);
     GX_WRITE_U32(0x1009);
     GX_WRITE_U32(n);
-    data->dirtyState |= 4;
+    __GXData->dirtyState |= 4;
 }
 
 void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src, GXColorSrc mat_src, u32 light_mask, GXDiffuseFn diff_fn, GXAttnFn attn_fn) {
@@ -464,29 +485,44 @@ void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src, GXColorS
 
     ASSERTMSGLINE(895, chan >= GX_COLOR0 && chan <= GX_COLOR1A1, "GXSetChanCtrl: Invalid Channel Id");
 
-#if DEBUG
     if (chan == GX_COLOR0A0)
         idx = 0;
     else if (chan == GX_COLOR1A1)
         idx = 1;
     else
         idx = chan;
-#else
-    idx = chan & 0x3;
-#endif
 
     reg = (((u32)enable & 0xFF) << 1) | (u32)mat_src;
-    reg = (reg & 0xFFFFFFBF) | ((u32)amb_src << 6);
 
-    if (attn_fn == GX_AF_SPEC) {
-        diff_fn = GX_DF_NONE;
+    {
+        u32 b0, b1, b2, b3, b4, b5, b6, b7;
+        b0 = (light_mask & (1u << 0)) != 0;
+        b1 = (light_mask & (1u << 1)) != 0;
+        b2 = (light_mask & (1u << 2)) != 0;
+        b3 = (light_mask & (1u << 3)) != 0;
+        b4 = (light_mask & (1u << 4)) != 0;
+        b5 = (light_mask & (1u << 5)) != 0;
+        b6 = (light_mask & (1u << 6)) != 0;
+        b7 = (light_mask & (1u << 7)) != 0;
+
+        SET_REG_FIELD(0, reg, 2, 6, amb_src);
+        SET_REG_FIELD(0, reg, 1, 2, b0);
+        SET_REG_FIELD(0, reg, 1, 3, b1);
+        SET_REG_FIELD(0, reg, 1, 4, b2);
+        SET_REG_FIELD(0, reg, 1, 5, b3);
+
+        if (attn_fn == GX_AF_SPEC) {
+            diff_fn = GX_DF_NONE;
+        }
+
+        SET_REG_FIELD(0, reg, 2, 7, diff_fn);
+        SET_REG_FIELD(0, reg, 1, 9, attn_fn != GX_AF_NONE);
+        SET_REG_FIELD(0, reg, 1, 10, attn_fn != GX_AF_SPEC);
+        SET_REG_FIELD(0, reg, 1, 11, b4);
+        SET_REG_FIELD(0, reg, 1, 12, b5);
+        SET_REG_FIELD(0, reg, 1, 13, b6);
+        SET_REG_FIELD(0, reg, 1, 14, b7);
     }
-
-    reg = (reg & 0xFFFFFE7F) | ((u32)diff_fn << 7);
-    reg = (reg & 0xFFFFFDFF) | ((u32)(attn_fn != GX_AF_NONE) << 9);
-    reg = (reg & 0xFFFFFBFF) | ((u32)(attn_fn != GX_AF_SPEC) << 10);
-    reg = (reg & 0xFFFFFFC3) | ((light_mask & 0x0F) << 2);
-    reg = (reg & 0xFFFF87FF) | ((light_mask & 0xF0) << 7);
 
     GX_WRITE_XF_REG(idx + 14, reg);
     

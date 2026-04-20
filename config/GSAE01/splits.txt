@@ -1392,6 +1392,8 @@ dolphin/base/PPCArch.c:
 
 dolphin/os/OS.c:
 	.text       start:0x80240AD0 end:0x8024142C
+	.bss        start:0x803ADF80 end:0x803ADFD0
+	.sbss       start:0x803DEA58 end:0x803DEA88
 
 dolphin/os/OSAlarm.c:
 	.text       start:0x8024142C end:0x80241AD8
@@ -1445,6 +1447,7 @@ dolphin/os/OSReboot.c:
 
 dolphin/os/OSReset.c:
 	.text       start:0x80244E64 end:0x80245248
+	.sbss       start:0x803DEAE0 end:0x803DEAEC
 
 dolphin/os/OSResetSW.c:
 	.text       start:0x80245248 end:0x802455D4
@@ -1461,6 +1464,8 @@ dolphin/os/OSSync.c:
 
 dolphin/os/OSThread.c:
 	.text       start:0x802463B4 end:0x802473B4
+	.bss        start:0x803AE098 end:0x803AEA80
+	.sbss       start:0x803DEB08 end:0x803DEB18
 
 dolphin/os/OSTime.c:
 	.text       start:0x802473B4 end:0x80247438
@@ -1512,10 +1517,14 @@ dolphin/dvd/fstload.c:
 	.sbss       start:0x803DEBD0 end:0x803DEBE0
 
 dolphin/vi/vi.c:
-	.text       start:0x8024C6A4 end:0x8024DFCC
+	.text       start:0x8024C6A4 end:0x8024E11C
+	.data       start:0x8032EA48 end:0x8032ED10
+	.bss        start:0x803AECC8 end:0x803AEE10
+	.sdata      start:0x803DD1E8 end:0x803DD1F0
+	.sbss       start:0x803DEBE0 end:0x803DEC30
 
 dolphin/pad/Padclamp.c:
-	.text       start:0x8024DFCC end:0x8024E4F8
+	.text       start:0x8024E11C end:0x8024E4F8
 
 dolphin/pad/Pad.c:
 	.text       start:0x8024E4F8 end:0x8024FE1C
@@ -1541,6 +1550,9 @@ dolphin/dsp/dsp_task.c:
 
 dolphin/si/SIBios.c:
 	.text       start:0x80252104 end:0x802537E4
+	.data       start:0x8032EE98 end:0x8032EF68
+	.bss        start:0x803AEE60 end:0x803AF060
+	.sbss       start:0x803DED00 end:0x803DED08
 
 dolphin/si/SISamplingRate.c:
 	.text       start:0x802537E4 end:0x802538EC
@@ -1558,9 +1570,12 @@ dolphin/gx/GXInit.c:
 
 dolphin/gx/GXFifo.c:
 	.text       start:0x80256520 end:0x80256F84
+	.sbss       start:0x803DED38 end:0x803DED58
 
 dolphin/gx/GXAttr.c:
 	.text       start:0x80256F84 end:0x8025898C
+	.data       start:0x8032F000 end:0x8032F274
+	.sdata      start:0x803DD218 end:0x803DD228
 
 dolphin/gx/GXMisc.c:
 	.text       start:0x8025898C end:0x80258F60
@@ -1599,9 +1614,11 @@ dolphin/gx/GXDisplayList.c:
 
 dolphin/gx/GXTransform.c:
 	.text       start:0x8025D6AC end:0x8025DC78
+	.sdata2     start:0x803E83E8 end:0x803E83F4
 
 dolphin/gx/GXPerf.c:
 	.text       start:0x8025DC78 end:0x8025E5E4
+	.data       start:0x8032F728 end:0x8032F818
 
 dolphin/card/CARDBios.c:
 	.text       start:0x8025E5E4 end:0x8025F730
@@ -1707,9 +1724,7 @@ dolphin/TRK_MINNOW_DOLPHIN/CircleBuffer.c:
 	.text       start:0x80283744 end:0x802839B0
 
 dolphin/OdemuExi2/DebuggerDriver.c:
-	extab       start:0x80005CB0 end:0x80005CB8
-	extabindex  start:0x80006698 end:0x800066A4
-	.text       start:0x80285A28 end:0x80286608
+	.text       start:0x80285B88 end:0x80286608
 
 Runtime.PPCEABI.H/__va_arg.c:
 	.text       start:0x80286608 end:0x802866D0

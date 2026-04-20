@@ -64,22 +64,13 @@ static void __THPPrepBitStream(void);
 static void __THPDecompressYUV(void*, void*, void*);
 static void __THPGQRRestore(void);
 static void __THPDecompressiMCURow512x448(void);
-static void __THPDecompressiMCURow640x480(void);
-static void __THPDecompressiMCURowNxN(void);
+void __THPDecompressiMCURow640x480(void);
+void __THPDecompressiMCURowNxN(void);
 static void __THPInverseDCTNoYPos(THPCoeff*, u32);
 static void __THPHuffDecodeDCTCompY(THPFileInfo*, THPCoeff*);
 static void __THPHuffDecodeDCTCompU(THPFileInfo*, THPCoeff*);
 static void __THPHuffDecodeDCTCompV(THPFileInfo*, THPCoeff*);
 
-static const u8 __THPJpegNaturalOrder[80] = {
-    0,  1,  8,  16, 9,  2,  3,  10, 17, 24, 32, 25, 18, 11, 4,  5,  12, 19, 26, 33,
-    40, 48, 41, 34, 27, 20, 13, 6,  7,  14, 21, 28, 35, 42, 49, 56, 57, 50, 43, 36,
-    29, 22, 15, 23, 30, 37, 44, 51, 58, 59, 52, 45, 38, 31, 39, 46, 53, 60, 61, 54,
-    47, 55, 62, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63};
-
-static const f64 __THPAANScaleFactor[8] = {
-    1.0f, 1.387039845f, 1.306562965f, 1.175875602f, 1.0f, 0.785694958f, 0.541196100f, 0.275899379f,
-};
 
 #ifdef __cplusplus
 }

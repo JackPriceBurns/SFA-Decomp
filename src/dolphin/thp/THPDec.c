@@ -8,6 +8,16 @@ extern const char s___THPVersion[];
 #endif
 const char* __THPVersion = s___THPVersion;
 
+static const u8 __THPJpegNaturalOrder[80] = {
+    0,  1,  8,  16, 9,  2,  3,  10, 17, 24, 32, 25, 18, 11, 4,  5,  12, 19, 26, 33,
+    40, 48, 41, 34, 27, 20, 13, 6,  7,  14, 21, 28, 35, 42, 49, 56, 57, 50, 43, 36,
+    29, 22, 15, 23, 30, 37, 44, 51, 58, 59, 52, 45, 38, 31, 39, 46, 53, 60, 61, 54,
+    47, 55, 62, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63};
+
+static const f64 __THPAANScaleFactor[8] = {
+    1.0f, 1.387039845f, 1.306562965f, 1.175875602f, 1.0f, 0.785694958f, 0.541196100f, 0.275899379f,
+};
+
 static THPHuffmanTab *Ydchuff ATTRIBUTE_ALIGN(32);
 static THPHuffmanTab *Udchuff ATTRIBUTE_ALIGN(32);
 static THPHuffmanTab *Vdchuff ATTRIBUTE_ALIGN(32);
@@ -641,13 +651,13 @@ inline void __THPInverseDCTNoYPos(register THPCoeff *in, register u32 xPos)
             ps_merge00  tmp5, tmp5, tmp3
             lwz         itmp1, 4(in)
             ps_sub      tmp6, tmp6, tmp2
-            ps_nmsub    tmp7, tmp10, cc2c6s, tmp8
+            ps_msub     tmp7, tmp10, cc2c6s, tmp8
             lhz         itmp2, 2(in)
             ps_merge11  tmp2, tmp2, tmp6
             ps_msub     tmp8, tmp3, cc4, tmp6
             psq_l       tmp10, 0(in), 0, 5
             ps_add      tmp9, tmp4, tmp2
-            ps_sub      tmp7, tmp7, tmp8
+            ps_add      tmp7, tmp8, tmp7
             psq_l       tmp11, 0(q), 0, 0
             ps_merge11  tmp3, tmp8, tmp7
             ps_sub      tmp4, tmp4, tmp2
@@ -949,13 +959,13 @@ inline void __THPInverseDCTY8(register THPCoeff *in, register u32 xPos)
             ps_merge00  tmp5, tmp5, tmp3
             lwz         itmp1, 4(in)
             ps_sub      tmp6, tmp6, tmp2
-            ps_nmsub    tmp7, tmp10, cc2c6s, tmp8
+            ps_msub     tmp7, tmp10, cc2c6s, tmp8
             lhz         itmp2, 2(in)
             ps_merge11  tmp2, tmp2, tmp6
             ps_msub     tmp8, tmp3, cc4, tmp6
             psq_l       tmp10, 0(in), 0, 5
             ps_add      tmp9, tmp4, tmp2
-            ps_sub      tmp7, tmp7, tmp8
+            ps_add      tmp7, tmp8, tmp7
             psq_l       tmp11, 0(q), 0, 0
             ps_merge11  tmp3, tmp8, tmp7
             ps_sub      tmp4, tmp4, tmp2
@@ -1472,7 +1482,7 @@ _FailedCheckNoBits1 :
     return (h->Vij[(s32)(code + h->valPtr[cnt])]);
 }
 
-static void __THPDecompressiMCURow640x480(void)
+void __THPDecompressiMCURow640x480(void)
 {
     u8 cl_num;
     u32 x_pos;
@@ -1540,7 +1550,7 @@ static void __THPDecompressiMCURow640x480(void)
     __THPInfo->dLC[2] += 0xA00;
 }
 
-static void __THPDecompressiMCURowNxN(void)
+void __THPDecompressiMCURowNxN(void)
 {
     u8 cl_num;
     u32 x_pos, x;
@@ -2266,8 +2276,6 @@ static void __THPHuffDecodeDCTCompV(register THPFileInfo *info, THPCoeff *block)
 BOOL THPInit(void)
 {
     u8 *base;
-
-    OSRegisterVersion(__THPVersion);
 
     base = (u8*)(0xE000 << 16);
 
