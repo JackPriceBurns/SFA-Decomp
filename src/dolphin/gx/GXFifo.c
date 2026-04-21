@@ -10,17 +10,13 @@ extern GXData* gx;
 
 extern __GXFifoObj* CPUFifo;
 extern __GXFifoObj* GPFifo;
-extern OSThread* lbl_803DED40;
-extern GXBool lbl_803DED44;
-extern BOOL lbl_803DED48;
-extern GXBreakPtCallback lbl_803DED4C;
+extern OSThread* __GXCurrentThread;
+extern GXBool CPGPLinked;
+extern BOOL GXOverflowSuspendInProgress;
+extern GXBreakPtCallback BreakPointCB;
 extern u32 lbl_803DED50;
 extern void* lbl_803DED54;
 
-#define __GXCurrentThread lbl_803DED40
-#define CPGPLinked lbl_803DED44
-#define GXOverflowSuspendInProgress lbl_803DED48
-#define BreakPointCB lbl_803DED4C
 #define __GXOverflowCount lbl_803DED50
 
 #if DEBUG
