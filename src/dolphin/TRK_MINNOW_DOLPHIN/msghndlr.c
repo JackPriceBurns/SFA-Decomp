@@ -84,13 +84,8 @@ DSError TRKDoConnect(TRKBuffer* buffer) {
 }
 
 DSError TRKDoDisconnect(TRKBuffer* buffer) {
-    TRKEvent event;
-
     IsTRKConnected = FALSE;
-    TRKStandardACK(buffer, 0x80, DSREPLY_NoError);
-    TRKConstructEvent(&event, 1);
-    TRKPostEvent(&event);
-    return DS_NoError;
+    return TRKStandardACK(buffer, 0x80, DSREPLY_NoError);
 }
 
 DSError TRKDoReset(TRKBuffer* buffer) {
@@ -652,9 +647,7 @@ DSError TRKDoStop(TRKBuffer* b) {
         break;
     }
 
-    TRKStandardACK(b, DSMSG_ReplyACK, c);
-
-    return DS_NoError;
+    return TRKStandardACK(b, DSMSG_ReplyACK, c);
 }
 
 DSError TRKDoSetOption(TRKBuffer* message) {
