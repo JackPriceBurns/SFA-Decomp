@@ -490,7 +490,7 @@ main/dll/FRONT/dll_3B.c:
 main/unknown/autos/placeholder_801175B4.c:
 	.text       start:0x801175B4 end:0x801177DC
 
-main/unknown/autos/placeholder_801177DC.c:
+dolphin/ax/AX.c:
 	.text       start:0x801177DC end:0x8011784C
 
 main/dll/FRONT/n_options.c:
@@ -2063,25 +2063,25 @@ dolphin/MSL_C/PPCEABI/bare/H/gamecube.c:
 main/unknown/autos/placeholder_80292428.c:
 	.text       start:0x80292428 end:0x80292460
 
-main/unknown/autos/placeholder_80292460.c:
+dolphin/MSL_C/PPCEABI/bare/H/uart_console_io_gcn.c:
 	.text       start:0x80292460 end:0x80292538
 
 main/unknown/autos/placeholder_80292538.c:
 	.text       start:0x80292538 end:0x80292754
 
-main/unknown/autos/placeholder_80292754.c:
+dolphin/MSL_C/PPCEABI/bare/H/k_sin.c:
 	.text       start:0x80292754 end:0x80292804
 
-main/unknown/autos/placeholder_80292804.c:
+dolphin/MSL_C/PPCEABI/bare/H/s_cos.c:
 	.text       start:0x80292804 end:0x802928F4
 
-main/unknown/autos/placeholder_802928F4.c:
+dolphin/MSL_C/PPCEABI/bare/H/math_ppc.c:
 	.text       start:0x802928F4 end:0x802929A8
 
 main/unknown/autos/placeholder_802929A8.c:
 	.text       start:0x802929A8 end:0x80292B24
 
-main/unknown/autos/placeholder_80292B24.c:
+dolphin/MSL_C/PPCEABI/bare/H/k_cos.c:
 	.text       start:0x80292B24 end:0x80292C14
 
 main/unknown/autos/placeholder_80292C14.c:
@@ -2093,7 +2093,7 @@ main/unknown/autos/placeholder_80292F04.c:
 main/unknown/autos/placeholder_8029312C.c:
 	.text       start:0x8029312C end:0x8029349C
 
-main/unknown/autos/placeholder_8029349C.c:
+dolphin/MSL_C/PPCEABI/bare/H/s_tan.c:
 	.text       start:0x8029349C end:0x80293520
 
 dolphin/MSL_C/PPCEABI/bare/H/rand.c:
@@ -2102,22 +2102,22 @@ dolphin/MSL_C/PPCEABI/bare/H/rand.c:
 main/unknown/autos/placeholder_8029354C.c:
 	.text       start:0x8029354C end:0x8029388C
 
-main/unknown/autos/placeholder_8029388C.c:
+dolphin/MSL_C/PPCEABI/bare/H/k_tan.c:
 	.text       start:0x8029388C end:0x80293A9C
 
 main/unknown/autos/placeholder_80293A9C.c:
 	.text       start:0x80293A9C end:0x80293BC4
 
-main/unknown/autos/placeholder_80293BC4.c:
+dolphin/MSL_C/PPCEABI/bare/H/e_rem_pio2.c:
 	.text       start:0x80293BC4 end:0x80293FB4
 
 main/unknown/autos/placeholder_80293FB4.c:
 	.text       start:0x80293FB4 end:0x802947F8
 
-main/unknown/autos/placeholder_802947F8.c:
+dolphin/MSL_C/PPCEABI/bare/H/s_floor.c:
 	.text       start:0x802947F8 end:0x80294964
 
-main/unknown/autos/placeholder_80294964.c:
+dolphin/MSL_C/PPCEABI/bare/H/s_sin.c:
 	.text       start:0x80294964 end:0x80294A4C
 
 main/unknown/autos/placeholder_80294A4C.c:
@@ -2130,13 +2130,13 @@ dolphin/MSL_C/PPCEABI/bare/H/trigf.c:
 main/unknown/autos/placeholder_80295318.c:
 	.text       start:0x80295318 end:0x802BB420
 
-main/unknown/autos/placeholder_802BB420.c:
+dolphin/TRK_MINNOW_DOLPHIN/main.c:
 	.text       start:0x802BB420 end:0x802BB768
 
 main/unknown/autos/placeholder_802BB768.c:
 	.text       start:0x802BB768 end:0x802BB8C4
 
-main/unknown/autos/placeholder_802BB8C4.c:
+dolphin/TRK_MINNOW_DOLPHIN/main_gdev.c:
 	.text       start:0x802BB8C4 end:0x802BBC10
 
 main/unknown/autos/placeholder_802BBC10.c:
