@@ -286,26 +286,28 @@ void GXSetScissor(u32 left, u32 top, u32 wd, u32 ht) {
     __GXData->bpSentNot = 0;
 }
 
-void GXGetScissor(u32* left, u32* top, u32* wd, u32* ht) {
-    u32 suScis0;
-    u32 suScis1;
-    u32 topOrigin;
-    u32 leftOrigin;
-    u32 bottom;
-    u32 right;
-
-    suScis0 = __GXData->suScis0;
-    suScis1 = __GXData->suScis1;
-
-    topOrigin = suScis0 & 0x7FF;
-    leftOrigin = (suScis0 & 0x7FF000) >> 12;
-    bottom = suScis1 & 0x7FF;
-    right = (suScis1 & 0x7FF000) >> 12;
-
-    *left = leftOrigin - 0x156;
-    *top = topOrigin - 0x156;
-    *wd = (right - leftOrigin) + 1;
-    *ht = (bottom - topOrigin) + 1;
+asm void GXGetScissor(u32* left, u32* top, u32* wd, u32* ht) {
+    nofralloc
+    lwz r8, gx(r13)
+    lwz r7, 0xf8(r8)
+    lwz r8, 0xfc(r8)
+    rlwinm r0, r7, 0, 9, 19
+    srwi r9, r0, 12
+    subi r0, r9, 0x156
+    clrlwi r7, r7, 21
+    stw r0, 0x0(r3)
+    rlwinm r0, r8, 0, 9, 19
+    subi r3, r7, 0x156
+    srwi r0, r0, 12
+    stw r3, 0x0(r4)
+    subf r3, r9, r0
+    clrlwi r4, r8, 21
+    addi r0, r3, 0x1
+    subf r3, r7, r4
+    stw r0, 0x0(r5)
+    addi r0, r3, 0x1
+    stw r0, 0x0(r6)
+    blr
 }
 
 /*
