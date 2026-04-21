@@ -65,7 +65,7 @@ enum {
 const char printf_stringBase0[] = "\0-INF\0-inf\0INF\0inf\0-NAN\0-nan\0NAN\0nan";
 static wchar_t printf_wstringBase0[] = L"";
 
-static const char* parse_format(const char *format_string, va_list *arg, print_format *format) {
+static const char* parse_format_80291840(const char *format_string, va_list *arg, print_format *format) {
     print_format f;
     const char* s = format_string;
     int c;
@@ -305,7 +305,7 @@ static const char* parse_format(const char *format_string, va_list *arg, print_f
     return ((const char*)s + 1);
 }
 
-static char* long2str(long num, char* buff, print_format format)
+static char* long2str_80291620(long num, char* buff, print_format format)
 {
     unsigned long unsigned_num, base;
     char* p;
@@ -410,7 +410,7 @@ static char* long2str(long num, char* buff, print_format format)
     return p;
 }
 
-static char* longlong2str(long long num, char* pBuf, print_format fmt)
+static char* longlong2str_80291344(long long num, char* pBuf, print_format fmt)
 {
     unsigned long long unsigned_num, base;
     char* p;
@@ -575,7 +575,7 @@ static char * double2hex(long double num, char * buff, print_format format)  {
     exp_format.conversion_char = 'd';
 
     exp = (short) ((*(short*) &ld & 0x7FFF) >> 4) - 0x3FF;
-    p = long2str(exp, buff, exp_format);
+    p = long2str_80291620(exp, buff, exp_format);
     if (format.conversion_char == 'a')
         *--p = 'p';
     else
@@ -955,7 +955,7 @@ static int __pformatter(void *(*WriteProc)(void*, const char*, size_t), void *Wr
         }
 
         format_ptr = curr_format;
-        format_ptr = parse_format(format_ptr, (va_list*)arg, &format);
+        format_ptr = parse_format_80291840(format_ptr, (va_list*)arg, &format);
 
         switch (format.conversion_char) {
             case 'd':
@@ -979,12 +979,12 @@ static int __pformatter(void *(*WriteProc)(void*, const char*, size_t), void *Wr
                 }
 
                 if (format.argument_options == long_long_argument) {
-                    if (!(buff_ptr = longlong2str(long_long_num, buff + 512, format))) {
+                    if (!(buff_ptr = longlong2str_80291344(long_long_num, buff + 512, format))) {
                         goto conversion_error;
                     }
                 }
                 else {
-                    if (!(buff_ptr = long2str(long_num, buff + 512, format))) {
+                    if (!(buff_ptr = long2str_80291620(long_num, buff + 512, format))) {
                         goto conversion_error;
                     }
                 }
@@ -1015,12 +1015,12 @@ static int __pformatter(void *(*WriteProc)(void*, const char*, size_t), void *Wr
                 }
 
                 if (format.argument_options == long_long_argument) {
-                    if (!(buff_ptr = longlong2str(long_long_num, buff + 512, format))) {
+                    if (!(buff_ptr = longlong2str_80291344(long_long_num, buff + 512, format))) {
                         goto conversion_error;
                     }
                 }
                 else {
-                    if (!(buff_ptr = long2str(long_num, buff + 512, format))) {
+                    if (!(buff_ptr = long2str_80291620(long_num, buff + 512, format))) {
                         goto conversion_error;
                     }
                 }
@@ -1213,37 +1213,6 @@ void* __StringWrite(void* pCtrl, const char* pBuffer, size_t char_num)
     memcpy(ctrl->CharStr + ctrl->CharsWritten, pBuffer, chars);
     ctrl->CharsWritten += chars;
     return (void*) 1;
-}
-
-int printf(const char* format, ...)
-{
-    va_list args;
-    int res;
-
-    if (fwide(stdout, -1) >= 0) {
-        return -1;
-    }
-
-    __begin_critical_region(2);
-    va_start(args, format);
-    res = __pformatter(&__FileWrite, (void*)stdout, format, args);
-    __end_critical_region(2);
-
-    return res;
-}
-
-int vprintf(const char* format, va_list arg)
-{
-    int ret;
-
-    if (fwide(stdout, -1) >= 0) {
-        return -1;
-    }
-
-    __begin_critical_region(2);
-    ret = __pformatter(&__FileWrite, (void*)stdout, format, arg);
-    __end_critical_region(2);
-    return ret;
 }
 
 int vsnprintf(char* s, size_t n, const char* format, va_list arg)
