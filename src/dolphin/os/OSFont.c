@@ -15,7 +15,7 @@ static u16 FontEncode_803DD1B0 = 0xFFFF;
 static char* ParseStringS(u16 encode, const char* string, OSFontHeader** pfont, int* pfontCode);
 static char* ParseStringW(u16 encode, const char* string, OSFontHeader** pfont, int* pfontCode);
 
-static u16 HankakuToCode[]
+static u16 lbl_8032D920[]
     = { 0x20C, 0x20D, 0x20E, 0x20F, 0x210, 0x211, 0x212, 0x213,
         0x214, 0x215, 0x216, 0x217, 0x218, 0x219, 0x21A, 0x21B,
         0x21C, 0x21D, 0x21E, 0x21F, 0x220, 0x221, 0x222, 0x223,
@@ -42,7 +42,7 @@ static u16 HankakuToCode[]
         0x2A2, 0x2A3, 0x2A4, 0x2A5, 0x2A6, 0x2A7, 0x2A8, 0x2A9,
     };
 
-static u16 Zenkaku2Code[]
+static u16 lbl_8032DAA0[]
     = { 0x000, 0x001, 0x002, 0x003, 0x004, 0x005, 0x006, 0x007,
         0x008, 0x009, 0x00A, 0x00B, 0x00C, 0x00D, 0x00E, 0x00F,
         0x010, 0x011, 0x012, 0x013, 0x014, 0x015, 0x016, 0x017,
@@ -209,10 +209,11 @@ static BOOL IsSjisTrailByte(u8 c) {
     return (0x40 <= c && c <= 0xFC) && (c != 0x7F);
 }
 
-static int GetFontCode(u16 encode, u16 code) {
+static int GetFontCode(u16 code) {
+    u16 encode = OSGetFontEncode();
     if (encode == OS_FONT_ENCODE_SJIS) {
         if (code >= 0x20 && code <= 0xDF) {
-            return HankakuToCode[code - 0x20];
+            return lbl_8032D920[code - 0x20];
         }
 
         if (code > 0x889E && code <= 0x9872) {
@@ -244,7 +245,7 @@ static int GetFontCode(u16 encode, u16 code) {
                 j--;
             }
 
-            return Zenkaku2Code[i + j];
+            return lbl_8032DAA0[i + j];
         }
     } else if (code > 0x20 && code <= 0xFF) {
         return code - 0x20;
@@ -404,7 +405,7 @@ static u32 ReadFont(void* img, u16 encode, void* fontData) {
         u8* src;
         u16 imageT[4] = {0x2ABE, 0x003D, 0x003D, 0x003D};
 
-        fontCode = GetFontCode(encode, 0x54);
+        fontCode = GetFontCode(0x54);
         sheet = fontCode / (font->sheetColumn * font->sheetRow);
         numChars = fontCode - (sheet * (font->sheetColumn * font->sheetRow)); 
         row = numChars / font->sheetColumn;
@@ -489,7 +490,7 @@ static char* ParseStringS(u16 encode, const char* string, OSFontHeader** pfont, 
     }
 
     *pfont = font;
-    *pfontCode = GetFontCode(encode, code);
+    *pfontCode = GetFontCode(code);
 
     return (char*)string;
 }
@@ -548,7 +549,7 @@ static char* ParseStringW(u16 encode, const char* string, OSFontHeader** pfont, 
     }
 
     *pfont = font;
-    *pfontCode = GetFontCode(encode, code);
+    *pfontCode = GetFontCode(code);
 
     return (char*)string;
 }
