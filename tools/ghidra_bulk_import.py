@@ -193,14 +193,11 @@ FORCE_STUB_OWNERS = {
     "main/dll/moveLib.c",
     # Rebody sweep owners that still fail MWCC on raw Ghidra bodies.
     "main/dll/CF/treasureRelated0177.c",
-    "main/dll/CF/windlift.c",
     "main/dll/DF/DFlantern.c",
     "main/dll/SC/SCtotembondpuz.c",
     "main/dll/WC/WClevcontrol.c",
-    "main/dll/baddie/baby_snowworm.c",
     "main/dll/dll_19E.c",
     "main/dll/dll_1C5.c",
-    "main/dll/dll_1D3.c",
     "main/dll/seqObj11D.c",
     "main/dll/colrise.c",
 }
