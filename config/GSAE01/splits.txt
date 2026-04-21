@@ -2031,10 +2031,10 @@ dolphin/MSL_C/PPCEABI/bare/H/mem.c:
 	.text       start:0x8028F988 end:0x8028FAF8
 
 dolphin/MSL_C/PPCEABI/bare/H/mem_funcs.c:
-	.text       start:0x8028FAF8 end:0x8028FD18
+	.text       start:0x8028FAF8 end:0x8028FDD8
 
 dolphin/MSL_C/PPCEABI/bare/H/misc_io.c:
-	.text       start:0x8028FD18 end:0x8028FDE8
+	.text       start:0x8028FDD8 end:0x8028FDE8
 
 dolphin/MSL_C/PPCEABI/bare/H/printf.c:
 	.text       start:0x8028FDE8 end:0x80291D44
