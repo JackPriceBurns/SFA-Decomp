@@ -90,52 +90,28 @@ void TRKEXICallBack(__OSInterrupt param_0, OSContext* ctx)
 
 int InitMetroTRKCommTable(int hwId)
 {
-    int result = 1;
-
-    OSReport("Devkit set to : %ld\n", hwId);
-    TRK_Use_BBA = 0;
-
-    if (hwId == HARDWARE_BBA) {
-        OSReport("MetroTRK : Set to BBA\n");
-        TRK_Use_BBA = 1;
-
-        gDBCommTable.initialize_func      = (DBCommInitFunc)udp_cc_initialize;
-        gDBCommTable.open_func            = udp_cc_open;
-        gDBCommTable.close_func           = udp_cc_close;
-        gDBCommTable.read_func            = udp_cc_read;
-        gDBCommTable.write_func           = udp_cc_write;
-        gDBCommTable.peek_func            = udp_cc_peek;
-        gDBCommTable.init_interrupts_func = NULL;
-        return 0;
-    }
+    int result;
 
     if (hwId == HARDWARE_GDEV) {
-        OSReport("MetroTRK : Set to GDEV hardware\n");
         result = Hu_IsStub();
 
-        gDBCommTable.initialize_func      = gdev_cc_initialize;
-        gDBCommTable.open_func            = gdev_cc_open;
-        gDBCommTable.close_func           = gdev_cc_close;
-        gDBCommTable.read_func            = gdev_cc_read;
-        gDBCommTable.write_func           = gdev_cc_write;
-        gDBCommTable.peek_func            = gdev_cc_peek;
-        gDBCommTable.init_interrupts_func = gdev_cc_initinterrupts;
-    } else if (hwId == HARDWARE_AMC_DDH) {
-
-        OSReport("MetroTRK : Set to AMC DDH hardware\n");
+        gDBCommTable.initialize_func      = (DBCommInitFunc)DBInitComm;
+        gDBCommTable.init_interrupts_func = (DBCommFunc)DBInitInterrupts;
+        gDBCommTable.peek_func            = (DBCommFunc)DBQueryData;
+        gDBCommTable.read_func            = (DBCommReadFunc)DBRead;
+        gDBCommTable.write_func           = (DBCommWriteFunc)DBWrite;
+        gDBCommTable.open_func            = (DBCommFunc)DBOpen;
+        gDBCommTable.close_func           = (DBCommFunc)DBClose;
+    } else {
         result = AMC_IsStub();
 
-        gDBCommTable.initialize_func      = ddh_cc_initialize;
-        gDBCommTable.open_func            = ddh_cc_open;
-        gDBCommTable.close_func           = ddh_cc_close;
-        gDBCommTable.read_func            = ddh_cc_read;
-        gDBCommTable.write_func           = ddh_cc_write;
-        gDBCommTable.peek_func            = ddh_cc_peek;
-        gDBCommTable.init_interrupts_func = ddh_cc_initinterrupts;
-    } else {
-        OSReport("MetroTRK : Set to UNKNOWN hardware. (%ld)\n", hwId);
-        OSReport("MetroTRK : Invalid hardware ID passed from OS\n");
-        OSReport("MetroTRK : Defaulting to GDEV Hardware\n");
+        gDBCommTable.initialize_func      = (DBCommInitFunc)EXI2_Init;
+        gDBCommTable.init_interrupts_func = (DBCommFunc)EXI2_EnableInterrupts;
+        gDBCommTable.peek_func            = (DBCommFunc)EXI2_Poll;
+        gDBCommTable.read_func            = (DBCommReadFunc)EXI2_ReadN;
+        gDBCommTable.write_func           = (DBCommWriteFunc)EXI2_WriteN;
+        gDBCommTable.open_func            = (DBCommFunc)EXI2_Reserve;
+        gDBCommTable.close_func           = (DBCommFunc)EXI2_Unreserve;
     }
 
     return result;
