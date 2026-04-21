@@ -45,7 +45,25 @@ extern undefined4 FUN_8002a51c();
 extern int FUN_8002a690();
 extern uint FUN_8002a698();
 extern int FUN_8002bac4();
+extern undefined4 FUN_80041e28();
 extern undefined4 FUN_80041f34();
+extern undefined4 FUN_80042338();
+extern undefined4 FUN_800423f0();
+extern undefined4 FUN_800424a8();
+extern undefined4 FUN_80042560();
+extern undefined4 FUN_80042618();
+extern undefined4 FUN_800426d0();
+extern undefined4 FUN_80042734();
+extern undefined4 FUN_800427ec();
+extern undefined4 FUN_800428b8();
+extern undefined4 FUN_80042984();
+extern undefined4 FUN_80042a3c();
+extern undefined4 FUN_80042b08();
+extern undefined4 FUN_80042bd4();
+extern undefined4 FUN_80042c8c();
+extern undefined4 FUN_80042d44();
+extern undefined4 FUN_80042dfc();
+extern undefined4 FUN_80042eb4();
 extern undefined4 FUN_800431d8();
 extern undefined4 FUN_80043e64();
 extern uint FUN_8005383c();
@@ -655,7 +673,7 @@ undefined4 FUN_80044510(int param_1)
     return 0;
 }
 
-/* Auto-stubbed for compileability: raw string-label references need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: raw string-label references need manual cleanup, address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80044548(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -664,7 +682,7 @@ void FUN_80044548(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import, forced stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import, forced stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80046644(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -675,7 +693,7 @@ void FUN_80046644(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8004832c(int param_1)
@@ -684,7 +702,7 @@ undefined4 FUN_8004832c(int param_1)
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80048350(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -693,7 +711,7 @@ void FUN_80048350(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: raw string-label references need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: raw string-label references need manual cleanup, address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_800484a4(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -704,7 +722,7 @@ void FUN_800484a4(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80048658(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -715,7 +733,7 @@ void FUN_80048658(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80048928(undefined4 param_1,undefined4 param_2,undefined4 *param_3,undefined4 *param_4,
@@ -733,7 +751,7 @@ void FUN_80048ae0(uint param_1,undefined4 param_2,undefined4 *param_3,undefined4
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80048bd4(undefined4 param_1,undefined4 param_2,undefined4 *param_3,undefined4 *param_4,
@@ -750,7 +768,7 @@ void FUN_80048d20(int param_1,int *param_2,int *param_3,undefined4 *param_4,int 
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80048d78(undefined4 param_1,undefined4 param_2,undefined4 *param_3)
@@ -758,7 +776,7 @@ void FUN_80048d78(undefined4 param_1,undefined4 param_2,undefined4 *param_3)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80048ef4(undefined4 param_1,undefined4 param_2,undefined4 *param_3)
@@ -766,7 +784,7 @@ void FUN_80048ef4(undefined4 param_1,undefined4 param_2,undefined4 *param_3)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8004908c(int param_1)
@@ -775,7 +793,7 @@ undefined4 FUN_8004908c(int param_1)
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_800490c4(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -786,7 +804,7 @@ void FUN_800490c4(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 int FUN_80049208(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -798,7 +816,7 @@ int FUN_80049208(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefi
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 int FUN_800492c0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -809,7 +827,7 @@ int FUN_800492c0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefi
     return 0;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8004937c(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -826,7 +844,7 @@ void FUN_80049680(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: raw string-label references need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: raw string-label references need manual cleanup, address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_800496cc(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -835,7 +853,7 @@ void FUN_800496cc(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80049a10(void)
@@ -843,7 +861,7 @@ void FUN_80049a10(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80049b64(void)
@@ -851,7 +869,7 @@ void FUN_80049b64(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80049ca8(void)
@@ -859,7 +877,7 @@ void FUN_80049ca8(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80049ce8(void)
@@ -875,7 +893,7 @@ void FUN_8004a53c(undefined param_1,undefined param_2,undefined param_3)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8004a550(void)
@@ -883,7 +901,7 @@ void FUN_8004a550(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8004a5b8(char param_1)
@@ -924,7 +942,7 @@ void FUN_8004a9b8(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8004a9e4(void)
@@ -1024,7 +1042,7 @@ void FUN_8004b7a4(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8004b7d4(int param_1,undefined4 param_2,int param_3)
@@ -1092,7 +1110,7 @@ int FUN_8004c3cc(int param_1,int param_2)
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8004c3e0(int param_1,int param_2)
@@ -1108,7 +1126,7 @@ void FUN_8004c460(int param_1,int param_2)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8004c4ac(void)
@@ -1148,7 +1166,7 @@ void FUN_8004d730(int param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8004d854(void)
@@ -1284,7 +1302,7 @@ void FUN_80050ba4(uint param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80050c54(undefined4 param_1,undefined4 param_2,uint param_3,uint param_4)

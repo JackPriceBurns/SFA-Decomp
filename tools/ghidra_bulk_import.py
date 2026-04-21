@@ -82,6 +82,7 @@ KNOWN_TYPES = {
 }
 GHIDRA_FILE_RE = re.compile(r"(?P<addr>[0-9a-fA-F]{8})_(?P<name>[A-Za-z0-9_]+)\.c$")
 CALL_RE = re.compile(r"\b([A-Za-z_]\w*)\s*\(")
+FUNCTION_REF_RE = re.compile(r"\bFUN_[0-9A-Fa-f]{8}\b")
 GLOBAL_RE = re.compile(
     r"\b(_?DAT_[0-9a-fA-F]+|PTR_[A-Za-z0-9_]+|FLOAT_[0-9a-fA-F]+|DOUBLE_[0-9a-fA-F]+|s_[A-Za-z0-9_]+_[0-9a-fA-F]+|[A-Za-z]+Ram[0-9a-fA-F]+)\b"
 )
@@ -90,6 +91,13 @@ INVALID_SLICE_RE = re.compile(r"\._\d+_\d+_")
 LABEL_REF_RE = re.compile(r"&LAB_[0-9A-Fa-f]+")
 STRING_LABEL_RE = re.compile(r"\bs_[A-Za-z0-9_]+_[0-9a-fA-F]+\b")
 HELPER_TOKEN_RE = re.compile(r"\b(?:CONCAT\d+|SUB\d+|SEXT\d+|ZEXT\d+|CARRY\d+|SCARRY\d+|SBORROW\d+)\b")
+GLOBAL_ADDRESS_RE = re.compile(
+    r"&(?:_?DAT_[0-9A-Fa-f]+|PTR_[A-Za-z0-9_]+|FLOAT_[0-9A-Fa-f]+|DOUBLE_[0-9A-Fa-f]+|s_[A-Za-z0-9_]+_[0-9A-Fa-f]+|[A-Za-z]+Ram[0-9A-Fa-f]+)\b"
+)
+UNDECLARED_LOCAL_RE = re.compile(r"\b_local_[0-9A-Fa-f]+\b")
+TYPED_NULL_COMPARE_RE = re.compile(
+    r"\b(?:_?DAT_[0-9A-Fa-f]+|PTR_[A-Za-z0-9_]+)\b\s*[!=]=\s*\([A-Za-z_]\w*\s*\*\)\s*0x0"
+)
 LOCAL_DECL_RE = re.compile(
     r"^\s*(?P<type>[A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)*)\s+(?P<pointer>\*+)?\s*(?P<name>[A-Za-z_]\w*)\s*(?:=\s*[^;]+)?;$"
 )
@@ -143,6 +151,12 @@ FORCE_STUB_OWNERS = {
     "main/unknown/autos/placeholder_80280F28.c",
     "main/unknown/autos/placeholder_80295318.c",
     "main/unknown/autos/placeholder_802BBC10.c",
+    "main/dll/CAM/camlockon.c",
+    "main/dll/CAM/cutCam.c",
+    "main/dll/CAM/dll_5B.c",
+    "main/dll/CAM/dll_5F.c",
+    "main/dll/baddieControl.c",
+    "main/dll/moveLib.c",
 }
 
 
@@ -324,6 +338,9 @@ def detect_calls(raw_text: str, current_name: str) -> list[str]:
         if token.startswith("LAB_"):
             continue
         calls.add(token)
+    for token in FUNCTION_REF_RE.findall(raw_text):
+        if token != current_name:
+            calls.add(token)
     return sorted(calls)
 
 
@@ -498,12 +515,17 @@ def detect_conflicted_pointer_globals(functions: list[FunctionDump]) -> set[str]
     return {symbol for symbol, bases in pointer_bases.items() if len(bases) > 1}
 
 
-def function_stub_reasons(owner: str, functions: list[FunctionDump]) -> dict[str, list[str]]:
+def function_stub_reasons(
+    owner: str,
+    functions: list[FunctionDump],
+    forced_stub_owners: set[str] | None = None,
+) -> dict[str, list[str]]:
     reasons: dict[str, list[str]] = {}
     conflicted_globals = detect_conflicted_pointer_globals(functions)
+    forced_stub_owners = forced_stub_owners or set()
     for function in functions:
         function_reasons = list(function.unsafe_reasons)
-        if owner in FORCE_STUB_OWNERS:
+        if owner in FORCE_STUB_OWNERS or owner in forced_stub_owners:
             function_reasons.append("forced full-owner stub for compile-first import")
         if function.name in FORCE_STUB_FUNCTIONS:
             function_reasons.append("forced stub for compile-first import")
@@ -581,6 +603,22 @@ def check_safety(raw_text: str, signature_text: str) -> tuple[bool, bool, list[s
 
     if STRING_LABEL_RE.search(raw_text):
         reasons.append("raw string-label references need manual cleanup")
+        safe_body = False
+
+    if GLOBAL_ADDRESS_RE.search(raw_text):
+        reasons.append("address-of global symbols need manual typing")
+        safe_body = False
+
+    if UNDECLARED_LOCAL_RE.search(raw_text):
+        reasons.append("undeclared wide temporaries need manual cleanup")
+        safe_body = False
+
+    if TYPED_NULL_COMPARE_RE.search(raw_text):
+        reasons.append("typed global pointer comparisons need manual cleanup")
+        safe_body = False
+
+    if re.search(r"\bNAN\b", raw_text):
+        reasons.append("NAN macro needs manual cleanup")
         safe_body = False
 
     unsupported_helpers = {
@@ -689,13 +727,14 @@ def render_source(
     span: SplitSpan,
     functions: list[FunctionDump],
     emit_headers: bool,
+    forced_stub_owners: set[str] | None = None,
 ) -> str:
     local_names = {function.name for function in functions}
     extern_functions = sorted({call for function in functions for call in function.called_functions if call not in local_names})
     extern_globals = sorted({symbol for function in functions for symbol in function.globals_used})
     inferred_global_types = infer_global_types(functions)
     inferred_external_function_types = infer_external_function_types(functions, local_names)
-    stub_reasons = function_stub_reasons(owner, functions)
+    stub_reasons = function_stub_reasons(owner, functions, forced_stub_owners)
     safe_count = len(functions) - len(stub_reasons)
     stubbed_count = len(stub_reasons)
 
@@ -844,6 +883,29 @@ def render_inventory_header(owner: str, inventory: list[InventoryFunction]) -> s
     return "\n".join(lines)
 
 
+def render_empty_header(owner: str, span: SplitSpan) -> str:
+    relpath = header_relpath_for_owner(owner)
+    guard = header_guard(relpath)
+    lines = [
+        f"#ifndef {guard}",
+        f"#define {guard}",
+        "",
+        "/*",
+        f" * {GENERATED_MARKER}",
+        " *",
+        f" * Owner: {owner}",
+        f" * Text span: 0x{span.start:08X}-0x{span.end:08X}",
+        " * No raw Ghidra functions mapped into this owner yet.",
+        " */",
+        "",
+        '#include "ghidra_import.h"',
+        "",
+        f"#endif /* {guard} */",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def update_configure_main(configure_path: Path, owners: list[str]) -> int:
     text = configure_path.read_text(encoding="utf-8")
     lib_anchor = '        "lib": "main",'
@@ -892,6 +954,14 @@ def collect_selected_owners(args: argparse.Namespace, spans: list[SplitSpan]) ->
     if not selected:
         selected = [span.owner for span in spans]
 
+    if args.owner_prefix:
+        prefixes = tuple(normalize(prefix) for prefix in args.owner_prefix)
+        selected = [owner for owner in selected if owner.startswith(prefixes)]
+
+    if args.skip_owner:
+        skipped = {normalize(owner) for owner in args.skip_owner}
+        selected = [owner for owner in selected if owner not in skipped]
+
     deduped: list[str] = []
     seen: set[str] = set()
     for owner in selected:
@@ -930,11 +1000,15 @@ def main() -> None:
     parser.add_argument("--include-root", type=Path, default=DEFAULT_INCLUDE_ROOT)
     parser.add_argument("--configure", type=Path, default=DEFAULT_CONFIGURE_PATH)
     parser.add_argument("--owner", action="append", help="Specific split owner to materialize, e.g. main/objanim.c")
+    parser.add_argument("--owner-prefix", action="append", help="Only keep selected owners with the given prefix, e.g. main/")
+    parser.add_argument("--skip-owner", action="append", help="Skip a specific split owner during selection, e.g. main/dll/gameplay.c")
     parser.add_argument("--address", action="append", help="Address to resolve to a split owner, e.g. 0x8002EC4C")
     parser.add_argument("--limit", type=int, help="Limit selected owners after filtering")
     parser.add_argument("--write", action="store_true", help="Write generated sources instead of only printing a summary")
     parser.add_argument("--emit-headers", action="store_true", help="Also emit per-file headers under include/")
     parser.add_argument("--overwrite-existing", action="store_true", help="Allow overwriting non-managed source files")
+    parser.add_argument("--force-stub-owner", action="append", help="Force every imported function in the owner to render as a compile-first stub")
+    parser.add_argument("--force-stub-all-selected", action="store_true", help="Force every imported function in every selected owner to render as a compile-first stub")
     parser.add_argument("--emit-config-snippet", action="store_true", help="Print Object(NonMatching, ...) lines for the selected owners")
     parser.add_argument("--update-configure-main", action="store_true", help="Append selected main/* owners to the main object list in configure.py")
     args = parser.parse_args()
@@ -942,6 +1016,9 @@ def main() -> None:
     spans = parse_splits(args.splits)
     owner_map, span_map = build_owner_function_map(args.ghidra_dir, spans)
     selected_owners = collect_selected_owners(args, spans)
+    forced_stub_owners = {normalize(owner) for owner in (args.force_stub_owner or [])}
+    if args.force_stub_all_selected:
+        forced_stub_owners.update(selected_owners)
 
     summaries: list[str] = []
     wrote_sources = 0
@@ -953,8 +1030,9 @@ def main() -> None:
         span = span_map[owner]
         source_path = args.src_root / normalize(owner)
         inventory = parse_inventory_functions(source_path) if not functions else []
+        header_path = args.include_root / header_relpath_for_owner(owner)
         if functions:
-            stub_reasons = function_stub_reasons(owner, functions)
+            stub_reasons = function_stub_reasons(owner, functions, forced_stub_owners)
             safe_count = len(functions) - len(stub_reasons)
             stubbed_count = len(stub_reasons)
             summaries.append(
@@ -965,30 +1043,39 @@ def main() -> None:
             summaries.append(
                 f"{owner}: funcs=0 inventory_stubs={len(inventory)} text=0x{span.start:08X}-0x{span.end:08X}"
             )
+        elif args.emit_headers:
+            summaries.append(
+                f"{owner}: funcs=0 header_only text=0x{span.start:08X}-0x{span.end:08X}"
+            )
         else:
             continue
 
         if not args.write:
             continue
 
-        if not should_manage_existing(source_path, args.overwrite_existing):
-            skipped_existing += 1
-            continue
+        should_write_source = bool(functions or inventory)
+        if should_write_source:
+            if not should_manage_existing(source_path, args.overwrite_existing):
+                skipped_existing += 1
+                should_write_source = False
+            elif functions:
+                source_text = render_source(owner, span, functions, args.emit_headers, forced_stub_owners)
+            else:
+                source_text = render_inventory_source(owner, span, inventory, args.emit_headers)
 
-        if functions:
-            source_text = render_source(owner, span, functions, args.emit_headers)
-        else:
-            source_text = render_inventory_source(owner, span, inventory, args.emit_headers)
-        if write_text_if_changed(source_path, source_text):
+        if should_write_source and write_text_if_changed(source_path, source_text):
             wrote_sources += 1
 
         if args.emit_headers:
-            header_path = args.include_root / header_relpath_for_owner(owner)
-            header_text = (
-                render_header(owner, functions)
-                if functions
-                else render_inventory_header(owner, inventory)
-            )
+            if not should_manage_existing(header_path, args.overwrite_existing):
+                skipped_existing += 1
+                continue
+            if functions:
+                header_text = render_header(owner, functions)
+            elif inventory:
+                header_text = render_inventory_header(owner, inventory)
+            else:
+                header_text = render_empty_header(owner, span)
             if write_text_if_changed(header_path, header_text):
                 wrote_headers += 1
 

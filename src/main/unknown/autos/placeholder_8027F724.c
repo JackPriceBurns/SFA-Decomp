@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_8027F724.c
  * Text span: 0x8027F724-0x8027F8B0
  * Imported Ghidra functions: 3
- * Verbatim-safe functions: 3
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -19,81 +19,28 @@ void FUN_8027f724(int param_1);
 undefined4 FUN_8027f784(int param_1,byte *param_2);
 undefined4 FUN_8027f82c(int param_1,int param_2);
 
-// Function: FUN_8027f724
-// Entry: 8027f724
-// Size: 96 bytes
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8027f724(int param_1)
-
 {
-  if (*(char *)(param_1 + 0xec) == '\0') {
-    return;
-  }
-  if (*(int *)(param_1 + 0x10) == 0) {
-    (&DAT_803cce88)[(uint)*(byte *)(param_1 + 0xef) * 0x2f] = *(undefined4 *)(param_1 + 0xc);
-  }
-  else {
-    *(undefined4 *)(*(int *)(param_1 + 0x10) + 0xc) = *(undefined4 *)(param_1 + 0xc);
-  }
-  if (*(int *)(param_1 + 0xc) != 0) {
-    *(undefined4 *)(*(int *)(param_1 + 0xc) + 0x10) = *(undefined4 *)(param_1 + 0x10);
-  }
-  *(undefined *)(param_1 + 0xec) = 0;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_8027f784
-// Entry: 8027f784
-// Size: 168 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8027f784(int param_1,byte *param_2)
-
 {
-  if (*(byte *)(param_1 + 0x52) < 7) {
-    *(byte *)(param_1 + (uint)*(byte *)(param_1 + 0x52) * 0xc + 0x58) = param_2[3];
-    *(ushort *)(param_1 + (uint)*(byte *)(param_1 + 0x52) * 0xc + 0x5a) =
-         (ushort)*param_2 << 8 | (ushort)*param_2 << 1;
-    *(ushort *)(param_1 + (uint)*(byte *)(param_1 + 0x52) * 0xc + 0x5c) =
-         (ushort)param_2[1] << 8 | (ushort)param_2[1] << 1;
-    *(ushort *)(param_1 + (uint)*(byte *)(param_1 + 0x52) * 0xc + 0x5e) =
-         (ushort)param_2[2] << 8 | (ushort)param_2[2] << 1;
-    *(byte **)(param_1 + (uint)*(byte *)(param_1 + 0x52) * 0xc + 0x60) = param_2;
-    *(char *)(param_1 + 0x52) = *(char *)(param_1 + 0x52) + '\x01';
-    return 1;
-  }
-  return 0;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0;
 }
 
-// Function: FUN_8027f82c
-// Entry: 8027f82c
-// Size: 132 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8027f82c(int param_1,int param_2)
-
 {
-  uint uVar1;
-  int iVar2;
-  int iVar3;
-  
-  uVar1 = (uint)*(byte *)(param_1 + 0x52);
-  iVar3 = 0;
-  iVar2 = param_1;
-  while( true ) {
-    if (uVar1 == 0) {
-      return 0;
-    }
-    if (*(int *)(iVar2 + 0x60) == param_2) break;
-    iVar2 = iVar2 + 0xc;
-    iVar3 = iVar3 + 1;
-    uVar1 = uVar1 - 1;
-  }
-  iVar2 = param_1 + iVar3 * 0xc;
-  for (; iVar3 <= (int)(*(byte *)(param_1 + 0x52) - 2); iVar3 = iVar3 + 1) {
-    *(undefined4 *)(iVar2 + 0x58) = *(undefined4 *)(iVar2 + 100);
-    *(undefined4 *)(iVar2 + 0x5c) = *(undefined4 *)(iVar2 + 0x68);
-    *(undefined4 *)(iVar2 + 0x60) = *(undefined4 *)(iVar2 + 0x6c);
-    iVar2 = iVar2 + 0xc;
-  }
-  *(byte *)(param_1 + 0x52) = *(byte *)(param_1 + 0x52) - 1;
-  return 1;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0;
 }

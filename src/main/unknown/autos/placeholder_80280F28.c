@@ -35,130 +35,16 @@ void FUN_80280f28(double param_1,int param_2);
 undefined4
 FUN_8028103c(double param_1,double param_2,double param_3,double param_4,double param_5,int param_6);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-#if 0
-// Function: FUN_80280f28
-// Entry: 80280f28
-// Size: 276 bytes
-
-void FUN_80280f28(double param_1,int param_2)
-
-{
-  undefined4 *puVar1;
-  int *piVar2;
-  undefined4 *puVar3;
-  uint uVar4;
-  undefined4 *puVar5;
-  uint uVar6;
-  
-  uVar4 = 0;
-  uVar6 = (uint)DAT_803defeb;
-  for (piVar2 = &DAT_803cd570; (uVar6 != 0 && (*(int *)(param_2 + 0x40) != *piVar2));
-      piVar2 = piVar2 + 4) {
-    uVar4 = uVar4 + 1;
-    uVar6 = uVar6 - 1;
-  }
-  if (uVar4 == DAT_803defeb) {
-    (&DAT_803cd574)[uVar4 * 4] = 0;
-    (&DAT_803cd578)[uVar4 * 4] = 0;
-    (&DAT_803cd57c)[uVar4 * 8] = 0;
-    (&DAT_803cd570)[uVar4 * 4] = *(undefined4 *)(param_2 + 0x40);
-    DAT_803defeb = DAT_803defeb + 1;
-  }
-  (&DAT_803cd57c)[uVar4 * 8] = (&DAT_803cd57c)[uVar4 * 8] + 1;
-  puVar1 = (undefined4 *)(&DAT_803cd578)[uVar4 * 4];
-  puVar5 = (undefined4 *)0x0;
-  while ((puVar3 = puVar1, puVar3 != (undefined4 *)0x0 && ((double)(float)puVar3[1] <= param_1))) {
-    puVar5 = puVar3;
-    puVar1 = (undefined4 *)*puVar3;
-  }
-  if (puVar5 == (undefined4 *)0x0) {
-    (&DAT_803cd578)[uVar4 * 4] = &DAT_803ce070 + (uint)DAT_803defed * 0xc;
-  }
-  else {
-    *puVar5 = &DAT_803ce070 + (uint)DAT_803defed * 0xc;
-  }
-  uVar6 = (uint)DAT_803defed;
-  *(undefined4 **)(&DAT_803ce070 + uVar6 * 0xc) = puVar3;
-  *(int *)(&DAT_803ce078 + uVar6 * 0xc) = param_2;
-  uVar6 = (uint)DAT_803defed;
-  DAT_803defed = DAT_803defed + 1;
-  *(float *)(&DAT_803ce074 + uVar6 * 0xc) = (float)param_1;
-  return;
-}
-#endif
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80280f28(double param_1,int param_2)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-#if 0
-// Function: FUN_8028103c
-// Entry: 8028103c
-// Size: 304 bytes
-
-undefined4
-FUN_8028103c(double param_1,double param_2,double param_3,double param_4,double param_5,int param_6)
-
-{
-  int iVar1;
-  undefined4 *puVar2;
-  int *piVar3;
-  uint uVar4;
-  uint uVar5;
-  undefined4 *puVar6;
-  uint uVar7;
-  
-  uVar4 = (uint)DAT_803defeb;
-  uVar5 = 0;
-  uVar7 = uVar4;
-  for (piVar3 = &DAT_803cd570; (uVar7 != 0 && (*(int *)(param_6 + 0x40) != *piVar3));
-      piVar3 = piVar3 + 4) {
-    uVar5 = uVar5 + 1;
-    uVar7 = uVar7 - 1;
-  }
-  if (uVar5 == uVar4) {
-    if (uVar4 == 0x40) {
-      return 0;
-    }
-    (&DAT_803cd574)[uVar5 * 4] = 0;
-    (&DAT_803cd578)[uVar5 * 4] = 0;
-    (&DAT_803cd57c)[uVar5 * 8] = 0;
-    (&DAT_803cd570)[uVar5 * 4] = *(undefined4 *)(param_6 + 0x40);
-    DAT_803defeb = DAT_803defeb + 1;
-  }
-  uVar7 = (uint)DAT_803defec;
-  if (uVar7 == 0x40) {
-    return 0;
-  }
-  puVar2 = (undefined4 *)(&DAT_803cd574)[uVar5 * 4];
-  if ((undefined4 *)(&DAT_803cd574)[uVar5 * 4] == (undefined4 *)0x0) {
-    *(undefined4 *)(&DAT_803cd970 + uVar7 * 0x1c) = 0;
-    (&DAT_803cd574)[uVar5 * 4] = &DAT_803cd970 + uVar7 * 0x1c;
-  }
-  else {
-    do {
-      puVar6 = puVar2;
-      puVar2 = (undefined4 *)*puVar6;
-      if (puVar2 == (undefined4 *)0x0) break;
-    } while (param_1 <= (double)(float)puVar6[1]);
-    *(undefined4 **)(&DAT_803cd970 + uVar7 * 0x1c) = puVar2;
-    *puVar6 = &DAT_803cd970 + uVar7 * 0x1c;
-  }
-  iVar1 = (uint)DAT_803defec * 0x1c;
-  *(int *)(&DAT_803cd988 + iVar1) = param_6;
-  *(float *)(&DAT_803cd984 + iVar1) = (float)param_5;
-  *(float *)(&DAT_803cd978 + iVar1) = (float)param_2;
-  *(float *)(&DAT_803cd97c + iVar1) = (float)param_3;
-  *(float *)(&DAT_803cd980 + iVar1) = (float)param_4;
-  uVar7 = (uint)DAT_803defec;
-  DAT_803defec = DAT_803defec + 1;
-  *(float *)(&DAT_803cd974 + uVar7 * 0x1c) = (float)param_1;
-  return 1;
-}
-#endif
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4
 FUN_8028103c(double param_1,double param_2,double param_3,double param_4,double param_5,int param_6)

@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_802835C0.c
  * Text span: 0x802835C0-0x8028364C
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 2
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -19,35 +19,20 @@ extern undefined4 DAT_803dd278;
 uint FUN_802835c0(void);
 int FUN_802835e0(uint param_1);
 
-// Function: FUN_802835c0
-// Entry: 802835c0
-// Size: 32 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 uint FUN_802835c0(void)
-
 {
-  DAT_803dd278 = DAT_803dd278 * -0x57cae29d;
-  return DAT_803dd278 >> 6 & 0xffff;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0;
 }
 
-// Function: FUN_802835e0
-// Entry: 802835e0
-// Size: 108 bytes
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 int FUN_802835e0(uint param_1)
-
 {
-  uint uVar1;
-  
-  uVar1 = param_1 & 0xfff;
-  if (uVar1 < 0x400) {
-    return (int)*(short *)(&DAT_80330c88 + uVar1 * 2);
-  }
-  if (uVar1 < 0x800) {
-    return (int)*(short *)(&DAT_80330c88 + (0x3ff - (param_1 & 0x3ff)) * 2);
-  }
-  if (uVar1 < 0xc00) {
-    return -(int)*(short *)(&DAT_80330c88 + (param_1 & 0x3ff) * 2);
-  }
-  return -(int)*(short *)(&DAT_80330c88 + (0x3ff - (param_1 & 0x3ff)) * 2);
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0;
 }

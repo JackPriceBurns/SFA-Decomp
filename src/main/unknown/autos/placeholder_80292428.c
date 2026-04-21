@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80292428.c
  * Text span: 0x80292428-0x80292460
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 2
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -15,27 +15,19 @@
 double FUN_80292428(float *param_1);
 void FUN_80292444(double param_1,float *param_2);
 
-// Function: FUN_80292428
-// Entry: 80292428
-// Size: 28 bytes
-
-/* WARNING: Removing unreachable block (ram,0x80292430) */
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 double FUN_80292428(float *param_1)
-
 {
-  return (double)((longlong)(double)*(short *)param_1 * 0x3ff0000000000000);
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0.0;
 }
 
-// Function: FUN_80292444
-// Entry: 80292444
-// Size: 28 bytes
-
-/* WARNING: Removing unreachable block (ram,0x80292450) */
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80292444(double param_1,float *param_2)
-
 {
-  *(short *)param_2 = (short)(param_1 * 1.0);
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }

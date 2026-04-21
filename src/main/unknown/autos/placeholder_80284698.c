@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80284698.c
  * Text span: 0x80284698-0x80284704
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 5
  */
 
 #include "ghidra_import.h"
@@ -27,64 +27,44 @@ void FUN_802846b0(void);
 undefined4 FUN_802846bc(int param_1);
 uint FUN_802846e4(int param_1);
 
-// Function: FUN_80284698
-// Entry: 80284698
-// Size: 4 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80284698(void)
-
 {
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_8028469c
-// Entry: 8028469c
-// Size: 20 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8028469c(undefined4 *param_1)
-
 {
-  DAT_803deff4 = *param_1;
-  DAT_803deff8 = param_1[1];
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_802846b0
-// Entry: 802846b0
-// Size: 12 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_802846b0(void)
-
 {
-  DAT_803defb4 = 0;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_802846bc
-// Entry: 802846bc
-// Size: 40 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_802846bc(int param_1)
-
 {
-  int iVar1;
-  
-  iVar1 = DAT_803defc4 + param_1 * 0xf4;
-  if (*(char *)(iVar1 + 0xec) == '\0') {
-    return 0xffffffff;
-  }
-  return *(undefined4 *)(iVar1 + 0xe8);
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0;
 }
 
-// Function: FUN_802846e4
-// Entry: 802846e4
-// Size: 32 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 uint FUN_802846e4(int param_1)
-
 {
-  uint uVar1;
-  
-  uVar1 = countLeadingZeros(1 - (uint)*(byte *)(DAT_803defc4 + param_1 * 0xf4 + 0xec));
-  return uVar1 >> 5;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0;
 }

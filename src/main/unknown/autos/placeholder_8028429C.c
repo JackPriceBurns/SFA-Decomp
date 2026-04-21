@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_8028429C.c
  * Text span: 0x8028429C-0x802842C4
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 1
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -21,20 +21,11 @@ extern undefined4 DAT_803ccef8;
 void FUN_8028429c(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
                  undefined4 param_5);
 
-// Function: FUN_8028429c
-// Entry: 8028429c
-// Size: 40 bytes
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8028429c(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
                  undefined4 param_5)
-
 {
-  uint uVar1;
-  
-  uVar1 = param_1 & 0xff;
-  (&DAT_803cceec)[uVar1 * 0x2f] = param_2;
-  (&DAT_803ccef4)[uVar1 * 0x2f] = param_3;
-  (&DAT_803ccef0)[uVar1 * 0x2f] = param_4;
-  (&DAT_803ccef8)[uVar1 * 0x2f] = param_5;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }

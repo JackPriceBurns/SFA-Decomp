@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80273F4C.c
  * Text span: 0x80273F4C-0x80273F50
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 1
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -14,12 +14,10 @@
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_80273f4c(void);
 
-// Function: FUN_80273f4c
-// Entry: 80273f4c
-// Size: 4 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80273f4c(void)
-
 {
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }

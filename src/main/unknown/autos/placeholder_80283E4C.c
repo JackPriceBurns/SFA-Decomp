@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80283E4C.c
  * Text span: 0x80283E4C-0x80283FA0
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 5
  */
 
 #include "ghidra_import.h"
@@ -24,94 +24,42 @@ void FUN_80283eec(int param_1,uint param_2);
 void FUN_80283f18(int param_1,uint param_2);
 void FUN_80283f44(int param_1,char param_2);
 
-// Function: FUN_80283e4c
-// Entry: 80283e4c
-// Size: 40 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80283e4c(int param_1)
-
 {
-  int iVar1;
-  
-  iVar1 = DAT_803defc4 + param_1 * 0xf4 + (uint)DAT_803deff0 * 4;
-  *(uint *)(iVar1 + 0x24) = *(uint *)(iVar1 + 0x24) | 0x40;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_80283e74
-// Entry: 80283e74
-// Size: 120 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80283e74(int param_1,ushort param_2)
-
 {
-  int iVar1;
-  uint uVar2;
-  int iVar3;
-  
-  uVar2 = (uint)param_2;
-  iVar3 = DAT_803defc4 + param_1 * 0xf4;
-  if (0x3fff < param_2) {
-    uVar2 = 0x3fff;
-  }
-  if ((*(byte *)(iVar3 + 0xe4) != 0xff) &&
-     (*(int *)(iVar3 + (uint)*(byte *)(iVar3 + 0xe4) * 4 + 0x38) == uVar2 << 4)) {
-    return;
-  }
-  *(uint *)(iVar3 + (uint)DAT_803deff0 * 4 + 0x38) = uVar2 << 4;
-  iVar1 = iVar3 + (uint)DAT_803deff0 * 4;
-  *(uint *)(iVar1 + 0x24) = *(uint *)(iVar1 + 0x24) | 8;
-  *(byte *)(iVar3 + 0xe4) = DAT_803deff0;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_80283eec
-// Entry: 80283eec
-// Size: 44 bytes
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80283eec(int param_1,uint param_2)
-
 {
-  int iVar1;
-  
-  iVar1 = DAT_803defc4 + param_1 * 0xf4;
-  *(undefined2 *)(iVar1 + 0xcc) = *(undefined2 *)(&DAT_803dd280 + (param_2 & 0xff) * 2);
-  *(uint *)(iVar1 + 0x24) = *(uint *)(iVar1 + 0x24) | 0x100;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_80283f18
-// Entry: 80283f18
-// Size: 44 bytes
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80283f18(int param_1,uint param_2)
-
 {
-  int iVar1;
-  
-  iVar1 = DAT_803defc4 + param_1 * 0xf4;
-  *(undefined2 *)(iVar1 + 0xce) = *(undefined2 *)(&DAT_803dd288 + (param_2 & 0xff) * 2);
-  *(uint *)(iVar1 + 0x24) = *(uint *)(iVar1 + 0x24) | 0x80;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_80283f44
-// Entry: 80283f44
-// Size: 92 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80283f44(int param_1,char param_2)
-
 {
-  int iVar1;
-  
-  if (param_2 == '\0') {
-    iVar1 = param_1 * 0xf4;
-    *(uint *)(DAT_803defc4 + iVar1 + 0xf0) = *(uint *)(DAT_803defc4 + iVar1 + 0xf0) | 0x80000000;
-    *(undefined2 *)(DAT_803defc4 + iVar1 + 0xd0) = 0x10;
-    *(undefined2 *)(DAT_803defc4 + iVar1 + 0xd2) = 0x10;
-    return;
-  }
-  iVar1 = DAT_803defc4 + param_1 * 0xf4;
-  *(uint *)(iVar1 + 0xf0) = *(uint *)(iVar1 + 0xf0) & 0x7fffffff;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }

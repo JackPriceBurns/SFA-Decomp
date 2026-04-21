@@ -4,8 +4,8 @@
  * Owner: main/textblock.c
  * Text span: 0x80209624-0x802096AC
  * Imported Ghidra functions: 3
- * Verbatim-safe functions: 3
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -19,35 +19,26 @@ void FUN_80209624(void);
 void FUN_80209650(void);
 void FUN_80209680(void);
 
-// Function: FUN_80209624
-// Entry: 80209624
-// Size: 44 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80209624(void)
-
 {
-  FUN_8007d858();
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_80209650
-// Entry: 80209650
-// Size: 44 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80209650(void)
-
 {
-  FUN_8007d858();
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_80209680
-// Entry: 80209680
-// Size: 44 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80209680(void)
-
 {
-  FUN_8007d858();
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }

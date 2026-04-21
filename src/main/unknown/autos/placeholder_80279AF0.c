@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80279AF0.c
  * Text span: 0x80279AF0-0x80279D30
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 2
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 4
  */
 
 #include "ghidra_import.h"
@@ -29,88 +29,17 @@ uint FUN_80279b04(int param_1,int param_2);
 undefined4 FUN_80279c00(uint param_1);
 void FUN_80279c50(int param_1);
 
-// Function: FUN_80279af0
-// Entry: 80279af0
-// Size: 20 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_80279af0(int param_1)
-
 {
-  *(undefined4 *)(param_1 + 0xfc) = *(undefined4 *)(param_1 + 0xf8);
-  return *(undefined4 *)(*(int *)(param_1 + 0xf8) + 8);
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0;
 }
 
-/* Auto-stubbed for compileability: conflicting local pointer bases for shared globals: DAT_803def74. */
-#if 0
-// Function: FUN_80279b04
-// Entry: 80279b04
-// Size: 252 bytes
-
-uint FUN_80279b04(int param_1,int param_2)
-
-{
-  bool bVar1;
-  int *piVar2;
-  int *piVar3;
-  uint uVar4;
-  uint uVar5;
-  int *piVar6;
-  int *piVar7;
-  
-  piVar2 = DAT_803def78;
-  uVar5 = DAT_803def70;
-  do {
-    DAT_803def70 = uVar5;
-    uVar5 = DAT_803def70 + 1;
-  } while (DAT_803def70 == 0xffffffff);
-  uVar5 = DAT_803def70;
-  piVar3 = DAT_803def74;
-  piVar7 = (int *)0x0;
-  DAT_803def70 = DAT_803def70 + 1;
-  while ((piVar6 = piVar3, piVar6 != (int *)0x0 && ((uint)piVar6[2] <= uVar5))) {
-    if (piVar6[2] == uVar5) {
-      do {
-        uVar4 = DAT_803def70 + 1;
-        bVar1 = DAT_803def70 == 0xffffffff;
-        uVar5 = DAT_803def70;
-        DAT_803def70 = uVar4;
-      } while (bVar1);
-    }
-    piVar7 = piVar6;
-    piVar3 = (int *)*piVar6;
-  }
-  if (DAT_803def78 != (int *)0x0) {
-    DAT_803def78 = (int *)*DAT_803def78;
-    if (DAT_803def78 != (int *)0x0) {
-      *(undefined4 *)((int)DAT_803def78 + 4) = 0;
-    }
-    if (piVar7 == (int *)0x0) {
-      DAT_803def74 = piVar2;
-    }
-    else {
-      *piVar7 = (int)piVar2;
-    }
-    piVar2[1] = (int)piVar7;
-    *piVar2 = (int)piVar6;
-    if (piVar6 != (int *)0x0) {
-      piVar6[1] = (int)piVar2;
-    }
-    piVar2[2] = uVar5;
-    piVar2[3] = *(int *)(param_1 + 0xf4);
-    piVar3 = piVar2;
-    if (param_2 == 0) {
-      piVar3 = (int *)0x0;
-    }
-    *(int **)(param_1 + 0xfc) = piVar3;
-    *(int **)(param_1 + 0xf8) = piVar2;
-    if (param_2 == 0) {
-      return *(uint *)(param_1 + 0xf4);
-    }
-    return uVar5;
-  }
-  return 0xffffffff;
-}
-#endif
+/* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup, forced full-owner stub for compile-first import, conflicting local pointer bases for shared globals: DAT_803def74. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 uint FUN_80279b04(int param_1,int param_2)
 {
@@ -118,32 +47,8 @@ uint FUN_80279b04(int param_1,int param_2)
     return 0;
 }
 
-/* Auto-stubbed for compileability: conflicting local pointer bases for shared globals: DAT_803def74. */
-#if 0
-// Function: FUN_80279c00
-// Entry: 80279c00
-// Size: 80 bytes
-
-undefined4 FUN_80279c00(uint param_1)
-
-{
-  undefined4 *puVar1;
-  
-  puVar1 = DAT_803def74;
-  if (param_1 != 0xffffffff) {
-    for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
-      if (puVar1[2] == param_1) goto LAB_80279c38;
-      if (param_1 < (uint)puVar1[2]) break;
-    }
-    puVar1 = (undefined4 *)0x0;
-LAB_80279c38:
-    if (puVar1 != (undefined4 *)0x0) {
-      return puVar1[3];
-    }
-  }
-  return 0xffffffff;
-}
-#endif
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import, conflicting local pointer bases for shared globals: DAT_803def74. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_80279c00(uint param_1)
 {
@@ -151,48 +56,10 @@ undefined4 FUN_80279c00(uint param_1)
     return 0;
 }
 
-// Function: FUN_80279c50
-// Entry: 80279c50
-// Size: 224 bytes
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80279c50(int param_1)
-
 {
-  uint uVar1;
-  int iVar2;
-  ushort *puVar3;
-  byte *pbVar4;
-  
-  uVar1 = *(uint *)(param_1 + 0xf4) & 0xff;
-  iVar2 = uVar1 * 4;
-  pbVar4 = &DAT_803cb7f0 + iVar2;
-  if ((&DAT_803cb7f2)[uVar1 * 2] != 1) {
-    return;
-  }
-  if (*pbVar4 == 0xff) {
-    (&DAT_803cb8f0)[*(byte *)(param_1 + 0x10c)] = (&DAT_803cb7f1)[iVar2];
-  }
-  else {
-    (&DAT_803cb7f1)[(uint)*pbVar4 * 4] = (&DAT_803cb7f1)[iVar2];
-  }
-  if ((byte)(&DAT_803cb7f1)[iVar2] == 0xff) {
-    if (*pbVar4 == 0xff) {
-      iVar2 = (uint)*(byte *)(param_1 + 0x10c) * 4;
-      puVar3 = (ushort *)(&DAT_803cb9f0 + iVar2);
-      if (*(ushort *)(&DAT_803cb9f2 + iVar2) == 0xffff) {
-        DAT_803def7c = *puVar3;
-      }
-      else {
-        *(ushort *)(&DAT_803cb9f0 + (uint)*(ushort *)(&DAT_803cb9f2 + iVar2) * 4) = *puVar3;
-      }
-      if (*puVar3 != 0xffff) {
-        *(undefined2 *)(&DAT_803cb9f2 + (uint)*puVar3 * 4) = *(undefined2 *)(&DAT_803cb9f2 + iVar2);
-      }
-    }
-  }
-  else {
-    (&DAT_803cb7f0)[(uint)(byte)(&DAT_803cb7f1)[iVar2] * 4] = *pbVar4;
-  }
-  (&DAT_803cb7f2)[uVar1 * 2] = 0;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }

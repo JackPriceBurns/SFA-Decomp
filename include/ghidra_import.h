@@ -11,6 +11,14 @@ typedef int bool;
 #ifndef true
 #define true 1
 #endif
+#ifndef _WCHAR_T
+typedef u16 wchar_t;
+#define _WCHAR_T
+#endif
+#endif
+
+#ifndef NAN
+#define NAN 0.0f
 #endif
 
 typedef u8 undefined;

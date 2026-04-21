@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80273608.c
  * Text span: 0x80273608-0x802736D4
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 1
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -20,53 +20,10 @@ extern undefined4 DAT_803def04;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_80273608(void);
 
-// Function: FUN_80273608
-// Entry: 80273608
-// Size: 200 bytes
+/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80273608(void)
-
 {
-  uint uVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  uint uVar5;
-  
-  DAT_803def00 = 0;
-  DAT_803def01 = 3;
-  uVar1 = (uint)DAT_803bdfc0;
-  iVar4 = 0;
-  if (uVar1 != 0) {
-    if (8 < uVar1) {
-      uVar5 = uVar1 - 1 >> 3;
-      iVar2 = -0x7fc41028;
-      if (0 < (int)(uVar1 - 8)) {
-        do {
-          *(undefined *)(iVar2 + 8) = 0;
-          iVar4 = iVar4 + 8;
-          *(undefined *)(iVar2 + 0x6c) = 0;
-          *(undefined *)(iVar2 + 0xd0) = 0;
-          *(undefined *)(iVar2 + 0x134) = 0;
-          *(undefined *)(iVar2 + 0x198) = 0;
-          *(undefined *)(iVar2 + 0x1fc) = 0;
-          *(undefined *)(iVar2 + 0x260) = 0;
-          *(undefined *)(iVar2 + 0x2c4) = 0;
-          iVar2 = iVar2 + 800;
-          uVar5 = uVar5 - 1;
-        } while (uVar5 != 0);
-      }
-    }
-    iVar3 = iVar4 * 100 + -0x7fc41028;
-    iVar2 = (uint)DAT_803bdfc0 - iVar4;
-    if (iVar4 < (int)(uint)DAT_803bdfc0) {
-      do {
-        *(undefined *)(iVar3 + 8) = 0;
-        iVar3 = iVar3 + 100;
-        iVar2 = iVar2 + -1;
-      } while (iVar2 != 0);
-    }
-  }
-  DAT_803def04 = 0;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
