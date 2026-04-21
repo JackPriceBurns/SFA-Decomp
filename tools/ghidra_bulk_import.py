@@ -134,6 +134,8 @@ FORCE_STUB_FUNCTIONS = {
     "FUN_80080ea4",
     "FUN_801f55c0",
     "FUN_8020a768",
+    "FUN_8019b4e0",
+    "FUN_8019d314",
 }
 FORCE_STUB_OWNERS = {
     "main/dll/curves.c",
@@ -185,7 +187,6 @@ FORCE_STUB_OWNERS = {
     "main/dll/DR/DRsimplehuman.c",
     "main/dll/DR/DRearthwalk.c",
     "main/dll/DR/hightop.c",
-    "main/dll/DR/sandwormBoss.c",
     "main/dll/IM/IMicicle.c",
     "main/dll/SC/SCtotembondpuz.c",
     "main/dll/WC/WClevcontrol.c",
@@ -199,7 +200,6 @@ FORCE_STUB_OWNERS = {
     "main/dll/dll_1C5.c",
     "main/dll/dll_1D3.c",
     "main/dll/door.c",
-    "main/dll/genprops.c",
     "main/dll/groundAnimator.c",
     "main/dll/mmshrine/shrine.c",
     "main/dll/mmshrine/shrine1C2.c",
@@ -673,6 +673,12 @@ def infer_external_function_types(functions: list[FunctionDump], local_names: se
     return inferred
 
 
+def emit_external_function_return_type(type_name: str) -> str:
+    if pointer_base_type(type_name) is not None:
+        return "void*"
+    return type_name
+
+
 def check_safety(raw_text: str, signature_text: str) -> tuple[bool, bool, list[str]]:
     raw_text = strip_comments(raw_text)
     reasons: list[str] = []
@@ -846,6 +852,21 @@ def strip_leading_function_prologue(raw_text: str) -> str:
     return "\n".join(lines[index:]).rstrip() + "\n"
 
 
+def normalize_null_pointer_casts(raw_text: str, inferred_global_types: dict[str, str]) -> str:
+    normalized = raw_text
+    for symbol, type_name in inferred_global_types.items():
+        if pointer_base_type(type_name) is None:
+            continue
+        escaped_symbol = re.escape(symbol)
+        normalized_type = normalize_type_name(type_name)
+        normalized = re.sub(
+            rf"(\b{escaped_symbol}\s*=\s*)\([^()]+\*\)\s*0x0\b",
+            rf"\1({normalized_type})0x0",
+            normalized,
+        )
+    return normalized
+
+
 def header_relpath_for_owner(owner: str) -> str:
     return normalize(owner).removesuffix(".c") + ".h"
 
@@ -905,7 +926,10 @@ def render_source(
     if extern_functions:
         lines.append("/* Cross-file calls lifted from the raw Ghidra output. */")
         for name in extern_functions:
-            lines.append(f"extern {inferred_external_function_types.get(name, 'undefined4')} {name}();")
+            return_type = emit_external_function_return_type(
+                inferred_external_function_types.get(name, "undefined4")
+            )
+            lines.append(f"extern {return_type} {name}();")
         lines.append("")
 
     if extern_globals:
@@ -923,7 +947,8 @@ def render_source(
         reasons = stub_reasons.get(function.name)
         lines.append(render_function_info_block(function).rstrip())
         if reasons is None:
-            lines.append(strip_leading_function_prologue(function.raw_text).rstrip())
+            body_text = normalize_null_pointer_casts(function.raw_text, inferred_global_types)
+            lines.append(strip_leading_function_prologue(body_text).rstrip())
         else:
             lines.append(render_stub(function, reasons).rstrip())
         lines.append("")
