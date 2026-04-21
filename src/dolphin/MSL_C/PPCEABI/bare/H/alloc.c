@@ -388,113 +388,151 @@ static void Block_construct(Block* block, unsigned long size) {
  * JP Address: TODO
  * JP Size: TODO
  */
-static SubBlock* Block_subBlock(Block* block, unsigned long requested_size) {
-    SubBlock* sb;
-    SubBlock* start;
-    unsigned long sb_size;
-    unsigned long max_size;
+extern const unsigned long lbl_802C3180[6];
+extern void fn_80286F20(void*);
 
-    start = Block_start(block);
-    if (start == 0) {
-        block->max_size = 0;
-        return 0;
-    }
-
-    sb = start;
-    sb_size = SubBlock_size(start);
-    max_size = sb_size;
-
-    while (sb_size < requested_size) {
-        start = start->next;
-        sb_size = SubBlock_size(start);
-        if (max_size < sb_size) {
-            max_size = sb_size;
-        }
-        if (start == sb) {
-            block->max_size = max_size;
-            return 0;
-        }
-    }
-
-    if (sb_size - requested_size >= 0x50) {
-        SubBlock* new_sb;
-        unsigned long old_tag;
-        unsigned long old_size;
-        unsigned long block_val;
-        unsigned long block_or_1;
-        int was_free;
-        int was_alloc;
-        unsigned long new_size;
-
-        old_tag = start->size;
-        new_sb = (SubBlock*)((char*)start + requested_size);
-        block_val = (unsigned long)start->block & ~1;
-        block_or_1 = block_val | 1;
-        was_free = !(old_tag & 2);
-        old_size = old_tag & ~7;
-        was_alloc = !was_free;
-
-        start->block = (Block*)block_or_1;
-        start->size = requested_size;
-
-        if (old_tag & 4) {
-            start->size |= 4;
-        }
-
-        if (was_alloc) {
-            start->size |= 2;
-            new_sb->size |= 4;
-        } else {
-            *(unsigned long*)((char*)new_sb - 4) = requested_size;
-        }
-
-        new_sb->block = (Block*)block_or_1;
-        new_size = old_size - requested_size;
-        new_sb->size = new_size;
-
-        if (was_alloc) {
-            new_sb->size |= 4;
-        }
-
-        if (was_alloc) {
-            new_sb->size |= 2;
-            *(unsigned long*)((char*)new_sb + new_size) |= 4;
-        } else {
-            *(unsigned long*)((char*)new_sb + new_size - 4) = new_size;
-        }
-
-        if (was_free) {
-            new_sb->next = start->next;
-            new_sb->next->prev = new_sb;
-            new_sb->prev = start;
-            start->next = new_sb;
-        }
-    }
-
-    {
-        unsigned long tag;
-        unsigned long tag_size;
-
-        Block_start(block) = start->next;
-
-        tag = start->size;
-        start->size = tag | 2;
-        tag_size = tag & ~7;
-        *(unsigned long*)((char*)start + tag_size) |= 4;
-
-        if (Block_start(block) == start) {
-            Block_start(block) = start->next;
-        }
-        if (Block_start(block) == start) {
-            Block_start(block) = 0;
-            block->max_size = 0;
-        } else {
-            start->next->prev = start->prev;
-            start->prev->next = start->next;
-        }
-    }
-
-    return start;
+static asm SubBlock* Block_subBlock(Block* block, unsigned long requested_size) {
+    nofralloc
+    stwu r1, -0x10(r1)
+    mflr r0
+    lis r6, lbl_802C3180@ha
+    stw r0, 0x14(r1)
+    stw r31, 0xc(r1)
+    mr r31, r3
+    addi r3, r6, lbl_802C3180@l
+    li r6, 0x0
+    stw r30, 0x8(r1)
+    b _bsb_1
+_bsb_0:
+    addi r3, r3, 0x4
+    addi r6, r6, 0x1
+_bsb_1:
+    lwz r0, 0x0(r3)
+    cmplw r5, r0
+    bgt _bsb_0
+    subi r7, r4, 0x4
+    slwi r4, r6, 3
+    lwz r3, 0x0(r7)
+    addi r4, r4, 0x4
+    add r4, r31, r4
+    lwz r0, 0xc(r3)
+    cmplwi r0, 0x0
+    bne _bsb_3
+    lwz r5, 0x4(r4)
+    cmplw r5, r3
+    beq _bsb_3
+    lwz r0, 0x0(r4)
+    cmplw r0, r3
+    bne _bsb_2
+    lwz r0, 0x0(r5)
+    stw r0, 0x4(r4)
+    lwz r5, 0x0(r4)
+    lwz r0, 0x0(r5)
+    stw r0, 0x0(r4)
+    b _bsb_3
+_bsb_2:
+    lwz r0, 0x4(r3)
+    lwz r5, 0x0(r3)
+    stw r0, 0x4(r5)
+    lwz r0, 0x0(r3)
+    lwz r5, 0x4(r3)
+    stw r0, 0x0(r5)
+    lwz r0, 0x4(r4)
+    stw r0, 0x4(r3)
+    lwz r5, 0x4(r3)
+    lwz r0, 0x0(r5)
+    stw r0, 0x0(r3)
+    lwz r5, 0x0(r3)
+    stw r3, 0x4(r5)
+    lwz r5, 0x4(r3)
+    stw r3, 0x0(r5)
+    stw r3, 0x4(r4)
+_bsb_3:
+    lwz r0, 0xc(r3)
+    stw r0, 0x4(r7)
+    stw r7, 0xc(r3)
+    lwz r5, 0x10(r3)
+    subic. r0, r5, 0x1
+    stw r0, 0x10(r3)
+    bne _bsb_12
+    lwz r0, 0x4(r4)
+    cmplw r0, r3
+    bne _bsb_4
+    lwz r0, 0x4(r3)
+    stw r0, 0x4(r4)
+_bsb_4:
+    lwz r0, 0x0(r4)
+    cmplw r0, r3
+    bne _bsb_5
+    lwz r0, 0x0(r3)
+    stw r0, 0x0(r4)
+_bsb_5:
+    lwz r0, 0x4(r3)
+    lwz r5, 0x0(r3)
+    stw r0, 0x4(r5)
+    lwz r0, 0x0(r3)
+    lwz r5, 0x4(r3)
+    stw r0, 0x0(r5)
+    lwz r0, 0x4(r4)
+    cmplw r0, r3
+    bne _bsb_6
+    li r0, 0x0
+    stw r0, 0x4(r4)
+_bsb_6:
+    lwz r0, 0x0(r4)
+    cmplw r0, r3
+    bne _bsb_7
+    li r0, 0x0
+    stw r0, 0x0(r4)
+_bsb_7:
+    lwz r0, -0x4(r3)
+    subi r4, r3, 0x8
+    clrrwi r30, r0, 1
+    mr r3, r30
+    bl Block_link
+    lwz r3, 0x10(r30)
+    li r5, 0x0
+    rlwinm. r0, r3, 0, 30, 30
+    bne _bsb_8
+    lwz r0, 0xc(r30)
+    clrrwi r4, r3, 3
+    clrrwi r3, r0, 3
+    subi r0, r3, 0x18
+    cmplw r4, r0
+    bne _bsb_8
+    li r5, 0x1
+_bsb_8:
+    cmpwi r5, 0x0
+    beq _bsb_12
+    lwz r4, 0x4(r30)
+    cmplw r4, r30
+    bne _bsb_9
+    li r4, 0x0
+_bsb_9:
+    lwz r0, 0x0(r31)
+    cmplw r0, r30
+    bne _bsb_10
+    stw r4, 0x0(r31)
+_bsb_10:
+    cmplwi r4, 0x0
+    beq _bsb_11
+    lwz r0, 0x0(r30)
+    stw r0, 0x0(r4)
+    lwz r3, 0x0(r4)
+    stw r4, 0x4(r3)
+_bsb_11:
+    li r0, 0x0
+    mr r3, r30
+    stw r0, 0x4(r30)
+    stw r0, 0x0(r30)
+    bl fn_80286F20
+_bsb_12:
+    lwz r0, 0x14(r1)
+    lwz r31, 0xc(r1)
+    lwz r30, 0x8(r1)
+    mtlr r0
+    addi r1, r1, 0x10
+    blr
 }
 
 /*
