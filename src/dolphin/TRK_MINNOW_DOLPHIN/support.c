@@ -39,22 +39,13 @@ DSError TRKSuppAccessFile(u32 file_handle, u8* data, size_t* count, u8* io_resul
 
         if (error == DS_NoError) {
             int command;
-            u32 position;
 
             command = DSMSG_WriteFile;
             if (read) {
                 command = DSMSG_ReadFile;
             }
 
-            position = buffer->position;
-            if (position >= sizeof(buffer->data)) {
-                error = DS_MessageBufferOverflow;
-            } else {
-                buffer->position = position + 1;
-                error = DS_NoError;
-                buffer->data[position] = command;
-                buffer->length++;
-            }
+            error = TRKAppendBuffer1_ui8(buffer, command);
         }
 
         if (error == DS_NoError) {
