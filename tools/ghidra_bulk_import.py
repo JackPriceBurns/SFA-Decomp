@@ -138,6 +138,10 @@ FORCE_STUB_FUNCTIONS = {
     "FUN_8019d314",
     "FUN_801a478c",
 }
+SIGNATURE_OVERRIDES = {}
+GLOBAL_TYPE_OVERRIDES = {
+    "DAT_803de7d0": "void*",
+}
 FORCE_STUB_OWNERS = {
     "main/dll/curves.c",
     "main/dll/dim_partfx.c",
@@ -179,10 +183,7 @@ FORCE_STUB_OWNERS = {
     "main/dll/CR/CRsnowbike.c",
     "main/dll/DF/DFlantern.c",
     "main/dll/DIM/DIMlavaball.c",
-    "main/dll/DIM/DIMlevcontrol.c",
     "main/dll/DIM/DIMsnowball.c",
-    "main/dll/DR/DRcloudrunner.c",
-    "main/dll/DR/DRearthwalk.c",
     "main/dll/DR/hightop.c",
     "main/dll/SC/SCtotembondpuz.c",
     "main/dll/WC/WClevcontrol.c",
@@ -452,7 +453,7 @@ def observe_symbol_type(
 
 
 def infer_global_types(functions: list[FunctionDump]) -> dict[str, str]:
-    inferred: dict[str, str] = {}
+    inferred: dict[str, str] = dict(GLOBAL_TYPE_OVERRIDES)
     local_var_maps = {function.name: parse_local_var_types(function.raw_text) for function in functions}
     stripped_sources = {function.name: strip_comments(function.raw_text) for function in functions}
     all_symbols = {symbol for function in functions for symbol in function.globals_used}
@@ -752,6 +753,9 @@ def load_function_dump(path: Path) -> FunctionDump:
     raw_text = path.read_text(encoding="utf-8")
     name = match.group("name")
     signature_text, return_type = parse_signature_block(raw_text, name)
+    override = SIGNATURE_OVERRIDES.get(name)
+    if override is not None:
+        signature_text, return_type = override
     safe_signature, safe_body, unsafe_reasons = check_safety(raw_text, signature_text)
     return FunctionDump(
         address=int(match.group("addr"), 16),
@@ -952,6 +956,10 @@ def render_header(owner: str, functions: list[FunctionDump]) -> str:
     relpath = header_relpath_for_owner(owner)
     guard = header_guard(relpath)
     lines = [
+        "/*",
+        f" * {GENERATED_MARKER}",
+        " */",
+        "",
         f"#ifndef {guard}",
         f"#define {guard}",
         "",
@@ -1036,6 +1044,10 @@ def render_inventory_header(owner: str, inventory: list[InventoryFunction]) -> s
     relpath = header_relpath_for_owner(owner)
     guard = header_guard(relpath)
     lines = [
+        "/*",
+        f" * {GENERATED_MARKER}",
+        " */",
+        "",
         f"#ifndef {guard}",
         f"#define {guard}",
         "",
@@ -1052,6 +1064,10 @@ def render_empty_header(owner: str, span: SplitSpan) -> str:
     relpath = header_relpath_for_owner(owner)
     guard = header_guard(relpath)
     lines = [
+        "/*",
+        f" * {GENERATED_MARKER}",
+        " */",
+        "",
         f"#ifndef {guard}",
         f"#define {guard}",
         "",

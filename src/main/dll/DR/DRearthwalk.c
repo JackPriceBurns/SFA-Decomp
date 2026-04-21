@@ -4,8 +4,8 @@
  * Owner: main/dll/DR/DRearthwalk.c
  * Text span: 0x801DA010-0x801DB048
  * Imported Ghidra functions: 9
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 9
+ * Verbatim-safe functions: 5
+ * Auto-stubbed functions: 4
  */
 
 #include "ghidra_import.h"
@@ -21,7 +21,7 @@ extern undefined4 FUN_8002b554();
 extern int FUN_8002b678();
 extern undefined4 FUN_8002b7b0();
 extern int FUN_8002bac4();
-extern undefined2* FUN_8002becc();
+extern void* FUN_8002becc();
 extern undefined4 FUN_8002cc9c();
 extern uint FUN_8002e144();
 extern undefined4 FUN_800303fc();
@@ -156,7 +156,53 @@ void FUN_801da874(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_801daa98(int param_1,undefined *param_2,int param_3)
+
 {
+  int iVar1;
+  undefined *puVar2;
+  int iVar3;
+  
+  iVar1 = FUN_8002bac4();
+  FUN_80035ff8(param_1);
+  *(ushort *)(param_1 + 6) = *(ushort *)(param_1 + 6) | 0x4000;
+  *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) | 8;
+  if (param_3 != 0) {
+    FUN_80296454(iVar1,1);
+    FUN_80296e8c(iVar1,1);
+    iVar1 = 2;
+    puVar2 = param_2;
+    do {
+      iVar3 = *(int *)(puVar2 + 0x38);
+      if (iVar3 != 0) {
+        *(ushort *)(iVar3 + 6) = *(ushort *)(iVar3 + 6) | 0x4000;
+        *(undefined4 *)(puVar2 + 0x38) = 0;
+      }
+      iVar3 = *(int *)(puVar2 + 0x3c);
+      if (iVar3 != 0) {
+        *(ushort *)(iVar3 + 6) = *(ushort *)(iVar3 + 6) | 0x4000;
+        *(undefined4 *)(puVar2 + 0x3c) = 0;
+      }
+      iVar3 = *(int *)(puVar2 + 0x40);
+      if (iVar3 != 0) {
+        *(ushort *)(iVar3 + 6) = *(ushort *)(iVar3 + 6) | 0x4000;
+        *(undefined4 *)(puVar2 + 0x40) = 0;
+      }
+      iVar3 = *(int *)(puVar2 + 0x44);
+      if (iVar3 != 0) {
+        *(ushort *)(iVar3 + 6) = *(ushort *)(iVar3 + 6) | 0x4000;
+        *(undefined4 *)(puVar2 + 0x44) = 0;
+      }
+      iVar3 = *(int *)(puVar2 + 0x48);
+      if (iVar3 != 0) {
+        *(ushort *)(iVar3 + 6) = *(ushort *)(iVar3 + 6) | 0x4000;
+        *(undefined4 *)(puVar2 + 0x48) = 0;
+      }
+      puVar2 = puVar2 + 0x14;
+      iVar1 = iVar1 + -1;
+    } while (iVar1 != 0);
+  }
+  *param_2 = 6;
+  return;
 }
 
 /*
@@ -190,7 +236,18 @@ void FUN_801dabf8(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_801daeb4(int param_1)
+
 {
+  float local_18;
+  float local_14;
+  float local_10;
+  
+  FUN_8003b9ec(param_1);
+  local_18 = FLOAT_803e61b4;
+  local_14 = FLOAT_803e61b8;
+  local_10 = FLOAT_803e61b4;
+  FUN_80098da4(param_1,4,0,0,&local_18);
+  return;
 }
 
 /*
@@ -208,7 +265,12 @@ void FUN_801daeb4(int param_1)
 void FUN_801daf14(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9)
+
 {
+  if ((*(ushort *)(param_9 + 6) & 0x4000) != 0) {
+    FUN_8002cc9c(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9);
+  }
+  return;
 }
 
 /*
@@ -224,8 +286,18 @@ void FUN_801daf14(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
  * PAL Size: TODO
  */
 undefined4 FUN_801daf44(int param_1)
+
 {
-    return 0;
+  int iVar1;
+  
+  iVar1 = *(int *)(param_1 + 0xb8);
+  *(float *)(iVar1 + 4) = *(float *)(iVar1 + 4) + FLOAT_803dc074;
+  if ((FLOAT_803e61c0 <= *(float *)(iVar1 + 4)) &&
+     (*(float *)(iVar1 + 4) = *(float *)(iVar1 + 4) - FLOAT_803e61c0,
+     (*(ushort *)(param_1 + 0xb0) & 0x800) != 0)) {
+    FUN_80098da4(param_1,0,2,0,(undefined4 *)0x0);
+  }
+  return 0;
 }
 
 /*
@@ -243,5 +315,17 @@ undefined4 FUN_801daf44(int param_1)
 void FUN_801dafd8(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9,int param_10)
+
 {
+  int iVar1;
+  int *piVar2;
+  undefined8 uVar3;
+  
+  piVar2 = *(int **)(param_9 + 0xb8);
+  uVar3 = (**(code **)(*DAT_803dd6f8 + 0x18))();
+  if (((param_10 == 0) && (iVar1 = *piVar2, iVar1 != 0)) &&
+     ((*(ushort *)(iVar1 + 0xb0) & 0x40) == 0)) {
+    FUN_8002cc9c(uVar3,param_2,param_3,param_4,param_5,param_6,param_7,param_8,iVar1);
+  }
+  return;
 }
