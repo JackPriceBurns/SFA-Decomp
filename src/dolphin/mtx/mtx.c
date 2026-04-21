@@ -2,6 +2,9 @@
 
 static f32 lbl_803DD1B8[] = { 0.0f, 1.0f };
 
+extern const f32 lbl_803E82B0;
+extern const f32 lbl_803E82B4;
+
 extern f32 sinf(f32);
 extern f32 cosf(f32);
 extern f32 tanf(f32);
@@ -22,8 +25,8 @@ void C_MTXIdentity(Mtx mtx)
 #ifdef GEKKO
 void PSMTXIdentity(register Mtx m)
 {
-    register f32 zero_c = 0.0f;
-    register f32 one_c = 1.0f;
+    register f32 zero_c = lbl_803E82B4;
+    register f32 one_c = lbl_803E82B0;
     register f32 c_01;
     register f32 c_10;
     // clang-format off
@@ -949,8 +952,8 @@ void C_MTXTrans(Mtx m, f32 xT, f32 yT, f32 zT)
 #ifdef GEKKO
 void PSMTXTrans(register Mtx m, register f32 xT, register f32 yT, register f32 zT)
 {
-    register f32 c0 = 0.0F;
-    register f32 c1 = 1.0F;
+    register f32 c0 = lbl_803E82B4;
+    register f32 c1 = lbl_803E82B0;
     // clang-format off
   asm
   {
@@ -1035,7 +1038,7 @@ void C_MTXScale(Mtx m, f32 xS, f32 yS, f32 zS)
 #ifdef GEKKO
 void PSMTXScale(register Mtx m, register f32 xS, register f32 yS, register f32 zS)
 {
-    register f32 c0 = 0.0F;
+    register f32 c0 = lbl_803E82B4;
     // clang-format off
   asm
   {
