@@ -83,6 +83,9 @@ GLOBAL_RE = re.compile(r"\b(_?DAT_[0-9a-fA-F]+|PTR_[A-Za-z0-9_]+|FLOAT_[0-9a-fA-
 UNSUPPORTED_TOKEN_RE = re.compile(r"\b(?:undefined[3567]|u?int3|u?int5|u?int6|u?int7|float10)\b")
 INVALID_SLICE_RE = re.compile(r"\._\d+_\d+_")
 HELPER_TOKEN_RE = re.compile(r"\b(?:CONCAT\d+|SUB\d+|SEXT\d+|ZEXT\d+|CARRY\d+|SCARRY\d+|SBORROW\d+)\b")
+LOCAL_DECL_RE = re.compile(
+    r"^\s*(?P<type>[A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)*)\s+(?P<pointer>\*+)?\s*(?P<name>[A-Za-z_]\w*)\s*(?:=\s*[^;]+)?;$"
+)
 
 
 @dataclass(frozen=True)
@@ -259,6 +262,173 @@ def detect_globals(raw_text: str) -> list[str]:
     return sorted(set(GLOBAL_RE.findall(raw_text)))
 
 
+def normalize_type_name(type_name: str) -> str:
+    compact = " ".join(type_name.replace("\n", " ").split())
+    compact = compact.replace(" *", "*")
+    return compact
+
+
+def pointer_base_type(type_name: str) -> str | None:
+    normalized = normalize_type_name(type_name)
+    if not normalized.endswith("*"):
+        return None
+    return normalized[:-1].rstrip()
+
+
+def parse_local_var_types(raw_text: str) -> dict[str, str]:
+    if "{" not in raw_text:
+        return {}
+    body = raw_text.split("{", 1)[1]
+    var_types: dict[str, str] = {}
+    for raw_line in body.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("//") or line.startswith("/*") or "(" in line:
+            continue
+        match = LOCAL_DECL_RE.match(line)
+        if match is None:
+            continue
+        type_name = match.group("type")
+        type_tokens = type_name.split()
+        if not type_tokens or any(token not in KNOWN_TYPES for token in type_tokens):
+            continue
+        pointer = match.group("pointer") or ""
+        var_types[match.group("name")] = normalize_type_name(f"{type_name}{pointer}")
+    return var_types
+
+
+def observe_symbol_type(
+    inferred: dict[str, str],
+    symbol: str,
+    type_name: str,
+) -> bool:
+    normalized = normalize_type_name(type_name)
+    if not normalized:
+        return False
+    current = inferred.get(symbol)
+    if current == normalized:
+        return False
+
+    def score(name: str) -> tuple[int, int]:
+        pointer = 1 if pointer_base_type(name) is not None else 0
+        specific = 0 if name in {"undefined4", "void*"} else 1
+        return (pointer, specific)
+
+    if current is None or score(normalized) > score(current):
+        inferred[symbol] = normalized
+        return True
+    return False
+
+
+def infer_global_types(functions: list[FunctionDump]) -> dict[str, str]:
+    inferred: dict[str, str] = {}
+    local_var_maps = {function.name: parse_local_var_types(function.raw_text) for function in functions}
+    stripped_sources = {function.name: strip_comments(function.raw_text) for function in functions}
+    all_symbols = {symbol for function in functions for symbol in function.globals_used}
+
+    for function in functions:
+        raw_text = stripped_sources[function.name]
+        local_var_types = local_var_maps[function.name]
+        return_base = pointer_base_type(function.return_type)
+        for var_name, var_type in local_var_types.items():
+            escaped_var = re.escape(var_name)
+            base_type = pointer_base_type(var_type)
+            if base_type is None:
+                continue
+            for symbol in function.globals_used:
+                escaped_symbol = re.escape(symbol)
+                if re.search(rf"\b{escaped_var}\s*=\s*{escaped_symbol}\b", raw_text):
+                    observe_symbol_type(inferred, symbol, var_type)
+                if re.search(rf"\b{escaped_var}\s*=\s*&{escaped_symbol}\b", raw_text):
+                    observe_symbol_type(inferred, symbol, base_type)
+        if return_base is not None:
+            for symbol in function.globals_used:
+                escaped_symbol = re.escape(symbol)
+                if re.search(rf"\breturn\s+{escaped_symbol}\b", raw_text):
+                    observe_symbol_type(inferred, symbol, function.return_type)
+                if re.search(rf"\b{escaped_symbol}\s*[!=]=\s*\({re.escape(return_base)}\s*\*\)\s*0x0", raw_text):
+                    observe_symbol_type(inferred, symbol, function.return_type)
+
+    changed = True
+    while changed:
+        changed = False
+        for function in functions:
+            raw_text = stripped_sources[function.name]
+            for lhs, rhs in re.findall(r"\b([A-Za-z_]\w*)\s*=\s*&([A-Za-z_]\w+)\b", raw_text):
+                if lhs not in all_symbols or rhs not in all_symbols:
+                    continue
+                rhs_type = inferred.get(rhs)
+                lhs_type = inferred.get(lhs)
+                if rhs_type is not None:
+                    changed |= observe_symbol_type(inferred, lhs, f"{rhs_type} *")
+                else:
+                    changed |= observe_symbol_type(inferred, lhs, "undefined4 *")
+                if lhs_type is not None:
+                    lhs_base = pointer_base_type(lhs_type)
+                    if lhs_base is not None:
+                        changed |= observe_symbol_type(inferred, rhs, lhs_base)
+            for lhs, rhs in re.findall(r"\b([A-Za-z_]\w*)\s*=\s*([A-Za-z_]\w+)\b", raw_text):
+                if lhs not in all_symbols or rhs not in all_symbols:
+                    continue
+                lhs_type = inferred.get(lhs)
+                rhs_type = inferred.get(rhs)
+                if lhs_type is not None and pointer_base_type(lhs_type) is not None:
+                    changed |= observe_symbol_type(inferred, rhs, lhs_type)
+                if rhs_type is not None and pointer_base_type(rhs_type) is not None:
+                    changed |= observe_symbol_type(inferred, lhs, rhs_type)
+
+    return inferred
+
+
+def has_pointer_assignment_hazard(raw_text: str) -> bool:
+    stripped = strip_comments(raw_text)
+    local_var_types = parse_local_var_types(raw_text)
+    pointer_locals = [
+        name for name, type_name in local_var_types.items() if pointer_base_type(type_name) is not None
+    ]
+    for lhs in pointer_locals:
+        escaped_lhs = re.escape(lhs)
+        for rhs in pointer_locals:
+            escaped_rhs = re.escape(rhs)
+            if re.search(rf"\b{escaped_lhs}\s*\[[^\]]+\]\s*=\s*{escaped_rhs}\b", stripped):
+                return True
+            if re.search(rf"\*\s*{escaped_lhs}\s*=\s*{escaped_rhs}\b", stripped):
+                return True
+    return False
+
+
+def detect_conflicted_pointer_globals(functions: list[FunctionDump]) -> set[str]:
+    pointer_bases: dict[str, set[str]] = {}
+    for function in functions:
+        raw_text = strip_comments(function.raw_text)
+        local_var_types = parse_local_var_types(function.raw_text)
+        for var_name, var_type in local_var_types.items():
+            base_type = pointer_base_type(var_type)
+            if base_type is None:
+                continue
+            escaped_var = re.escape(var_name)
+            for symbol in function.globals_used:
+                escaped_symbol = re.escape(symbol)
+                if re.search(rf"\b{escaped_var}\s*=\s*{escaped_symbol}\b", raw_text):
+                    pointer_bases.setdefault(symbol, set()).add(base_type)
+    return {symbol for symbol, bases in pointer_bases.items() if len(bases) > 1}
+
+
+def function_stub_reasons(functions: list[FunctionDump]) -> dict[str, list[str]]:
+    reasons: dict[str, list[str]] = {}
+    conflicted_globals = detect_conflicted_pointer_globals(functions)
+    for function in functions:
+        function_reasons = list(function.unsafe_reasons)
+        conflicted_used = sorted(conflicted_globals.intersection(function.globals_used))
+        if conflicted_used:
+            function_reasons.append(
+                "conflicting local pointer bases for shared globals: "
+                + ", ".join(conflicted_used)
+            )
+        if function_reasons:
+            reasons[function.name] = function_reasons
+    return reasons
+
+
 def check_safety(raw_text: str, signature_text: str) -> tuple[bool, bool, list[str]]:
     raw_text = strip_comments(raw_text)
     reasons: list[str] = []
@@ -280,6 +450,10 @@ def check_safety(raw_text: str, signature_text: str) -> tuple[bool, bool, list[s
     }
     if unsupported_helpers:
         reasons.append(f"unsupported helper macros: {', '.join(sorted(unsupported_helpers))}")
+        safe_body = False
+
+    if has_pointer_assignment_hazard(raw_text):
+        reasons.append("pointer-heavy local typing needs manual cleanup")
         safe_body = False
 
     return safe_signature, safe_body, reasons
@@ -307,7 +481,9 @@ def load_function_dump(path: Path) -> FunctionDump:
     )
 
 
-def extern_decl_for_global(symbol: str) -> str:
+def extern_decl_for_global(symbol: str, inferred_type: str | None = None) -> str:
+    if inferred_type is not None:
+        return f"extern {inferred_type} {symbol};"
     if symbol.startswith("DOUBLE_"):
         return f"extern f64 {symbol};"
     if symbol.startswith("FLOAT_"):
@@ -325,9 +501,9 @@ def header_guard(relpath: str) -> str:
     return re.sub(r"[^A-Za-z0-9]", "_", relpath.upper()) + "_"
 
 
-def render_stub(function: FunctionDump) -> str:
+def render_stub(function: FunctionDump, override_reasons: list[str] | None = None) -> str:
     lines: list[str] = []
-    reason = ", ".join(function.unsafe_reasons)
+    reason = ", ".join(override_reasons or function.unsafe_reasons)
     lines.append(f"/* Auto-stubbed for compileability: {reason}. */")
     lines.append("#if 0")
     lines.append(function.raw_text.rstrip())
@@ -356,6 +532,10 @@ def render_source(
     local_names = {function.name for function in functions}
     extern_functions = sorted({call for function in functions for call in function.called_functions if call not in local_names})
     extern_globals = sorted({symbol for function in functions for symbol in function.globals_used})
+    inferred_global_types = infer_global_types(functions)
+    stub_reasons = function_stub_reasons(functions)
+    safe_count = len(functions) - len(stub_reasons)
+    stubbed_count = len(stub_reasons)
 
     lines: list[str] = [
         "/*",
@@ -364,8 +544,8 @@ def render_source(
         f" * Owner: {owner}",
         f" * Text span: 0x{span.start:08X}-0x{span.end:08X}",
         f" * Imported Ghidra functions: {len(functions)}",
-        f" * Verbatim-safe functions: {sum(1 for function in functions if function.is_safe)}",
-        f" * Auto-stubbed functions: {sum(1 for function in functions if not function.is_safe)}",
+        f" * Verbatim-safe functions: {safe_count}",
+        f" * Auto-stubbed functions: {stubbed_count}",
         " */",
         "",
         '#include "ghidra_import.h"',
@@ -383,7 +563,7 @@ def render_source(
     if extern_globals:
         lines.append("/* Raw global references kept as loose externs for later cleanup. */")
         for symbol in extern_globals:
-            lines.append(extern_decl_for_global(symbol))
+            lines.append(extern_decl_for_global(symbol, inferred_global_types.get(symbol)))
         lines.append("")
 
     lines.append("/* Local declarations keep old-style call compatibility across imported functions. */")
@@ -392,10 +572,11 @@ def render_source(
     lines.append("")
 
     for function in functions:
-        if function.is_safe:
+        reasons = stub_reasons.get(function.name)
+        if reasons is None:
             lines.append(function.raw_text.rstrip())
         else:
-            lines.append(render_stub(function).rstrip())
+            lines.append(render_stub(function, reasons).rstrip())
         lines.append("")
 
     return "\n".join(lines).rstrip() + "\n"
@@ -526,8 +707,9 @@ def main() -> None:
         if not functions:
             continue
         span = span_map[owner]
-        safe_count = sum(1 for function in functions if function.is_safe)
-        stubbed_count = len(functions) - safe_count
+        stub_reasons = function_stub_reasons(functions)
+        safe_count = len(functions) - len(stub_reasons)
+        stubbed_count = len(stub_reasons)
         summaries.append(
             f"{owner}: funcs={len(functions)} safe={safe_count} stubbed={stubbed_count} "
             f"text=0x{span.start:08X}-0x{span.end:08X}"
