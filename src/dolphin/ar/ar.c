@@ -74,8 +74,6 @@ u32 ARInit(u32* stack_index_addr, u32 num_entries) {
         return 0x4000;
     }
 
-    OSRegisterVersion(__ARVersion);
-
     old = OSDisableInterrupts();
     __AR_Callback = NULL;
     __OSSetInterruptHandler(6, __ARHandler);
