@@ -4,8 +4,8 @@
  * Owner: main/dll/SC/SCtotemstrength.c
  * Text span: 0x801D8190-0x801D8284
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 2
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -29,26 +29,13 @@ FUN_801d8204(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8
             undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,int param_9,
             undefined4 param_10,int param_11);
 
-// Function: FUN_801d81a0
-// Entry: 801d81a0
-// Size: 100 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801d81a0(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8)
-
 {
-  uint uVar1;
-  
-  FUN_80088a84(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,0);
-  uVar1 = FUN_80020078(0x13f);
-  if (uVar1 == 0) {
-    (**(code **)(*DAT_803dd6e8 + 100))();
-  }
-  uVar1 = FUN_80020078(0x193);
-  if (uVar1 != 0) {
-    FUN_800201ac(0x194,0);
-  }
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 // Function: FUN_801d8204

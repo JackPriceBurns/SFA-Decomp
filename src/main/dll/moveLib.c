@@ -125,7 +125,7 @@ void FUN_80113590(double param_1,int param_2,uint *param_3,char param_4)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80113634(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
@@ -134,7 +134,7 @@ void FUN_80113634(undefined4 param_1,undefined4 param_2,undefined4 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801137a0(undefined4 param_1,undefined4 param_2,int param_3,undefined4 param_4,
@@ -194,7 +194,7 @@ void FUN_80114238(int param_1,wchar_t *param_2,wchar_t *param_3)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 double FUN_801142b4(undefined4 param_1,undefined4 param_2)
@@ -203,7 +203,7 @@ double FUN_801142b4(undefined4 param_1,undefined4 param_2)
     return 0.0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_80114320(undefined4 param_1,undefined2 *param_2)
@@ -212,7 +212,7 @@ undefined4 FUN_80114320(undefined4 param_1,undefined2 *param_2)
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_80114420(int param_1,undefined2 *param_2)
@@ -238,7 +238,7 @@ void FUN_801146a4(undefined4 param_1,undefined4 param_2,float *param_3,float *pa
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80114858(undefined4 param_1,undefined4 param_2,float *param_3,uint param_4,float *param_5,
@@ -256,7 +256,7 @@ void FUN_80114a58(undefined4 param_1,undefined4 param_2,int param_3,float *param
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80114db8(int param_1)
@@ -264,7 +264,7 @@ void FUN_80114db8(int param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80114e4c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,

@@ -29,7 +29,7 @@ extern undefined4 DAT_803addb4;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_802085f4(undefined2 *param_1,int param_2);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_802085f4(undefined2 *param_1,int param_2)

@@ -78,7 +78,7 @@ void FUN_801bd814(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 void FUN_801bd918(short *param_1);
 void FUN_801bd9c8(int param_1);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801bd0e8(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
@@ -89,7 +89,7 @@ void FUN_801bd0e8(undefined8 param_1,double param_2,double param_3,undefined8 pa
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup. */
+/* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801bd814(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -122,7 +122,7 @@ void FUN_801bd918(short *param_1)
   return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801bd9c8(int param_1)

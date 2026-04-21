@@ -51,7 +51,7 @@ void FUN_8017a7d0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 void FUN_8017a8d0(void);
 void FUN_8017a95c(uint param_1);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8017a3f4(int param_1)
@@ -142,7 +142,7 @@ void FUN_8017a624(int param_1)
   return;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8017a7d0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,

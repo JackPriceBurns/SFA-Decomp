@@ -116,7 +116,7 @@ void FUN_8019b040(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
                  uint param_9);
 void FUN_8019b384(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8019992c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
@@ -135,7 +135,7 @@ void FUN_8019a88c(int param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8019a92c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
@@ -162,7 +162,7 @@ void FUN_8019b00c(int param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8019b040(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,

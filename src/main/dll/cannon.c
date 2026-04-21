@@ -136,7 +136,7 @@ undefined4 FUN_80140c24(int param_1)
   return uVar3;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80140d64(undefined8 param_1,double param_2,double param_3,undefined8 param_4,

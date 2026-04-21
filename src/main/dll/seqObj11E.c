@@ -4,8 +4,8 @@
  * Owner: main/dll/seqObj11E.c
  * Text span: 0x801520FC-0x80152F40
  * Imported Ghidra functions: 8
- * Verbatim-safe functions: 6
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 5
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -106,39 +106,12 @@ void FUN_801528ec(undefined8 param_1,double param_2,double param_3,undefined8 pa
 void FUN_801529c0(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
 
-// Function: FUN_801520fc
-// Entry: 801520fc
-// Size: 336 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801520fc(int param_1,int param_2)
-
 {
-  int iVar1;
-  int iVar2;
-  int iVar3;
-  
-  iVar1 = FUN_8002bac4();
-  iVar3 = *(int *)(param_1 + 0x4c);
-  iVar2 = (**(code **)(*DAT_803dd6e8 + 0x20))(0x1be);
-  if (iVar2 == 0) {
-    FUN_8011f670(2);
-    *(undefined2 *)(param_2 + 0x338) = DAT_803dc908;
-    (**(code **)(*DAT_803dd6d4 + 0x48))(0,param_1,0xffffffff);
-  }
-  else if ((iVar1 == 0) || (iVar2 = FUN_80296ffc(iVar1), iVar2 < 0x19)) {
-    FUN_8011f670(2);
-    *(undefined2 *)(param_2 + 0x338) = uRam803dc90a;
-    (**(code **)(*DAT_803dd6d4 + 0x48))(1,param_1,0xffffffff);
-  }
-  else {
-    FUN_8029700c(iVar1,-0x19);
-    FUN_800201ac((int)*(short *)(iVar3 + 0x1c),1);
-    *(undefined2 *)(param_2 + 0x338) = uRam803dc90c;
-    *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) | 8;
-    FUN_8011f670(2);
-    (**(code **)(*DAT_803dd6d4 + 0x48))(2,param_1,0xffffffff);
-  }
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 // Function: FUN_8015224c
@@ -328,7 +301,7 @@ void FUN_801528ec(undefined8 param_1,double param_2,double param_3,undefined8 pa
   return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801529c0(undefined8 param_1,double param_2,double param_3,undefined8 param_4,

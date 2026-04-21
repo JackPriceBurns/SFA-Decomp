@@ -20,7 +20,7 @@ extern undefined4 FUN_801d76c8();
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_801d80f0(short *param_1,int param_2);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801d80f0(short *param_1,int param_2)

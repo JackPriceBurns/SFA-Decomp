@@ -4,8 +4,8 @@
  * Owner: main/dll/DIM/DIM2flameburst.c
  * Text span: 0x801B4014-0x801B69A0
  * Imported Ghidra functions: 27
- * Verbatim-safe functions: 20
- * Auto-stubbed functions: 7
+ * Verbatim-safe functions: 17
+ * Auto-stubbed functions: 10
  */
 
 #include "ghidra_import.h"
@@ -186,35 +186,21 @@ void FUN_801b672c(int param_1);
 void FUN_801b6760(int param_1);
 void FUN_801b6808(void);
 
-// Function: FUN_801b401c
-// Entry: 801b401c
-// Size: 68 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801b401c(undefined4 param_1,uint param_2)
-
 {
-  (**(code **)(*DAT_803dd6d4 + 0x48))((param_2 ^ 1) + 2,param_1,0xffffffff);
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_801b4060
-// Entry: 801b4060
-// Size: 164 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 bool FUN_801b4060(int param_1)
-
 {
-  bool bVar1;
-  int iVar2;
-  float *pfVar3;
-  
-  iVar2 = FUN_8002bac4();
-  pfVar3 = *(float **)(param_1 + 0xb8);
-  bVar1 = pfVar3[3] +
-          pfVar3[2] * *(float *)(iVar2 + 0x14) +
-          *pfVar3 * *(float *)(iVar2 + 0xc) + pfVar3[1] * *(float *)(iVar2 + 0x10) < FLOAT_803e55a0;
-  (**(code **)(*DAT_803dd6d4 + 0x48))(bVar1,param_1,0xffffffff);
-  return bVar1;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0;
 }
 
 // Function: FUN_801b4114
@@ -248,39 +234,12 @@ void FUN_801b4138(int param_1)
   return;
 }
 
-// Function: FUN_801b418c
-// Entry: 801b418c
-// Size: 264 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801b418c(int param_1)
-
 {
-  int iVar1;
-  uint uVar2;
-  float local_18 [4];
-  
-  local_18[0] = FLOAT_803e55a8;
-  iVar1 = FUN_80036f50(10,param_1,local_18);
-  *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) & 0xf7;
-  uVar2 = FUN_80020078(0x3e3);
-  if (uVar2 == 0) {
-    *(undefined *)(param_1 + 0xe4) = 0;
-    if ((iVar1 == 0) ||
-       (iVar1 = (**(code **)(**(int **)(iVar1 + 0x68) + 0x20))(iVar1,param_1), iVar1 == 0)) {
-      *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) | 0x10;
-    }
-    else {
-      *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) & 0xef;
-    }
-  }
-  else {
-    *(undefined *)(param_1 + 0xe4) = 1;
-    *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) & 0xef;
-  }
-  if (((*(uint *)(*(int *)(param_1 + 0x50) + 0x44) & 1) != 0) && (*(int *)(param_1 + 0x74) != 0)) {
-    FUN_80041110();
-  }
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 // Function: FUN_801b4294
@@ -500,7 +459,7 @@ void FUN_801b48e4(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: unsupported helper macros: SUB42, pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: unsupported helper macros: SUB42, pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801b4dbc(undefined8 param_1,double param_2,double param_3,double param_4,double param_5,
@@ -954,7 +913,7 @@ void FUN_801b6760(int param_1)
   return;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801b6808(void)

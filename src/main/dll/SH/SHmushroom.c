@@ -34,7 +34,7 @@ extern f32 FLOAT_803e600c;
 undefined4 FUN_801d2e5c(uint param_1);
 void FUN_801d2fd4(ushort *param_1);
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_801d2e5c(uint param_1)

@@ -217,7 +217,7 @@ undefined4 FUN_801c4f6c(int param_1)
   return uVar3;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801c50c4(undefined4 param_1,undefined4 param_2,int param_3)

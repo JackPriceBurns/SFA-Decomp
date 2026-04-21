@@ -35,7 +35,7 @@ extern undefined4 DAT_803de388;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_8011c2ac(int param_1,int param_2);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8011c2ac(int param_1,int param_2)

@@ -91,6 +91,8 @@ INVALID_SLICE_RE = re.compile(r"\._\d+_\d+_")
 LABEL_REF_RE = re.compile(r"&LAB_[0-9A-Fa-f]+")
 STRING_LABEL_RE = re.compile(r"\bs_[A-Za-z0-9_]+_[0-9a-fA-F]+\b")
 HELPER_TOKEN_RE = re.compile(r"\b(?:CONCAT\d+|SUB\d+|SEXT\d+|ZEXT\d+|CARRY\d+|SCARRY\d+|SBORROW\d+)\b")
+CPP_SCOPE_RE = re.compile(r"::")
+FUNCTION_PTR_STORE_RE = re.compile(r"\(\s*code\s*\*\*\s*\)")
 GLOBAL_ADDRESS_RE = re.compile(
     r"&(?:_?DAT_[0-9A-Fa-f]+|PTR_[A-Za-z0-9_]+|FLOAT_[0-9A-Fa-f]+|DOUBLE_[0-9A-Fa-f]+|s_[A-Za-z0-9_]+_[0-9A-Fa-f]+|[A-Za-z]+Ram[0-9A-Fa-f]+)\b"
 )
@@ -157,6 +159,70 @@ FORCE_STUB_OWNERS = {
     "main/dll/CAM/dll_5F.c",
     "main/dll/baddieControl.c",
     "main/dll/moveLib.c",
+    # Rebody sweep owners that still fail MWCC on raw Ghidra bodies.
+    "main/dll/ARW/ARWarwingattachment.c",
+    "main/dll/CF/CFBaby.c",
+    "main/dll/CF/CFchuckobj.c",
+    "main/dll/CF/CFguardian.c",
+    "main/dll/CF/CFtoggleswitch.c",
+    "main/dll/CF/laser.c",
+    "main/dll/CF/treasureRelated0177.c",
+    "main/dll/CF/windlift.c",
+    "main/dll/CR/CRsnowbike.c",
+    "main/dll/DB/DBstealerworm.c",
+    "main/dll/DB/DBwaterflow.c",
+    "main/dll/DF/DFbarrelanim.c",
+    "main/dll/DF/DFlantern.c",
+    "main/dll/DIM/DIM2conveyor.c",
+    "main/dll/DIM/DIMboulder.c",
+    "main/dll/DIM/DIMcannon.c",
+    "main/dll/DIM/DIMlavaball.c",
+    "main/dll/DIM/DIMlavasmash.c",
+    "main/dll/DIM/DIMlevcontrol.c",
+    "main/dll/DIM/DIMsnowball.c",
+    "main/dll/DR/DRcloudrunner.c",
+    "main/dll/DR/DRhightop.c",
+    "main/dll/DR/DRpushcart.c",
+    "main/dll/DR/DRsimplehuman.c",
+    "main/dll/DR/DRearthwalk.c",
+    "main/dll/DR/hightop.c",
+    "main/dll/DR/sandwormBoss.c",
+    "main/dll/IM/IMicicle.c",
+    "main/dll/SC/SCanimobj.c",
+    "main/dll/SC/SCtotembondpuz.c",
+    "main/dll/SP/SPshop.c",
+    "main/dll/TREX/TREX_trex.c",
+    "main/dll/WC/WCfloortile.c",
+    "main/dll/WC/WClevcontrol.c",
+    "main/dll/alphaanim.c",
+    "main/dll/anim.c",
+    "main/dll/baddie/Tumbleweed.c",
+    "main/dll/baddie/baby_snowworm.c",
+    "main/dll/baddie/skeetla.c",
+    "main/dll/collectable.c",
+    "main/dll/dll_148.c",
+    "main/dll/dll_14F.c",
+    "main/dll/dll_180.c",
+    "main/dll/dll_19C.c",
+    "main/dll/dll_19E.c",
+    "main/dll/dll_1C5.c",
+    "main/dll/dll_1CA.c",
+    "main/dll/dll_1D3.c",
+    "main/dll/door.c",
+    "main/dll/fruit.c",
+    "main/dll/genprops.c",
+    "main/dll/groundAnimator.c",
+    "main/dll/mmshrine/shrine.c",
+    "main/dll/mmshrine/shrine1C2.c",
+    "main/dll/pressureSwitch.c",
+    "main/dll/scarab.c",
+    "main/dll/seqObj11D.c",
+    "main/dll/sidekickToy.c",
+    "main/dll/torch1CD.c",
+    "main/dll/transporter.c",
+    "main/dll/weaponE6.c",
+    "main/dll/colrise.c",
+    "main/dll/shrine1CE.c",
 }
 
 
@@ -601,6 +667,10 @@ def check_safety(raw_text: str, signature_text: str) -> tuple[bool, bool, list[s
         reasons.append("address-label references need manual cleanup")
         safe_body = False
 
+    if CPP_SCOPE_RE.search(raw_text):
+        reasons.append("C++-style scope tokens need manual cleanup")
+        safe_body = False
+
     if STRING_LABEL_RE.search(raw_text):
         reasons.append("raw string-label references need manual cleanup")
         safe_body = False
@@ -632,6 +702,10 @@ def check_safety(raw_text: str, signature_text: str) -> tuple[bool, bool, list[s
 
     if has_pointer_assignment_hazard(raw_text):
         reasons.append("pointer-heavy local typing needs manual cleanup")
+        safe_body = False
+
+    if FUNCTION_PTR_STORE_RE.search(raw_text):
+        reasons.append("function-pointer stores need manual cleanup")
         safe_body = False
 
     return safe_signature, safe_body, reasons

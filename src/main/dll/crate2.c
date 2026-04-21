@@ -33,7 +33,7 @@ extern undefined4* DAT_803dd72c;
 void FUN_8020831c(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8020831c(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,

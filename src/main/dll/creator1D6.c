@@ -35,7 +35,7 @@ void FUN_801cfac0(undefined2 *param_1,int param_2,int param_3);
 undefined4 FUN_801cfd5c(void);
 void FUN_801cfd90(void);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801cfac0(undefined2 *param_1,int param_2,int param_3)

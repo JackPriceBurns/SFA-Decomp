@@ -4,8 +4,8 @@
  * Owner: main/dll/exploder.c
  * Text span: 0x80182754-0x80182B44
  * Imported Ghidra functions: 3
- * Verbatim-safe functions: 3
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -187,15 +187,10 @@ void FUN_80182a5c(int param_1)
   return;
 }
 
-// Function: FUN_80182af4
-// Entry: 80182af4
-// Size: 80 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80182af4(int param_1)
-
 {
-  (**(code **)(*DAT_803dd6fc + 0x18))();
-  FUN_80013e4c(DAT_803de740);
-  FUN_8003709c(param_1,0x10);
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }

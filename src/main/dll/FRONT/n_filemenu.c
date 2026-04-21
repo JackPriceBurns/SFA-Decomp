@@ -4,8 +4,8 @@
  * Owner: main/dll/FRONT/n_filemenu.c
  * Text span: 0x80116858-0x8011722C
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 3
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -95,46 +95,17 @@ int FUN_80116964(undefined8 param_1,double param_2,undefined8 param_3,undefined8
 void FUN_801171bc(void);
 void FUN_801171ec(undefined param_1);
 
-// Function: FUN_80116858
-// Entry: 80116858
-// Size: 264 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80116858(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  undefined4 param_9)
-
 {
-  char cVar2;
-  int iVar1;
-  undefined8 extraout_f1;
-  double dVar3;
-  double dVar4;
-  
-  cVar2 = FUN_80134f44();
-  if (cVar2 == '\0') {
-    iVar1 = (**(code **)(*DAT_803dd6d0 + 0x10))();
-    if (iVar1 == 0x57) {
-      FUN_8001b4f8(FUN_80135e18);
-      dVar4 = (double)FLOAT_803e2998;
-      FUN_80135ba8((double)(FLOAT_803e2990 +
-                           (float)((double)CONCAT44(0x43300000,
-                                                    (uint)DAT_803de28e * 0x1a4 ^ 0x80000000) -
-                                  DOUBLE_803e29a0) / FLOAT_803e2994),dVar4);
-      FUN_801350c8(0,0,0);
-      (**(code **)(*DAT_803dd6cc + 0x18))();
-      (**(code **)(*DAT_803dd720 + 0x30))(0xff);
-      (**(code **)(*DAT_803dd720 + 0x10))(param_9);
-      dVar3 = (double)FUN_8001b4f8(0);
-      FUN_80134fb0(dVar3,dVar4,param_3,param_4,param_5,param_6,param_7,param_8,DAT_803de2cf);
-    }
-  }
-  else {
-    FUN_80134d50(extraout_f1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
-  }
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 int FUN_80116964(undefined8 param_1,double param_2,undefined8 param_3,undefined8 param_4,
@@ -159,15 +130,10 @@ void FUN_801171bc(void)
   return;
 }
 
-// Function: FUN_801171ec
-// Entry: 801171ec
-// Size: 64 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801171ec(undefined param_1)
-
 {
-  DAT_803de28d = 0xff;
-  DAT_803de28c = param_1;
-  (**(code **)(*DAT_803dd720 + 0x18))();
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }

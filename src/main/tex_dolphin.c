@@ -122,7 +122,7 @@ void FUN_8005edfc(undefined4 param_1,undefined4 param_2,int param_3,int param_4,
 void FUN_8005f35c(int param_1);
 int FUN_8005f6d4(char param_1,int param_2,int *param_3);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8005e0d8(undefined4 param_1,float *param_2)

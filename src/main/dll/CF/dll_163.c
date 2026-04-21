@@ -51,7 +51,7 @@ void FUN_8018a764(int param_1,undefined4 param_2);
 undefined FUN_8018a778(int param_1);
 void FUN_8018a794(int param_1);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8018a1c0(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,

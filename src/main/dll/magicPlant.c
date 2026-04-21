@@ -4,8 +4,8 @@
  * Owner: main/dll/magicPlant.c
  * Text span: 0x80152F40-0x8015413C
  * Imported Ghidra functions: 13
- * Verbatim-safe functions: 10
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 9
+ * Auto-stubbed functions: 4
  */
 
 #include "ghidra_import.h"
@@ -331,7 +331,7 @@ void FUN_80153454(uint param_1,int param_2,undefined4 param_3,int param_4)
   return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801534ec(ushort *param_1,undefined4 *param_2)
@@ -339,7 +339,7 @@ void FUN_801534ec(ushort *param_1,undefined4 *param_2)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801536f4(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -385,37 +385,12 @@ void FUN_80153984(int param_1,int param_2)
   return;
 }
 
-// Function: FUN_80153a08
-// Entry: 80153a08
-// Size: 228 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80153a08(int param_1,int param_2)
-
 {
-  char cVar1;
-  
-  cVar1 = '\0';
-  switch(*(undefined2 *)(param_1 + 0xa0)) {
-  case 1:
-    cVar1 = '\x01';
-    break;
-  case 2:
-    cVar1 = '\x01';
-    break;
-  case 3:
-    cVar1 = '\x01';
-    break;
-  case 5:
-    if ((*(uint *)(param_2 + 0x2dc) & 0x80000000) != 0) {
-      cVar1 = '\n';
-    }
-  }
-  if ((cVar1 != '\0') && ((*(uint *)(param_2 + 0x2dc) & 0x40000000) == 0)) {
-    for (; cVar1 != '\0'; cVar1 = cVar1 + -1) {
-      (**(code **)(*DAT_803dd708 + 8))(param_1,0x802,0,2,0xffffffff,0);
-    }
-  }
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 // Function: FUN_80153aec

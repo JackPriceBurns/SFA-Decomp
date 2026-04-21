@@ -4,8 +4,8 @@
  * Owner: main/dll/CR/CRsnowClaw.c
  * Text span: 0x801E383C-0x801E3A44
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 4
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 3
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -126,13 +126,10 @@ void FUN_801e38f4(undefined8 param_1,double param_2,double param_3,undefined8 pa
   return;
 }
 
-// Function: FUN_801e3a14
-// Entry: 801e3a14
-// Size: 48 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801e3a14(void)
-
 {
-  (**(code **)(*DAT_803dd6f8 + 0x18))();
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }

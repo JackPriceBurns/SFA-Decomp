@@ -33,7 +33,7 @@ extern f32 FLOAT_803e2634;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_8010d608(ushort *param_1);
 
-/* Auto-stubbed for compileability: undeclared wide temporaries need manual cleanup. */
+/* Auto-stubbed for compileability: undeclared wide temporaries need manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8010d608(ushort *param_1)

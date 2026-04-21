@@ -4,8 +4,8 @@
  * Owner: main/dll/symbol.c
  * Text span: 0x801CB288-0x801CB334
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 2
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -22,17 +22,12 @@ extern undefined4* DAT_803dd6fc;
 void FUN_801cb298(void);
 void FUN_801cb300(int param_1);
 
-// Function: FUN_801cb298
-// Entry: 801cb298
-// Size: 104 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801cb298(void)
-
 {
-  (**(code **)(*DAT_803dd6fc + 0x18))();
-  (**(code **)(*DAT_803dd6f0 + 0x38))(3,0);
-  (**(code **)(*DAT_803dd6f0 + 0x38))(2,0);
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 // Function: FUN_801cb300

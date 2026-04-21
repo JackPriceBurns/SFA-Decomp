@@ -32,7 +32,7 @@ extern f32 FLOAT_803e60f4;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_801d6cd0(short *param_1,int param_2);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801d6cd0(short *param_1,int param_2)

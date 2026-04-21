@@ -4,8 +4,8 @@
  * Owner: main/dll/tricky.c
  * Text span: 0x8011DC94-0x80121F30
  * Imported Ghidra functions: 33
- * Verbatim-safe functions: 19
- * Auto-stubbed functions: 14
+ * Verbatim-safe functions: 18
+ * Auto-stubbed functions: 15
  */
 
 #include "ghidra_import.h"
@@ -431,36 +431,13 @@ void FUN_8011e014(undefined8 param_1,double param_2,double param_3,undefined8 pa
   return;
 }
 
-// Function: FUN_8011e06c
-// Entry: 8011e06c
-// Size: 152 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8011e06c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8)
-
 {
-  int iVar1;
-  double extraout_f1;
-  undefined8 uVar2;
-  
-  iVar1 = (**(code **)(*DAT_803dd72c + 0x8c))();
-  uVar2 = FUN_8012c894(extraout_f1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
-  if (*(char *)(iVar1 + 9) == '\0') {
-    if (DAT_803dc084 == '\0') {
-      DAT_803de400 = 10;
-    }
-    else {
-      DAT_803de400 = 9;
-    }
-  }
-  else {
-    DAT_803de400 = 8;
-  }
-  DAT_803de55c = FUN_80019c28();
-  FUN_800199a8(uVar2,param_2,param_3,param_4,param_5,param_6,param_7,param_8,0xb);
-  FLOAT_803de3e4 = FLOAT_803e2ae0;
-  DAT_803de458 = 1;
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 /* Auto-stubbed for compileability: unsupported body pseudo-types, address-of global symbols need manual typing. */
@@ -1054,7 +1031,7 @@ void FUN_8012162c(undefined8 param_1,double param_2,double param_3,undefined8 pa
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, unsupported helper macros: SUB42. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, unsupported helper macros: SUB42, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80121724(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,

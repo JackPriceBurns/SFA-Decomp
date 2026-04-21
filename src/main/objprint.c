@@ -4,8 +4,8 @@
  * Owner: main/objprint.c
  * Text span: 0x80039030-0x8003D7F0
  * Imported Ghidra functions: 45
- * Verbatim-safe functions: 39
- * Auto-stubbed functions: 6
+ * Verbatim-safe functions: 37
+ * Auto-stubbed functions: 8
  */
 
 #include "ghidra_import.h"
@@ -1573,90 +1573,12 @@ void FUN_8003b700(undefined2 param_1,undefined2 param_2,undefined2 param_3)
   return;
 }
 
-// Function: FUN_8003b718
-// Entry: 8003b718
-// Size: 664 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8003b718(undefined4 param_1,undefined4 param_2,int *param_3)
-
 {
-  undefined2 *puVar1;
-  float *pfVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  int iVar6;
-  int iVar7;
-  int iVar8;
-  undefined8 uVar9;
-  float local_48;
-  float local_44;
-  float local_40;
-  float local_3c;
-  float local_38;
-  float local_34;
-  
-  uVar9 = FUN_80286830();
-  puVar1 = (undefined2 *)((ulonglong)uVar9 >> 0x20);
-  if ((1 < *(byte *)(*(int *)(puVar1 + 0x28) + 0x58)) && (puVar1[0x22] == 0x2d)) {
-    iVar6 = *(int *)(puVar1 + 0x5c);
-    iVar8 = 1;
-    iVar5 = 0x18;
-    iVar3 = iVar6;
-    for (iVar7 = 0; iVar7 < *(short *)(iVar6 + 0xb0); iVar7 = iVar7 + 1) {
-      if (iVar8 < (int)(uint)*(byte *)(*(int *)(puVar1 + 0x28) + 0x58)) {
-        pfVar2 = (float *)FUN_80028630(param_3,(int)*(char *)(*(int *)(*(int *)(puVar1 + 0x28) +
-                                                                      0x2c) +
-                                                             iVar5 + *(char *)((int)puVar1 + 0xad) +
-                                                             0x2a));
-        iVar4 = *(int *)(*(int *)(puVar1 + 0x28) + 0x2c);
-        local_3c = *(float *)(iVar4 + iVar5 + 0x18);
-        local_38 = *(float *)(iVar4 + iVar5 + 0x1c);
-        local_34 = *(float *)(iVar4 + iVar5 + 0x20);
-        FUN_80247bf8(pfVar2,&local_3c,&local_3c);
-        local_3c = local_3c + FLOAT_803dda58;
-        local_34 = local_34 + FLOAT_803dda5c;
-        *(float *)(iVar3 + 0x6c) = local_3c;
-        *(float *)(iVar3 + 0x74) = local_38;
-        *(float *)(iVar3 + 0x7c) = local_34;
-      }
-      if (iVar8 < (int)(uint)*(byte *)(*(int *)(puVar1 + 0x28) + 0x58)) {
-        iVar4 = *(int *)(*(int *)(puVar1 + 0x28) + 0x2c);
-        local_48 = *(float *)(iVar4 + iVar5);
-        local_44 = *(float *)(iVar4 + iVar5 + 4);
-        local_40 = *(float *)(iVar4 + iVar5 + 8);
-        FUN_80247bf8((float *)(param_3[(*(ushort *)(param_3 + 6) & 1) + 3] +
-                              *(char *)(iVar4 + iVar5 + *(char *)((int)puVar1 + 0xad) + 0x12) * 0x40
-                              ),&local_48,&local_48);
-        local_48 = local_48 + FLOAT_803dda58;
-        local_40 = local_40 + FLOAT_803dda5c;
-        *(float *)(iVar3 + 0x54) = local_48;
-        *(float *)(iVar3 + 0x5c) = local_44;
-        *(float *)(iVar3 + 100) = local_40;
-      }
-      iVar8 = iVar8 + 2;
-      iVar5 = iVar5 + 0x30;
-      iVar3 = iVar3 + 4;
-    }
-    if (*(short *)(iVar6 + 0xb0) != 0) {
-      iVar6 = iVar6 + *(short *)(iVar6 + 0xb2) * 4;
-      local_3c = *(float *)(iVar6 + 0x6c);
-      local_38 = *(float *)(iVar6 + 0x74);
-      local_34 = *(float *)(iVar6 + 0x7c);
-      (**(code **)(**(int **)(puVar1 + 0x34) + 0x28))(puVar1,(int)uVar9,&local_48);
-      local_3c = local_3c - local_48;
-      local_38 = local_38 - local_44;
-      local_34 = local_34 - local_40;
-      iVar3 = FUN_80021884();
-      *puVar1 = (short)iVar3;
-      FUN_80293900((double)(local_3c * local_3c + local_34 * local_34));
-      iVar3 = FUN_80021884();
-      puVar1[1] = 0x4000 - (short)iVar3;
-      puVar1[2] = 0;
-    }
-  }
-  FUN_8028687c();
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 // Function: FUN_8003b9b0
@@ -1697,67 +1619,13 @@ void FUN_8003ba48(undefined4 param_1)
   return;
 }
 
-// Function: FUN_8003ba50
-// Entry: 8003ba50
-// Size: 540 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8003ba50(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
                  int param_5,undefined4 param_6)
-
 {
-  short sVar1;
-  undefined4 uVar2;
-  int iVar3;
-  code *pcVar4;
-  int iVar5;
-  char cVar7;
-  int iVar6;
-  undefined8 uVar8;
-  
-  uVar8 = FUN_8028683c();
-  uVar2 = (undefined4)((ulonglong)uVar8 >> 0x20);
-  if (((((*(ushort *)(param_5 + 0xb0) & 0x40) == 0) && (*(int *)(param_5 + 0xc4) == 0)) &&
-      ((*(ushort *)(param_5 + 6) & 0x4000) == 0)) &&
-     ((*(int *)(param_5 + 0x30) == 0 || ((*(ushort *)(*(int *)(param_5 + 0x30) + 6) & 0x4000) == 0))
-     )) {
-    FUN_8002a6b0();
-    *(ushort *)(param_5 + 0xb0) = *(ushort *)(param_5 + 0xb0) | 0x800;
-    cVar7 = (char)param_6;
-    if (*(int **)(param_5 + 0x68) == (int *)0x0) {
-      if (cVar7 != '\0') {
-        sVar1 = *(short *)(param_5 + 0x46);
-        if ((sVar1 == 0x1f) || ((sVar1 < 0x1f && (sVar1 == 0)))) {
-          FUN_802b5830(param_5,uVar2,(int)uVar8,param_3,param_4,cVar7);
-        }
-        else if ((*(int *)(*(int *)(param_5 + 0x7c) + *(char *)(param_5 + 0xad) * 4) != 0) &&
-                (FUN_80041bbc(param_5), *(int *)(param_5 + 0x74) != 0)) {
-          FUN_80041110();
-        }
-      }
-    }
-    else if ((*(ushort *)(param_5 + 0xb0) & 0x4000) == 0) {
-      pcVar4 = *(code **)(**(int **)(param_5 + 0x68) + 0x10);
-      if (pcVar4 != (code *)0x0) {
-        (*pcVar4)(param_5,uVar2,(int)uVar8,param_3,param_4,param_6);
-      }
-    }
-    else if (((cVar7 != '\0') &&
-             (*(int *)(*(int *)(param_5 + 0x7c) + *(char *)(param_5 + 0xad) * 4) != 0)) &&
-            (FUN_80041bbc(param_5), *(int *)(param_5 + 0x74) != 0)) {
-      FUN_80041110();
-    }
-    FUN_8002a6ac();
-    iVar5 = param_5;
-    for (iVar6 = 0; iVar6 < (int)(uint)*(byte *)(param_5 + 0xeb); iVar6 = iVar6 + 1) {
-      iVar3 = *(int *)(iVar5 + 200);
-      if (*(short *)(iVar3 + 0x44) == 0x2d) {
-        FUN_8003b718(iVar3,param_5,*(int **)(*(int *)(iVar3 + 0x7c) + *(char *)(iVar3 + 0xad) * 4));
-      }
-      iVar5 = iVar5 + 4;
-    }
-  }
-  FUN_80286888();
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 // Function: FUN_8003bc6c

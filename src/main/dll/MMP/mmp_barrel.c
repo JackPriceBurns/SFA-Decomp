@@ -4,8 +4,8 @@
  * Owner: main/dll/MMP/mmp_barrel.c
  * Text span: 0x801923CC-0x80194688
  * Imported Ghidra functions: 22
- * Verbatim-safe functions: 18
- * Auto-stubbed functions: 4
+ * Verbatim-safe functions: 17
+ * Auto-stubbed functions: 5
  */
 
 #include "ghidra_import.h"
@@ -511,57 +511,13 @@ uint FUN_80193688(int param_1)
          << 0x1c) >> 0x1e;
 }
 
-// Function: FUN_801936d0
-// Entry: 801936d0
-// Size: 372 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 double FUN_801936d0(int param_1,int param_2)
-
 {
-  float fVar1;
-  float fVar2;
-  float fVar3;
-  int iVar4;
-  int iVar5;
-  int iVar6;
-  double dVar7;
-  
-  iVar5 = *(int *)(param_1 + 0xb8);
-  iVar6 = *(int *)(param_1 + 0x4c);
-  fVar1 = *(float *)(param_2 + 0x10) - *(float *)(param_1 + 0x10);
-  if ((fVar1 < FLOAT_803e4c40) || (FLOAT_803e4c44 < fVar1)) {
-    dVar7 = (double)FLOAT_803e4c48;
-  }
-  else {
-    fVar1 = *(float *)(param_2 + 0xc) - *(float *)(param_1 + 0xc);
-    fVar2 = *(float *)(param_2 + 0x14) - *(float *)(param_1 + 0x14);
-    fVar3 = FLOAT_803e4c4c + *(float *)(iVar5 + 0x14);
-    if (fVar1 * fVar1 + fVar2 * fVar2 <= fVar3 * fVar3) {
-      fVar1 = FLOAT_803e4c30 *
-              (float)((double)CONCAT44(0x43300000,(uint)*(byte *)(iVar6 + 0x20)) - DOUBLE_803e4c38);
-      if ((fVar1 <= *(float *)(iVar5 + 0xc)) && (*(int *)(iVar5 + 8) != 0)) {
-        *(float *)(iVar5 + 0xc) = fVar1;
-        iVar4 = *(int *)(iVar5 + 8);
-        if (*(short *)(iVar4 + 0x46) == 0x519) {
-          FUN_801a86a4(iVar4,'\0');
-        }
-        else {
-          (**(code **)(**(int **)(iVar4 + 0x68) + 0x24))(iVar4,0);
-        }
-      }
-      *(float *)(iVar5 + 0xc) = FLOAT_803e4c54 * FLOAT_803dc074 + *(float *)(iVar5 + 0xc);
-      *(byte *)(iVar5 + 0x2d) = *(byte *)(iVar5 + 0x2d) | 4;
-      dVar7 = (double)(*(float *)(iVar5 + 0x14) *
-                      (*(float *)(iVar5 + 0xc) /
-                      (FLOAT_803e4c30 *
-                      (float)((double)CONCAT44(0x43300000,(uint)*(byte *)(iVar6 + 0x20)) -
-                             DOUBLE_803e4c38))));
-    }
-    else {
-      dVar7 = (double)FLOAT_803e4c50;
-    }
-  }
-  return dVar7;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+    return 0.0;
 }
 
 // Function: FUN_80193844
@@ -790,7 +746,7 @@ void FUN_80193c2c(int param_1)
   return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80193c5c(void)

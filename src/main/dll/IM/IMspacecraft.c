@@ -307,7 +307,7 @@ void FUN_801a5ddc(int param_1)
   return;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801a5e10(void)
@@ -448,7 +448,7 @@ void FUN_801a65c0(int param_1)
   return;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801a6608(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,

@@ -51,7 +51,7 @@ void FUN_801846d8(undefined2 *param_1,int param_2);
 void FUN_80184918(void);
 void FUN_80184b54(ushort *param_1,int param_2,char param_3,float *param_4);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801846d8(undefined2 *param_1,int param_2)

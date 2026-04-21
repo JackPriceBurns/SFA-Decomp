@@ -4,8 +4,8 @@
  * Owner: main/dll/campfire.c
  * Text span: 0x80168370-0x80169564
  * Imported Ghidra functions: 11
- * Verbatim-safe functions: 6
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 5
+ * Auto-stubbed functions: 6
  */
 
 #include "ghidra_import.h"
@@ -243,7 +243,7 @@ FUN_801685c4(undefined8 param_1,double param_2,double param_3,undefined8 param_4
   return 0;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801686c8(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
@@ -323,7 +323,7 @@ void FUN_80168820(undefined8 param_1,undefined8 param_2,double param_3,undefined
   return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80168a08(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
@@ -334,7 +334,7 @@ void FUN_80168a08(undefined8 param_1,undefined8 param_2,double param_3,undefined
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80168bf8(undefined8 param_1,double param_2,double param_3,double param_4,undefined8 param_5
@@ -344,19 +344,12 @@ void FUN_80168bf8(undefined8 param_1,double param_2,double param_3,double param_
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_8016904c
-// Entry: 8016904c
-// Size: 92 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8016904c(int param_1)
-
 {
-  undefined4 uVar1;
-  
-  uVar1 = *(undefined4 *)(param_1 + 0xb8);
-  FUN_8003709c(param_1,3);
-  (**(code **)(*DAT_803dd738 + 0x40))(param_1,uVar1,0x20);
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 // Function: FUN_801690a8
@@ -390,7 +383,7 @@ void FUN_801690a8(void)
   return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801691b8(undefined8 param_1,double param_2,double param_3,double param_4,undefined8 param_5

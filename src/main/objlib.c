@@ -625,7 +625,7 @@ int FUN_80037b60(int param_1,float *param_2,undefined4 *param_3,float *param_4)
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80037c38(undefined4 param_1,undefined4 param_2,uint param_3,uint param_4,uint param_5,
@@ -675,7 +675,7 @@ undefined4 FUN_80037fe8(int param_1,int param_2,undefined4 param_3)
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8003809c(int param_1,short param_2)
@@ -684,7 +684,7 @@ undefined4 FUN_8003809c(int param_1,short param_2)
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8003811c(int param_1)

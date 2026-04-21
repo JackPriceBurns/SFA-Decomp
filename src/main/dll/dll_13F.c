@@ -4,8 +4,8 @@
  * Owner: main/dll/dll_13F.c
  * Text span: 0x801730CC-0x80173750
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 3
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -175,7 +175,7 @@ void FUN_801730d0(undefined8 param_1,undefined8 param_2,double param_3,undefined
   return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801733c0(short *param_1,int param_2)
@@ -183,18 +183,12 @@ void FUN_801733c0(short *param_1,int param_2)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-// Function: FUN_801736d8
-// Entry: 801736d8
-// Size: 84 bytes
+/* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
+/* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801736d8(int param_1)
-
 {
-  if (*(int *)(param_1 + 0xc4) != 0) {
-    FUN_80037da8(*(int *)(param_1 + 0xc4),param_1);
-  }
-  (**(code **)(*DAT_803dd6f8 + 0x18))(param_1);
-  return;
+    /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
 // Function: FUN_8017372c

@@ -28,7 +28,7 @@ void FUN_8017f1ec(undefined2 *param_1);
 void FUN_8017f4d8(int param_1);
 void FUN_8017f508(int param_1);
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8017f1ec(undefined2 *param_1)
