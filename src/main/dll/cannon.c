@@ -4,8 +4,8 @@
  * Owner: main/dll/cannon.c
  * Text span: 0x80140340-0x80141618
  * Imported Ghidra functions: 3
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -74,7 +74,7 @@ void FUN_80140d64(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined4 param_9,undefined4 param_10,int param_11,undefined4 param_12,
                  byte param_13,uint param_14,undefined4 param_15,undefined4 param_16);
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80140340(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
@@ -85,16 +85,58 @@ void FUN_80140340(undefined8 param_1,double param_2,double param_3,undefined8 pa
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80140c24
+// Entry: 80140c24
+// Size: 320 bytes
 
 undefined4 FUN_80140c24(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  int *piVar1;
+  int iVar2;
+  undefined4 uVar3;
+  int iVar4;
+  short sVar5;
+  double dVar6;
+  double in_f30;
+  int local_28 [2];
+  
+  iVar4 = 0;
+  piVar1 = FUN_80037048(3,local_28);
+  for (sVar5 = 0; sVar5 < local_28[0]; sVar5 = sVar5 + 1) {
+    dVar6 = FUN_80021730((float *)(*piVar1 + 0x18),(float *)(param_1 + 0x71c));
+    if (iVar4 == 0) {
+      iVar2 = FUN_800dbf88((float *)(*piVar1 + 0x18),(undefined *)0x0);
+      if (*(int *)(param_1 + 0x730) == iVar2) {
+        iVar4 = *piVar1;
+        in_f30 = dVar6;
+      }
+    }
+    else if ((dVar6 < in_f30) &&
+            (iVar2 = FUN_800dbf88((float *)(*piVar1 + 0x18),(undefined *)0x0),
+            *(int *)(param_1 + 0x730) == iVar2)) {
+      iVar4 = *piVar1;
+      in_f30 = dVar6;
+    }
+    piVar1 = piVar1 + 1;
+  }
+  if (iVar4 == 0) {
+    uVar3 = 0;
+  }
+  else {
+    *(int *)(param_1 + 0x72c) = iVar4;
+    if (*(int *)(param_1 + 0x28) != iVar4 + 0x18) {
+      *(int *)(param_1 + 0x28) = iVar4 + 0x18;
+      *(uint *)(param_1 + 0x54) = *(uint *)(param_1 + 0x54) & 0xfffffbff;
+      *(undefined2 *)(param_1 + 0xd2) = 0;
+    }
+    *(undefined *)(param_1 + 10) = 4;
+    uVar3 = 1;
+  }
+  return uVar3;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80140d64(undefined8 param_1,double param_2,double param_3,undefined8 param_4,

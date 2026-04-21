@@ -4,8 +4,8 @@
  * Owner: main/dll/DF/DFmole.c
  * Text span: 0x801C1F24-0x801C21A4
  * Imported Ghidra functions: 3
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 3
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -23,26 +23,101 @@ void FUN_801c1f24(double param_1,double param_2,int param_3);
 void FUN_801c1fc8(double param_1,int param_2,float *param_3);
 void FUN_801c20b8(double param_1,int param_2,float *param_3,float *param_4,float *param_5);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801c1f24
+// Entry: 801c1f24
+// Size: 164 bytes
 
 void FUN_801c1f24(double param_1,double param_2,int param_3)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  uint uVar2;
+  int iVar3;
+  int iVar4;
+  double dVar5;
+  
+  iVar4 = *(int *)(param_3 + 0xb8);
+  dVar5 = param_1 - (double)(float)((double)CONCAT44(0x43300000,(int)(char)(int)param_1 ^ 0x80000000
+                                                    ) - DOUBLE_803e5a88);
+  uVar2 = (uint)(char)(int)dVar5;
+  dVar5 = (double)((float)dVar5 -
+                  (float)((double)CONCAT44(0x43300000,uVar2 ^ 0x80000000) - DOUBLE_803e5a88));
+  iVar3 = uVar2 * 0x34;
+  iVar1 = **(int **)(iVar4 + 0x2c) + iVar3;
+  *(float *)(iVar1 + 0x1c) = (float)(param_2 * dVar5 + (double)*(float *)(iVar1 + 0x1c));
+  iVar3 = **(int **)(iVar4 + 0x2c) + iVar3;
+  *(float *)(iVar3 + 0x1c) =
+       (float)(param_2 * (double)(float)((double)FLOAT_803e5ab0 - dVar5) +
+              (double)*(float *)(iVar3 + 0x1c));
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801c1fc8
+// Entry: 801c1fc8
+// Size: 240 bytes
+
+/* WARNING: Removing unreachable block (ram,0x801c2098) */
+/* WARNING: Removing unreachable block (ram,0x801c1fd8) */
 
 void FUN_801c1fc8(double param_1,int param_2,float *param_3)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  float fVar1;
+  float fVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  char cVar6;
+  double dVar7;
+  
+  iVar3 = *(int *)(param_2 + 0xb8);
+  cVar6 = (char)(int)*param_3;
+  *param_3 = *param_3 -
+             (float)((double)CONCAT44(0x43300000,(int)cVar6 ^ 0x80000000) - DOUBLE_803e5a88);
+  iVar4 = **(int **)(iVar3 + 0x2c);
+  iVar3 = cVar6 * 0x34;
+  iVar5 = iVar4 + iVar3;
+  fVar1 = *(float *)(iVar4 + iVar3) - *(float *)(iVar5 + 0x34);
+  fVar2 = *(float *)(iVar5 + 8) - *(float *)(iVar5 + 0x3c);
+  dVar7 = FUN_80293900((double)(fVar1 * fVar1 + fVar2 * fVar2));
+  *param_3 = *param_3 + (float)(param_1 / dVar7);
+  *param_3 = *param_3 +
+             (float)((double)CONCAT44(0x43300000,(int)cVar6 ^ 0x80000000) - DOUBLE_803e5a88);
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801c20b8
+// Entry: 801c20b8
+// Size: 196 bytes
 
 void FUN_801c20b8(double param_1,int param_2,float *param_3,float *param_4,float *param_5)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  float fVar1;
+  float fVar2;
+  float fVar3;
+  float fVar4;
+  float fVar5;
+  float fVar6;
+  int iVar7;
+  int iVar8;
+  int iVar9;
+  
+  iVar9 = *(int *)(param_2 + 0xb8);
+  fVar1 = (float)(param_1 -
+                 (double)(float)((double)CONCAT44(0x43300000,(int)(char)(int)param_1 ^ 0x80000000) -
+                                DOUBLE_803e5a88));
+  iVar8 = (char)(int)param_1 * 0x34;
+  iVar7 = **(int **)(iVar9 + 0x2c) + iVar8;
+  fVar2 = *(float *)(iVar7 + 0x38);
+  fVar3 = *(float *)(iVar7 + 4);
+  fVar4 = *(float *)(iVar7 + 0x3c);
+  fVar5 = *(float *)(iVar7 + 8);
+  fVar6 = *(float *)(**(int **)(iVar9 + 0x2c) + iVar8);
+  *param_3 = (*(float *)(iVar7 + 0x34) - fVar6) * fVar1 + *(float *)(param_2 + 0xc) + fVar6;
+  *param_4 = (fVar2 - fVar3) * fVar1 +
+             *(float *)(param_2 + 0x10) + *(float *)(**(int **)(iVar9 + 0x2c) + iVar8 + 4);
+  *param_5 = (fVar4 - fVar5) * fVar1 +
+             *(float *)(param_2 + 0x14) + *(float *)(**(int **)(iVar9 + 0x2c) + iVar8 + 8);
+  return;
 }

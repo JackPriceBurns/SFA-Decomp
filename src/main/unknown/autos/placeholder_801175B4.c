@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_801175B4.c
  * Text span: 0x801175B4-0x801177DC
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -37,7 +37,7 @@ void FUN_80117628(void);
 void FUN_80117708(void);
 void FUN_801177b4(void);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_801175b4(uint param_1)
@@ -46,7 +46,7 @@ undefined4 FUN_801175b4(uint param_1)
     return 0;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801175f8(undefined4 param_1)
@@ -54,7 +54,7 @@ void FUN_801175f8(undefined4 param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80117628(void)
@@ -62,18 +62,38 @@ void FUN_80117628(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80117708
+// Entry: 80117708
+// Size: 172 bytes
 
 void FUN_80117708(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  
+  iVar1 = 0;
+  do {
+    FUN_80117628();
+    if (((iVar1 + DAT_803a6a78) - ((uint)(iVar1 + DAT_803a6a78) / DAT_803a6a10) * DAT_803a6a10 ==
+         DAT_803a6a10 - 1) && ((DAT_803a6a5e & 1) == 0)) {
+      FUN_80247054(-0x7fc59f00);
+    }
+    iVar1 = iVar1 + 1;
+  } while( true );
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801177b4
+// Entry: 801177b4
+// Size: 40 bytes
 
 void FUN_801177b4(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  undefined4 uVar1;
+  
+  do {
+    uVar1 = FUN_80119794();
+    FUN_80117628();
+    FUN_80119700(uVar1);
+  } while( true );
 }

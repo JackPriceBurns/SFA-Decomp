@@ -44,7 +44,7 @@ extern f32 FLOAT_803e6784;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_801e9f54(void);
 
-/* Auto-stubbed for compileability: invalid Ghidra slice syntax, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: invalid Ghidra slice syntax. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801e9f54(void)

@@ -17,7 +17,7 @@ extern undefined4 DAT_803bd8f0;
 /* Local declarations keep imported functions visible within the TU. */
 undefined2 FUN_80272eec(uint param_1,uint param_2);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined2 FUN_80272eec(uint param_1,uint param_2)

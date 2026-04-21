@@ -34,7 +34,7 @@ extern f32 FLOAT_803e2978;
 void FUN_80115c80(undefined8 param_1,double param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
 
-/* Auto-stubbed for compileability: unsupported body pseudo-types, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: unsupported body pseudo-types. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80115c80(undefined8 param_1,double param_2,undefined8 param_3,undefined8 param_4,

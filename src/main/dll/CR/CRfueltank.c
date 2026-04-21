@@ -4,8 +4,8 @@
  * Owner: main/dll/CR/CRfueltank.c
  * Text span: 0x801E3A44-0x801E3AB0
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -17,10 +17,20 @@ extern undefined4 FUN_8003b9ec();
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_801e3a44(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801e3a44
+// Entry: 801e3a44
+// Size: 108 bytes
 
 void FUN_801e3a44(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  char in_r8;
+  
+  if ((((*(int *)(param_1 + 0x30) == 0) || (*(short *)(*(int *)(param_1 + 0x30) + 0x46) != 0x139))
+      && (in_r8 != '\0')) &&
+     ((*(char *)(*(int *)(param_1 + 0xb8) + 0xc) != '\0' &&
+      (*(char *)(*(int *)(param_1 + 0xb8) + 0xd) != '\0')))) {
+    FUN_8003b9ec(param_1);
+  }
+  return;
 }

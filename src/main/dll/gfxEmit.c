@@ -4,8 +4,8 @@
  * Owner: main/dll/gfxEmit.c
  * Text span: 0x801725F0-0x801730CC
  * Imported Ghidra functions: 6
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 6
+ * Verbatim-safe functions: 5
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -67,15 +67,95 @@ void FUN_80172cd0(undefined8 param_1,double param_2,double param_3,undefined8 pa
 void FUN_80172f80(int param_1);
 void FUN_80172fc8(void);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801725f0
+// Entry: 801725f0
+// Size: 664 bytes
+
+/* WARNING: Removing unreachable block (ram,0x80172868) */
+/* WARNING: Removing unreachable block (ram,0x80172860) */
+/* WARNING: Removing unreachable block (ram,0x80172858) */
+/* WARNING: Removing unreachable block (ram,0x80172610) */
+/* WARNING: Removing unreachable block (ram,0x80172608) */
+/* WARNING: Removing unreachable block (ram,0x80172600) */
 
 void FUN_801725f0(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  float fVar1;
+  float fVar2;
+  uint uVar3;
+  int iVar4;
+  double dVar5;
+  double dVar6;
+  double dVar7;
+  double dVar8;
+  double dVar9;
+  
+  iVar4 = *(int *)(param_1 + 0xb8);
+  if (*(short *)(param_1 + 0x46) == 0x6a6) {
+    FUN_8002ba34((double)FLOAT_803e40f4,
+                 (double)(*(float *)(param_1 + 0x28) *
+                         (float)((double)CONCAT44(0x43300000,(uint)DAT_803dc070) - DOUBLE_803e4108))
+                 ,(double)FLOAT_803e40f4,param_1);
+  }
+  else {
+    uVar3 = (uint)DAT_803dc070;
+    FUN_8002ba34((double)(*(float *)(param_1 + 0x24) *
+                         (float)((double)CONCAT44(0x43300000,uVar3) - DOUBLE_803e4108)),
+                 (double)(*(float *)(param_1 + 0x28) *
+                         (float)((double)CONCAT44(0x43300000,uVar3) - DOUBLE_803e4108)),
+                 (double)(*(float *)(param_1 + 0x2c) *
+                         (float)((double)CONCAT44(0x43300000,uVar3) - DOUBLE_803e4108)),param_1);
+  }
+  (**(code **)(*DAT_803dd728 + 0x10))((double)FLOAT_803dc074,param_1,iVar4 + 0x50);
+  (**(code **)(*DAT_803dd728 + 0x14))(param_1,iVar4 + 0x50);
+  (**(code **)(*DAT_803dd728 + 0x18))((double)FLOAT_803dc074,param_1,iVar4 + 0x50);
+  if (*(char *)(iVar4 + 0x2b1) == '\0') {
+    *(float *)(param_1 + 0x28) = *(float *)(param_1 + 0x28) * FLOAT_803e4100;
+    *(float *)(param_1 + 0x28) = -(FLOAT_803e4104 * FLOAT_803dc074 - *(float *)(param_1 + 0x28));
+  }
+  else {
+    dVar8 = -(double)*(float *)(param_1 + 0x24);
+    dVar7 = -(double)*(float *)(param_1 + 0x28);
+    dVar9 = -(double)*(float *)(param_1 + 0x2c);
+    dVar6 = FUN_80293900((double)(float)(dVar9 * dVar9 +
+                                        (double)(float)(dVar8 * dVar8 +
+                                                       (double)(float)(dVar7 * dVar7))));
+    if ((double)FLOAT_803e40f4 != dVar6) {
+      dVar5 = (double)(float)((double)FLOAT_803e40ec / dVar6);
+      dVar8 = (double)(float)(dVar8 * dVar5);
+      dVar7 = (double)(float)(dVar7 * dVar5);
+      dVar9 = (double)(float)(dVar9 * dVar5);
+    }
+    fVar1 = *(float *)(iVar4 + 0xbc);
+    fVar2 = *(float *)(iVar4 + 0xc0);
+    dVar5 = (double)(FLOAT_803e40f8 *
+                    (float)(dVar9 * (double)fVar2 +
+                           (double)(float)(dVar8 * (double)*(float *)(iVar4 + 0xb8) +
+                                          (double)(float)(dVar7 * (double)fVar1))));
+    *(float *)(param_1 + 0x24) = (float)((double)*(float *)(iVar4 + 0xb8) * dVar5);
+    *(float *)(param_1 + 0x28) = (float)((double)fVar1 * dVar5);
+    *(float *)(param_1 + 0x2c) = (float)((double)fVar2 * dVar5);
+    *(float *)(param_1 + 0x24) = (float)((double)*(float *)(param_1 + 0x24) - dVar8);
+    *(float *)(param_1 + 0x28) = (float)((double)*(float *)(param_1 + 0x28) - dVar7);
+    *(float *)(param_1 + 0x2c) = (float)((double)*(float *)(param_1 + 0x2c) - dVar9);
+    *(float *)(param_1 + 0x28) = (float)((double)*(float *)(param_1 + 0x28) * dVar6);
+    *(float *)(param_1 + 0x28) = *(float *)(param_1 + 0x28) * FLOAT_803e40fc;
+    *(float *)(param_1 + 0x24) = (float)((double)*(float *)(param_1 + 0x24) * dVar6);
+    *(float *)(param_1 + 0x2c) = (float)((double)*(float *)(param_1 + 0x2c) * dVar6);
+    *(char *)(iVar4 + 0x1d) = *(char *)(iVar4 + 0x1d) + -1;
+    if (*(char *)(iVar4 + 0x1d) == '\0') {
+      *(undefined *)(iVar4 + 0x1d) = 0;
+      fVar1 = FLOAT_803e40f4;
+      *(float *)(param_1 + 0x24) = FLOAT_803e40f4;
+      *(float *)(param_1 + 0x28) = fVar1;
+      *(float *)(param_1 + 0x2c) = fVar1;
+    }
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80172888(short *param_1)
@@ -83,35 +163,240 @@ void FUN_80172888(short *param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80172b2c
+// Entry: 80172b2c
+// Size: 420 bytes
+
+/* WARNING: Removing unreachable block (ram,0x80172cb0) */
+/* WARNING: Removing unreachable block (ram,0x80172b3c) */
 
 void FUN_80172b2c(undefined4 param_1,undefined4 param_2,int param_3)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  char cVar1;
+  float fVar2;
+  int iVar3;
+  uint uVar4;
+  int iVar5;
+  int iVar6;
+  int iVar7;
+  double dVar8;
+  double dVar9;
+  double in_f31;
+  double dVar10;
+  double in_ps31_1;
+  undefined auStack_48 [12];
+  float local_3c;
+  float local_38;
+  float local_34;
+  float local_8;
+  float fStack_4;
+  
+  local_8 = (float)in_f31;
+  fStack_4 = (float)in_ps31_1;
+  iVar3 = FUN_80286840();
+  iVar7 = *(int *)(iVar3 + 0xb8);
+  if ((int)*(short *)(iVar7 + 0x14) != 0xffffffff) {
+    uVar4 = FUN_80020078((int)*(short *)(iVar7 + 0x14));
+    uVar4 = countLeadingZeros(uVar4);
+    *(char *)(iVar7 + 0x1e) = (char)(uVar4 >> 5);
+  }
+  if ((*(char *)(iVar7 + 0x1e) == '\0') && (*(short *)(iVar3 + 0x46) == 0x6a6)) {
+    FUN_80097568((double)FLOAT_803e40ec,(double)FLOAT_803e40f0,iVar3,5,6,1,0x14,0,0);
+  }
+  *(undefined *)(param_3 + 0x56) = 0;
+  for (iVar5 = 0; iVar5 < (int)(uint)*(byte *)(param_3 + 0x8b); iVar5 = iVar5 + 1) {
+    cVar1 = *(char *)(param_3 + iVar5 + 0x81);
+    if (cVar1 == '\x01') {
+      dVar8 = (double)FUN_80294964();
+      dVar10 = (double)(float)((double)FLOAT_803e411c * dVar8);
+      dVar9 = (double)FUN_802945e0();
+      dVar8 = (double)FLOAT_803e411c;
+      *(undefined *)(*(int *)(iVar3 + 0xb8) + 0x1d) = 8;
+      *(float *)(iVar3 + 0x24) = (float)(dVar8 * dVar9);
+      fVar2 = FLOAT_803e40f8;
+      *(float *)(iVar3 + 0x28) = FLOAT_803e40f8;
+      *(float *)(iVar3 + 0x2c) = (float)dVar10;
+      *(undefined *)(*(int *)(iVar3 + 0xb8) + 0x1d) = 8;
+      *(float *)(iVar3 + 0x24) = FLOAT_803e4124;
+      *(float *)(iVar3 + 0x28) = fVar2;
+      *(float *)(iVar3 + 0x2c) = FLOAT_803e40f4;
+    }
+    else if (cVar1 == '\x02') {
+      *(undefined *)(iVar7 + 0x3e) = 1;
+    }
+    else if (cVar1 == '\x03') {
+      iVar6 = 0;
+      dVar8 = (double)FLOAT_803e40f4;
+      do {
+        local_3c = (float)dVar8;
+        local_38 = (float)dVar8;
+        local_34 = (float)dVar8;
+        (**(code **)(*DAT_803dd708 + 8))(iVar3,0x7ef,auStack_48,1,0xffffffff,0);
+        iVar6 = iVar6 + 1;
+      } while (iVar6 < 10);
+    }
+  }
+  FUN_8028688c();
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80172cd0
+// Entry: 80172cd0
+// Size: 672 bytes
+
+/* WARNING: Removing unreachable block (ram,0x80172f50) */
+/* WARNING: Removing unreachable block (ram,0x80172ce0) */
 
 void FUN_80172cd0(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  short sVar1;
+  uint uVar2;
+  int iVar3;
+  int iVar4;
+  uint uVar5;
+  float *pfVar6;
+  undefined4 in_r7;
+  undefined4 in_r8;
+  undefined4 in_r9;
+  undefined4 in_r10;
+  int iVar7;
+  double dVar8;
+  double dVar9;
+  undefined8 uVar10;
+  
+  uVar10 = FUN_80286840();
+  uVar2 = (uint)((ulonglong)uVar10 >> 0x20);
+  pfVar6 = (float *)uVar10;
+  iVar7 = *(int *)(uVar2 + 0x4c);
+  iVar3 = FUN_8002bac4();
+  if ((iVar3 == 0) || ((*(byte *)((int)pfVar6 + 0x37) & 1) != 0)) goto LAB_80172f50;
+  iVar4 = FUN_80297a08(iVar3);
+  if (iVar4 == 0) {
+    iVar4 = iVar3;
+  }
+  dVar8 = (double)FUN_80021754((float *)(uVar2 + 0x18),(float *)(iVar4 + 0x18));
+  dVar9 = (double)(*(float *)(iVar4 + 0x1c) - *(float *)(uVar2 + 0x1c));
+  if (dVar9 < (double)FLOAT_803e40f4) {
+    dVar9 = -dVar9;
+  }
+  if (((dVar9 < (double)FLOAT_803e4128) && (dVar8 < (double)pfVar6[1])) &&
+     (uVar5 = FUN_8029698c(iVar3), uVar5 != 0)) {
+    *(undefined2 *)(pfVar6 + 0x12) = 0xffff;
+    sVar1 = *(short *)(uVar2 + 0x46);
+    if (sVar1 == 0x319) {
+      FUN_80172308(dVar9,param_2,param_3,param_4,param_5,param_6,param_7,param_8,uVar2);
+      *(byte *)((int)pfVar6 + 0x37) = *(byte *)((int)pfVar6 + 0x37) | 1;
+    }
+    else if (sVar1 < 0x319) {
+      if (sVar1 == 0x49) {
+LAB_80172e44:
+        uVar5 = FUN_80020078(0x90f);
+        if (uVar5 == 0) {
+          FUN_800379bc(dVar9,param_2,param_3,param_4,param_5,param_6,param_7,param_8,iVar3,0x7000a,
+                       uVar2,(uint)(pfVar6 + 0x12),in_r7,in_r8,in_r9,in_r10);
+          FUN_800201ac(0x90f,1);
+        }
+        else {
+          FUN_80172308(dVar9,param_2,param_3,param_4,param_5,param_6,param_7,param_8,uVar2);
+        }
+        *(byte *)((int)pfVar6 + 0x37) = *(byte *)((int)pfVar6 + 0x37) | 1;
+      }
+      else {
+        if (sVar1 < 0x49) {
+          if (sVar1 == 0xb) {
+            uVar5 = FUN_80020078(0x90e);
+            if (uVar5 == 0) {
+              FUN_800379bc(dVar9,param_2,param_3,param_4,param_5,param_6,param_7,param_8,iVar3,
+                           0x7000a,uVar2,(uint)(pfVar6 + 0x12),in_r7,in_r8,in_r9,in_r10);
+              FUN_800201ac(0x90e,1);
+            }
+            else {
+              FUN_80172308(dVar9,param_2,param_3,param_4,param_5,param_6,param_7,param_8,uVar2);
+            }
+            *(byte *)((int)pfVar6 + 0x37) = *(byte *)((int)pfVar6 + 0x37) | 1;
+            goto LAB_80172f4c;
+          }
+        }
+        else if (sVar1 == 0x2da) goto LAB_80172e44;
+LAB_80172eec:
+        iVar4 = FUN_8003811c(uVar2);
+        if (iVar4 != 0) {
+          uVar10 = FUN_800201ac(0xa7b,1);
+          *(undefined2 *)(pfVar6 + 0x12) = *(undefined2 *)(iVar7 + 0x1e);
+          FUN_800379bc(uVar10,param_2,param_3,param_4,param_5,param_6,param_7,param_8,iVar3,0x7000a,
+                       uVar2,(uint)(pfVar6 + 0x12),in_r7,in_r8,in_r9,in_r10);
+          *(byte *)((int)pfVar6 + 0x37) = *(byte *)((int)pfVar6 + 0x37) | 1;
+          if (*(int *)(uVar2 + 100) != 0) {
+            *(undefined4 *)(*(int *)(uVar2 + 100) + 0x30) = 0x1000;
+          }
+        }
+      }
+    }
+    else {
+      if (sVar1 != 0x6a6) {
+        if ((0x6a5 < sVar1) || (sVar1 != 0x3cd)) goto LAB_80172eec;
+        goto LAB_80172e44;
+      }
+      uVar5 = FUN_80020078(0x9a8);
+      if (uVar5 == 0) {
+        FUN_800379bc(dVar9,param_2,param_3,param_4,param_5,param_6,param_7,param_8,iVar3,0x7000a,
+                     uVar2,(uint)(pfVar6 + 0x12),in_r7,in_r8,in_r9,in_r10);
+        FUN_800201ac(0x9a8,1);
+      }
+      else {
+        FUN_80172308(dVar9,param_2,param_3,param_4,param_5,param_6,param_7,param_8,uVar2);
+      }
+      *(byte *)((int)pfVar6 + 0x37) = *(byte *)((int)pfVar6 + 0x37) | 1;
+    }
+  }
+LAB_80172f4c:
+  *pfVar6 = (float)dVar8;
+LAB_80172f50:
+  FUN_8028688c();
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80172f80
+// Entry: 80172f80
+// Size: 72 bytes
 
 void FUN_80172f80(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  (**(code **)(*DAT_803dd6f8 + 0x18))();
+  FUN_8003709c(param_1,4);
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80172fc8
+// Entry: 80172fc8
+// Size: 260 bytes
 
 void FUN_80172fc8(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  int iVar2;
+  char in_r8;
+  
+  iVar1 = FUN_80286840();
+  iVar2 = *(int *)(iVar1 + 0xb8);
+  if ((((in_r8 != '\0') && (*(float *)(iVar2 + 8) == FLOAT_803e40f4)) &&
+      (*(int *)(iVar1 + 0xf4) == 0)) &&
+     ((*(short *)(iVar1 + 0x46) == 0x156 || (*(char *)(iVar2 + 0x1e) == '\0')))) {
+    if (((*(uint *)(*(int *)(iVar1 + 0x50) + 0x44) & 0x10000) != 0) &&
+       (*(char *)(iVar2 + 0x36) != '\0')) {
+      FUN_8003b700((ushort)*(byte *)(iVar2 + 0x38),(ushort)*(byte *)(iVar2 + 0x39),
+                   (ushort)*(byte *)(iVar2 + 0x3a));
+    }
+    FUN_8003b9ec(iVar1);
+    if (*(short *)(iVar1 + 0x46) == 0xa8) {
+      FUN_80097568((double)FLOAT_803e40ec,(double)FLOAT_803e4124,iVar1,7,5,1,10,0,0x20000000);
+    }
+  }
+  FUN_8028688c();
+  return;
 }

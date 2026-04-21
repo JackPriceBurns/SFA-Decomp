@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_8027A940.c
  * Text span: 0x8027A940-0x8027AC80
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 4
  */
 
 #include "ghidra_import.h"
@@ -87,7 +87,7 @@ void FUN_8027aa18(int param_1);
 void FUN_8027aa94(void);
 int FUN_8027ac44(uint param_1);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_8027a940(int param_1)
@@ -96,7 +96,7 @@ undefined4 FUN_8027a940(int param_1)
     return 0;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8027a9bc(int param_1)
@@ -104,7 +104,7 @@ void FUN_8027a9bc(int param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8027aa18(int param_1)
@@ -112,7 +112,7 @@ void FUN_8027aa18(int param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8027aa94(void)
@@ -120,11 +120,13 @@ void FUN_8027aa94(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_8027ac44
+// Entry: 8027ac44
+// Size: 60 bytes
 
 int FUN_8027ac44(uint param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  return (int)(FLOAT_803e84b0 *
+              (float)((double)CONCAT44(0x43300000,param_1 & 0xffff) - DOUBLE_803e84b8));
 }

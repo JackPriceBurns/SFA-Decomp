@@ -4,8 +4,8 @@
  * Owner: main/dll/DB/DBrockfall.c
  * Text span: 0x801DF454-0x801DFA2C
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 3
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -45,15 +45,18 @@ void FUN_801df7dc(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
                  undefined4 param_9,undefined4 param_10,int param_11);
 void FUN_801df918(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801df458
+// Entry: 801df458
+// Size: 36 bytes
 
 void FUN_801df458(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  FUN_8003b9ec(param_1);
+  return;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801df480(undefined2 *param_1)
@@ -61,16 +64,53 @@ void FUN_801df480(undefined2 *param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801df700
+// Entry: 801df700
+// Size: 220 bytes
 
 uint FUN_801df700(int param_1,undefined4 param_2,int param_3)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  bool bVar1;
+  int iVar2;
+  uint uVar3;
+  int iVar4;
+  int iVar5;
+  
+  iVar5 = *(int *)(param_1 + 0x4c);
+  iVar4 = *(int *)(param_1 + 0xb8);
+  iVar2 = FUN_8002bac4();
+  uVar3 = FUN_80014e9c(0);
+  if ((uVar3 & 0x100) == 0) {
+    uVar3 = 0;
+  }
+  else {
+    *(undefined *)(iVar4 + 2) = 0;
+    iVar2 = FUN_80296ffc(iVar2);
+    bVar1 = iVar2 < *(short *)(iVar5 + 0x1a);
+    if (bVar1) {
+      *(undefined *)(iVar4 + 2) = 2;
+    }
+    else {
+      *(undefined *)(iVar4 + 2) = 0;
+    }
+    uVar3 = (uint)!bVar1;
+    if (param_3 == 0x15) {
+      uVar3 = countLeadingZeros(uVar3);
+      uVar3 = uVar3 >> 5;
+    }
+    else if ((param_3 < 0x15) && (0x13 < param_3)) {
+      uVar3 = countLeadingZeros(1 - uVar3);
+      uVar3 = uVar3 >> 5;
+    }
+    else {
+      uVar3 = 0;
+    }
+  }
+  return uVar3;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801df7dc(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -80,10 +120,42 @@ void FUN_801df7dc(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801df918
+// Entry: 801df918
+// Size: 276 bytes
+
+/* WARNING: Removing unreachable block (ram,0x801df950) */
 
 void FUN_801df918(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  byte bVar1;
+  uint uVar2;
+  byte *pbVar3;
+  
+  pbVar3 = *(byte **)(param_1 + 0xb8);
+  bVar1 = *pbVar3;
+  if (bVar1 == 1) {
+    if ((*(byte *)(param_1 + 0xaf) & 1) != 0) {
+      (**(code **)(*DAT_803dd6d4 + 0x48))(0,param_1,0xffffffff);
+    }
+    *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) & 0xf7;
+  }
+  else if (bVar1 == 0) {
+    uVar2 = (uint)*(short *)(*(int *)(param_1 + 0x4c) + 0x1e);
+    if ((uVar2 == 0xffffffff) || (uVar2 = FUN_80020078(uVar2), uVar2 == 0)) {
+      *pbVar3 = 1;
+    }
+    else {
+      *pbVar3 = 2;
+    }
+  }
+  else if (bVar1 < 3) {
+    *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) | 8;
+  }
+  pbVar3[2] = 0;
+  if (((*(uint *)(*(int *)(param_1 + 0x50) + 0x44) & 1) != 0) && (*(int *)(param_1 + 0x74) != 0)) {
+    FUN_80041110();
+  }
+  return;
 }

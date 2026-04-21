@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_8028436C.c
  * Text span: 0x8028436C-0x80284410
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -17,11 +17,42 @@ extern undefined4 DAT_803defc4;
 /* Local declarations keep imported functions visible within the TU. */
 int FUN_8028436c(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_8028436c
+// Entry: 8028436c
+// Size: 164 bytes
+
+/* WARNING: Removing unreachable block (ram,0x802843ac) */
 
 int FUN_8028436c(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  byte bVar1;
+  uint uVar2;
+  uint uVar3;
+  int iVar4;
+  
+  iVar4 = DAT_803defc4 + param_1 * 0xf4;
+  if (*(char *)(iVar4 + 0xec) != '\x02') {
     return 0;
+  }
+  bVar1 = *(byte *)(iVar4 + 0x90);
+  if (bVar1 == 3) {
+    return *(int *)(iVar4 + 0x20) - *(int *)(iVar4 + 0x78);
+  }
+  if (bVar1 < 3) {
+    if (1 < bVar1) {
+      return *(int *)(iVar4 + 0x20) - (*(uint *)(iVar4 + 0x78) >> 1);
+    }
+  }
+  else if (5 < bVar1) {
+    return param_1;
+  }
+  iVar4 = DAT_803defc4 + param_1 * 0xf4;
+  uVar3 = *(uint *)(iVar4 + 0x20);
+  uVar2 = uVar3 & 0xf;
+  iVar4 = (uVar3 + *(int *)(iVar4 + 0x78) * -2 >> 4) * 0xe;
+  if (uVar2 < 2) {
+    return iVar4;
+  }
+  return uVar2 + iVar4 + -2;
 }

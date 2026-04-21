@@ -4,8 +4,8 @@
  * Owner: main/dll/tesla.c
  * Text span: 0x802069B4-0x80206F64
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -57,7 +57,7 @@ void FUN_80206b08(int param_1);
 void FUN_80206b64(void);
 void FUN_80206e7c(undefined2 *param_1,int param_2);
 
-/* Auto-stubbed for compileability: address-label references need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-label references need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_802069b4(undefined2 *param_1,int param_2)
@@ -65,23 +65,37 @@ void FUN_802069b4(undefined2 *param_1,int param_2)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80206ac4
+// Entry: 80206ac4
+// Size: 68 bytes
 
 void FUN_80206ac4(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  
+  iVar1 = *(int *)(param_1 + 0xb8);
+  (**(code **)(*DAT_803dd6f8 + 0x18))();
+  *(undefined4 *)(iVar1 + 8) = 0;
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80206b08
+// Entry: 80206b08
+// Size: 48 bytes
 
 void FUN_80206b08(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  char in_r8;
+  
+  if (in_r8 != '\0') {
+    FUN_8003b9ec(param_1);
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80206b64(void)
@@ -89,7 +103,7 @@ void FUN_80206b64(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-label references need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-label references need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80206e7c(undefined2 *param_1,int param_2)

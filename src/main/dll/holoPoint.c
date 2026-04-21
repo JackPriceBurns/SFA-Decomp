@@ -4,8 +4,8 @@
  * Owner: main/dll/holoPoint.c
  * Text span: 0x80191FEC-0x801920D8
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -24,18 +24,36 @@ extern f32 FLOAT_803e4b88;
 void FUN_80192000(int param_1);
 void FUN_8019202c(short *param_1,int param_2);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80192000
+// Entry: 80192000
+// Size: 36 bytes
 
 void FUN_80192000(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  FUN_8003b9ec(param_1);
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_8019202c
+// Entry: 8019202c
+// Size: 168 bytes
 
 void FUN_8019202c(short *param_1,int param_2)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  param_1[2] = (ushort)*(byte *)(param_2 + 0x18) << 8;
+  param_1[1] = (ushort)*(byte *)(param_2 + 0x19) << 8;
+  *param_1 = (ushort)*(byte *)(param_2 + 0x1a) << 8;
+  if (*(byte *)(param_2 + 0x1b) != 0) {
+    *(float *)(param_1 + 4) =
+         (float)((double)CONCAT44(0x43300000,(uint)*(byte *)(param_2 + 0x1b)) - DOUBLE_803e4b90) /
+         FLOAT_803e4b84;
+    if (*(float *)(param_1 + 4) == FLOAT_803e4b88) {
+      *(float *)(param_1 + 4) = FLOAT_803e4b80;
+    }
+    *(float *)(param_1 + 4) = *(float *)(param_1 + 4) * *(float *)(*(int *)(param_1 + 0x28) + 4);
+  }
+  param_1[0x58] = param_1[0x58] | 0xa000;
+  return;
 }

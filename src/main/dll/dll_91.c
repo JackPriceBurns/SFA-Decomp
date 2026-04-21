@@ -4,8 +4,8 @@
  * Owner: main/dll/dll_91.c
  * Text span: 0x80100AFC-0x80100B2C
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -17,11 +17,13 @@ extern undefined4 FUN_8007d858();
 /* Local declarations keep imported functions visible within the TU. */
 undefined4 FUN_80100afc(void);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80100afc
+// Entry: 80100afc
+// Size: 48 bytes
 
 undefined4 FUN_80100afc(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  FUN_8007d858();
+  return 0xffffffff;
 }

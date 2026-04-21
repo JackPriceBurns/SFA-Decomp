@@ -4,8 +4,8 @@
  * Owner: main/dll/DB/DBbonedust.c
  * Text span: 0x801E18CC-0x801E18DC
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -14,11 +14,12 @@
 /* Local declarations keep imported functions visible within the TU. */
 int FUN_801e18cc(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801e18cc
+// Entry: 801e18cc
+// Size: 16 bytes
 
 int FUN_801e18cc(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  return (int)*(char *)(*(int *)(param_1 + 0xb8) + 0x70);
 }

@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80283134.c
  * Text span: 0x80283134-0x80283488
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -82,7 +82,7 @@ extern undefined4 DAT_803d4900;
 void FUN_80283134(int param_1);
 uint FUN_80283418(uint param_1);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80283134(int param_1)
@@ -90,11 +90,33 @@ void FUN_80283134(int param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80283418
+// Entry: 80283418
+// Size: 112 bytes
 
 uint FUN_80283418(uint param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  switch(param_1 & 0xff) {
+  case 0x80:
+    return 0x80;
+  case 0x81:
+    return 0x82;
+  case 0x82:
+    return 0xa0;
+  case 0x83:
+    return 0xa1;
+  case 0x84:
+    return 0x83;
+  case 0x85:
+    return 0x84;
+  case 0x86:
+    return 0xa2;
+  case 0x87:
+    return 0xa3;
+  case 0x88:
+    return 0xa4;
+  default:
+    return param_1;
+  }
 }

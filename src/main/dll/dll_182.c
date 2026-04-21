@@ -4,8 +4,8 @@
  * Owner: main/dll/dll_182.c
  * Text span: 0x801920D8-0x801923CC
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 4
+ * Verbatim-safe functions: 3
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -37,31 +37,70 @@ void FUN_80192118(int param_1);
 void FUN_801921cc(short *param_1,int param_2);
 void FUN_80192298(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801920f0
+// Entry: 801920f0
+// Size: 36 bytes
 
 void FUN_801920f0(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  FUN_8003b9ec(param_1);
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80192118
+// Entry: 80192118
+// Size: 180 bytes
 
 void FUN_80192118(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  undefined auStack_18 [12];
+  float local_c;
+  float local_8;
+  float local_4;
+  
+  if (*(short *)(param_1 + 0x46) == 0x79) {
+    local_c = FLOAT_803e4b9c;
+    local_8 = FLOAT_803e4ba0;
+    local_4 = FLOAT_803e4b9c;
+    FUN_800979c0((double)FLOAT_803e4ba4,(double)FLOAT_803e4ba8,(double)FLOAT_803e4ba8,
+                 (double)FLOAT_803e4bac,param_1,5,5,2,0x19,(int)auStack_18,0);
+  }
+  else if (*(short *)(param_1 + 0x46) == 0x748) {
+    local_c = FLOAT_803e4b9c;
+    local_8 = FLOAT_803e4bb0;
+    local_4 = FLOAT_803e4b9c;
+    FUN_800979c0((double)FLOAT_803e4bb4,(double)FLOAT_803e4bb8,(double)FLOAT_803e4bb8,
+                 (double)FLOAT_803e4bac,param_1,5,5,2,5,(int)auStack_18,0);
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801921cc
+// Entry: 801921cc
+// Size: 168 bytes
 
 void FUN_801921cc(short *param_1,int param_2)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  param_1[2] = (ushort)*(byte *)(param_2 + 0x18) << 8;
+  param_1[1] = (ushort)*(byte *)(param_2 + 0x19) << 8;
+  *param_1 = (ushort)*(byte *)(param_2 + 0x1a) << 8;
+  if (*(byte *)(param_2 + 0x1b) != 0) {
+    *(float *)(param_1 + 4) =
+         (float)((double)CONCAT44(0x43300000,(uint)*(byte *)(param_2 + 0x1b)) - DOUBLE_803e4bc0) /
+         FLOAT_803e4bbc;
+    if (*(float *)(param_1 + 4) == FLOAT_803e4b9c) {
+      *(float *)(param_1 + 4) = FLOAT_803e4b98;
+    }
+    *(float *)(param_1 + 4) = *(float *)(param_1 + 4) * *(float *)(*(int *)(param_1 + 0x28) + 4);
+  }
+  param_1[0x58] = param_1[0x58] | 0x2000;
+  return;
 }
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80192298(int param_1)

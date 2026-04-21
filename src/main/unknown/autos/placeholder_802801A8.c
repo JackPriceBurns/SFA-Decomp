@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_802801A8.c
  * Text span: 0x802801A8-0x8028026C
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -20,10 +20,44 @@ extern f32 FLOAT_803e8518;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_802801a8(void);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_802801a8
+// Entry: 802801a8
+// Size: 196 bytes
 
 void FUN_802801a8(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  float *pfVar1;
+  float *pfVar2;
+  float *pfVar3;
+  float fVar4;
+  double dVar5;
+  undefined4 *puVar6;
+  undefined4 *puVar7;
+  int iVar8;
+  
+  dVar5 = DOUBLE_803e8520;
+  iVar8 = 0;
+  for (puVar6 = DAT_803defd8; puVar6 != (undefined4 *)0x0; puVar6 = (undefined4 *)*puVar6) {
+    iVar8 = iVar8 + 1;
+  }
+  puVar6 = DAT_803defdc;
+  if (iVar8 != 0) {
+    for (; puVar6 != (undefined4 *)0x0; puVar6 = (undefined4 *)*puVar6) {
+      puVar7 = DAT_803defd8;
+      fVar4 = FLOAT_803e8518;
+      if (*(char *)(puVar6 + 7) != -1) {
+        for (; puVar7 != (undefined4 *)0x0; puVar7 = (undefined4 *)*puVar7) {
+          pfVar1 = (float *)(puVar7 + 4);
+          pfVar2 = (float *)(puVar7 + 5);
+          pfVar3 = (float *)(puVar7 + 6);
+          fVar4 = fVar4 + ((float)puVar6[5] - *pfVar3) * ((float)puVar6[5] - *pfVar3) +
+                          ((float)puVar6[3] - *pfVar1) * ((float)puVar6[3] - *pfVar1) +
+                          ((float)puVar6[4] - *pfVar2) * ((float)puVar6[4] - *pfVar2);
+        }
+        puVar6[6] = fVar4 / (float)((double)CONCAT44(0x43300000,iVar8) - dVar5);
+      }
+    }
+  }
+  return;
 }

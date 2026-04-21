@@ -33,7 +33,7 @@ extern undefined4 DAT_803de19c;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_8010192c(uint param_1,undefined4 param_2);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, typed global pointer comparisons need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, typed global pointer comparisons need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8010192c(uint param_1,undefined4 param_2)

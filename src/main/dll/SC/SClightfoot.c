@@ -4,8 +4,8 @@
  * Owner: main/dll/SC/SClightfoot.c
  * Text span: 0x801D647C-0x801D6548
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -24,18 +24,39 @@ extern undefined4 DAT_803dcc60;
 void FUN_801d6484(int param_1);
 void FUN_801d64c4(short *param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801d6484
+// Entry: 801d6484
+// Size: 64 bytes
 
 void FUN_801d6484(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  if (DAT_803dcc60 == *(int *)(*(int *)(param_1 + 0x4c) + 0x14)) {
+    DAT_803dcc60 = -1;
+  }
+  FUN_8003709c(param_1,0x4d);
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801d64c4
+// Entry: 801d64c4
+// Size: 132 bytes
 
 void FUN_801d64c4(short *param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  int iVar2;
+  
+  iVar2 = *(int *)(param_1 + 0x5c);
+  FUN_8003b9ec((int)param_1);
+  FUN_80115088(param_1,iVar2,0);
+  iVar1 = 0;
+  do {
+    FUN_80038524(param_1,iVar1,(float *)(iVar2 + 0x8e0),(undefined4 *)(iVar2 + 0x8e4),
+                 (float *)(iVar2 + 0x8e8),0);
+    iVar2 = iVar2 + 0xc;
+    iVar1 = iVar1 + 1;
+  } while (iVar1 < 4);
+  return;
 }

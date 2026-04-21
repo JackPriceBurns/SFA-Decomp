@@ -32,7 +32,7 @@ extern undefined4 DAT_803def81;
 /* Local declarations keep imported functions visible within the TU. */
 uint FUN_80279ec0(byte param_1,byte param_2,short param_3,char param_4);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 uint FUN_80279ec0(byte param_1,byte param_2,short param_3,char param_4)

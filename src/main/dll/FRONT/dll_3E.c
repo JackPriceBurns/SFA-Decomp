@@ -4,8 +4,8 @@
  * Owner: main/dll/FRONT/dll_3E.c
  * Text span: 0x80118714-0x80118E30
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 4
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -78,7 +78,7 @@ bool FUN_80118c08(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
                  uint param_9,undefined param_10,undefined4 param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, typed global pointer comparisons need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, typed global pointer comparisons need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80118714(void)
@@ -86,7 +86,7 @@ void FUN_80118714(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80118ac4(void)
@@ -94,16 +94,25 @@ void FUN_80118ac4(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80118ba8
+// Entry: 80118ba8
+// Size: 96 bytes
 
 undefined4 FUN_80118ba8(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  if ((DAT_803a6a58 != 0) && ((DAT_803a6a5c == '\x01' || (DAT_803a6a5c == '\x04')))) {
+    DAT_803a6a5c = 2;
+    DAT_803a6a88 = 0;
+    DAT_803a6a8c = 0;
+    DAT_803a6a84 = 0xffffffff;
+    DAT_803a6a80 = 0xffffffff;
+    return 1;
+  }
+  return 0;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 bool FUN_80118c08(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,

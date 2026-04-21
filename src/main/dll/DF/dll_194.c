@@ -33,7 +33,7 @@ extern f32 FLOAT_803e5aac;
 void FUN_801c17ec(undefined8 param_1,double param_2,double param_3,double param_4,double param_5,
                  double param_6,undefined8 param_7,double param_8);
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801c17ec(undefined8 param_1,double param_2,double param_3,double param_4,double param_5,

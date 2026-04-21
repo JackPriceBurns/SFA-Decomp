@@ -4,8 +4,8 @@
  * Owner: main/dll/dll_1D5.c
  * Text span: 0x801CF2E0-0x801CFAC0
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -65,7 +65,7 @@ void FUN_801cf660(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  short *param_9);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801cf2e0(int param_1,int param_2)
@@ -73,7 +73,7 @@ void FUN_801cf2e0(int param_1,int param_2)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801cf3c0(uint param_1,int param_2)
@@ -81,23 +81,50 @@ void FUN_801cf3c0(uint param_1,int param_2)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801cf570
+// Entry: 801cf570
+// Size: 84 bytes
 
 void FUN_801cf570(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  
+  iVar1 = *(int *)(param_1 + 0xb8);
+  FUN_8003709c(param_1,0x4d);
+  if ((*(byte *)(iVar1 + 0x43c) & 0x40) != 0) {
+    (**(code **)(*DAT_803dd6e8 + 100))();
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801cf5c4
+// Entry: 801cf5c4
+// Size: 156 bytes
 
 void FUN_801cf5c4(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar1 = *(int *)(param_1 + 0xb8);
+  FUN_8003b9ec(param_1);
+  iVar2 = 0;
+  iVar3 = iVar1;
+  do {
+    FUN_80038524(param_1,iVar2,(float *)(iVar3 + 0x45c),(undefined4 *)(iVar3 + 0x460),
+                 (float *)(iVar3 + 0x464),0);
+    iVar3 = iVar3 + 0xc;
+    iVar2 = iVar2 + 1;
+  } while (iVar2 < 4);
+  FUN_80038524(param_1,4,(float *)(iVar1 + 0xc),(undefined4 *)(iVar1 + 0x10),(float *)(iVar1 + 0x14)
+               ,0);
+  return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801cf660(undefined8 param_1,double param_2,double param_3,undefined8 param_4,

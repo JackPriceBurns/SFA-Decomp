@@ -4,8 +4,8 @@
  * Owner: main/dll/CAM/dll_60.c
  * Text span: 0x8010C19C-0x8010C374
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -27,18 +27,74 @@ extern f32 FLOAT_803e2548;
 void FUN_8010c1a4(int param_1,float *param_2,float *param_3,float *param_4,float *param_5);
 void FUN_8010c304(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_8010c1a4
+// Entry: 8010c1a4
+// Size: 348 bytes
 
 void FUN_8010c1a4(int param_1,float *param_2,float *param_3,float *param_4,float *param_5)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  float fVar1;
+  float fVar2;
+  float fVar3;
+  float fVar4;
+  float fVar5;
+  int iVar6;
+  int iVar7;
+  int iVar8;
+  int iVar9;
+  
+  iVar7 = *(int *)(param_1 + 0x11c);
+  iVar6 = *(int *)(param_1 + 0xa4);
+  iVar9 = *(int *)(iVar7 + 0x74);
+  if (*(char *)(iVar7 + 0xe4) != *(char *)(DAT_803de1e0 + 0x14)) {
+    *(char *)(DAT_803de1e0 + 0x13) = *(char *)(DAT_803de1e0 + 0x14);
+    *(float *)(DAT_803de1e0 + 0x18) = FLOAT_803e2540;
+  }
+  fVar1 = FLOAT_803e2544;
+  if (*(float *)(DAT_803de1e0 + 0x18) <= FLOAT_803e2544) {
+    *param_2 = *(float *)(iVar9 + (uint)*(byte *)(iVar7 + 0xe4) * 0x18 + 0xc) -
+               *(float *)(iVar6 + 0x18);
+    *param_3 = *(float *)(iVar9 + (uint)*(byte *)(iVar7 + 0xe4) * 0x18 + 0x10) - *param_5;
+    *param_4 = *(float *)(iVar9 + (uint)*(byte *)(iVar7 + 0xe4) * 0x18 + 0x14) -
+               *(float *)(iVar6 + 0x20);
+  }
+  else {
+    *(float *)(DAT_803de1e0 + 0x18) =
+         -(FLOAT_803e2548 * FLOAT_803dc074 - *(float *)(DAT_803de1e0 + 0x18));
+    if (*(float *)(DAT_803de1e0 + 0x18) < fVar1) {
+      *(float *)(DAT_803de1e0 + 0x18) = fVar1;
+      *(undefined *)(DAT_803de1e0 + 0x13) = *(undefined *)(iVar7 + 0xe4);
+    }
+    iVar8 = iVar9 + (uint)*(byte *)(DAT_803de1e0 + 0x13) * 0x18;
+    iVar9 = iVar9 + (uint)*(byte *)(iVar7 + 0xe4) * 0x18;
+    fVar1 = *(float *)(iVar8 + 0x10);
+    fVar2 = *(float *)(iVar9 + 0x10);
+    fVar3 = *(float *)(iVar8 + 0x14);
+    fVar4 = *(float *)(iVar9 + 0x14);
+    fVar5 = *(float *)(DAT_803de1e0 + 0x18);
+    *param_2 = ((*(float *)(iVar8 + 0xc) - *(float *)(iVar9 + 0xc)) * fVar5 +
+               *(float *)(iVar9 + 0xc)) - *(float *)(iVar6 + 0x18);
+    *param_3 = ((fVar1 - fVar2) * fVar5 + fVar2) - *param_5;
+    *param_4 = ((fVar3 - fVar4) * fVar5 + fVar4) - *(float *)(iVar6 + 0x20);
+  }
+  *(undefined *)(DAT_803de1e0 + 0x14) = *(undefined *)(iVar7 + 0xe4);
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_8010c304
+// Entry: 8010c304
+// Size: 112 bytes
 
 void FUN_8010c304(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  if (*(int *)(param_1 + 0x11c) != 0) {
+    (**(code **)(*DAT_803dd6d0 + 0x48))(0);
+  }
+  FUN_800238c4(DAT_803de1e0);
+  DAT_803de1e0 = 0;
+  FUN_800551ec();
+  *(byte *)(param_1 + 0x143) = *(byte *)(param_1 + 0x143) & 0x7f;
+  return;
 }

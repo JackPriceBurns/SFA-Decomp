@@ -33,7 +33,7 @@ extern f32 FLOAT_803e22a4;
 void FUN_8010055c(double param_1,undefined4 param_2,undefined param_3,int param_4,undefined4 param_5
                  );
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8010055c(double param_1,undefined4 param_2,undefined param_3,int param_4,undefined4 param_5

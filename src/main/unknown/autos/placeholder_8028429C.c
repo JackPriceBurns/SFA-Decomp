@@ -21,7 +21,7 @@ extern undefined4 DAT_803ccef8;
 void FUN_8028429c(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
                  undefined4 param_5);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8028429c(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,

@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80279AF0.c
  * Text span: 0x80279AF0-0x80279D30
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 4
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -29,16 +29,18 @@ uint FUN_80279b04(int param_1,int param_2);
 undefined4 FUN_80279c00(uint param_1);
 void FUN_80279c50(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80279af0
+// Entry: 80279af0
+// Size: 20 bytes
 
 undefined4 FUN_80279af0(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  *(undefined4 *)(param_1 + 0xfc) = *(undefined4 *)(param_1 + 0xf8);
+  return *(undefined4 *)(*(int *)(param_1 + 0xf8) + 8);
 }
 
-/* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup, forced full-owner stub for compile-first import, conflicting local pointer bases for shared globals: DAT_803def74. */
+/* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup, conflicting local pointer bases for shared globals: DAT_803def74. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 uint FUN_80279b04(int param_1,int param_2)
@@ -47,7 +49,7 @@ uint FUN_80279b04(int param_1,int param_2)
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import, conflicting local pointer bases for shared globals: DAT_803def74. */
+/* Auto-stubbed for compileability: conflicting local pointer bases for shared globals: DAT_803def74. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 undefined4 FUN_80279c00(uint param_1)
@@ -56,7 +58,7 @@ undefined4 FUN_80279c00(uint param_1)
     return 0;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80279c50(int param_1)

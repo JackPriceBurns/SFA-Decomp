@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_8029312C.c
  * Text span: 0x8029312C-0x8029349C
  * Imported Ghidra functions: 6
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 6
+ * Verbatim-safe functions: 6
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -44,51 +44,132 @@ void FUN_802933d4(double param_1,float *param_2,float *param_3);
 double FUN_802933fc(float *param_1);
 void FUN_80293424(void);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_8029312c
+// Entry: 8029312c
+// Size: 376 bytes
 
 void FUN_8029312c(undefined8 param_1,double param_2)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  float fVar1;
+  float fVar2;
+  double dVar3;
+  short local_38;
+  short local_36;
+  float local_34;
+  float local_30;
+  longlong local_28;
+  
+  dVar3 = (double)FUN_802867b0();
+  fVar1 = (float)dVar3;
+  if (fVar1 != FLOAT_803e8750) {
+    local_36 = ((ushort)((uint)fVar1 >> 0x17) & 0xff) - 0x7f;
+    fVar2 = (float)((uint)fVar1 & 0x7fffff | 0x3f800000) - FLOAT_803e8860;
+    local_34 = fVar2 * (fVar2 * (FLOAT_803e887c * fVar2 + FLOAT_803e8878) + FLOAT_803e8874) +
+               FLOAT_803e8870;
+    dVar3 = FUN_80292568((float *)&local_36);
+    local_34 = (float)(param_2 * (double)(float)((double)local_34 + dVar3));
+    FUN_80292584((double)local_34,(float *)&local_38);
+    dVar3 = FUN_80292568((float *)&local_38);
+    local_34 = (float)((double)local_34 - dVar3);
+    local_30 = FLOAT_803e8860;
+    if (local_34 != FLOAT_803e8750) {
+      local_30 = local_34 * (FLOAT_803e8888 * local_34 + FLOAT_803e8884) + FLOAT_803e8880;
+    }
+    if ((((uint)fVar1 & 0x80000000) != 0) &&
+       (local_28 = (longlong)(int)param_2, ((int)param_2 & 1U) != 0)) {
+      local_30 = -local_30;
+    }
+    local_30 = (float)((int)local_30 + local_38 * 0x800000);
+  }
+  FUN_802867fc();
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_802932a4
+// Entry: 802932a4
+// Size: 236 bytes
 
 void FUN_802932a4(undefined8 param_1,double param_2)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  float fVar1;
+  double dVar2;
+  short local_30 [2];
+  float local_2c;
+  uint local_28;
+  longlong local_20;
+  
+  dVar2 = (double)FUN_802867b4();
+  fVar1 = (float)dVar2;
+  if (fVar1 != FLOAT_803e8750) {
+    local_30[0] = ((ushort)((uint)fVar1 >> 0x17) & 0xff) - 0x80;
+    local_2c = (float)((uint)fVar1 & 0x7fffff | 0x3f800000);
+    dVar2 = FUN_80292568((float *)local_30);
+    local_2c = (float)((double)FLOAT_803e888c * param_2) * (float)((double)local_2c + dVar2);
+    local_20 = (longlong)(int)local_2c;
+    local_28 = (int)local_2c + 0x3f800000;
+    if ((((uint)fVar1 & 0x80000000) != 0) &&
+       (local_20 = (longlong)(int)param_2, ((int)param_2 & 1U) != 0)) {
+      local_28 = local_28 ^ 0x80000000;
+    }
+  }
+  FUN_80286800();
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80293390
+// Entry: 80293390
+// Size: 68 bytes
 
 void FUN_80293390(float *param_1,float *param_2)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  double dVar1;
+  
+  dVar1 = FUN_802933fc(param_1);
+  dVar1 = FUN_80293954(dVar1);
+  FUN_802933d4(dVar1,param_1,param_2);
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_802933d4
+// Entry: 802933d4
+// Size: 40 bytes
 
 void FUN_802933d4(double param_1,float *param_2,float *param_3)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  *param_3 = (float)((double)*param_2 * param_1);
+  param_3[1] = (float)((double)param_2[1] * param_1);
+  param_3[2] = (float)((double)param_2[2] * param_1);
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_802933fc
+// Entry: 802933fc
+// Size: 40 bytes
 
 double FUN_802933fc(float *param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0.0;
+  return (double)(param_1[2] * param_1[2] + *param_1 * *param_1 + param_1[1] * param_1[1]);
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80293424
+// Entry: 80293424
+// Size: 120 bytes
 
 void FUN_80293424(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  float *pfVar1;
+  double extraout_f1;
+  
+  pfVar1 = (float *)FUN_802867b4();
+  FUN_80292444((double)(FLOAT_803e8890 * ABS((float)extraout_f1)),pfVar1);
+  *(ushort *)pfVar1 = *(short *)pfVar1 + 1U & 0xfffe;
+  FUN_80292428(pfVar1);
+  FUN_80286800();
+  return;
 }

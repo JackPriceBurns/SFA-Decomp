@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80281760.c
  * Text span: 0x80281760-0x802817A8
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -26,18 +26,31 @@ extern undefined4 DAT_803defea;
 void FUN_80281760(uint param_1);
 void FUN_802817a4(void);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80281760
+// Entry: 80281760
+// Size: 68 bytes
 
 void FUN_80281760(uint param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  DAT_803defd4 = 0;
+  DAT_803defd8 = 0;
+  DAT_803defdc = 0;
+  DAT_803defe0 = 0;
+  DAT_803defe4 = 0;
+  DAT_803defe8 = 1;
+  DAT_803defe9 = 3;
+  DAT_803defd0 = 0;
+  DAT_803defea = '\x01' - ((param_1 & 2) == 0);
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_802817a4
+// Entry: 802817a4
+// Size: 4 bytes
 
 void FUN_802817a4(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  return;
 }

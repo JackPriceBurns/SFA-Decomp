@@ -4,8 +4,8 @@
  * Owner: main/dll/creator1D6.c
  * Text span: 0x801CFAC0-0x801CFDB8
  * Imported Ghidra functions: 3
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -35,7 +35,7 @@ void FUN_801cfac0(undefined2 *param_1,int param_2,int param_3);
 undefined4 FUN_801cfd5c(void);
 void FUN_801cfd90(void);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801cfac0(undefined2 *param_1,int param_2,int param_3)
@@ -43,19 +43,27 @@ void FUN_801cfac0(undefined2 *param_1,int param_2,int param_3)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801cfd5c
+// Entry: 801cfd5c
+// Size: 44 bytes
 
 undefined4 FUN_801cfd5c(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  int iVar1;
+  
+  iVar1 = FUN_8002ba84();
+  FUN_8000b7dc(iVar1,0x10);
+  return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801cfd90
+// Entry: 801cfd90
+// Size: 40 bytes
 
 void FUN_801cfd90(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  FUN_800201ac(0x4e4,1);
+  return;
 }

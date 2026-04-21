@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80279608.c
  * Text span: 0x80279608-0x8027979C
  * Imported Ghidra functions: 3
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -28,15 +28,35 @@ void FUN_80279608(void);
 int FUN_80279670(void);
 undefined4 * FUN_80279768(uint param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80279608
+// Entry: 80279608
+// Size: 104 bytes
 
 void FUN_80279608(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  uint uVar4;
+  
+  DAT_803def64 = 0;
+  iVar3 = 0;
+  DAT_803def54 = 0;
+  DAT_803def58 = 0;
+  DAT_803def60 = 0;
+  for (uVar4 = 0; uVar4 < DAT_803bdfc0; uVar4 = uVar4 + 1) {
+    iVar2 = iVar3 + 0x4c;
+    *(undefined4 *)(DAT_803deee8 + iVar3 + 0x34) = 0;
+    iVar1 = iVar3 + 0xaa;
+    iVar3 = iVar3 + 0x404;
+    *(undefined4 *)(DAT_803deee8 + iVar2) = 2;
+    *(undefined2 *)(DAT_803deee8 + iVar1) = 0;
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 int FUN_80279670(void)
@@ -45,11 +65,25 @@ int FUN_80279670(void)
     return 0;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80279768
+// Entry: 80279768
+// Size: 52 bytes
 
 undefined4 * FUN_80279768(uint param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
-    return 0;
+  undefined4 *puVar1;
+  
+  puVar1 = DAT_803def74;
+  while( true ) {
+    if (puVar1 == (undefined4 *)0x0) {
+      return (undefined4 *)0x0;
+    }
+    if (puVar1[2] == param_1) break;
+    if (param_1 < (uint)puVar1[2]) {
+      return (undefined4 *)0x0;
+    }
+    puVar1 = (undefined4 *)*puVar1;
+  }
+  return puVar1;
 }

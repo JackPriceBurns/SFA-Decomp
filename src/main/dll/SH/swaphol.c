@@ -37,7 +37,7 @@ void FUN_8011c180(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
                  undefined4 param_9,undefined4 param_10,int param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8011c180(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,

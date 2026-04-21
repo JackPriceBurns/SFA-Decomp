@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_8026FD1C.c
  * Text span: 0x8026FD1C-0x8026FD94
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -14,10 +14,27 @@
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_8026fd1c(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_8026fd1c
+// Entry: 8026fd1c
+// Size: 120 bytes
 
 void FUN_8026fd1c(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  if ((*(uint *)(param_1 + 0x118) & 0x20000) != 0) {
+    return;
+  }
+  if (*(char *)(param_1 + 0x131) == '\x01') {
+    if ((*(uint *)(param_1 + 0x118) & 0x1000) == 0) {
+      *(undefined4 *)(param_1 + 0x13c) = 0;
+    }
+    else {
+      *(undefined4 *)(param_1 + 0x13c) = *(undefined4 *)(param_1 + 0x134);
+    }
+  }
+  else {
+    *(undefined4 *)(param_1 + 0x13c) = *(undefined4 *)(param_1 + 0x134);
+  }
+  *(uint *)(param_1 + 0x138) = (uint)*(byte *)(param_1 + 0x130) << 0x10;
+  return;
 }

@@ -4,8 +4,8 @@
  * Owner: main/dll/IM/IMsnowbike.c
  * Text span: 0x801D90F0-0x801DA010
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 3
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -62,15 +62,69 @@ void FUN_801d9ca4(int param_1);
 void FUN_801d9e20(int param_1);
 void FUN_801d9e54(int param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801d90f0
+// Entry: 801d90f0
+// Size: 544 bytes
 
 void FUN_801d90f0(int param_1,uint *param_2)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  uint uVar1;
+  int iVar2;
+  char cVar3;
+  
+  uVar1 = FUN_80020078(0x1ab);
+  if (uVar1 == 0) {
+    if (*(short *)((int)param_2 + 0x12) == 0xcc) {
+      *(undefined2 *)((int)param_2 + 0x12) = 0xffff;
+    }
+  }
+  else if (*(short *)((int)param_2 + 0x12) != 0xcc) {
+    *(undefined2 *)((int)param_2 + 0x12) = 0xcc;
+    FUN_800201ac(0xc0,1);
+    *param_2 = *param_2 & 0xfffffffd;
+  }
+  if (*(byte *)(param_2 + 1) < 2) {
+    *(byte *)(param_2 + 1) = *(byte *)(param_2 + 1) + 1;
+  }
+  else {
+    uVar1 = FUN_80020078(0xb);
+    if (uVar1 == 0) {
+      FUN_80014b94(0);
+      FUN_80014b84(0);
+      FUN_80014b68(0,0x100);
+      FUN_80014b68(0,0x200);
+      FUN_80014b68(0,0x1000);
+      iVar2 = FUN_8002bac4();
+      if ((*(ushort *)(iVar2 + 0xb0) & 0x1000) == 0) {
+        (**(code **)(*DAT_803dd6d4 + 0x48))(0,param_1,0xffffffff);
+        FUN_800201ac(0xb,1);
+      }
+    }
+    if ((*param_2 & 0x80) == 0) {
+      FUN_800201ac(0x2ba,0);
+      *param_2 = *param_2 | 0x80;
+    }
+  }
+  uVar1 = FUN_80020078(0x2da);
+  if ((((uVar1 == 0) && (uVar1 = FUN_80020078(0x34a), uVar1 != 0)) &&
+      (uVar1 = FUN_80020078(0x36f), uVar1 != 0)) &&
+     (((uVar1 = FUN_80020078(0x166), uVar1 != 0 && (uVar1 = FUN_80020078(0x167), uVar1 != 0)) &&
+      (iVar2 = FUN_8002bac4(), (*(ushort *)(iVar2 + 0xb0) & 0x1000) == 0)))) {
+    FUN_800201ac(0x2da,1);
+  }
+  cVar3 = (**(code **)(*DAT_803dd72c + 0x4c))((int)*(char *)(param_1 + 0xac),6);
+  if (cVar3 == '\0') {
+    iVar2 = FUN_8002bac4();
+    uVar1 = FUN_80296c50(iVar2,0);
+    if (uVar1 != 0) {
+      (**(code **)(*DAT_803dd72c + 0x50))((int)*(char *)(param_1 + 0xac),6,1);
+    }
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801d9310(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
@@ -80,7 +134,7 @@ void FUN_801d9310(undefined8 param_1,double param_2,double param_3,undefined8 pa
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801d9ca4(int param_1)
@@ -88,18 +142,85 @@ void FUN_801d9ca4(int param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801d9e20
+// Entry: 801d9e20
+// Size: 48 bytes
 
 void FUN_801d9e20(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  char in_r8;
+  
+  if (in_r8 != '\0') {
+    FUN_8003b9ec(param_1);
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801d9e54
+// Entry: 801d9e54
+// Size: 444 bytes
+
+/* WARNING: Removing unreachable block (ram,0x801d9ee4) */
 
 void FUN_801d9e54(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  byte bVar1;
+  bool bVar2;
+  int iVar3;
+  uint uVar4;
+  int iVar5;
+  byte *pbVar6;
+  short local_18 [8];
+  
+  pbVar6 = *(byte **)(param_1 + 0xb8);
+  bVar2 = false;
+  iVar3 = (int)*(char *)(*(int *)(param_1 + 0x58) + 0x10f);
+  if ((0 < iVar3) && (iVar5 = 0, 0 < iVar3)) {
+    do {
+      if (*(short *)(*(int *)(*(int *)(param_1 + 0x58) + iVar5 + 0x100) + 0x44) == 1) {
+        bVar2 = true;
+      }
+      iVar5 = iVar5 + 4;
+      iVar3 = iVar3 + -1;
+    } while (iVar3 != 0);
+  }
+  if (bVar2) {
+    *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) & 0xf7;
+    bVar1 = *pbVar6;
+    if (bVar1 == 2) {
+      iVar3 = FUN_8003811c(param_1);
+      if (iVar3 != 0) {
+        FUN_800201ac(0x886,1);
+      }
+    }
+    else if (bVar1 < 2) {
+      FUN_8011f68c(local_18);
+      uVar4 = FUN_80020078(0xc7c);
+      if (((uVar4 == 0) || (iVar3 = FUN_8012f000(), iVar3 == -1)) && (local_18[0] != 0xc7c)) {
+        FUN_8002b7b0(param_1,0,0,0,'\0','\x02');
+      }
+      else {
+        FUN_8002b7b0(param_1,0,0,0,'\0','\x04');
+      }
+      iVar3 = FUN_8003809c(param_1,0xc7c);
+      if (iVar3 == 0) {
+        iVar3 = FUN_8003811c(param_1);
+        if (iVar3 != 0) {
+          FUN_800201ac(0xc7e,1);
+        }
+      }
+      else {
+        FUN_800201ac(0x886,1);
+        FUN_800201ac(0xc7d,1);
+        *pbVar6 = 2;
+        FUN_8002b7b0(param_1,0,0,0,'\0','\x03');
+      }
+    }
+  }
+  else {
+    *(byte *)(param_1 + 0xaf) = *(byte *)(param_1 + 0xaf) | 8;
+  }
+  return;
 }

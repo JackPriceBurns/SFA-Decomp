@@ -4,8 +4,8 @@
  * Owner: main/dll/VF/VFlevcontrol.c
  * Text span: 0x801DE458-0x801DEA20
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -49,7 +49,7 @@ void FUN_801de458(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
 void FUN_801de910(void);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing, pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801de458(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
@@ -58,10 +58,43 @@ void FUN_801de458(undefined8 param_1,double param_2,double param_3,undefined8 pa
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801de910
+// Entry: 801de910
+// Size: 272 bytes
 
 void FUN_801de910(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  ushort uVar1;
+  ushort uVar2;
+  int iVar3;
+  uint uVar4;
+  undefined2 extraout_r4;
+  byte bVar5;
+  byte bVar6;
+  ushort local_28 [20];
+  
+  iVar3 = FUN_8028683c();
+  for (bVar6 = 0; bVar6 < 3; bVar6 = bVar6 + 1) {
+    uVar4 = FUN_80020078((uint)*(ushort *)(iVar3 + (uint)bVar6 * 2));
+    local_28[bVar6] = (ushort)uVar4;
+  }
+  local_28[3] = extraout_r4;
+  for (bVar6 = 0; bVar6 < 3; bVar6 = bVar6 + 1) {
+    for (bVar5 = 0; bVar5 < 3; bVar5 = bVar5 + 1) {
+      uVar1 = local_28[bVar5 + 1];
+      if (uVar1 != 0) {
+        uVar2 = local_28[bVar5];
+        if ((uVar1 < uVar2) || (uVar2 == 0)) {
+          local_28[bVar5] = uVar1;
+          local_28[bVar5 + 1] = uVar2;
+        }
+      }
+    }
+  }
+  for (bVar6 = 0; bVar6 < 3; bVar6 = bVar6 + 1) {
+    FUN_800201ac((uint)*(ushort *)(iVar3 + (uint)bVar6 * 2),(uint)local_28[bVar6]);
+  }
+  FUN_80286888();
+  return;
 }

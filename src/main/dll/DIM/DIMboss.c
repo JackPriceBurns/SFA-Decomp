@@ -4,8 +4,8 @@
  * Owner: main/dll/DIM/DIMboss.c
  * Text span: 0x801BD0E8-0x801BDA04
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 4
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -78,7 +78,7 @@ void FUN_801bd814(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 void FUN_801bd918(short *param_1);
 void FUN_801bd9c8(int param_1);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801bd0e8(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
@@ -89,7 +89,7 @@ void FUN_801bd0e8(undefined8 param_1,double param_2,double param_3,undefined8 pa
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801bd814(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
@@ -99,15 +99,30 @@ void FUN_801bd814(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801bd918
+// Entry: 801bd918
+// Size: 176 bytes
 
 void FUN_801bd918(short *param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  char in_r8;
+  int iVar1;
+  
+  iVar1 = *(int *)(param_1 + 0x5c);
+  if (((in_r8 != '\0') && (*(int *)(param_1 + 0x7a) == 0)) && (*(short *)(iVar1 + 0x402) != 3)) {
+    FUN_8003b9ec((int)param_1);
+    FUN_801bbb4c();
+    FUN_80115088(param_1,-0x7fc529c4,0);
+    iVar1 = **(int **)(iVar1 + 0x40c);
+    if (((iVar1 != 0) && (*(char *)(iVar1 + 0x2f8) != '\0')) && (*(char *)(iVar1 + 0x4c) != '\0')) {
+      FUN_80060630(iVar1);
+    }
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801bd9c8(int param_1)

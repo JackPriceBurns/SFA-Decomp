@@ -29,7 +29,7 @@ extern f32 FLOAT_803e70d0;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_80206fa0(void);
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80206fa0(void)

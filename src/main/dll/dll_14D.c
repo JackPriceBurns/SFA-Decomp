@@ -4,8 +4,8 @@
  * Owner: main/dll/dll_14D.c
  * Text span: 0x8017F1EC-0x8017F548
  * Imported Ghidra functions: 3
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -28,7 +28,7 @@ void FUN_8017f1ec(undefined2 *param_1);
 void FUN_8017f4d8(int param_1);
 void FUN_8017f508(int param_1);
 
-/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8017f1ec(undefined2 *param_1)
@@ -36,18 +36,30 @@ void FUN_8017f1ec(undefined2 *param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_8017f4d8
+// Entry: 8017f4d8
+// Size: 48 bytes
 
 void FUN_8017f4d8(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  char in_r8;
+  
+  if (in_r8 != '\0') {
+    FUN_8003b9ec(param_1);
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_8017f508
+// Entry: 8017f508
+// Size: 64 bytes
 
 void FUN_8017f508(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  if (((*(uint *)(*(int *)(param_1 + 0x50) + 0x44) & 1) != 0) && (*(int *)(param_1 + 0x74) != 0)) {
+    FUN_80041110();
+  }
+  return;
 }

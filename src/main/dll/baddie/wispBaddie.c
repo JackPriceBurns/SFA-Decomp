@@ -159,7 +159,7 @@ void FUN_801265b0(undefined8 param_1,double param_2,undefined8 param_3,undefined
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
 void FUN_801277dc(void);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801265b0(undefined8 param_1,double param_2,undefined8 param_3,undefined8 param_4,
@@ -168,7 +168,7 @@ void FUN_801265b0(undefined8 param_1,double param_2,undefined8 param_3,undefined
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: invalid Ghidra slice syntax, address-of global symbols need manual typing, unsupported helper macros: SUB84, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: invalid Ghidra slice syntax, address-of global symbols need manual typing, unsupported helper macros: SUB84. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801277dc(void)

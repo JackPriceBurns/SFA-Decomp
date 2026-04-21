@@ -4,8 +4,8 @@
  * Owner: main/dll/CAM/camTalk.c
  * Text span: 0x80107D80-0x80108718
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 3
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -62,23 +62,160 @@ void FUN_8010821c(int param_1);
 void FUN_801082ac(int param_1,int param_2);
 void FUN_80108430(short *param_1);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80107dbc
+// Entry: 80107dbc
+// Size: 44 bytes
 
 void FUN_80107dbc(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  FUN_800238c4(DAT_803de1b8);
+  DAT_803de1b8 = 0;
+  return;
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80107de8
+// Entry: 80107de8
+// Size: 1076 bytes
+
+/* WARNING: Removing unreachable block (ram,0x801081fc) */
+/* WARNING: Removing unreachable block (ram,0x801081f4) */
+/* WARNING: Removing unreachable block (ram,0x801081ec) */
+/* WARNING: Removing unreachable block (ram,0x80107e08) */
+/* WARNING: Removing unreachable block (ram,0x80107e00) */
+/* WARNING: Removing unreachable block (ram,0x80107df8) */
 
 void FUN_80107de8(short *param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  float fVar2;
+  float fVar3;
+  short sVar4;
+  ushort *puVar5;
+  double dVar6;
+  double dVar7;
+  double dVar8;
+  double dVar9;
+  float local_108;
+  float local_104;
+  float local_100;
+  ushort local_fc;
+  undefined2 local_fa;
+  undefined2 local_f8;
+  float local_f4;
+  undefined4 local_f0;
+  undefined4 local_ec;
+  undefined4 local_e8;
+  float afStack_e4 [17];
+  longlong local_a0;
+  undefined4 local_98;
+  uint uStack_94;
+  longlong local_90;
+  longlong local_88;
+  undefined4 local_80;
+  uint uStack_7c;
+  undefined4 local_78;
+  uint uStack_74;
+  undefined4 local_70;
+  uint uStack_6c;
+  undefined4 local_68;
+  uint uStack_64;
+  longlong local_60;
+  undefined4 local_58;
+  uint uStack_54;
+  undefined4 local_50;
+  uint uStack_4c;
+  longlong local_48;
+  
+  (**(code **)(*DAT_803dd6d0 + 0x18))();
+  puVar5 = *(ushort **)(param_1 + 0x52);
+  if (puVar5 != (ushort *)0x0) {
+    *(float *)(param_1 + 0x5a) = FLOAT_803e2404;
+    local_f0 = *(undefined4 *)(puVar5 + 0xc);
+    local_ec = *(undefined4 *)(puVar5 + 0xe);
+    local_e8 = *(undefined4 *)(puVar5 + 0x10);
+    local_f4 = FLOAT_803e2408;
+    local_fc = *puVar5;
+    local_a0 = (longlong)(int)*(float *)(DAT_803de1b8 + 0x30);
+    local_fa = (undefined2)(int)*(float *)(DAT_803de1b8 + 0x30);
+    local_f8 = 0;
+    FUN_80021fac(afStack_e4,&local_fc);
+    FUN_80022790((double)FLOAT_803e2400,(double)FLOAT_803e240c,(double)FLOAT_803e2400,afStack_e4,
+                 &local_100,&local_104,&local_108);
+    *param_1 = -0x8000 - *puVar5;
+    *(float *)(DAT_803de1b8 + 0x20) =
+         FLOAT_803e2410 *
+         (FLOAT_803e2414 * *(float *)(DAT_803de1b8 + 0x1c) - *(float *)(DAT_803de1b8 + 0x20)) +
+         *(float *)(DAT_803de1b8 + 0x20);
+    uStack_94 = (int)*param_1 ^ 0x80000000;
+    local_98 = 0x43300000;
+    iVar1 = (int)((float)((double)CONCAT44(0x43300000,uStack_94) - DOUBLE_803e2438) +
+                 *(float *)(DAT_803de1b8 + 0x20));
+    local_90 = (longlong)iVar1;
+    *param_1 = (short)iVar1;
+    iVar1 = (int)(FLOAT_803e2418 - *(float *)(DAT_803de1b8 + 0x30));
+    local_88 = (longlong)iVar1;
+    sVar4 = (short)iVar1 - param_1[1];
+    if (0x8000 < sVar4) {
+      sVar4 = sVar4 + 1;
+    }
+    if (sVar4 < -0x8000) {
+      sVar4 = sVar4 + -1;
+    }
+    param_1[1] = param_1[1] + (sVar4 >> 3);
+    uStack_7c = (int)*param_1 - 0x4000U ^ 0x80000000;
+    local_80 = 0x43300000;
+    dVar6 = (double)FUN_802945e0();
+    uStack_74 = (int)*param_1 - 0x4000U ^ 0x80000000;
+    local_78 = 0x43300000;
+    dVar7 = (double)FUN_80294964();
+    uStack_6c = (int)param_1[1] ^ 0x80000000;
+    local_70 = 0x43300000;
+    dVar8 = (double)FUN_80294964();
+    uStack_64 = (int)param_1[1] ^ 0x80000000;
+    local_68 = 0x43300000;
+    dVar9 = (double)FUN_802945e0();
+    fVar2 = -*(float *)(DAT_803de1b8 + 0x24) / FLOAT_803e2424;
+    fVar3 = FLOAT_803e2400;
+    if ((FLOAT_803e2400 <= fVar2) && (fVar3 = fVar2, FLOAT_803e2408 < fVar2)) {
+      fVar3 = FLOAT_803e2408;
+    }
+    *(float *)(DAT_803de1b8 + 0x28) =
+         FLOAT_803e2428 *
+         ((FLOAT_803e2430 * fVar3 + FLOAT_803e242c) - *(float *)(DAT_803de1b8 + 0x28)) +
+         *(float *)(DAT_803de1b8 + 0x28);
+    fVar2 = *(float *)(DAT_803de1b8 + 0x28);
+    dVar8 = (double)(float)((double)fVar2 * dVar8);
+    *(float *)(param_1 + 0xc) = local_100 + (float)(dVar8 * dVar7);
+    *(float *)(param_1 + 0xe) = local_104 + (float)((double)fVar2 * dVar9);
+    *(float *)(param_1 + 0x10) = local_108 + (float)(dVar8 * dVar6);
+    iVar1 = (int)(FLOAT_803e2428 * *(float *)(DAT_803de1b8 + 0x2c));
+    local_60 = (longlong)iVar1;
+    sVar4 = (short)iVar1 - param_1[2];
+    if (0x8000 < sVar4) {
+      sVar4 = sVar4 + 1;
+    }
+    if (sVar4 < -0x8000) {
+      sVar4 = sVar4 + -1;
+    }
+    uStack_54 = (int)sVar4 ^ 0x80000000;
+    local_58 = 0x43300000;
+    uStack_4c = (int)param_1[2] ^ 0x80000000;
+    local_50 = 0x43300000;
+    iVar1 = (int)((float)((double)CONCAT44(0x43300000,uStack_54) - DOUBLE_803e2438) * FLOAT_803dc074
+                  * FLOAT_803e2434 +
+                 (float)((double)CONCAT44(0x43300000,uStack_4c) - DOUBLE_803e2438));
+    local_48 = (longlong)iVar1;
+    param_1[2] = (short)iVar1;
+    FUN_8000e054((double)*(float *)(param_1 + 0xc),(double)*(float *)(param_1 + 0xe),
+                 (double)*(float *)(param_1 + 0x10),(float *)(param_1 + 6),(float *)(param_1 + 8),
+                 (float *)(param_1 + 10),*(int *)(param_1 + 0x18));
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8010821c(int param_1)
@@ -86,15 +223,52 @@ void FUN_8010821c(int param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801082ac
+// Entry: 801082ac
+// Size: 388 bytes
 
 void FUN_801082ac(int param_1,int param_2)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  ushort *puVar1;
+  int iVar2;
+  float local_28;
+  undefined4 local_24;
+  float local_20;
+  float local_1c;
+  float local_18;
+  float local_14;
+  
+  if (*(short *)(param_1 + 0x44) == 1) {
+    FUN_80297334(param_1,&local_28,&local_24,&local_20);
+    if (((param_2 != 0) || (*(float *)(DAT_803de1c0 + 0x120) != local_28)) ||
+       (*(float *)(DAT_803de1c0 + 0x128) != local_20)) {
+      *(undefined4 *)(DAT_803de1c0 + 0x130) = local_24;
+    }
+    *(float *)(DAT_803de1c0 + 0x120) = local_28;
+    *(undefined4 *)(DAT_803de1c0 + 0x124) = local_24;
+    *(float *)(DAT_803de1c0 + 0x128) = local_20;
+  }
+  else {
+    *(undefined4 *)(DAT_803de1c0 + 0x120) = *(undefined4 *)(param_1 + 0x18);
+    *(float *)(DAT_803de1c0 + 0x124) = FLOAT_803e2440 + *(float *)(param_1 + 0x1c);
+    *(undefined4 *)(DAT_803de1c0 + 0x128) = *(undefined4 *)(param_1 + 0x20);
+    *(undefined4 *)(DAT_803de1c0 + 0x130) = *(undefined4 *)(DAT_803de1c0 + 0x124);
+  }
+  puVar1 = (ushort *)FUN_801e2398();
+  if ((puVar1 != (ushort *)0x0) && (iVar2 = FUN_801e18cc((int)puVar1), iVar2 == 2)) {
+    local_1c = *(float *)(param_1 + 0x18) - *(float *)(puVar1 + 0xc);
+    local_18 = (FLOAT_803e2440 + *(float *)(param_1 + 0x1c)) - *(float *)(puVar1 + 0xe);
+    local_14 = *(float *)(param_1 + 0x20) - *(float *)(puVar1 + 0x10);
+    FUN_80021b8c(puVar1,&local_1c);
+    *(float *)(DAT_803de1c0 + 0x120) = *(float *)(puVar1 + 0xc) + local_1c;
+    *(float *)(DAT_803de1c0 + 0x124) = *(float *)(puVar1 + 0xe) + local_18;
+    *(float *)(DAT_803de1c0 + 0x128) = *(float *)(puVar1 + 0x10) + local_14;
+  }
+  return;
 }
 
-/* Auto-stubbed for compileability: address-label references need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-label references need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_80108430(short *param_1)

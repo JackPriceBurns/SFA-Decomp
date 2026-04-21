@@ -4,8 +4,8 @@
  * Owner: main/dll/DIM/dll_223.c
  * Text span: 0x801BDD60-0x801BE2A4
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -94,7 +94,7 @@ void FUN_801be240(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  int param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
 
-/* Auto-stubbed for compileability: address-of global symbols need manual typing, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801bdd60(int param_1,undefined4 param_2,int param_3)
@@ -102,15 +102,18 @@ void FUN_801bdd60(int param_1,undefined4 param_2,int param_3)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801be088
+// Entry: 801be088
+// Size: 32 bytes
 
 void FUN_801be088(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  FUN_801be0a8();
+  return;
 }
 
-/* Auto-stubbed for compileability: address-label references need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-label references need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801be0a8(void)
@@ -118,15 +121,26 @@ void FUN_801be0a8(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_801be1c0
+// Entry: 801be1c0
+// Size: 120 bytes
 
 void FUN_801be1c0(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  int iVar1;
+  char in_r8;
+  
+  iVar1 = FUN_80286840();
+  if (in_r8 != '\0') {
+    FUN_8002fb40((double)FLOAT_803e5918,(double)FLOAT_803dc074);
+    FUN_8003b9ec(iVar1);
+  }
+  FUN_8028688c();
+  return;
 }
 
-/* Auto-stubbed for compileability: address-label references need manual cleanup, forced full-owner stub for compile-first import. */
+/* Auto-stubbed for compileability: address-label references need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801be240(undefined8 param_1,double param_2,double param_3,undefined8 param_4,

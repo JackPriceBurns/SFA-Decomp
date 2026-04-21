@@ -41,7 +41,7 @@ void FUN_8003549c(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined4 param_9,undefined4 param_10,uint param_11,uint param_12,float *param_13,
                  undefined4 param_14,undefined4 param_15,undefined4 param_16);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import, forced stub for compile-first import. */
+/* Auto-stubbed for compileability: forced stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_8003549c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,

@@ -4,8 +4,8 @@
  * Owner: main/dll/dll_C0.c
  * Text span: 0x80102440-0x801024E8
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -21,10 +21,35 @@ extern undefined4 DAT_803de19c;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_80102440(void);
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+// Function: FUN_80102440
+// Entry: 80102440
+// Size: 168 bytes
 
 void FUN_80102440(void)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  byte bVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar3 = *(int *)(DAT_803de19c + 0x124);
+  iVar2 = FUN_80134f70();
+  if ((iVar2 == 0) && (iVar3 != 0)) {
+    bVar1 = *(byte *)(*(int *)(iVar3 + 0x78) + (uint)*(byte *)(iVar3 + 0xe4) * 5 + 4) & 0xf;
+    if (bVar1 == 6) {
+      if (*(short *)(iVar3 + 0x44) == 6) {
+        FUN_8011f6d0(8);
+      }
+      else {
+        FUN_8011f6d0(9);
+      }
+    }
+    else if (bVar1 == 2) {
+      FUN_8011f6d0(7);
+    }
+    else if (bVar1 == 5) {
+      FUN_8011f6d0(0xf);
+    }
+  }
+  return;
 }
