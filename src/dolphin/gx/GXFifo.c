@@ -14,16 +14,12 @@ extern OSThread* __GXCurrentThread;
 extern GXBool CPGPLinked;
 extern BOOL GXOverflowSuspendInProgress;
 extern GXBreakPtCallback BreakPointCB;
-extern u32 lbl_803DED50;
-extern void* lbl_803DED54;
-
-#define __GXOverflowCount lbl_803DED50
+extern u32 __GXOverflowCount;
+extern void* __GXCurrentBP;
 
 #if DEBUG
 static BOOL IsWGPipeRedirected;
 #endif
-
-#define __GXCurrentBP lbl_803DED54
 
 static void __GXFifoReadEnable(void);
 static void __GXFifoReadDisable(void);
