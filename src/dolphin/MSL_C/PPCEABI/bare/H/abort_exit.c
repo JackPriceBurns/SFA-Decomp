@@ -8,13 +8,13 @@ void _ExitProcess();
 
 extern void (*_dtors[])(void);
 
-static void (*__atexit_funcs_803DB718[64])(void);
+static void (*__atexit_funcs[64])(void);
 
 static void (*__console_exit)(void);
 
 void (*__stdio_exit)(void);
 
-static int __atexit_curr_func_803DF074;
+static int __atexit_curr_func;
 
 static int __aborting;
 
@@ -36,8 +36,8 @@ void exit(int status) {
         }
     }
 
-    while (__atexit_curr_func_803DF074 > 0)
-        __atexit_funcs_803DB718[--__atexit_curr_func_803DF074]();
+    while (__atexit_curr_func > 0)
+        __atexit_funcs[--__atexit_curr_func]();
 
     if (__console_exit != NULL) {
         __console_exit();
