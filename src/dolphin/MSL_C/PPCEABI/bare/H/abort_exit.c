@@ -18,25 +18,6 @@ static int __atexit_curr_func_803DF074;
 
 static int __aborting;
 
-void abort(void) {
-    raise(1);
-    __aborting = 1;
-    __begin_critical_region(atexit_funcs_access);
-
-    while (__atexit_curr_func_803DF074 > 0)
-        __atexit_funcs_803DB718[--__atexit_curr_func_803DF074]();
-
-    __end_critical_region(atexit_funcs_access);
-    __kill_critical_regions();
-
-    if (__console_exit != NULL) {
-        __console_exit();
-        __console_exit = NULL;
-    }
-
-    _ExitProcess();
-}
-
 void exit(int status) {
     void (**dtor)(void);
 

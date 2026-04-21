@@ -1998,10 +1998,10 @@ dolphin/TRK_MINNOW_DOLPHIN/target_options.c:
 	.text       start:0x8028DAAC end:0x8028DAC8
 
 dolphin/TRK_MINNOW_DOLPHIN/mslsupp.c:
-	.text       start:0x8028DAC8 end:0x8028DB4C
+	.text       start:0x8028DAC8 end:0x8028DC08
 
 dolphin/MSL_C/PPCEABI/bare/H/abort_exit.c:
-	.text       start:0x8028DB4C end:0x8028DCD4
+	.text       start:0x8028DC08 end:0x8028DCD4
 
 dolphin/MSL_C/PPCEABI/bare/H/alloc.c:
 	.text       start:0x8028DCD4 end:0x8028E23C
