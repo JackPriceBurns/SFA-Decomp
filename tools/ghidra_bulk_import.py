@@ -114,6 +114,9 @@ UNDECLARED_LOCAL_RE = re.compile(r"\b_local_[0-9A-Fa-f]+\b")
 TYPED_NULL_COMPARE_RE = re.compile(
     r"\b(?:_?DAT_[0-9A-Fa-f]+|PTR_[A-Za-z0-9_]+)\b\s*[!=]=\s*\([A-Za-z_]\w*\s*\*\)\s*0x0"
 )
+POINTER_ARITH_COMPARE_RE = re.compile(
+    r"\b(?:_?DAT_[0-9A-Fa-f]+|PTR_[A-Za-z0-9_]+)\b\s*[+\-]\s*0x[0-9A-Fa-f]+\s*[<>]=?\s*0x[0-9A-Fa-f]+\b"
+)
 LOCAL_DECL_RE = re.compile(
     r"^\s*(?P<type>[A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)*)\s+(?P<pointer>\*+)?\s*(?P<name>[A-Za-z_]\w*)\s*(?:=\s*[^;]+)?;$"
 )
@@ -189,16 +192,12 @@ FORCE_STUB_OWNERS = {
     "main/dll/baddieControl.c",
     "main/dll/moveLib.c",
     # Rebody sweep owners that still fail MWCC on raw Ghidra bodies.
-    "main/dll/ARW/ARWarwingattachment.c",
     "main/dll/CF/treasureRelated0177.c",
     "main/dll/CF/windlift.c",
-    "main/dll/CR/CRsnowbike.c",
     "main/dll/DF/DFlantern.c",
     "main/dll/SC/SCtotembondpuz.c",
     "main/dll/WC/WClevcontrol.c",
-    "main/dll/baddie/Tumbleweed.c",
     "main/dll/baddie/baby_snowworm.c",
-    "main/dll/dll_148.c",
     "main/dll/dll_19E.c",
     "main/dll/dll_1C5.c",
     "main/dll/dll_1D3.c",
@@ -783,6 +782,10 @@ def check_safety(raw_text: str, signature_text: str) -> tuple[bool, bool, list[s
 
     if TYPED_NULL_COMPARE_RE.search(raw_text):
         reasons.append("typed global pointer comparisons need manual cleanup")
+        safe_body = False
+
+    if POINTER_ARITH_COMPARE_RE.search(raw_text):
+        reasons.append("pointer arithmetic comparisons need manual cleanup")
         safe_body = False
 
     if re.search(r"\bNAN\b", raw_text):
