@@ -9,7 +9,7 @@ static OSFontHeader* FontDataAnsi;
 static OSFontHeader* FontDataSjis;
 static int FixedPitch;
 static ParseStringCallback ParseString;
-static u16 FontEncode = 0xFFFF;
+static u16 FontEncode_803DD1B0 = 0xFFFF;
 
 // prototypes
 static char* ParseStringS(u16 encode, const char* string, OSFontHeader** pfont, int* pfontCode);
@@ -322,13 +322,13 @@ static u32 GetFontSize(u8* buf) {
 }
 
 u16 OSGetFontEncode(void) {
-    if (FontEncode <= OS_FONT_ENCODE_SJIS) {
-        return FontEncode;
+    if (FontEncode_803DD1B0 <= OS_FONT_ENCODE_SJIS) {
+        return FontEncode_803DD1B0;
     }
 
     switch (*(int*)OSPhysicalToCached(0xCC)) {
     case VI_NTSC:
-        FontEncode = (__VIRegs[VI_DTV_STAT] & 2) ? OS_FONT_ENCODE_SJIS : OS_FONT_ENCODE_ANSI;
+        FontEncode_803DD1B0 = (__VIRegs[VI_DTV_STAT] & 2) ? OS_FONT_ENCODE_SJIS : OS_FONT_ENCODE_ANSI;
         break;
     case VI_PAL:
     case VI_MPAL:
@@ -336,10 +336,10 @@ u16 OSGetFontEncode(void) {
     case VI_DEBUG_PAL:
     case VI_EURGB60:
     default:
-        FontEncode = OS_FONT_ENCODE_ANSI;
+        FontEncode_803DD1B0 = OS_FONT_ENCODE_ANSI;
     }
 
-    return FontEncode;
+    return FontEncode_803DD1B0;
 }
 
 u16 OSSetFontEncode(u16 encode) {
@@ -349,7 +349,7 @@ u16 OSSetFontEncode(u16 encode) {
 
     prev = OSGetFontEncode();
     if (encode <= OS_FONT_ENCODE_MAX) {
-        FontEncode = encode;
+        FontEncode_803DD1B0 = encode;
         if (encode >= 3 && encode <= OS_FONT_ENCODE_MAX) {
             ParseString = (ParseStringCallback)ParseStringW;
         }
