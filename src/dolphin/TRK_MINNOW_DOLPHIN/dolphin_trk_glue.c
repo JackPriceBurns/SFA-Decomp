@@ -149,9 +149,7 @@ DSError TRKInitializeIntDrivenUART(u32 param_0, u32 param_1, u32 param_2, void* 
 
 void EnableEXI2Interrupts(void)
 {
-    if (TRK_Use_BBA == 0 && gDBCommTable.init_interrupts_func != NULL) {
-        gDBCommTable.init_interrupts_func();
-    }
+    gDBCommTable.init_interrupts_func();
 }
 
 int TRKPollUART(void) 
