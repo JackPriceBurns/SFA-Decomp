@@ -582,7 +582,7 @@ DSError TRKTargetAddStopInfo(MessageBuffer* b)
 
 	if (error == DS_NoError) {
 		for (i = 0; i < ARRAY_COUNT(gTRKCPUState.Default.GPR); i++) {
-			TRKAppendBuffer1_ui16(b, gTRKCPUState.Default.GPR[i]);
+			TRKAppendBuffer1_ui32(b, (u16)gTRKCPUState.Default.GPR[i]);
 		}
 
 		for (i = 0; i < ARRAY_COUNT(gTRKCPUState.Float.FPR); i++) {
