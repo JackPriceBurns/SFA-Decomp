@@ -2087,7 +2087,7 @@ dolphin/MSL_C/PPCEABI/bare/H/k_cos.c:
 main/unknown/autos/placeholder_80292C14.c:
 	.text       start:0x80292C14 end:0x80292F04
 
-main/unknown/autos/placeholder_80292F04.c:
+dolphin/MSL_C/PPCEABI/bare/H/e_sqrt.c:
 	.text       start:0x80292F04 end:0x8029312C
 
 main/unknown/autos/placeholder_8029312C.c:
