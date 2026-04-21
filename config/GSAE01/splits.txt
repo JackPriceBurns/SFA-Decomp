@@ -904,7 +904,7 @@ main/dll/DIM/DIMcannon.c:
 main/dll/DIM/DIMlavasmash.c:
 	.text       start:0x801B0B58 end:0x801B1398
 
-main/unknown/autos/placeholder_801B1398.c:
+dolphin/TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.c:
 	.text       start:0x801B1398 end:0x801B13F0
 
 main/dll/DIM/DIMExplosion.c:
