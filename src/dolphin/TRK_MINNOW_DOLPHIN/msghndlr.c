@@ -152,6 +152,9 @@ DSError TRKDoSupportMask(TRKBuffer* buffer) {
     if (err == DS_NoError) {
         err = TRKAppendBuffer(buffer, mask, sizeof(mask));
     }
+    if (err == DS_NoError) {
+        err = TRKAppendBuffer1_ui8(buffer, DSREPLY_NoError);
+    }
     if (err != DS_NoError) {
         return TRKStandardACK(buffer, DSMSG_ReplyACK, DSREPLY_CWDSError);
     }
