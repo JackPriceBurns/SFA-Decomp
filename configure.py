@@ -755,6 +755,10 @@ config.libs = [
             Object(NonMatching, "main/expgfx.c"),
             Object(NonMatching, "main/dll/modgfx.c"),
             Object(NonMatching, "main/dll/modelfx.c"),
+            Object(NonMatching, "main/dll/dim_partfx.c"),
+            Object(NonMatching, "main/dll/df_partfx.c"),
+            Object(NonMatching, "main/dll/objfsa.c"),
+            Object(NonMatching, "main/dll/curves.c"),
         ],
     },
 ]

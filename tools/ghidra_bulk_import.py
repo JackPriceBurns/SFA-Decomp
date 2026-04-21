@@ -115,6 +115,10 @@ FORCE_STUB_FUNCTIONS = {
     "FUN_8020a768",
 }
 FORCE_STUB_OWNERS = {
+    "main/dll/curves.c",
+    "main/dll/df_partfx.c",
+    "main/dll/dim_partfx.c",
+    "main/dll/objfsa.c",
     "main/dll/modelfx.c",
     "main/dll/modgfx.c",
     "main/expgfx.c",
