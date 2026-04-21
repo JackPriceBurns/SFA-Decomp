@@ -57,7 +57,7 @@ DSError TRKPPCAccessFPRegister(void* srcDestPtr, u32 fpr, BOOL read);
 void WriteFPSCR(f64*);
 void ReadFPSCR(f64*);
 
-static u16 TRK_saved_exceptionID = 0;
+static u16 TRK_saved_exceptionID_803D8F58 = 0;
 TRKState gTRKState;
 Default_PPC gTRKSaveState;
 ProcessorState_PPC gTRKCPUState;
@@ -1162,8 +1162,8 @@ asm void TRKInterruptHandler() {
 	sync
 	mtmsr r2
 	sync
-	lis r2, TRK_saved_exceptionID@h
-	ori r2, r2, TRK_saved_exceptionID@l
+	lis r2, TRK_saved_exceptionID_803D8F58@h
+	ori r2, r2, TRK_saved_exceptionID_803D8F58@l
 	sth r3, 0(r2)
 	cmpwi r3, 0x500
 	bne L_802CF694
@@ -1201,8 +1201,8 @@ L_802CF678:
 	lwz r2, Default_PPC.GPR[2](r2)
 	rfi 
 L_802CF694:
-	lis r2, TRK_saved_exceptionID@h
-	ori r2, r2, TRK_saved_exceptionID@l
+	lis r2, TRK_saved_exceptionID_803D8F58@h
+	ori r2, r2, TRK_saved_exceptionID_803D8F58@l
 	lhz r3, 0(r2)
 	lis r2, gTRKExceptionStatus@h
 	ori r2, r2, gTRKExceptionStatus@l
