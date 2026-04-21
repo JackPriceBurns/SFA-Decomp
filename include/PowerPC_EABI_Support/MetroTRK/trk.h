@@ -85,7 +85,7 @@ DSError TRKReadBuffer_ui16(TRKBuffer*, u16*, int);
 DSError TRKReadBuffer_ui32(TRKBuffer*, u32*, int);
 DSError TRKReadBuffer_ui64(TRKBuffer*, u64*, int);
 
-DSError TRKMessageSend(TRKBuffer*);
+/* TRKMessageSend declared in msg.h as taking TRK_Msg* */
 void TRKSwapAndGo(void);
 DSError TRKInitializeNub(void);
 DSError TRKTerminateNub(void);
