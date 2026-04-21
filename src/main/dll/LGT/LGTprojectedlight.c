@@ -97,6 +97,19 @@ void FUN_801f4aec(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801F44C0
+ * EN v1.0 Size: 144b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801f44c0
 // Entry: 801f44c0
 // Size: 136 bytes
@@ -125,6 +138,19 @@ void FUN_801f44c0(undefined2 *param_1,int param_2)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801F4550
+ * EN v1.0 Size: 1300b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -132,6 +158,19 @@ void FUN_801f4550(int param_1)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801F4A64
+ * EN v1.0 Size: 84b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801f4a64
 // Entry: 801f4a64
@@ -148,6 +187,19 @@ void FUN_801f4a64(int param_1)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801F4AB8
+ * EN v1.0 Size: 52b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801f4ab8
 // Entry: 801f4ab8
 // Size: 48 bytes
@@ -162,6 +214,19 @@ void FUN_801f4ab8(int param_1)
   }
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801F4AEC
+ * EN v1.0 Size: 372b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

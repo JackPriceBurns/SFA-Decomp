@@ -124,6 +124,19 @@ void FUN_800d8ee8(int param_1,int param_2,undefined4 param_3);
 void FUN_800d8f48(uint param_1,int param_2,int param_3,int param_4,int param_5);
 void FUN_800d8f94(uint param_1,int param_2,int param_3,int param_4,int param_5);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D6844
+ * EN v1.0 Size: 168b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -131,6 +144,19 @@ void FUN_800d6844(int param_1)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D68EC
+ * EN v1.0 Size: 1136b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -140,6 +166,19 @@ void FUN_800d68ec(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D6D5C
+ * EN v1.0 Size: 2712b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, NAN macro needs manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -147,6 +186,19 @@ void FUN_800d6d5c(undefined4 param_1,undefined4 param_2,int param_3)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D77F4
+ * EN v1.0 Size: 1288b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -156,6 +208,19 @@ void FUN_800d77f4(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D7CFC
+ * EN v1.0 Size: 28b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -164,6 +229,19 @@ void FUN_800d7cfc(undefined param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D7D18
+ * EN v1.0 Size: 96b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -171,6 +249,19 @@ void FUN_800d7d18(double param_1,uint param_2,undefined param_3)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D7D78
+ * EN v1.0 Size: 24b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -181,6 +272,19 @@ uint FUN_800d7d78(void)
     return 0;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D7D90
+ * EN v1.0 Size: 84b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -188,6 +292,19 @@ void FUN_800d7d90(uint param_1,undefined param_2)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D7DE4
+ * EN v1.0 Size: 116b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -197,6 +314,19 @@ void FUN_800d7de4(uint param_1,undefined param_2)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D7E58
+ * EN v1.0 Size: 120b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -205,6 +335,19 @@ void FUN_800d7e58(uint param_1,undefined param_2)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D7ED0
+ * EN v1.0 Size: 988b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -212,6 +355,19 @@ void FUN_800d7ed0(void)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D82AC
+ * EN v1.0 Size: 332b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -222,6 +378,19 @@ void FUN_800d82ac(double param_1,double param_2,double param_3,double param_4,do
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D83F8
+ * EN v1.0 Size: 316b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -229,6 +398,19 @@ void FUN_800d83f8(double param_1,double param_2,double param_3,int param_4,uint 
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D8534
+ * EN v1.0 Size: 364b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -238,6 +420,19 @@ void FUN_800d8534(double param_1,ushort *param_2,uint *param_3)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D86A0
+ * EN v1.0 Size: 400b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -245,6 +440,19 @@ void FUN_800d86a0(ushort *param_1,int param_2)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D8830
+ * EN v1.0 Size: 264b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -254,6 +462,19 @@ void FUN_800d8830(int param_1,undefined4 param_2,undefined4 param_3,int param_4,
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D8938
+ * EN v1.0 Size: 268b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -262,6 +483,19 @@ void FUN_800d8938(undefined4 param_1,undefined4 param_2,int param_3,int param_4,
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D8A44
+ * EN v1.0 Size: 460b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -274,6 +508,19 @@ void FUN_800d8a44(undefined8 param_1,double param_2,double param_3,undefined8 pa
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D8C10
+ * EN v1.0 Size: 560b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -281,6 +528,19 @@ void FUN_800d8c10(double param_1,double param_2,int param_3,int param_4)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D8E40
+ * EN v1.0 Size: 168b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -290,6 +550,19 @@ void FUN_800d8e40(double param_1,int param_2,uint *param_3)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D8EE8
+ * EN v1.0 Size: 96b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -298,6 +571,19 @@ void FUN_800d8ee8(int param_1,int param_2,undefined4 param_3)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D8F48
+ * EN v1.0 Size: 76b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -305,6 +591,19 @@ void FUN_800d8f48(uint param_1,int param_2,int param_3,int param_4,int param_5)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x800D8F94
+ * EN v1.0 Size: 76b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

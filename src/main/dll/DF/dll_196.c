@@ -28,6 +28,19 @@ double FUN_801c1c4c(double param_1,double param_2,double param_3,double param_4,
 void FUN_801c1cf4(undefined8 param_1,double param_2,double param_3,undefined4 param_4,
                  undefined4 param_5,float *param_6,undefined *param_7);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C1C4C
+ * EN v1.0 Size: 168b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801c1c4c
 // Entry: 801c1c4c
 // Size: 168 bytes
@@ -67,6 +80,19 @@ double FUN_801c1c4c(double param_1,double param_2,double param_3,double param_4,
   }
   return dVar1;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C1CF4
+ * EN v1.0 Size: 560b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801c1cf4
 // Entry: 801c1cf4

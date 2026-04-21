@@ -21,6 +21,19 @@ FUN_8027c748(undefined2 *param_1,undefined2 *param_2,short *param_3,short param_
             ushort param_6);
 void FUN_8027c83c(int param_1,int *param_2);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8027C728
+ * EN v1.0 Size: 32b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -28,6 +41,19 @@ void FUN_8027c728(uint param_1)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8027C748
+ * EN v1.0 Size: 244b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8027c748
 // Entry: 8027c748
@@ -68,6 +94,19 @@ FUN_8027c748(undefined2 *param_1,undefined2 *param_2,short *param_3,short param_
   *param_2 = 0;
   return 0;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8027C83C
+ * EN v1.0 Size: 696b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8027c83c
 // Entry: 8027c83c

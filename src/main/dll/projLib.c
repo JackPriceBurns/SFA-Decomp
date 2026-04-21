@@ -43,6 +43,19 @@ void FUN_80115318(int param_1,undefined4 param_2,undefined4 param_3);
 void FUN_80115328(int param_1,undefined4 param_2);
 void FUN_80115330(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80115318
+ * EN v1.0 Size: 16b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80115318
 // Entry: 80115318
 // Size: 16 bytes
@@ -56,6 +69,19 @@ void FUN_80115318(int param_1,undefined4 param_2,undefined4 param_3)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80115328
+ * EN v1.0 Size: 8b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80115328
 // Entry: 80115328
 // Size: 8 bytes
@@ -66,6 +92,19 @@ void FUN_80115328(int param_1,undefined4 param_2)
   *(undefined4 *)(param_1 + 0x608) = param_2;
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80115330
+ * EN v1.0 Size: 1468b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80115330
 // Entry: 80115330

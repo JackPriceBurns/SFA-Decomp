@@ -17,6 +17,19 @@ extern undefined4 DAT_803bd8f0;
 /* Local declarations keep imported functions visible within the TU. */
 undefined2 FUN_80272eec(uint param_1,uint param_2);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80272EEC
+ * EN v1.0 Size: 32b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

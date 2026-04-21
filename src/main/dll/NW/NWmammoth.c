@@ -63,6 +63,19 @@ void FUN_801d1f68(undefined8 param_1,undefined8 param_2,double param_3,undefined
                  int param_9,int param_10,undefined4 param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D1B54
+ * EN v1.0 Size: 60b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801d1b54
 // Entry: 801d1b54
 // Size: 60 bytes
@@ -74,6 +87,19 @@ void FUN_801d1b54(int param_1)
   FUN_8003709c(param_1,0x31);
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D1B90
+ * EN v1.0 Size: 332b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801d1b90
 // Entry: 801d1b90
@@ -119,6 +145,19 @@ void FUN_801d1b90(int *param_1)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D1CDC
+ * EN v1.0 Size: 652b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -127,6 +166,19 @@ void FUN_801d1cdc(undefined8 param_1,double param_2,double param_3,undefined8 pa
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D1F68
+ * EN v1.0 Size: 644b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: address-label references need manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

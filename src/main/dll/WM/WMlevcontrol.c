@@ -24,6 +24,19 @@ extern f32 FLOAT_803e6278;
 void FUN_801dd600(int param_1,int param_2);
 bool FUN_801dd760(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801DD600
+ * EN v1.0 Size: 352b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -31,6 +44,19 @@ void FUN_801dd600(int param_1,int param_2)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801DD760
+ * EN v1.0 Size: 56b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801dd760
 // Entry: 801dd760

@@ -96,6 +96,19 @@ void FUN_8010d18c(undefined2 *param_1);
 void FUN_8010d534(void);
 void FUN_8010d5dc(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010C374
+ * EN v1.0 Size: 3204b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -104,6 +117,19 @@ void FUN_8010c374(void)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010CFF8
+ * EN v1.0 Size: 360b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -111,6 +137,19 @@ void FUN_8010cff8(int param_1,undefined4 param_2,undefined4 *param_3)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010D160
+ * EN v1.0 Size: 44b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8010d160
 // Entry: 8010d160
@@ -123,6 +162,19 @@ void FUN_8010d160(void)
   DAT_803de1e8 = 0;
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010D18C
+ * EN v1.0 Size: 936b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8010d18c
 // Entry: 8010d18c
@@ -209,6 +261,19 @@ void FUN_8010d18c(undefined2 *param_1)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010D534
+ * EN v1.0 Size: 168b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: typed global pointer comparisons need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -216,6 +281,19 @@ void FUN_8010d534(void)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010D5DC
+ * EN v1.0 Size: 44b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8010d5dc
 // Entry: 8010d5dc

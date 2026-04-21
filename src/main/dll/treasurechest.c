@@ -47,6 +47,19 @@ extern f32 FLOAT_803e3ccc;
 void FUN_801672e4(float *param_1,float *param_2,float *param_3);
 void FUN_801673d8(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801672E4
+ * EN v1.0 Size: 244b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801672e4
 // Entry: 801672e4
 // Size: 240 bytes
@@ -83,6 +96,19 @@ void FUN_801672e4(float *param_1,float *param_2,float *param_3)
   param_1[10] = -local_30;
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801673D8
+ * EN v1.0 Size: 1228b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

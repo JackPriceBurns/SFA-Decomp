@@ -38,6 +38,19 @@ void FUN_8010b4d4(double param_1,short *param_2,undefined4 *param_3,uint param_4
                  uint param_6);
 void FUN_8010b694(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010B144
+ * EN v1.0 Size: 912b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8010b144
 // Entry: 8010b144
 // Size: 912 bytes
@@ -142,6 +155,19 @@ uint FUN_8010b144(short *param_1,uint param_2)
   return ((uint)(byte)(((double)FLOAT_803e250c <= dVar2) << 1) << 0x1c) >> 0x1d;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010B4D4
+ * EN v1.0 Size: 448b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -150,6 +176,19 @@ void FUN_8010b4d4(double param_1,short *param_2,undefined4 *param_3,uint param_4
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010B694
+ * EN v1.0 Size: 44b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8010b694
 // Entry: 8010b694

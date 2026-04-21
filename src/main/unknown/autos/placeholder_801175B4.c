@@ -37,6 +37,19 @@ void FUN_80117628(void);
 void FUN_80117708(void);
 void FUN_801177b4(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801175B4
+ * EN v1.0 Size: 68b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -46,6 +59,19 @@ undefined4 FUN_801175b4(uint param_1)
     return 0;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801175F8
+ * EN v1.0 Size: 48b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -54,6 +80,19 @@ void FUN_801175f8(undefined4 param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80117628
+ * EN v1.0 Size: 224b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -61,6 +100,19 @@ void FUN_80117628(void)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80117708
+ * EN v1.0 Size: 172b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80117708
 // Entry: 80117708
@@ -81,6 +133,19 @@ void FUN_80117708(void)
     iVar1 = iVar1 + 1;
   } while( true );
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801177B4
+ * EN v1.0 Size: 40b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801177b4
 // Entry: 801177b4

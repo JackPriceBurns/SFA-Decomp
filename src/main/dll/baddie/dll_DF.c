@@ -88,6 +88,19 @@ void FUN_8013b6f0(undefined8 param_1,undefined8 param_2,double param_3,undefined
                  undefined4 param_9,undefined4 param_10,int param_11,undefined4 param_12,
                  byte param_13,uint param_14,undefined4 param_15,undefined4 param_16);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8013B6F0
+ * EN v1.0 Size: 8764b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: unsupported helper macros: SUB41, pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

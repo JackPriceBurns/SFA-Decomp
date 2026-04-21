@@ -35,6 +35,19 @@ void FUN_801cfac0(undefined2 *param_1,int param_2,int param_3);
 undefined4 FUN_801cfd5c(void);
 void FUN_801cfd90(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801CFAC0
+ * EN v1.0 Size: 668b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -42,6 +55,19 @@ void FUN_801cfac0(undefined2 *param_1,int param_2,int param_3)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801CFD5C
+ * EN v1.0 Size: 52b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801cfd5c
 // Entry: 801cfd5c
@@ -56,6 +82,19 @@ undefined4 FUN_801cfd5c(void)
   FUN_8000b7dc(iVar1,0x10);
   return 0;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801CFD90
+ * EN v1.0 Size: 40b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801cfd90
 // Entry: 801cfd90

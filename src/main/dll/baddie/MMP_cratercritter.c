@@ -30,6 +30,19 @@ extern f32 FLOAT_803e311c;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_8013d92c(double param_1,short *param_2,int param_3,float *param_4,char param_5);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8013D92C
+ * EN v1.0 Size: 844b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8013d92c
 // Entry: 8013d92c
 // Size: 844 bytes

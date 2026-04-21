@@ -41,6 +41,19 @@ FUN_8002f334(double param_1,double param_2,double param_3,undefined8 param_4,und
             undefined8 param_6,undefined8 param_7,undefined8 param_8,int param_9,uint param_10,
             undefined param_11);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8002EC4C
+ * EN v1.0 Size: 452b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8002ec4c
 // Entry: 8002ec4c
 // Size: 452 bytes
@@ -102,6 +115,19 @@ void FUN_8002ec4c(undefined8 param_1,double param_2,double param_3,undefined8 pa
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8002EE10
+ * EN v1.0 Size: 84b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8002ee10
 // Entry: 8002ee10
 // Size: 84 bytes
@@ -123,6 +149,19 @@ void FUN_8002ee10(undefined8 param_1,double param_2,double param_3,undefined8 pa
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8002EE64
+ * EN v1.0 Size: 84b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8002ee64
 // Entry: 8002ee64
 // Size: 84 bytes
@@ -143,6 +182,19 @@ void FUN_8002ee64(undefined8 param_1,double param_2,double param_3,undefined8 pa
   }
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8002EEB8
+ * EN v1.0 Size: 1100b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8002eeb8
 // Entry: 8002eeb8
@@ -300,6 +352,19 @@ undefined4 FUN_8002eeb8(double param_1,double param_2,int param_3,int param_4)
   return uVar7;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8002F304
+ * EN v1.0 Size: 48b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8002f304
 // Entry: 8002f304
 // Size: 48 bytes
@@ -316,6 +381,19 @@ undefined4 FUN_8002f304(double param_1,int param_2)
   *(float *)(param_2 + 0x9c) = (float)dVar1;
   return 0;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8002F334
+ * EN v1.0 Size: 720b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8002f334
 // Entry: 8002f334

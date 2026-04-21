@@ -40,6 +40,19 @@ void FUN_801be750(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  uint param_9,undefined4 param_10,int param_11,int param_12);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801BE750
+ * EN v1.0 Size: 688b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

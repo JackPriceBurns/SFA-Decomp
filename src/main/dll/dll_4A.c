@@ -58,6 +58,19 @@ undefined4
 FUN_8011bb4c(undefined4 param_1,undefined4 param_2,int param_3,undefined4 param_4,undefined4 param_5
             ,undefined4 param_6,undefined4 param_7,undefined4 param_8);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8011BB4C
+ * EN v1.0 Size: 1540b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

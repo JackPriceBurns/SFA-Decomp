@@ -25,6 +25,19 @@ extern f32 FLOAT_803e6b28;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_801f4c60(int param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801F4C60
+ * EN v1.0 Size: 656b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

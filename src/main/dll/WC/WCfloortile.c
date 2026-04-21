@@ -4,8 +4,8 @@
  * Owner: main/dll/WC/WCfloortile.c
  * Text span: 0x801F0C0C-0x801F0DA4
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -26,7 +26,20 @@ extern undefined4* DAT_803dd72c;
 void FUN_801f0c0c(undefined2 *param_1,int param_2);
 void FUN_801f0d70(int param_1);
 
-/* Auto-stubbed for compileability: function-pointer stores need manual cleanup, forced full-owner stub for compile-first import. */
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801F0C0C
+ * EN v1.0 Size: 356b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
+/* Auto-stubbed for compileability: function-pointer assignments need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
 void FUN_801f0c0c(undefined2 *param_1,int param_2)
@@ -34,10 +47,30 @@ void FUN_801f0c0c(undefined2 *param_1,int param_2)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
-/* Auto-stubbed for compileability: forced full-owner stub for compile-first import. */
-/* Original raw Ghidra body omitted for compile-first stubbing. */
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801F0D70
+ * EN v1.0 Size: 52b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
+// Function: FUN_801f0d70
+// Entry: 801f0d70
+// Size: 48 bytes
 
 void FUN_801f0d70(int param_1)
+
 {
-    /* TODO: replace this stub with a cleaned-up Ghidra body. */
+  char in_r8;
+  
+  if (in_r8 != '\0') {
+    FUN_8003b9ec(param_1);
+  }
+  return;
 }

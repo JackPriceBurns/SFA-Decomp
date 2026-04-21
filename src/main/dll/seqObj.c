@@ -91,6 +91,19 @@ void FUN_80150448(undefined8 param_1,double param_2,undefined8 param_3,undefined
                  undefined4 param_9,undefined4 param_10,uint param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8014FAB4
+ * EN v1.0 Size: 880b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -98,6 +111,19 @@ void FUN_8014fab4(int param_1,undefined4 *param_2)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8014FE24
+ * EN v1.0 Size: 88b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8014fe24
 // Entry: 8014fe24
@@ -119,6 +145,19 @@ void FUN_8014fe24(int param_1)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8014FE7C
+ * EN v1.0 Size: 992b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -127,6 +166,19 @@ void FUN_8014fe7c(uint param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8015025C
+ * EN v1.0 Size: 304b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -134,6 +186,19 @@ void FUN_8015025c(uint param_1,int param_2,int param_3)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8015038C
+ * EN v1.0 Size: 40b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8015038c
 // Entry: 8015038c
@@ -150,6 +215,19 @@ void FUN_8015038c(undefined4 param_1,int param_2,undefined4 param_3,int param_4)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801503B4
+ * EN v1.0 Size: 4b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801503b4
 // Entry: 801503b4
 // Size: 4 bytes
@@ -159,6 +237,19 @@ void FUN_801503b4(void)
 {
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801503B8
+ * EN v1.0 Size: 52b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801503b8
 // Entry: 801503b8
@@ -170,6 +261,19 @@ void FUN_801503b8(short *param_1,undefined4 param_2)
   FUN_8014d3f4(param_1,param_2,0xf,0);
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801503EC
+ * EN v1.0 Size: 92b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801503ec
 // Entry: 801503ec
@@ -195,6 +299,19 @@ void FUN_801503ec(undefined4 param_1,int param_2)
   *(float *)(param_2 + 0x31c) = fVar1;
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80150448
+ * EN v1.0 Size: 1000b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

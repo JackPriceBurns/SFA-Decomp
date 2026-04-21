@@ -27,6 +27,19 @@ extern f32 FLOAT_803e22a8;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_80100d40(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80100D40
+ * EN v1.0 Size: 492b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80100d40
 // Entry: 80100d40
 // Size: 492 bytes

@@ -14,6 +14,19 @@
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_80273f4c(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80273F4C
+ * EN v1.0 Size: 4b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80273f4c
 // Entry: 80273f4c
 // Size: 4 bytes

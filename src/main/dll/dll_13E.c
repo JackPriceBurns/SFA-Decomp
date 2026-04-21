@@ -44,6 +44,19 @@ void FUN_80179af4(int param_1);
 undefined4 FUN_80179b18(int param_1);
 void FUN_80179b40(int param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80179864
+ * EN v1.0 Size: 656b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -54,6 +67,19 @@ void FUN_80179864(undefined8 param_1,double param_2,double param_3,undefined8 pa
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80179AF4
+ * EN v1.0 Size: 36b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80179af4
 // Entry: 80179af4
@@ -72,6 +98,19 @@ void FUN_80179af4(int param_1)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80179B18
+ * EN v1.0 Size: 40b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80179b18
 // Entry: 80179b18
 // Size: 40 bytes
@@ -89,6 +128,19 @@ undefined4 FUN_80179b18(int param_1)
   }
   return uVar2;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80179B40
+ * EN v1.0 Size: 68b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80179b40
 // Entry: 80179b40

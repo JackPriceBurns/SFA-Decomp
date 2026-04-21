@@ -37,6 +37,19 @@ void FUN_8017eebc(undefined2 *param_1,int param_2);
 void FUN_8017f17c(int param_1);
 void FUN_8017f1ac(int param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8017EEBC
+ * EN v1.0 Size: 704b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8017eebc
 // Entry: 8017eebc
 // Size: 684 bytes
@@ -118,6 +131,19 @@ void FUN_8017eebc(undefined2 *param_1,int param_2)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8017F17C
+ * EN v1.0 Size: 48b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8017f17c
 // Entry: 8017f17c
 // Size: 48 bytes
@@ -132,6 +158,19 @@ void FUN_8017f17c(int param_1)
   }
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8017F1AC
+ * EN v1.0 Size: 64b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8017f1ac
 // Entry: 8017f1ac

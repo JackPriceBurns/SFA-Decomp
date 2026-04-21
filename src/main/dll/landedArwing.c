@@ -29,6 +29,19 @@ extern f32 FLOAT_803e3c98;
 /* Local declarations keep imported functions visible within the TU. */
 undefined4 FUN_80165884(short *param_1,int param_2);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80165884
+ * EN v1.0 Size: 436b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80165884
 // Entry: 80165884
 // Size: 436 bytes

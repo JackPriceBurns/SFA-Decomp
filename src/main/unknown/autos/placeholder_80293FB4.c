@@ -40,6 +40,19 @@ void FUN_80294504(void);
 void FUN_802945e0(void);
 void FUN_802946dc(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80293FB4
+ * EN v1.0 Size: 296b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80293fb4
 // Entry: 80293fb4
 // Size: 296 bytes
@@ -56,6 +69,19 @@ void FUN_80293fb4(void)
   FUN_80286800();
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x802940DC
+ * EN v1.0 Size: 328b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_802940dc
 // Entry: 802940dc
@@ -74,6 +100,19 @@ void FUN_802940dc(void)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294224
+ * EN v1.0 Size: 416b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80294224
 // Entry: 80294224
 // Size: 416 bytes
@@ -90,6 +129,19 @@ void FUN_80294224(void)
   FUN_802867fc();
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x802943C4
+ * EN v1.0 Size: 320b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_802943c4
 // Entry: 802943c4
@@ -157,6 +209,19 @@ LAB_802944e8:
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294504
+ * EN v1.0 Size: 220b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80294504
 // Entry: 80294504
 // Size: 220 bytes
@@ -170,6 +235,19 @@ void FUN_80294504(void)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x802945E0
+ * EN v1.0 Size: 252b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_802945e0
 // Entry: 802945e0
 // Size: 252 bytes
@@ -182,6 +260,19 @@ void FUN_802945e0(void)
   FUN_80286800();
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x802946DC
+ * EN v1.0 Size: 284b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_802946dc
 // Entry: 802946dc

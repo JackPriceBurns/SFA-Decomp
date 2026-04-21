@@ -45,6 +45,19 @@ extern f32 FLOAT_803e5ab0;
 void FUN_801c2460(int param_1);
 void FUN_801c2510(undefined4 param_1,undefined4 param_2,undefined4 param_3);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C2460
+ * EN v1.0 Size: 176b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -52,6 +65,19 @@ void FUN_801c2460(int param_1)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C2510
+ * EN v1.0 Size: 792b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

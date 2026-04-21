@@ -31,6 +31,19 @@ void FUN_8020826c(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  uint param_9,int param_10);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8020816C
+ * EN v1.0 Size: 256b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8020816c
 // Entry: 8020816c
 // Size: 240 bytes
@@ -65,6 +78,19 @@ FUN_8020816c(undefined8 param_1,double param_2,double param_3,undefined8 param_4
   FUN_80207cc4(param_9);
   return 0;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8020826C
+ * EN v1.0 Size: 176b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

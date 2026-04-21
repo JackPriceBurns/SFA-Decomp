@@ -35,6 +35,19 @@ extern f32 FLOAT_803e3c20;
 void FUN_80163e3c(short *param_1,int param_2);
 void FUN_80164068(short *param_1,int param_2);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80163E3C
+ * EN v1.0 Size: 556b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80163e3c
 // Entry: 80163e3c
 // Size: 556 bytes
@@ -85,6 +98,19 @@ void FUN_80163e3c(short *param_1,int param_2)
                          (float)((double)CONCAT44(0x43300000,(int)*param_1 ^ 0x80000000) - dVar1));
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80164068
+ * EN v1.0 Size: 976b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80164068
 // Entry: 80164068

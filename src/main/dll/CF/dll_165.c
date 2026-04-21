@@ -33,6 +33,19 @@ void FUN_8018a7dc(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  uint param_9);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8018A7DC
+ * EN v1.0 Size: 696b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

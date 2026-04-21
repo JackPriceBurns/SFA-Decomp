@@ -51,6 +51,19 @@ void FUN_8017a7d0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 void FUN_8017a8d0(void);
 void FUN_8017a95c(uint param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8017A3F4
+ * EN v1.0 Size: 408b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -58,6 +71,19 @@ void FUN_8017a3f4(int param_1)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8017A58C
+ * EN v1.0 Size: 152b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8017a58c
 // Entry: 8017a58c
@@ -88,6 +114,19 @@ undefined4 FUN_8017a58c(int param_1,undefined4 param_2,int param_3)
   *(undefined *)(iVar3 + 0x14) = 1;
   return 4;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8017A624
+ * EN v1.0 Size: 428b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8017a624
 // Entry: 8017a624
@@ -142,6 +181,19 @@ void FUN_8017a624(int param_1)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8017A7D0
+ * EN v1.0 Size: 256b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -151,6 +203,19 @@ void FUN_8017a7d0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8017A8D0
+ * EN v1.0 Size: 140b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8017a8d0
 // Entry: 8017a8d0
@@ -175,6 +240,19 @@ void FUN_8017a8d0(void)
   FUN_8028688c();
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8017A95C
+ * EN v1.0 Size: 460b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8017a95c
 // Entry: 8017a95c

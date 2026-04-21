@@ -33,6 +33,19 @@ extern f32 FLOAT_803e22a4;
 void FUN_8010055c(double param_1,undefined4 param_2,undefined param_3,int param_4,undefined4 param_5
                  );
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010055C
+ * EN v1.0 Size: 648b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

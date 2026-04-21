@@ -37,6 +37,19 @@ void FUN_801184e8(void);
 undefined4 FUN_8011853c(undefined4 param_1,int *param_2,int param_3);
 undefined4 FUN_801185cc(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801184E8
+ * EN v1.0 Size: 84b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801184e8
 // Entry: 801184e8
 // Size: 84 bytes
@@ -50,6 +63,19 @@ void FUN_801184e8(void)
   }
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8011853C
+ * EN v1.0 Size: 144b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8011853c
 // Entry: 8011853c
@@ -77,6 +103,19 @@ undefined4 FUN_8011853c(undefined4 param_1,int *param_2,int param_3)
   }
   return uVar2;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801185CC
+ * EN v1.0 Size: 328b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801185cc
 // Entry: 801185cc

@@ -122,6 +122,19 @@ void FUN_8005edfc(undefined4 param_1,undefined4 param_2,int param_3,int param_4,
 void FUN_8005f35c(int param_1);
 int FUN_8005f6d4(char param_1,int param_2,int *param_3);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8005E0D8
+ * EN v1.0 Size: 1004b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -131,6 +144,19 @@ undefined4 FUN_8005e0d8(undefined4 param_1,float *param_2)
     return 0;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8005E4C4
+ * EN v1.0 Size: 536b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: unsupported body pseudo-types, forced stub for compile-first import. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -138,6 +164,19 @@ void FUN_8005e4c4(undefined4 param_1,undefined4 param_2,int *param_3,float *para
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8005E6DC
+ * EN v1.0 Size: 464b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: unsupported body pseudo-types, undeclared wide temporaries need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -148,6 +187,19 @@ int FUN_8005e6dc(int param_1,int *param_2)
     return 0;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8005E8AC
+ * EN v1.0 Size: 588b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -155,6 +207,19 @@ void FUN_8005e8ac(undefined4 param_1,undefined4 param_2,float *param_3)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8005EAF8
+ * EN v1.0 Size: 296b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
@@ -166,6 +231,19 @@ FUN_8005eaf8(double param_1,double param_2,double param_3,double param_4,double 
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
     return 0;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8005EC20
+ * EN v1.0 Size: 476b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8005ec20
 // Entry: 8005ec20
@@ -237,6 +315,19 @@ FUN_8005ec20(int param_1,int param_2,float *param_3,int param_4,float *param_5,f
   return 1;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8005EDFC
+ * EN v1.0 Size: 1376b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: unsupported body pseudo-types, invalid Ghidra slice syntax, address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -245,6 +336,19 @@ void FUN_8005edfc(undefined4 param_1,undefined4 param_2,int param_3,int param_4,
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8005F35C
+ * EN v1.0 Size: 888b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_8005f35c
 // Entry: 8005f35c
@@ -379,6 +483,19 @@ void FUN_8005f35c(int param_1)
   }
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8005F6D4
+ * EN v1.0 Size: 968b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: unsupported body pseudo-types, address-of global symbols need manual typing, undeclared wide temporaries need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

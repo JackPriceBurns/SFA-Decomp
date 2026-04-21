@@ -92,7 +92,15 @@ LABEL_REF_RE = re.compile(r"&LAB_[0-9A-Fa-f]+")
 STRING_LABEL_RE = re.compile(r"\bs_[A-Za-z0-9_]+_[0-9a-fA-F]+\b")
 HELPER_TOKEN_RE = re.compile(r"\b(?:CONCAT\d+|SUB\d+|SEXT\d+|ZEXT\d+|CARRY\d+|SCARRY\d+|SBORROW\d+)\b")
 CPP_SCOPE_RE = re.compile(r"::")
-FUNCTION_PTR_STORE_RE = re.compile(r"\(\s*code\s*\*\*\s*\)")
+FUNCTION_PTR_ASSIGN_RE = re.compile(
+    r"\*\s*\(\s*code\s*\*\*\s*\)[^=;\n]*=\s*(?:&)?(?:FUN_[0-9A-Fa-f]{8}|LAB_[0-9A-Fa-f]+|[A-Za-z_]\w*)\b"
+)
+SCALAR_MEMBER_TO_POINTER_CAST_RE = re.compile(
+    r"\(\s*[A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)*\s*\*\s*\)\s*[A-Za-z_]\w+\s*(?:\[[^\]]+\]|->\w+|\.\w+)"
+)
+DEREF_INT_TO_POINTER_CAST_RE = re.compile(
+    r"\(\s*[A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)*\s*\*\s*\)\s*\(\s*int\s*\)\s*\*\s*\([^)]*\)"
+)
 GLOBAL_ADDRESS_RE = re.compile(
     r"&(?:_?DAT_[0-9A-Fa-f]+|PTR_[A-Za-z0-9_]+|FLOAT_[0-9A-Fa-f]+|DOUBLE_[0-9A-Fa-f]+|s_[A-Za-z0-9_]+_[0-9A-Fa-f]+|[A-Za-z]+Ram[0-9A-Fa-f]+)\b"
 )
@@ -163,21 +171,15 @@ FORCE_STUB_OWNERS = {
     "main/dll/ARW/ARWarwingattachment.c",
     "main/dll/CF/CFBaby.c",
     "main/dll/CF/CFchuckobj.c",
-    "main/dll/CF/CFguardian.c",
     "main/dll/CF/CFtoggleswitch.c",
-    "main/dll/CF/laser.c",
     "main/dll/CF/treasureRelated0177.c",
     "main/dll/CF/windlift.c",
     "main/dll/CR/CRsnowbike.c",
     "main/dll/DB/DBstealerworm.c",
-    "main/dll/DB/DBwaterflow.c",
-    "main/dll/DF/DFbarrelanim.c",
     "main/dll/DF/DFlantern.c",
-    "main/dll/DIM/DIM2conveyor.c",
     "main/dll/DIM/DIMboulder.c",
     "main/dll/DIM/DIMcannon.c",
     "main/dll/DIM/DIMlavaball.c",
-    "main/dll/DIM/DIMlavasmash.c",
     "main/dll/DIM/DIMlevcontrol.c",
     "main/dll/DIM/DIMsnowball.c",
     "main/dll/DR/DRcloudrunner.c",
@@ -188,13 +190,9 @@ FORCE_STUB_OWNERS = {
     "main/dll/DR/hightop.c",
     "main/dll/DR/sandwormBoss.c",
     "main/dll/IM/IMicicle.c",
-    "main/dll/SC/SCanimobj.c",
     "main/dll/SC/SCtotembondpuz.c",
-    "main/dll/SP/SPshop.c",
     "main/dll/TREX/TREX_trex.c",
-    "main/dll/WC/WCfloortile.c",
     "main/dll/WC/WClevcontrol.c",
-    "main/dll/alphaanim.c",
     "main/dll/anim.c",
     "main/dll/baddie/Tumbleweed.c",
     "main/dll/baddie/baby_snowworm.c",
@@ -209,7 +207,6 @@ FORCE_STUB_OWNERS = {
     "main/dll/dll_1CA.c",
     "main/dll/dll_1D3.c",
     "main/dll/door.c",
-    "main/dll/fruit.c",
     "main/dll/genprops.c",
     "main/dll/groundAnimator.c",
     "main/dll/mmshrine/shrine.c",
@@ -218,7 +215,6 @@ FORCE_STUB_OWNERS = {
     "main/dll/scarab.c",
     "main/dll/seqObj11D.c",
     "main/dll/sidekickToy.c",
-    "main/dll/torch1CD.c",
     "main/dll/transporter.c",
     "main/dll/weaponE6.c",
     "main/dll/colrise.c",
@@ -236,6 +232,7 @@ class SplitSpan:
 @dataclass
 class FunctionDump:
     address: int
+    size: int
     name: str
     raw_text: str
     signature_text: str
@@ -704,8 +701,16 @@ def check_safety(raw_text: str, signature_text: str) -> tuple[bool, bool, list[s
         reasons.append("pointer-heavy local typing needs manual cleanup")
         safe_body = False
 
-    if FUNCTION_PTR_STORE_RE.search(raw_text):
-        reasons.append("function-pointer stores need manual cleanup")
+    if FUNCTION_PTR_ASSIGN_RE.search(raw_text):
+        reasons.append("function-pointer assignments need manual cleanup")
+        safe_body = False
+
+    if SCALAR_MEMBER_TO_POINTER_CAST_RE.search(raw_text):
+        reasons.append("scalar-to-pointer casts need manual cleanup")
+        safe_body = False
+
+    if DEREF_INT_TO_POINTER_CAST_RE.search(raw_text):
+        reasons.append("int-to-pointer casts of dereferenced values need manual cleanup")
         safe_body = False
 
     return safe_signature, safe_body, reasons
@@ -721,6 +726,7 @@ def load_function_dump(path: Path) -> FunctionDump:
     safe_signature, safe_body, unsafe_reasons = check_safety(raw_text, signature_text)
     return FunctionDump(
         address=int(match.group("addr"), 16),
+        size=0,
         name=name,
         raw_text=raw_text.rstrip() + "\n",
         signature_text=signature_text,
@@ -765,6 +771,24 @@ def extern_decl_for_global(symbol: str, inferred_type: str | None = None) -> str
             return f"extern undefined2 {symbol};"
         return f"extern undefined {symbol};"
     return f"extern undefined4 {symbol};"
+
+
+def render_function_info_block(function: FunctionDump) -> str:
+    lines = [
+        "/*",
+        " * --INFO--",
+        " *",
+        f" * EN v1.0 Address: 0x{function.address:08X}",
+        f" * EN v1.0 Size: {function.size}b",
+        " * EN v1.1 Address: TODO",
+        " * EN v1.1 Size: TODO",
+        " * JP Address: TODO",
+        " * JP Size: TODO",
+        " * PAL Address: TODO",
+        " * PAL Size: TODO",
+        " */",
+    ]
+    return "\n".join(lines) + "\n"
 
 
 def header_relpath_for_owner(owner: str) -> str:
@@ -848,6 +872,8 @@ def render_source(
 
     for function in functions:
         reasons = stub_reasons.get(function.name)
+        lines.append(render_function_info_block(function).rstrip())
+        lines.append("")
         if reasons is None:
             lines.append(function.raw_text.rstrip())
         else:
@@ -1061,6 +1087,11 @@ def build_owner_function_map(ghidra_dir: Path, spans: list[SplitSpan]) -> tuple[
         owner_map.setdefault(span.owner, []).append(load_function_dump(path))
     for functions in owner_map.values():
         functions.sort(key=lambda function: function.address)
+    for owner, functions in owner_map.items():
+        span = span_map[owner]
+        for index, function in enumerate(functions):
+            next_address = functions[index + 1].address if index + 1 < len(functions) else span.end
+            function.size = max(0, next_address - function.address)
     return owner_map, span_map
 
 

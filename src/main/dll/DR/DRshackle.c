@@ -58,6 +58,19 @@ void FUN_801ea878(double param_1,uint param_2,int param_3,uint param_4,undefined
                  uint param_6);
 double FUN_801eacb0(int param_1,int param_2);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801EA878
+ * EN v1.0 Size: 1080b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801ea878
 // Entry: 801ea878
 // Size: 1080 bytes
@@ -182,6 +195,19 @@ void FUN_801ea878(double param_1,uint param_2,int param_3,uint param_4,undefined
   FUN_801ea238();
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801EACB0
+ * EN v1.0 Size: 476b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

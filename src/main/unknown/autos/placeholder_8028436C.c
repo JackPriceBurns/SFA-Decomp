@@ -17,6 +17,19 @@ extern undefined4 DAT_803defc4;
 /* Local declarations keep imported functions visible within the TU. */
 int FUN_8028436c(int param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8028436C
+ * EN v1.0 Size: 164b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8028436c
 // Entry: 8028436c
 // Size: 164 bytes

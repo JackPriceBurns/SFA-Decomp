@@ -34,6 +34,19 @@ extern f32 FLOAT_803e600c;
 undefined4 FUN_801d2e5c(uint param_1);
 void FUN_801d2fd4(ushort *param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D2E5C
+ * EN v1.0 Size: 376b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -42,6 +55,19 @@ undefined4 FUN_801d2e5c(uint param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
     return 0;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D2FD4
+ * EN v1.0 Size: 352b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801d2fd4
 // Entry: 801d2fd4

@@ -14,6 +14,19 @@
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_8026fd1c(int param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8026FD1C
+ * EN v1.0 Size: 120b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8026fd1c
 // Entry: 8026fd1c
 // Size: 120 bytes

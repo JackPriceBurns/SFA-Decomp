@@ -19,6 +19,19 @@ extern undefined4 DAT_803dd278;
 uint FUN_802835c0(void);
 int FUN_802835e0(uint param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x802835C0
+ * EN v1.0 Size: 32b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_802835c0
 // Entry: 802835c0
 // Size: 32 bytes
@@ -29,6 +42,19 @@ uint FUN_802835c0(void)
   DAT_803dd278 = DAT_803dd278 * -0x57cae29d;
   return DAT_803dd278 >> 6 & 0xffff;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x802835E0
+ * EN v1.0 Size: 108b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

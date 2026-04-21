@@ -33,6 +33,19 @@ extern f32 FLOAT_803e5aac;
 void FUN_801c17ec(undefined8 param_1,double param_2,double param_3,double param_4,double param_5,
                  double param_6,undefined8 param_7,double param_8);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C17EC
+ * EN v1.0 Size: 992b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

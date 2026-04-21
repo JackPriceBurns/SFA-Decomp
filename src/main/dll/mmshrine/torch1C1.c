@@ -51,6 +51,19 @@ void FUN_801c6298(undefined4 param_1,undefined4 param_2,int param_3);
 void FUN_801c6504(int param_1);
 void FUN_801c65b0(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C5EE0
+ * EN v1.0 Size: 100b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801c5ee0
 // Entry: 801c5ee0
 // Size: 92 bytes
@@ -64,6 +77,19 @@ void FUN_801c5ee0(int param_1,int param_2)
        CONCAT22(*(undefined2 *)(param_2 + 0x1c),*(undefined2 *)(param_2 + 0x1a));
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C5F44
+ * EN v1.0 Size: 852b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801c5f44
 // Entry: 801c5f44
@@ -132,6 +158,19 @@ void FUN_801c5f44(ushort *param_1)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C6298
+ * EN v1.0 Size: 620b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -139,6 +178,19 @@ void FUN_801c6298(undefined4 param_1,undefined4 param_2,int param_3)
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C6504
+ * EN v1.0 Size: 172b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801c6504
 // Entry: 801c6504
@@ -166,6 +218,19 @@ void FUN_801c6504(int param_1)
   FUN_800201ac(0xa7f,1);
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C65B0
+ * EN v1.0 Size: 188b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801c65b0
 // Entry: 801c65b0

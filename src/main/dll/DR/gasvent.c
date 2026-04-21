@@ -59,6 +59,19 @@ void FUN_801a14d4(undefined4 param_1,undefined4 param_2,short param_3);
 void FUN_801a17ac(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801A1380
+ * EN v1.0 Size: 244b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801a1380
 // Entry: 801a1380
 // Size: 244 bytes
@@ -93,6 +106,19 @@ void FUN_801a1380(int param_1,char param_2)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801A1474
+ * EN v1.0 Size: 96b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801a1474
 // Entry: 801a1474
 // Size: 96 bytes
@@ -115,6 +141,19 @@ void FUN_801a1474(int param_1,float *param_2)
   *(byte *)(iVar1 + 0x49) = *(byte *)(iVar1 + 0x49) | 1;
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801A14D4
+ * EN v1.0 Size: 728b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801a14d4
 // Entry: 801a14d4
@@ -240,6 +279,19 @@ void FUN_801a14d4(undefined4 param_1,undefined4 param_2,short param_3)
   FUN_8028688c();
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801A17AC
+ * EN v1.0 Size: 716b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

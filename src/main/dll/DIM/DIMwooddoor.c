@@ -66,6 +66,19 @@ void FUN_801b25a8(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
 void FUN_801b27f8(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801B206C
+ * EN v1.0 Size: 156b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801b206c
 // Entry: 801b206c
 // Size: 136 bytes
@@ -87,6 +100,19 @@ void FUN_801b206c(undefined2 *param_1,int param_2)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801B2108
+ * EN v1.0 Size: 52b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801b2108
 // Entry: 801b2108
 // Size: 48 bytes
@@ -101,6 +127,19 @@ void FUN_801b2108(int param_1)
   }
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801B213C
+ * EN v1.0 Size: 340b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801b213c
 // Entry: 801b213c
@@ -166,6 +205,19 @@ void FUN_801b213c(uint param_1)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801B2290
+ * EN v1.0 Size: 168b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801b2290
 // Entry: 801b2290
 // Size: 160 bytes
@@ -191,6 +243,19 @@ void FUN_801b2290(undefined2 *param_1,int param_2)
   }
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801B2338
+ * EN v1.0 Size: 624b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801b2338
 // Entry: 801b2338
@@ -261,6 +326,19 @@ void FUN_801b2338(double param_1,double param_2,double param_3,double param_4,un
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801B25A8
+ * EN v1.0 Size: 592b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -269,6 +347,19 @@ void FUN_801b25a8(undefined8 param_1,double param_2,double param_3,undefined8 pa
 {
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801B27F8
+ * EN v1.0 Size: 780b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801b27f8
 // Entry: 801b27f8

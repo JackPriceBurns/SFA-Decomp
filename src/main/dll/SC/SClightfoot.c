@@ -24,6 +24,19 @@ extern undefined4 DAT_803dcc60;
 void FUN_801d6484(int param_1);
 void FUN_801d64c4(short *param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D6484
+ * EN v1.0 Size: 64b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801d6484
 // Entry: 801d6484
 // Size: 64 bytes
@@ -37,6 +50,19 @@ void FUN_801d6484(int param_1)
   FUN_8003709c(param_1,0x4d);
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D64C4
+ * EN v1.0 Size: 132b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_801d64c4
 // Entry: 801d64c4

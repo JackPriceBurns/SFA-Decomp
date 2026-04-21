@@ -30,6 +30,19 @@ void FUN_80281914(float *param_1,float *param_2,float *param_3);
 void FUN_802819c0(float *param_1);
 void FUN_80281a74(uint param_1,uint param_2,uint param_3);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x802818F8
+ * EN v1.0 Size: 20b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_802818f8
 // Entry: 802818f8
 // Size: 20 bytes
@@ -42,6 +55,19 @@ void FUN_802818f8(undefined param_1,undefined param_2)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8028190C
+ * EN v1.0 Size: 8b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8028190c
 // Entry: 8028190c
 // Size: 8 bytes
@@ -51,6 +77,19 @@ undefined FUN_8028190c(void)
 {
   return DAT_803deeb8;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80281914
+ * EN v1.0 Size: 172b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80281914
 // Entry: 80281914
@@ -66,6 +105,19 @@ void FUN_80281914(float *param_1,float *param_2,float *param_3)
                param_1[8] * param_2[2] + param_1[6] * *param_2 + param_1[7] * param_2[1];
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x802819C0
+ * EN v1.0 Size: 180b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_802819c0
 // Entry: 802819c0
@@ -90,6 +142,19 @@ void FUN_802819c0(float *param_1)
   param_1[2] = (float)((double)param_1[2] / dVar1);
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80281A74
+ * EN v1.0 Size: 40b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

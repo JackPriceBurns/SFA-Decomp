@@ -56,6 +56,19 @@ void FUN_801eda60(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  short *param_9);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801EDA60
+ * EN v1.0 Size: 1700b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801eda60
 // Entry: 801eda60
 // Size: 1700 bytes

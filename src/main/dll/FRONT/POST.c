@@ -36,6 +36,19 @@ void FUN_801158ec(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined4 param_9,undefined4 param_10,int *param_11,int param_12,float *param_13,
                  short *param_14,undefined4 param_15,undefined4 param_16);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801158EC
+ * EN v1.0 Size: 916b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801158ec
 // Entry: 801158ec
 // Size: 908 bytes

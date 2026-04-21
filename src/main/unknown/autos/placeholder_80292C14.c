@@ -19,6 +19,19 @@ extern undefined4 FUN_802867f4();
 void FUN_80292c14(void);
 void FUN_80292d24(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80292C14
+ * EN v1.0 Size: 272b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80292c14
 // Entry: 80292c14
 // Size: 272 bytes
@@ -30,6 +43,19 @@ void FUN_80292c14(void)
   FUN_802867f4();
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80292D24
+ * EN v1.0 Size: 480b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80292d24
 // Entry: 80292d24

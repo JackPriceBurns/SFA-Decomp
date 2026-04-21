@@ -42,6 +42,19 @@ extern f32 FLOAT_803e436c;
 /* Local declarations keep imported functions visible within the TU. */
 undefined4 FUN_80179f40(ushort *param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80179F40
+ * EN v1.0 Size: 1204b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

@@ -18,6 +18,19 @@ extern undefined4 FUN_8003b9ec();
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_801d23ac(int param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D23AC
+ * EN v1.0 Size: 100b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801d23ac
 // Entry: 801d23ac
 // Size: 100 bytes

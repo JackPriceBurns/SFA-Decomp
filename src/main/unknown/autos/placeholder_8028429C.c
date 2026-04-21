@@ -21,6 +21,19 @@ extern undefined4 DAT_803ccef8;
 void FUN_8028429c(uint param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
                  undefined4 param_5);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8028429C
+ * EN v1.0 Size: 40b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

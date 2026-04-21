@@ -44,6 +44,19 @@ void FUN_801be530(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  uint param_9,int param_10);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801BE4D4
+ * EN v1.0 Size: 92b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801be4d4
 // Entry: 801be4d4
 // Size: 92 bytes
@@ -63,6 +76,19 @@ FUN_801be4d4(undefined8 param_1,double param_2,double param_3,undefined8 param_4
   *(float *)(param_10 + 0x2a0) = FLOAT_803e5930;
   return 0;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801BE530
+ * EN v1.0 Size: 544b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

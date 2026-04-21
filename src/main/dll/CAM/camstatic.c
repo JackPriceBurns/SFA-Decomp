@@ -50,6 +50,19 @@ extern f32 FLOAT_803e23b0;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_80105aac(short *param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80105AAC
+ * EN v1.0 Size: 1644b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

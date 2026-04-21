@@ -37,6 +37,19 @@ uint FUN_80294dbc(uint param_1);
 double FUN_80294e7c(double param_1);
 double FUN_80294e84(double param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294A4C
+ * EN v1.0 Size: 264b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80294a4c
 // Entry: 80294a4c
 // Size: 264 bytes
@@ -49,6 +62,19 @@ void FUN_80294a4c(void)
   FUN_80286800();
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294B54
+ * EN v1.0 Size: 344b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80294b54
 // Entry: 80294b54
@@ -63,6 +89,19 @@ void FUN_80294b54(void)
   return;
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294CAC
+ * EN v1.0 Size: 148b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80294cac
 // Entry: 80294cac
 // Size: 148 bytes
@@ -75,6 +114,19 @@ void FUN_80294cac(void)
   FUN_802867f8();
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294D40
+ * EN v1.0 Size: 96b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80294d40
 // Entry: 80294d40
@@ -93,6 +145,19 @@ double FUN_80294d40(double param_1)
   return (double)(float)((double)local_18 + dVar1);
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294DA0
+ * EN v1.0 Size: 8b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80294da0
 // Entry: 80294da0
 // Size: 8 bytes
@@ -102,6 +167,19 @@ void FUN_80294da0(void)
 {
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294DA8
+ * EN v1.0 Size: 20b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80294da8
 // Entry: 80294da8
@@ -116,6 +194,19 @@ void FUN_80294da8(void)
   } while( true );
 }
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294DBC
+ * EN v1.0 Size: 192b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 
@@ -124,6 +215,19 @@ uint FUN_80294dbc(uint param_1)
     /* TODO: replace this stub with a cleaned-up Ghidra body. */
     return 0;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294E7C
+ * EN v1.0 Size: 8b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80294e7c
 // Entry: 80294e7c
@@ -134,6 +238,19 @@ double FUN_80294e7c(double param_1)
 {
   return ABS(param_1);
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80294E84
+ * EN v1.0 Size: 168b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80294e84
 // Entry: 80294e84

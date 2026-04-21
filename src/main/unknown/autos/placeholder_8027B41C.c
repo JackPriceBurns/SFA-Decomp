@@ -83,6 +83,19 @@ extern undefined4 DAT_803cc83c;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_8027b41c(void);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8027B41C
+ * EN v1.0 Size: 288b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8027b41c
 // Entry: 8027b41c
 // Size: 288 bytes

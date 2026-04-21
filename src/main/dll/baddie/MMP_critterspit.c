@@ -38,6 +38,19 @@ void FUN_8013dc78(undefined8 param_1,undefined8 param_2,double param_3,undefined
                  undefined4 param_9,undefined4 param_10,int param_11,undefined4 param_12,
                  byte param_13,uint param_14,undefined4 param_15,undefined4 param_16);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8013DC78
+ * EN v1.0 Size: 588b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_8013dc78
 // Entry: 8013dc78
 // Size: 588 bytes

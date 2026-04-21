@@ -29,6 +29,19 @@ extern f32 FLOAT_803e5f9c;
 void FUN_801d21ec(undefined2 *param_1,undefined4 *param_2,int param_3);
 void FUN_801d2364(int param_1);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D21EC
+ * EN v1.0 Size: 376b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801d21ec
 // Entry: 801d21ec
 // Size: 348 bytes
@@ -67,6 +80,19 @@ void FUN_801d21ec(undefined2 *param_1,undefined4 *param_2,int param_3)
   FUN_8003613c((int)param_1);
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D2364
+ * EN v1.0 Size: 72b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */

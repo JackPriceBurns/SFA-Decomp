@@ -26,6 +26,19 @@ extern f32 FLOAT_803e5a78;
 void FUN_801c11ac(undefined4 param_1,undefined4 param_2,float *param_3,float *param_4,short *param_5
                  );
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801C11AC
+ * EN v1.0 Size: 616b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801c11ac
 // Entry: 801c11ac
 // Size: 616 bytes

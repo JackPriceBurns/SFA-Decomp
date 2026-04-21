@@ -61,6 +61,19 @@ void FUN_801dea20(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined4 param_9,undefined4 param_10,int param_11,int param_12,int *param_13,
                  undefined4 param_14,undefined4 param_15,int param_16);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801DEA20
+ * EN v1.0 Size: 2596b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: pointer-heavy local typing needs manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

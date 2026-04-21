@@ -26,6 +26,19 @@ extern undefined4* DAT_803dd72c;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_801d8de8(undefined4 param_1,uint *param_2);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D8DE8
+ * EN v1.0 Size: 776b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

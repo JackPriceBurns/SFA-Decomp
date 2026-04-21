@@ -15,6 +15,19 @@
 double FUN_80292428(float *param_1);
 void FUN_80292444(double param_1,float *param_2);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80292428
+ * EN v1.0 Size: 28b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_80292428
 // Entry: 80292428
 // Size: 28 bytes
@@ -26,6 +39,19 @@ double FUN_80292428(float *param_1)
 {
   return (double)((longlong)(double)*(short *)param_1 * 0x3ff0000000000000);
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x80292444
+ * EN v1.0 Size: 28b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 // Function: FUN_80292444
 // Entry: 80292444

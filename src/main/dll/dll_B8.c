@@ -33,6 +33,19 @@ extern undefined4 DAT_803de19c;
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_8010192c(uint param_1,undefined4 param_2);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x8010192C
+ * EN v1.0 Size: 536b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 /* Auto-stubbed for compileability: address-of global symbols need manual typing, typed global pointer comparisons need manual cleanup, function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
 

@@ -60,6 +60,19 @@ void FUN_801d3e2c(double param_1,undefined8 param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  short *param_9);
 
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D3B8C
+ * EN v1.0 Size: 672b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
+
 // Function: FUN_801d3b8c
 // Entry: 801d3b8c
 // Size: 672 bytes
@@ -137,6 +150,19 @@ void FUN_801d3b8c(int param_1,int param_2)
   *(float *)(param_2 + 0x28c) = (float)((double)*(float *)(param_2 + 0x278) * dVar5);
   return;
 }
+
+/*
+ * --INFO--
+ *
+ * EN v1.0 Address: 0x801D3E2C
+ * EN v1.0 Size: 1520b
+ * EN v1.1 Address: TODO
+ * EN v1.1 Size: TODO
+ * JP Address: TODO
+ * JP Size: TODO
+ * PAL Address: TODO
+ * PAL Size: TODO
+ */
 
 /* Auto-stubbed for compileability: function-pointer stores need manual cleanup. */
 /* Original raw Ghidra body omitted for compile-first stubbing. */
