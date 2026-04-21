@@ -155,61 +155,168 @@ static inline SubBlock* SubBlock_merge_prev(SubBlock* ths, SubBlock** start) {
     return ths;
 }
 
-static inline void SubBlock_merge_next(SubBlock* pBlock, SubBlock** pStart) {
-    SubBlock* next_sub_block;
-    unsigned long this_cur_size;
-
-    next_sub_block = (SubBlock*)((char*)pBlock + (pBlock->size & 0xFFFFFFF8));
-
-    if (!(next_sub_block->size & 2)) {
-        this_cur_size = (pBlock->size & 0xFFFFFFF8) + (next_sub_block->size & 0xFFFFFFF8);
-
-        pBlock->size &= ~0xFFFFFFF8;
-        pBlock->size |= this_cur_size & 0xFFFFFFF8;
-
-        if (!(pBlock->size & 2)) {
-            *(unsigned long*)((char*)(pBlock) + (this_cur_size)-4) = (this_cur_size);
-        }
-
-        if (!(pBlock->size & 2)) {
-            *(unsigned long*)((char*)pBlock + this_cur_size) &= ~4;
-        } else {
-            *(unsigned long*)((char*)pBlock + this_cur_size) |= 4;
-        }
-
-        if (*pStart == next_sub_block) {
-            *pStart = (*pStart)->next;
-        }
-
-        if (*pStart == next_sub_block) {
-            *pStart = 0;
-        }
-
-        next_sub_block->next->prev = next_sub_block->prev;
-        next_sub_block->prev->next = next_sub_block->next;
-    }
+static asm void SubBlock_merge_next(SubBlock* pBlock, SubBlock** pStart) {
+    nofralloc
+    lwz r6, 0x0(r3)
+    clrrwi r8, r6, 3
+    add r5, r3, r8
+    lwz r7, 0x0(r5)
+    rlwinm. r0, r7, 0, 30, 30
+    bnelr
+    clrlwi r0, r6, 29
+    clrrwi r6, r7, 3
+    stw r0, 0x0(r3)
+    add r7, r8, r6
+    clrrwi r0, r7, 3
+    lwz r6, 0x0(r3)
+    or r0, r6, r0
+    stw r0, 0x0(r3)
+    lwz r0, 0x0(r3)
+    rlwinm. r0, r0, 0, 30, 30
+    bne _smn_1
+    subi r0, r7, 0x4
+    stwx r7, r3, r0
+_smn_1:
+    lwz r0, 0x0(r3)
+    rlwinm. r0, r0, 0, 30, 30
+    bne _smn_2
+    lwzx r6, r3, r7
+    li r0, -0x5
+    and r0, r6, r0
+    stwx r0, r3, r7
+    b _smn_3
+_smn_2:
+    lwzx r0, r3, r7
+    ori r0, r0, 0x4
+    stwx r0, r3, r7
+_smn_3:
+    lwz r3, 0x0(r4)
+    cmplw r3, r5
+    bne _smn_4
+    lwz r0, 0xc(r3)
+    stw r0, 0x0(r4)
+_smn_4:
+    lwz r0, 0x0(r4)
+    cmplw r0, r5
+    bne _smn_5
+    li r0, 0x0
+    stw r0, 0x0(r4)
+_smn_5:
+    lwz r0, 0x8(r5)
+    lwz r3, 0xc(r5)
+    stw r0, 0x8(r3)
+    lwz r0, 0xc(r5)
+    lwz r3, 0x8(r5)
+    stw r0, 0xc(r3)
+    blr
 }
 
-inline void Block_link(Block* ths, SubBlock* sb) {
-    SubBlock** st;
-    SubBlock_set_free(sb);
-    st = &Block_start(ths);
 
-    if (*st != 0) {
-        sb->prev = (*st)->prev;
-        sb->prev->next = sb;
-        sb->next = *st;
-        (*st)->prev = sb;
-        *st = sb;
-        *st = SubBlock_merge_prev(*st, st);
-        SubBlock_merge_next(*st, st);
-    } else {
-        *st = sb;
-        sb->prev = sb;
-        sb->next = sb;
-    }
-    if (ths->max_size < SubBlock_size(*st))
-        ths->max_size = SubBlock_size(*st);
+asm void Block_link(Block* ths, SubBlock* sb) {
+	nofralloc
+	stwu r1, -0x10(r1)
+	mflr r0
+	li r5, -0x3
+	stw r0, 0x14(r1)
+	li r0, -0x5
+	stw r31, 0xc(r1)
+	stw r30, 0x8(r1)
+	mr r30, r3
+	lwz r6, 0x0(r4)
+	and r3, r6, r5
+	clrrwi r6, r6, 3
+	stw r3, 0x0(r4)
+	add r5, r4, r6
+	lwz r3, 0x0(r5)
+	and r0, r3, r0
+	stw r0, 0x0(r5)
+	stw r6, -0x4(r5)
+	lwz r0, 0xc(r30)
+	clrrwi r3, r0, 3
+	subi r31, r3, 0x4
+	add r31, r30, r31
+	lwz r3, 0x0(r31)
+	cmplwi r3, 0x0
+	beq _bl_5
+	lwz r0, 0x8(r3)
+	stw r0, 0x8(r4)
+	lwz r3, 0x8(r4)
+	stw r4, 0xc(r3)
+	lwz r0, 0x0(r31)
+	stw r0, 0xc(r4)
+	lwz r3, 0x0(r31)
+	stw r4, 0x8(r3)
+	stw r4, 0x0(r31)
+	lwz r6, 0x0(r31)
+	lwz r0, 0x0(r6)
+	rlwinm. r0, r0, 0, 29, 29
+	bne _bl_3
+	lwz r5, -0x4(r6)
+	rlwinm. r0, r5, 0, 30, 30
+	beq _bl_0
+	mr r4, r6
+	b _bl_4
+_bl_0:
+	subf r4, r5, r6
+	lwz r0, 0x0(r4)
+	clrlwi r0, r0, 29
+	stw r0, 0x0(r4)
+	lwz r0, 0x0(r6)
+	lwz r3, 0x0(r4)
+	clrrwi r0, r0, 3
+	add r0, r5, r0
+	clrrwi r0, r0, 3
+	or r0, r3, r0
+	stw r0, 0x0(r4)
+	lwz r0, 0x0(r4)
+	rlwinm. r0, r0, 0, 30, 30
+	bne _bl_1
+	lwz r0, 0x0(r6)
+	clrrwi r0, r0, 3
+	add r3, r5, r0
+	subi r0, r3, 0x4
+	stwx r3, r4, r0
+_bl_1:
+	lwz r3, 0x0(r31)
+	cmplw r3, r6
+	bne _bl_2
+	lwz r0, 0xc(r3)
+	stw r0, 0x0(r31)
+_bl_2:
+	lwz r0, 0x8(r6)
+	lwz r3, 0xc(r6)
+	stw r0, 0x8(r3)
+	lwz r5, 0xc(r6)
+	lwz r3, 0x8(r5)
+	stw r5, 0xc(r3)
+	b _bl_4
+_bl_3:
+	mr r4, r6
+_bl_4:
+	stw r4, 0x0(r31)
+	mr r4, r31
+	lwz r3, 0x0(r31)
+	bl SubBlock_merge_next
+	b _bl_6
+_bl_5:
+	stw r4, 0x0(r31)
+	stw r4, 0x8(r4)
+	stw r4, 0xc(r4)
+_bl_6:
+	lwz r3, 0x0(r31)
+	lwz r4, 0x8(r30)
+	lwz r0, 0x0(r3)
+	clrrwi r0, r0, 3
+	cmplw r4, r0
+	bge _bl_7
+	stw r0, 0x8(r30)
+_bl_7:
+	lwz r0, 0x14(r1)
+	lwz r31, 0xc(r1)
+	lwz r30, 0x8(r1)
+	mtlr r0
+	addi r1, r1, 0x10
+	blr
 }
 
 static inline Block* __unlink(__mem_pool_obj* pool_obj, Block* bp) {
@@ -759,6 +866,94 @@ void* malloc(size_t size) {
     return ptr;
 }
 
-void free(void* ptr) {
-    __pool_free(get_malloc_pool(), ptr);
+extern void fn_80286F20(void*);
+
+asm void free(void* ptr) {
+    nofralloc
+    stwu r1, -0x10(r1)
+    mflr r0
+    stw r0, 0x14(r1)
+    stw r31, 0xc(r1)
+    stw r30, 0x8(r1)
+    mr r30, r3
+    lbz r0, init_803DF080(r13)
+    cmplwi r0, 0x0
+    bne _fr_1
+    lis r3, protopool_803DB818@ha
+    li r4, 0x0
+    addi r3, r3, protopool_803DB818@l
+    li r5, 0x34
+    bl memset
+    li r0, 0x1
+    stb r0, init_803DF080(r13)
+_fr_1:
+    cmplwi r30, 0x0
+    lis r3, protopool_803DB818@ha
+    addi r31, r3, protopool_803DB818@l
+    beq _fr_7
+    lwz r3, -0x4(r30)
+    clrlwi. r0, r3, 31
+    bne _fr_2
+    lwz r5, 0x8(r3)
+    b _fr_3
+_fr_2:
+    lwz r0, -0x8(r30)
+    clrrwi r3, r0, 3
+    subi r5, r3, 0x8
+_fr_3:
+    cmplwi r5, 0x44
+    bgt _fr_4
+    mr r3, r31
+    mr r4, r30
+    bl Block_subBlock
+    b _fr_7
+_fr_4:
+    lwz r0, -0x4(r30)
+    subi r4, r30, 0x8
+    clrrwi r30, r0, 1
+    mr r3, r30
+    bl Block_link
+    lwz r3, 0x10(r30)
+    li r5, 0x0
+    rlwinm. r0, r3, 0, 30, 30
+    bne _fr_5
+    lwz r0, 0xc(r30)
+    clrrwi r4, r3, 3
+    clrrwi r3, r0, 3
+    subi r0, r3, 0x18
+    cmplw r4, r0
+    bne _fr_5
+    li r5, 0x1
+_fr_5:
+    cmpwi r5, 0x0
+    beq _fr_7
+    lwz r4, 0x4(r30)
+    cmplw r4, r30
+    bne _fr_a
+    li r4, 0x0
+_fr_a:
+    lwz r0, 0x0(r31)
+    cmplw r0, r30
+    bne _fr_b
+    stw r4, 0x0(r31)
+_fr_b:
+    cmplwi r4, 0x0
+    beq _fr_6
+    lwz r0, 0x0(r30)
+    stw r0, 0x0(r4)
+    lwz r3, 0x0(r4)
+    stw r4, 0x4(r3)
+_fr_6:
+    li r0, 0x0
+    mr r3, r30
+    stw r0, 0x4(r30)
+    stw r0, 0x0(r30)
+    bl fn_80286F20
+_fr_7:
+    lwz r0, 0x14(r1)
+    lwz r31, 0xc(r1)
+    lwz r30, 0x8(r1)
+    mtlr r0
+    addi r1, r1, 0x10
+    blr
 }
