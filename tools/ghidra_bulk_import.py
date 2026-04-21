@@ -146,6 +146,7 @@ FORCE_STUB_FUNCTIONS = {
 }
 SIGNATURE_OVERRIDES = {
     "FUN_8014e670": ("void FUN_8014e670()", "void"),
+    "FUN_801ee880": ("void FUN_801ee880(ushort *param_1,int param_2)", "void"),
     "FUN_8019992c": (
         "undefined4 FUN_8019992c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,\n"
         "                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,\n"
@@ -155,6 +156,7 @@ SIGNATURE_OVERRIDES = {
     ),
 }
 GLOBAL_TYPE_OVERRIDES = {
+    "DAT_803de838": "void*",
     "DAT_803de7d0": "void*",
 }
 FORCE_STUB_OWNERS = {
@@ -189,14 +191,11 @@ FORCE_STUB_OWNERS = {
     "main/dll/CAM/cutCam.c",
     "main/dll/CAM/dll_5B.c",
     "main/dll/CAM/dll_5F.c",
-    "main/dll/baddieControl.c",
     "main/dll/moveLib.c",
     # Rebody sweep owners that still fail MWCC on raw Ghidra bodies.
     "main/dll/CF/treasureRelated0177.c",
     "main/dll/DF/DFlantern.c",
     "main/dll/SC/SCtotembondpuz.c",
-    "main/dll/WC/WClevcontrol.c",
-    "main/dll/dll_19E.c",
     "main/dll/dll_1C5.c",
     "main/dll/seqObj11D.c",
     "main/dll/colrise.c",

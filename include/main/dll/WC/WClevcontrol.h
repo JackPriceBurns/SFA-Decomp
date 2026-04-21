@@ -3,7 +3,7 @@
 
 #include "ghidra_import.h"
 
-void FUN_801ee880(undefined4 param_1,int param_2);
+void FUN_801ee880(ushort *param_1,int param_2);
 void FUN_801ee9ec(short *param_1,int param_2,undefined4 param_3,undefined4 param_4,
                  undefined4 param_5,undefined4 param_6,undefined4 param_7,undefined4 param_8);
 void FUN_801eeca0(ushort *param_1,int param_2,undefined4 param_3,undefined4 param_4,
