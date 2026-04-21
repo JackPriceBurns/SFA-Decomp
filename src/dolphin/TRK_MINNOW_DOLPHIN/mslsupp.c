@@ -213,28 +213,3 @@ int __position_file(__file_handle file, fpos_t* position, int mode, __idle_proc 
     return DS_IOError;
 }
 
-int __TRK_read_console(__file_handle file, unsigned char* buffer, size_t* count, __idle_proc idle_fn) {
-    u32 countTemp;
-    u32 result;
-
-    if (GetUseSerialIO() == 0) {
-        return DS_IOError;
-    }
-
-    if (GetTRKConnected() == DS_NoError) {
-        return DS_IOError;
-    }
-
-    countTemp = *count;
-    result = TRKAccessFile(DSMSG_ReadFile, DS_Stdin, &countTemp, buffer);
-    *count = countTemp;
-
-    switch ((u8)result) {
-    case DS_IONoError:
-        return DS_IONoError;
-    case DS_IOEOF:
-        return DS_IOEOF;
-    }
-
-    return DS_IOError;
-}
