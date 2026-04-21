@@ -223,37 +223,11 @@ DSError HandleOpenFileSupportRequest(const char* path, u8 replyError, u32* param
     error = TRKGetFreeBuffer(&bufferId, &buffer);
 
     if (error == DS_NoError) {
-        DSError appendError;
-        TRKBuffer* msgBuffer = buffer;
-        u32 position = msgBuffer->position;
-
-        if (position >= sizeof(buffer->data)) {
-            appendError = DS_MessageBufferOverflow;
-        } else {
-            msgBuffer->position = position + 1;
-            appendError = DS_NoError;
-            msgBuffer->data[position] = DSMSG_OpenFile;
-            msgBuffer->length++;
-        }
-
-        error = appendError;
+        error = TRKAppendBuffer1_ui8(buffer, DSMSG_OpenFile);
     }
 
     if (error == DS_NoError) {
-        DSError appendError;
-        TRKBuffer* msgBuffer = buffer;
-        u32 position = msgBuffer->position;
-
-        if (position >= sizeof(buffer->data)) {
-            appendError = DS_MessageBufferOverflow;
-        } else {
-            msgBuffer->position = position + 1;
-            appendError = DS_NoError;
-            msgBuffer->data[position] = replyError;
-            msgBuffer->length++;
-        }
-
-        error = appendError;
+        error = TRKAppendBuffer1_ui8(buffer, replyError);
     }
 
     if (error == DS_NoError) {
@@ -298,20 +272,7 @@ DSError HandleCloseFileSupportRequest(int replyError, u8* ioResult) {
     error = TRKGetFreeBuffer(&bufferId, &buffer);
 
     if (error == DS_NoError) {
-        DSError appendError;
-        TRKBuffer* msgBuffer = buffer;
-        u32 position = msgBuffer->position;
-
-        if (position >= sizeof(buffer->data)) {
-            appendError = DS_MessageBufferOverflow;
-        } else {
-            msgBuffer->position = position + 1;
-            appendError = DS_NoError;
-            msgBuffer->data[position] = DSMSG_CloseFile;
-            msgBuffer->length++;
-        }
-
-        error = appendError;
+        error = TRKAppendBuffer1_ui8(buffer, DSMSG_CloseFile);
     }
 
     if (error == DS_NoError) {
@@ -349,20 +310,7 @@ DSError HandlePositionFileSupportRequest(u32 replyErr, u32 param_2, u8 param_3,
     error = TRKGetFreeBuffer(&bufferId, &buffer);
 
     if (error == DS_NoError) {
-        DSError appendError;
-        TRKBuffer* msgBuffer = buffer;
-        u32 position = msgBuffer->position;
-
-        if (position >= sizeof(buffer->data)) {
-            appendError = DS_MessageBufferOverflow;
-        } else {
-            msgBuffer->position = position + 1;
-            appendError = DS_NoError;
-            msgBuffer->data[position] = DSMSG_PositionFile;
-            msgBuffer->length++;
-        }
-
-        error = appendError;
+        error = TRKAppendBuffer1_ui8(buffer, DSMSG_PositionFile);
     }
 
     if (error == DS_NoError) {
@@ -374,20 +322,7 @@ DSError HandlePositionFileSupportRequest(u32 replyErr, u32 param_2, u8 param_3,
     }
 
     if (error == DS_NoError) {
-        DSError appendError;
-        TRKBuffer* msgBuffer = buffer;
-        u32 position = msgBuffer->position;
-
-        if (position >= sizeof(buffer->data)) {
-            appendError = DS_MessageBufferOverflow;
-        } else {
-            msgBuffer->position = position + 1;
-            appendError = DS_NoError;
-            msgBuffer->data[position] = param_3;
-            msgBuffer->length++;
-        }
-
-        error = appendError;
+        error = TRKAppendBuffer1_ui8(buffer, param_3);
     }
 
     if (error == DS_NoError) {
