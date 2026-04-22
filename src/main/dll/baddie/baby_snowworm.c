@@ -239,6 +239,34 @@ extern undefined4 DAT_803de3b0;
 extern undefined4 DAT_803de3b8;
 extern undefined4 DAT_803de3d6;
 extern undefined4 DAT_803de3d8;
+extern u8 lbl_803DE3D9;
+extern u16 lbl_803DE3F4;
+extern u16 lbl_803DE3F6;
+extern u8 lbl_803DE3FE;
+extern u8 lbl_803DC070;
+extern s32 lbl_803DC6C4;
+extern s32 lbl_803DE460;
+extern f32 lbl_803DC70C;
+extern u8 lbl_803DE3FF;
+extern u8 lbl_803DE3DB;
+extern void*** lbl_803DD6D0;
+extern u8 lbl_8031BCA0[];
+extern void* fn_8002BAC4(void);
+extern int fn_80296328(void);
+extern u8 fn_8005B128(f32, f32);
+extern void fn_800207AC(int);
+extern void fn_800206EC(int);
+extern int fn_800E8D30(void);
+extern u8 fn_800E8B38(u8, u8, int, int);
+extern void fn_8000A538(int, int);
+extern s8 lbl_803DC6F8;
+extern u8 lbl_803DC6F9;
+extern void fn_8000F478(s32);
+extern void fn_8000FAF8(void);
+extern void fn_8000F584(void);
+extern void fn_8000FC5C(f32);
+extern void fn_8000FB20(void);
+extern void fn_8000F7A0(void);
 extern undefined4 DAT_803de3d9;
 extern undefined4 DAT_803de3db;
 extern undefined4 DAT_803de3dc;
@@ -443,12 +471,12 @@ void FUN_801294d8();
 undefined4 FUN_801299d4();
 void FUN_80129a98(void);
 void FUN_80129d10();
-void FUN_80129fb0(void);
+void fn_80129FB0(void);
 void FUN_80129ff8();
 void FUN_8012a0f0();
 void FUN_8012a21c();
 undefined4 FUN_8012b800();
-undefined4 FUN_8012b9f8();
+int fn_8012B9F8(void);
 void FUN_8012bab8();
 void FUN_8012bcb4();
 void FUN_8012c1c0(void);
@@ -459,13 +487,13 @@ void FUN_8012c9e8(undefined4 param_1,undefined4 param_2,short param_3,short para
 void FUN_8012cd38();
 void FUN_8012dab8();
 void FUN_8012dca8();
-void FUN_8012e050();
-void FUN_8012e0b8();
-undefined FUN_8012e0e0(void);
-ushort FUN_8012e0e8(void);
+void fn_8012E050(void);
+void fn_8012E0B8(u8 param_1);
+u8 fn_8012E0E0(void);
+u8 fn_8012E0E8(void);
 void FUN_8012e0f4(char param_1);
 void FUN_8012e114();
-void FUN_8012e250(void);
+void fn_8012E250(void);
 void FUN_8012e2a4();
 
 /*
@@ -722,18 +750,19 @@ void FUN_80129d10()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80129fb0(void)
+#pragma scheduling off
+void fn_80129FB0(void)
 {
-  FUN_8000f478(0);
-  if (DAT_803de460 != 0) {
-    FUN_8000faf8();
-  }
-  FUN_8000f584();
-  FUN_8000fc5c((double)FLOAT_803dc70c);
-  FUN_8000fb20();
-  FUN_8000f7a0();
-  return;
+    fn_8000F478(0);
+    if (lbl_803DE460 != 0) {
+        fn_8000FAF8();
+    }
+    fn_8000F584();
+    fn_8000FC5C(lbl_803DC70C);
+    fn_8000FB20();
+    fn_8000F7A0();
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -812,10 +841,35 @@ undefined4 FUN_8012b800()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-undefined4 FUN_8012b9f8()
+#pragma scheduling off
+#pragma peephole off
+int fn_8012B9F8(void)
 {
-    return 0;
+    void* s;
+    void* inner;
+    u8 lookup;
+    u8 i;
+    u8 is_zero;
+
+    s = fn_8002BAC4();
+    if (s == NULL) return 0;
+    is_zero = fn_80296328() == 0;
+    if (is_zero) return 0;
+    inner = *(void**)((char*)s + 0x30);
+    if (inner != NULL) {
+        lookup = *((u8*)inner + 0xac);
+    } else {
+        lookup = (u8)fn_8005B128(*(f32*)((char*)s + 0xc), *(f32*)((char*)s + 0x14));
+    }
+    for (i = 0; i < 9; i++) {
+        if (lookup == lbl_8031BCA0[i]) {
+            return 0;
+        }
+    }
+    return 1;
 }
+#pragma peephole reset
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -1066,9 +1120,21 @@ void FUN_8012dca8()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8012e050()
+#pragma scheduling off
+void fn_8012E050(void)
 {
+    if (lbl_803DE3F4 == 0) return;
+    if (lbl_803DE3FF != 0 && lbl_803DE3F4 < 0x7f) {
+        lbl_803DE3F4 += lbl_803DC070;
+    } else if (lbl_803DE3FF == 0) {
+        lbl_803DE3F4 += lbl_803DC070;
+    }
+    if (lbl_803DE3F4 > 0xff) {
+        lbl_803DE3F4 = 0;
+        lbl_803DC6C4 = -1;
+    }
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -1082,9 +1148,18 @@ void FUN_8012e050()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8012e0b8()
+#pragma scheduling off
+#pragma peephole off
+void fn_8012E0B8(u8 param_1)
 {
+    lbl_803DE3FE = param_1;
+    if (param_1 != 0) return;
+    lbl_803DE3F4 = 0;
+    lbl_803DE3F6 = 0;
+    lbl_803DC6C4 = -1;
 }
+#pragma peephole reset
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -1098,9 +1173,9 @@ void FUN_8012e0b8()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-undefined FUN_8012e0e0(void)
+u8 fn_8012E0E0(void)
 {
-  return DAT_803de3d9;
+  return lbl_803DE3D9;
 }
 
 /*
@@ -1115,9 +1190,9 @@ undefined FUN_8012e0e0(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-ushort FUN_8012e0e8(void)
+u8 fn_8012E0E8(void)
 {
-  return DAT_803de3f6 & 0xff;
+  return lbl_803DE3F6 & 0xff;
 }
 
 /*
@@ -1166,14 +1241,15 @@ void FUN_8012e114()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8012e250(void)
+#pragma scheduling off
+void fn_8012E250(void)
 {
-  DAT_803de3db = 1;
-  (**(code **)(*DAT_803dd6d0 + 0x24))(1,0x94,1);
-  FUN_800207ac(1);
-  FUN_800206ec(0xff);
-  return;
+    lbl_803DE3DB = 1;
+    (*(void(**)(int,int,int))((char*)*lbl_803DD6D0 + 0x24))(1, 0x94, 1);
+    fn_800207AC(1);
+    fn_800206EC(0xff);
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
