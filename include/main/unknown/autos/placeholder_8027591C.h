@@ -7,13 +7,13 @@
 
 #include "ghidra_import.h"
 
-int FUN_8027591c();
-void FUN_802759c4();
-void FUN_80275aa8();
-undefined4 FUN_80275ac8();
-void FUN_80275dd0();
-void FUN_80275f28();
-void FUN_802760c0();
-void FUN_8027629c();
+int FUN_8027591c(undefined2 param_1);
+void FUN_802759c4(undefined4 param_1,int param_2);
+void FUN_80275aa8(void);
+undefined4 FUN_80275ac8(int param_1,uint *param_2);
+void FUN_80275dd0(int param_1,uint *param_2);
+void FUN_80275f28(int param_1,uint *param_2);
+void FUN_802760c0(int *param_1,uint *param_2);
+void FUN_8027629c(int param_1,uint *param_2);
 
 #endif /* MAIN_UNKNOWN_AUTOS_PLACEHOLDER_8027591C_H_ */

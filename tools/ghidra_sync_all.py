@@ -86,7 +86,6 @@ def main() -> None:
             ]
         )
     run_step([py, str(TOOLS / "ghidra_unmanaged_homes.py"), "--write"])
-    run_step([py, str(TOOLS / "ghidra_init_homes.py"), "--write"])
     audit_output = run_step(
         [
             py,

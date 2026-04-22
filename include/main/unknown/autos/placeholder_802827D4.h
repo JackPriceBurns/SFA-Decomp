@@ -7,20 +7,20 @@
 
 #include "ghidra_import.h"
 
-uint FUN_802827d4();
-uint FUN_80282c5c();
-uint FUN_80282ca4();
-uint FUN_80282cec();
-uint FUN_80282d34();
-uint FUN_80282d7c();
-uint FUN_80282dc4();
-uint FUN_80282e0c();
-uint FUN_80282e54();
-uint FUN_80282e9c();
-uint FUN_80282ee4();
-uint FUN_80282f2c();
-uint FUN_80282f74();
-uint FUN_80282fbc();
-uint FUN_80283078();
+uint FUN_802827d4(int param_1,byte *param_2,uint param_3,uint param_4);
+uint FUN_80282c5c(int param_1);
+uint FUN_80282ca4(int param_1);
+uint FUN_80282cec(int param_1);
+uint FUN_80282d34(int param_1);
+uint FUN_80282d7c(int param_1);
+uint FUN_80282dc4(int param_1);
+uint FUN_80282e0c(int param_1);
+uint FUN_80282e54(int param_1);
+uint FUN_80282e9c(int param_1);
+uint FUN_80282ee4(int param_1);
+uint FUN_80282f2c(int param_1);
+uint FUN_80282f74(int param_1);
+uint FUN_80282fbc(uint param_1,uint param_2,uint param_3,uint param_4);
+uint FUN_80283078(uint param_1,uint param_2,uint param_3,uint param_4);
 
 #endif /* MAIN_UNKNOWN_AUTOS_PLACEHOLDER_802827D4_H_ */

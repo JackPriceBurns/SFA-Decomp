@@ -7,6 +7,6 @@
 
 #include "ghidra_import.h"
 
-undefined4 FUN_8027adc4();
+undefined4 FUN_8027adc4(char *param_1);
 
 #endif /* MAIN_UNKNOWN_AUTOS_PLACEHOLDER_8027ADC4_H_ */
