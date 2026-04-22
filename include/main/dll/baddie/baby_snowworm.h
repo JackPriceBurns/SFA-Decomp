@@ -17,7 +17,7 @@ void FUN_80129ff8();
 void FUN_8012a0f0();
 void FUN_8012a21c();
 undefined4 FUN_8012b800();
-undefined4 FUN_8012b9f8();
+int fn_8012B9F8(void);
 void FUN_8012bab8();
 void FUN_8012bcb4();
 void FUN_8012c1c0(void);

@@ -250,8 +250,17 @@ extern f32 lbl_803DC70C;
 extern u8 lbl_803DE3FF;
 extern u8 lbl_803DE3DB;
 extern void*** lbl_803DD6D0;
+extern u8 lbl_8031BCA0[];
+extern void* fn_8002BAC4(void);
+extern int fn_80296328(void);
+extern u8 fn_8005B128(f32, f32);
 extern void fn_800207AC(int);
 extern void fn_800206EC(int);
+extern int fn_800E8D30(void);
+extern u8 fn_800E8B38(u8, u8, int, int);
+extern void fn_8000A538(int, int);
+extern s8 lbl_803DC6F8;
+extern u8 lbl_803DC6F9;
 extern void fn_8000F478(s32);
 extern void fn_8000FAF8(void);
 extern void fn_8000F584(void);
@@ -467,7 +476,7 @@ void FUN_80129ff8();
 void FUN_8012a0f0();
 void FUN_8012a21c();
 undefined4 FUN_8012b800();
-undefined4 FUN_8012b9f8();
+int fn_8012B9F8(void);
 void FUN_8012bab8();
 void FUN_8012bcb4();
 void FUN_8012c1c0(void);
@@ -832,10 +841,35 @@ undefined4 FUN_8012b800()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-undefined4 FUN_8012b9f8()
+#pragma scheduling off
+#pragma peephole off
+int fn_8012B9F8(void)
 {
-    return 0;
+    void* s;
+    void* inner;
+    u8 lookup;
+    u8 i;
+    u8 is_zero;
+
+    s = fn_8002BAC4();
+    if (s == NULL) return 0;
+    is_zero = fn_80296328() == 0;
+    if (is_zero) return 0;
+    inner = *(void**)((char*)s + 0x30);
+    if (inner != NULL) {
+        lookup = *((u8*)inner + 0xac);
+    } else {
+        lookup = (u8)fn_8005B128(*(f32*)((char*)s + 0xc), *(f32*)((char*)s + 0x14));
+    }
+    for (i = 0; i < 9; i++) {
+        if (lookup == lbl_8031BCA0[i]) {
+            return 0;
+        }
+    }
+    return 1;
 }
+#pragma peephole reset
+#pragma scheduling reset
 
 /*
  * --INFO--
