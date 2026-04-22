@@ -240,8 +240,24 @@ extern undefined4 DAT_803de3b8;
 extern undefined4 DAT_803de3d6;
 extern undefined4 DAT_803de3d8;
 extern u8 lbl_803DE3D9;
+extern u16 lbl_803DE3F4;
 extern u16 lbl_803DE3F6;
 extern u8 lbl_803DE3FE;
+extern u8 lbl_803DC070;
+extern s32 lbl_803DC6C4;
+extern s32 lbl_803DE460;
+extern f32 lbl_803DC70C;
+extern u8 lbl_803DE3FF;
+extern u8 lbl_803DE3DB;
+extern void*** lbl_803DD6D0;
+extern void fn_800207AC(int);
+extern void fn_800206EC(int);
+extern void fn_8000F478(s32);
+extern void fn_8000FAF8(void);
+extern void fn_8000F584(void);
+extern void fn_8000FC5C(f32);
+extern void fn_8000FB20(void);
+extern void fn_8000F7A0(void);
 extern undefined4 DAT_803de3d9;
 extern undefined4 DAT_803de3db;
 extern undefined4 DAT_803de3dc;
@@ -446,7 +462,7 @@ void FUN_801294d8();
 undefined4 FUN_801299d4();
 void FUN_80129a98(void);
 void FUN_80129d10();
-void FUN_80129fb0(void);
+void fn_80129FB0(void);
 void FUN_80129ff8();
 void FUN_8012a0f0();
 void FUN_8012a21c();
@@ -462,13 +478,13 @@ void FUN_8012c9e8(undefined4 param_1,undefined4 param_2,short param_3,short para
 void FUN_8012cd38();
 void FUN_8012dab8();
 void FUN_8012dca8();
-void FUN_8012e050();
-void FUN_8012e0b8();
+void fn_8012E050(void);
+void fn_8012E0B8(u8 param_1);
 u8 fn_8012E0E0(void);
 u8 fn_8012E0E8(void);
 void FUN_8012e0f4(char param_1);
 void FUN_8012e114();
-void FUN_8012e250(void);
+void fn_8012E250(void);
 void FUN_8012e2a4();
 
 /*
@@ -725,18 +741,19 @@ void FUN_80129d10()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80129fb0(void)
+#pragma scheduling off
+void fn_80129FB0(void)
 {
-  FUN_8000f478(0);
-  if (DAT_803de460 != 0) {
-    FUN_8000faf8();
-  }
-  FUN_8000f584();
-  FUN_8000fc5c((double)FLOAT_803dc70c);
-  FUN_8000fb20();
-  FUN_8000f7a0();
-  return;
+    fn_8000F478(0);
+    if (lbl_803DE460 != 0) {
+        fn_8000FAF8();
+    }
+    fn_8000F584();
+    fn_8000FC5C(lbl_803DC70C);
+    fn_8000FB20();
+    fn_8000F7A0();
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -1069,9 +1086,21 @@ void FUN_8012dca8()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8012e050()
+#pragma scheduling off
+void fn_8012E050(void)
 {
+    if (lbl_803DE3F4 == 0) return;
+    if (lbl_803DE3FF != 0 && lbl_803DE3F4 < 0x7f) {
+        lbl_803DE3F4 += lbl_803DC070;
+    } else if (lbl_803DE3FF == 0) {
+        lbl_803DE3F4 += lbl_803DC070;
+    }
+    if (lbl_803DE3F4 > 0xff) {
+        lbl_803DE3F4 = 0;
+        lbl_803DC6C4 = -1;
+    }
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -1085,9 +1114,18 @@ void FUN_8012e050()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8012e0b8()
+#pragma scheduling off
+#pragma peephole off
+void fn_8012E0B8(u8 param_1)
 {
+    lbl_803DE3FE = param_1;
+    if (param_1 != 0) return;
+    lbl_803DE3F4 = 0;
+    lbl_803DE3F6 = 0;
+    lbl_803DC6C4 = -1;
 }
+#pragma peephole reset
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -1169,14 +1207,15 @@ void FUN_8012e114()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8012e250(void)
+#pragma scheduling off
+void fn_8012E250(void)
 {
-  DAT_803de3db = 1;
-  (**(code **)(*DAT_803dd6d0 + 0x24))(1,0x94,1);
-  FUN_800207ac(1);
-  FUN_800206ec(0xff);
-  return;
+    lbl_803DE3DB = 1;
+    (*(void(**)(int,int,int))((char*)*lbl_803DD6D0 + 0x24))(1, 0x94, 1);
+    fn_800207AC(1);
+    fn_800206EC(0xff);
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
