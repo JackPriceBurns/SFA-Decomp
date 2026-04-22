@@ -333,6 +333,18 @@ extern u8 lbl_803DE3FF;
 extern u8 lbl_803DE3DB;
 extern void*** lbl_803DD6D0;
 extern u8 lbl_8031BCA0[];
+extern u16 lbl_803DE404;
+extern u16 lbl_803DE406;
+extern u16 lbl_803DE40C;
+extern void* lbl_803AA070[6];
+extern u32 lbl_8031CBE0[6];
+extern void* fn_8002BECC(int, u32);
+extern void* fn_8002E088(void*, int, int, int, int);
+extern void fn_80014B44(int);
+extern void fn_8002AD08(void*, int, int, int, int, int);
+extern void fn_8000BB38(int, int);
+extern f32 lbl_803E2ABC;
+extern f32 lbl_803E2ADC;
 extern void* fn_8002BAC4(void);
 extern int fn_80296328(void);
 extern u8 fn_8005B128(f32, f32);
@@ -1071,12 +1083,21 @@ void FUN_8012c33c()
  *
  * EN v1.0 Address: 0x8012C894
  * EN v1.0 Size: 340b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
+ *
+ * Worm-init / spawn routine (reverted from a 94% C port). Walks
+ * the 6-entry slot array at lbl_803AA070; for each of the first 4
+ * slots that is still NULL, it allocates a sub-object
+ * (fn_8002BECC -> fn_8002E088) seeded from the data template at
+ * lbl_8031CBE0, initialises fields (type id 0x7447, floats at
+ * 0x8/0xC/0x10/0x14, a clamp on the u32 at 0x4C if > 0x90000000),
+ * then zeros three sbss halfwords, calls fn_80014B44(0xf), and if
+ * fn_8002BAC4()'s return was non-null, invokes fn_8002AD08 on it.
+ * Finally fires fn_8000A538(0x23, 1) and two fn_8000BB38 calls
+ * (id 0x3E5, 0xFF). Kept as asm: MWCC allocates the loop index to
+ * r28 and the fn_8002BAC4 result to r31; target has them swapped
+ * (r31 = i, r30 = obj), and the register choice cascades through
+ * the entire function. MWCC also reorders `addi r29/r28, 4` to
+ * after `i++/cmpwi` at the loop tail; target does advances first.
  */
 void FUN_8012c894()
 {
