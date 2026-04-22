@@ -132,25 +132,31 @@ void GXInitLightSpot(GXLightObj* lt_obj, f32 cutoff, GXSpotFn spot_func) {
         a1 = -cr / (1.0f - cr);
         a2 = 1.0f / (1.0f - cr);
         break;
-    case GX_SP_SHARP:
-        a0 = 1.0f - cr;
-        d = a0 * a0;
+    case GX_SP_SHARP: {
+        f32 u = 1.0f - cr;
+        d = u * u;
         a1 = 2.0f / d;
         a0 = (cr * (cr - 2.0f)) / d;
         a2 = lbl_803E8338 / d;
         break;
-    case GX_SP_RING1:
-        d = (1.0f - cr) * (1.0f - cr);
+    }
+    case GX_SP_RING1: {
+        f32 u = 1.0f - cr;
+        d = u * u;
         a0 = (lbl_803E833C * cr) / d;
         a1 = (lbl_803E8340 * (1.0f + cr)) / d;
         a2 = lbl_803E833C / d;
         break;
-    case GX_SP_RING2:
-        d = (1.0f - cr) * (1.0f - cr);
+    }
+    case GX_SP_RING2: {
+        f32 u = 1.0f - cr;
+        f32 two_cr = lbl_803E8334 * cr;
+        d = u * u;
+        a0 = 1.0f - (two_cr * cr) / d;
         a1 = (lbl_803E8340 * cr) / d;
-        a0 = 1.0f - ((lbl_803E8334 * cr) * cr) / d;
         a2 = lbl_803E8344 / d;
         break;
+    }
     case GX_SP_OFF:
     default:
         a0 = 1.0f;
