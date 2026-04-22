@@ -4,8 +4,8 @@
  * Owner: main/dll/DF/rope.c
  * Text span: 0x801BF224-0x801C05A0
  * Imported Ghidra functions: 12
- * Verbatim-safe functions: 8
- * Auto-stubbed functions: 4
+ * Verbatim-safe functions: 10
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -117,6 +117,7 @@ extern f32 FLOAT_803e5a18;
 /*
  * --INFO--
  *
+ * Function: FUN_801bf224
  * EN v1.0 Address: 0x801BF224
  * EN v1.0 Size: 560b
  * EN v1.1 Address: TODO
@@ -135,6 +136,7 @@ void FUN_801bf224(undefined8 param_1,undefined8 param_2,double param_3,undefined
 /*
  * --INFO--
  *
+ * Function: FUN_801bf454
  * EN v1.0 Address: 0x801BF454
  * EN v1.0 Size: 424b
  * EN v1.1 Address: TODO
@@ -146,11 +148,47 @@ void FUN_801bf224(undefined8 param_1,undefined8 param_2,double param_3,undefined
  */
 void FUN_801bf454(int param_1,int param_2)
 {
+  short sVar1;
+  uint uVar2;
+  float *pfVar3;
+  double dVar4;
+  
+  pfVar3 = *(float **)(param_2 + 0x40c);
+  dVar4 = (double)(pfVar3[3] - *(float *)(param_1 + 0x10));
+  *(short *)(pfVar3 + 5) = *(short *)(pfVar3 + 5) + 0x400;
+  uVar2 = FUN_80021818();
+  *pfVar3 = FLOAT_803dc074 *
+            ((float)(dVar4 + (double)((float)((double)CONCAT44(0x43300000,uVar2 ^ 0x80000000) -
+                                             DOUBLE_803e5990) / FLOAT_803e5998)) / FLOAT_803e599c -
+            pfVar3[2]) + *pfVar3;
+  *(float *)(param_1 + 0x10) = *(float *)(param_1 + 0x10) + *pfVar3;
+  *(short *)(param_1 + 2) = (short)(int)(FLOAT_803e59a0 * *pfVar3);
+  dVar4 = DOUBLE_803e5990;
+  sVar1 = -*(short *)(param_1 + 4);
+  if (0x8000 < sVar1) {
+    sVar1 = sVar1 + 1;
+  }
+  if (sVar1 < -0x8000) {
+    sVar1 = sVar1 + -1;
+  }
+  uVar2 = (uint)sVar1;
+  pfVar3[1] = pfVar3[1] +
+              (float)((double)CONCAT44(0x43300000,
+                                       (((int)uVar2 >> 4) +
+                                       (uint)((int)uVar2 < 0 && (uVar2 & 0xf) != 0)) *
+                                       (uint)DAT_803dc070 ^ 0x80000000) - DOUBLE_803e5990);
+  *(short *)(param_1 + 4) =
+       (short)(int)((float)((double)CONCAT44(0x43300000,(int)*(short *)(param_1 + 4) ^ 0x80000000) -
+                           dVar4) + pfVar3[1]);
+  *pfVar3 = *pfVar3 / FLOAT_803e59a4;
+  pfVar3[1] = pfVar3[1] / FLOAT_803e59a8;
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_801bf5fc
  * EN v1.0 Address: 0x801BF5FC
  * EN v1.0 Size: 680b
  * EN v1.1 Address: TODO
@@ -162,11 +200,79 @@ void FUN_801bf454(int param_1,int param_2)
  */
 void FUN_801bf5fc(ushort *param_1,int param_2)
 {
+  float fVar1;
+  ushort uVar3;
+  short sVar4;
+  uint uVar2;
+  int iVar5;
+  char cVar6;
+  float *pfVar7;
+  int iVar8;
+  
+  iVar8 = *(int *)(param_2 + 0x40c);
+  pfVar7 = *(float **)(param_2 + 0x3dc);
+  if ((*(ushort *)(param_2 + 0x400) & 8) == 0) {
+    FUN_8002bac4();
+    uVar2 = FUN_80021884();
+    iVar8 = (uVar2 & 0xffff) - (uint)*param_1;
+    if (0x8000 < iVar8) {
+      iVar8 = iVar8 + -0xffff;
+    }
+    if (iVar8 < -0x8000) {
+      iVar8 = iVar8 + 0xffff;
+    }
+    iVar8 = iVar8 * (uint)DAT_803dc070;
+    *param_1 = *param_1 +
+               ((short)((ulonglong)((longlong)iVar8 * 0x55555556) >> 0x20) -
+               ((short)((short)(iVar8 / 0x30000) + (short)(iVar8 >> 0x1f)) >> 0xf));
+  }
+  else {
+    iVar5 = FUN_80010340((double)*(float *)(iVar8 + 0x10),pfVar7);
+    if (((iVar5 != 0) || (pfVar7[4] != 0.0)) &&
+       (cVar6 = (**(code **)(*DAT_803dd71c + 0x90))(pfVar7), cVar6 != '\0')) {
+      *(ushort *)(param_2 + 0x400) = *(ushort *)(param_2 + 0x400) & 0xfff7;
+    }
+    iVar5 = FUN_80021884();
+    uVar3 = (short)iVar5 + 0x8000;
+    sVar4 = uVar3 - *param_1;
+    if (0x8000 < sVar4) {
+      sVar4 = sVar4 + 1;
+    }
+    if (sVar4 < -0x8000) {
+      sVar4 = sVar4 + -1;
+    }
+    *param_1 = uVar3;
+    iVar5 = (int)sVar4;
+    *(float *)(iVar8 + 4) =
+         *(float *)(iVar8 + 4) +
+         (float)((double)CONCAT44(0x43300000,iVar5 >> 4 ^ 0x80000000) - DOUBLE_803e5990);
+    if (*(float *)(iVar8 + 0x10) < FLOAT_803e59ac) {
+      *(float *)(iVar8 + 0x10) = *(float *)(iVar8 + 0x10) + FLOAT_803e59b0;
+    }
+    iVar5 = iVar5 / 0xb6 + (iVar5 >> 0x1f);
+    uVar2 = iVar5 - (iVar5 >> 0x1f);
+    if ((int)uVar2 < 0) {
+      uVar2 = -uVar2;
+    }
+    fVar1 = (float)((double)CONCAT44(0x43300000,uVar2 ^ 0x80000000) - DOUBLE_803e5990) *
+            FLOAT_803e596c;
+    if (FLOAT_803e5988 < fVar1) {
+      *(float *)(iVar8 + 0x10) = *(float *)(iVar8 + 0x10) / fVar1;
+      *(float *)(iVar8 + 8) = *(float *)(iVar8 + 8) + FLOAT_803e59b4;
+    }
+    if (FLOAT_803e5970 < *(float *)(iVar8 + 8)) {
+      *(float *)(iVar8 + 8) = *(float *)(iVar8 + 8) / FLOAT_803e59a8;
+    }
+    *(float *)(param_1 + 6) = pfVar7[0x1a];
+    *(float *)(param_1 + 10) = pfVar7[0x1c];
+  }
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_801bf8a4
  * EN v1.0 Address: 0x801BF8A4
  * EN v1.0 Size: 140b
  * EN v1.1 Address: TODO
@@ -202,6 +308,7 @@ void FUN_801bf8a4(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 /*
  * --INFO--
  *
+ * Function: FUN_801bf930
  * EN v1.0 Address: 0x801BF930
  * EN v1.0 Size: 108b
  * EN v1.1 Address: TODO
@@ -230,6 +337,7 @@ void FUN_801bf930(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801bf99c
  * EN v1.0 Address: 0x801BF99C
  * EN v1.0 Size: 716b
  * EN v1.1 Address: TODO
@@ -322,6 +430,7 @@ void FUN_801bf99c(ushort *param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801bfc68
  * EN v1.0 Address: 0x801BFC68
  * EN v1.0 Size: 548b
  * EN v1.1 Address: TODO
@@ -338,6 +447,7 @@ void FUN_801bfc68(int param_1,undefined4 param_2,int param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_801bfe8c
  * EN v1.0 Address: 0x801BFE8C
  * EN v1.0 Size: 664b
  * EN v1.1 Address: TODO
@@ -421,6 +531,7 @@ void FUN_801bfe8c(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 /*
  * --INFO--
  *
+ * Function: FUN_801c0124
  * EN v1.0 Address: 0x801C0124
  * EN v1.0 Size: 84b
  * EN v1.1 Address: TODO
@@ -445,6 +556,7 @@ void FUN_801c0124(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801c0178
  * EN v1.0 Address: 0x801C0178
  * EN v1.0 Size: 104b
  * EN v1.1 Address: TODO
@@ -473,6 +585,7 @@ void FUN_801c0178(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801c01e0
  * EN v1.0 Address: 0x801C01E0
  * EN v1.0 Size: 648b
  * EN v1.1 Address: TODO
@@ -556,6 +669,7 @@ void FUN_801c01e0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 /*
  * --INFO--
  *
+ * Function: FUN_801c0468
  * EN v1.0 Address: 0x801C0468
  * EN v1.0 Size: 312b
  * EN v1.1 Address: TODO

@@ -24,6 +24,7 @@ extern undefined4 DAT_803ddb38;
 /*
  * --INFO--
  *
+ * Function: FUN_80191a28
  * EN v1.0 Address: 0x80191A28
  * EN v1.0 Size: 428b
  * EN v1.1 Address: TODO
@@ -86,6 +87,7 @@ void FUN_80191a28(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_80191bd4
  * EN v1.0 Address: 0x80191BD4
  * EN v1.0 Size: 72b
  * EN v1.1 Address: TODO
@@ -107,6 +109,7 @@ void FUN_80191bd4(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_80191c1c
  * EN v1.0 Address: 0x80191C1C
  * EN v1.0 Size: 976b
  * EN v1.1 Address: TODO

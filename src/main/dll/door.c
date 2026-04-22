@@ -29,6 +29,7 @@ extern undefined4 DAT_803addb4;
 /*
  * --INFO--
  *
+ * Function: FUN_802085f4
  * EN v1.0 Address: 0x802085F4
  * EN v1.0 Size: 212b
  * EN v1.1 Address: TODO

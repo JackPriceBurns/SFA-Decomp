@@ -34,6 +34,7 @@ extern f32 FLOAT_803de360;
 /*
  * --INFO--
  *
+ * Function: FUN_8011c180
  * EN v1.0 Address: 0x8011C180
  * EN v1.0 Size: 300b
  * EN v1.1 Address: TODO

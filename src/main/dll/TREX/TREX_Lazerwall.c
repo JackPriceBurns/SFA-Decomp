@@ -4,8 +4,8 @@
  * Owner: main/dll/TREX/TREX_Lazerwall.c
  * Text span: 0x801E6880-0x801E6CC4
  * Imported Ghidra functions: 7
- * Verbatim-safe functions: 4
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 7
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -47,7 +47,16 @@ extern undefined4* DAT_803dd72c;
  */
 undefined4 FUN_801e68e0(undefined4 param_1,int param_2)
 {
-    return 0;
+  uint uVar1;
+  undefined4 uVar2;
+  
+  FUN_8002bac4();
+  uVar2 = 0;
+  if (((int)*(short *)(&DAT_80328c18 + param_2 * 0xc) != 0xffffffff) &&
+     (uVar1 = FUN_80020078((int)*(short *)(&DAT_80328c18 + param_2 * 0xc)), uVar1 != 0)) {
+    uVar2 = 1;
+  }
+  return uVar2;
 }
 
 /*
@@ -64,7 +73,16 @@ undefined4 FUN_801e68e0(undefined4 param_1,int param_2)
  */
 undefined4 FUN_801e6948(undefined4 param_1,int param_2)
 {
-    return 0;
+  uint uVar1;
+  undefined4 uVar2;
+  
+  FUN_8002bac4();
+  uVar2 = 0;
+  if (((int)*(short *)(&DAT_80328c16 + param_2 * 0xc) == 0xffffffff) ||
+     (uVar1 = FUN_80020078((int)*(short *)(&DAT_80328c16 + param_2 * 0xc)), uVar1 != 0)) {
+    uVar2 = 1;
+  }
+  return uVar2;
 }
 
 /*
@@ -201,4 +219,22 @@ void FUN_801e6ab0(undefined8 param_1,double param_2,double param_3,undefined8 pa
  */
 void FUN_801e6c24(int param_1)
 {
+  uint uVar1;
+  undefined *puVar2;
+  int iVar3;
+  
+  *(undefined *)(*(int *)(param_1 + 0xb8) + 1) = 0xff;
+  FUN_800372f8(param_1,9);
+  iVar3 = 0;
+  puVar2 = &DAT_80328c10;
+  do {
+    uVar1 = FUN_80022264(0,2);
+    puVar2[5] = puVar2[uVar1 + 1];
+    puVar2 = puVar2 + 0xc;
+    iVar3 = iVar3 + 1;
+  } while (iVar3 < 0x3c);
+  FUN_8000a538((int *)0x90,1);
+  *(undefined4 *)(param_1 + 0xf8) = 0;
+  FUN_800201ac(0xefe,1);
+  return;
 }

@@ -4,8 +4,8 @@
  * Owner: main/dll/baddie/skeetla.c
  * Text span: 0x80139724-0x8013B6F0
  * Imported Ghidra functions: 13
- * Verbatim-safe functions: 9
- * Auto-stubbed functions: 4
+ * Verbatim-safe functions: 11
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -91,6 +91,7 @@ extern f32 FLOAT_803e3114;
 /*
  * --INFO--
  *
+ * Function: FUN_80139724
  * EN v1.0 Address: 0x80139724
  * EN v1.0 Size: 1176b
  * EN v1.1 Address: TODO
@@ -244,6 +245,7 @@ void FUN_80139724(uint param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_80139bbc
  * EN v1.0 Address: 0x80139BBC
  * EN v1.0 Size: 252b
  * EN v1.1 Address: TODO
@@ -289,6 +291,7 @@ undefined4 FUN_80139bbc(double param_1,int param_2,float *param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_80139cb8
  * EN v1.0 Address: 0x80139CB8
  * EN v1.0 Size: 348b
  * EN v1.1 Address: TODO
@@ -300,12 +303,59 @@ undefined4 FUN_80139bbc(double param_1,int param_2,float *param_3)
  */
 int FUN_80139cb8(ushort *param_1,ushort param_2)
 {
-    return 0;
+  ushort uVar1;
+  int iVar2;
+  int iVar3;
+  uint uVar4;
+  
+  iVar2 = *(int *)(param_1 + 0x5c);
+  *(ushort *)(iVar2 + 0x5a) = param_2;
+  uVar1 = *param_1;
+  iVar3 = (int)(short)uVar1 - (uint)param_2;
+  if (0x8000 < iVar3) {
+    iVar3 = iVar3 + -0xffff;
+  }
+  if (iVar3 < -0x8000) {
+    iVar3 = iVar3 + 0xffff;
+  }
+  uVar4 = *(uint *)(iVar2 + 0x54);
+  if ((uVar4 & 0x100000) == 0) {
+    *(uint *)(iVar2 + 0x54) = uVar4 & 0xffdfffff;
+  }
+  else {
+    *(uint *)(iVar2 + 0x54) = uVar4 | 0x200000;
+  }
+  *(uint *)(iVar2 + 0x54) = *(uint *)(iVar2 + 0x54) & 0xef2fffff;
+  if (iVar3 < 0x11) {
+    if (-0x11 < iVar3) {
+      *param_1 = param_2;
+      return iVar3;
+    }
+    *(uint *)(iVar2 + 0x54) = *(uint *)(iVar2 + 0x54) | 0x500000;
+  }
+  else {
+    *(uint *)(iVar2 + 0x54) = *(uint *)(iVar2 + 0x54) | 0x900000;
+  }
+  if (iVar3 < 0x201) {
+    if (iVar3 < -0x200) {
+      *param_1 = uVar1 + (short)(int)(FLOAT_803e30e0 * FLOAT_803dc074);
+      *(uint *)(iVar2 + 0x54) = *(uint *)(iVar2 + 0x54) | 0x10000000;
+    }
+    else {
+      *param_1 = param_2;
+    }
+  }
+  else {
+    *param_1 = uVar1 - (short)(int)(FLOAT_803e30e0 * FLOAT_803dc074);
+    *(uint *)(iVar2 + 0x54) = *(uint *)(iVar2 + 0x54) | 0x10000000;
+  }
+  return iVar3;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_80139e14
  * EN v1.0 Address: 0x80139E14
  * EN v1.0 Size: 2404b
  * EN v1.1 Address: TODO
@@ -322,6 +372,7 @@ void FUN_80139e14(void)
 /*
  * --INFO--
  *
+ * Function: FUN_8013a778
  * EN v1.0 Address: 0x8013A778
  * EN v1.0 Size: 252b
  * EN v1.1 Address: TODO
@@ -376,6 +427,7 @@ undefined4 FUN_8013a778(double param_1,int param_2,int param_3,uint param_4)
 /*
  * --INFO--
  *
+ * Function: FUN_8013a874
  * EN v1.0 Address: 0x8013A874
  * EN v1.0 Size: 464b
  * EN v1.1 Address: TODO
@@ -439,6 +491,7 @@ void FUN_8013a874(undefined4 param_1,undefined4 param_2,uint param_3,uint param_
 /*
  * --INFO--
  *
+ * Function: FUN_8013aa44
  * EN v1.0 Address: 0x8013AA44
  * EN v1.0 Size: 312b
  * EN v1.1 Address: TODO
@@ -499,6 +552,7 @@ int FUN_8013aa44(int param_1,int param_2,int param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_8013ab7c
  * EN v1.0 Address: 0x8013AB7C
  * EN v1.0 Size: 468b
  * EN v1.1 Address: TODO
@@ -510,11 +564,84 @@ int FUN_8013aa44(int param_1,int param_2,int param_3)
  */
 void FUN_8013ab7c(undefined4 param_1,undefined4 param_2,int param_3,int param_4)
 {
+  ulonglong uVar1;
+  char cVar3;
+  char cVar4;
+  int *piVar2;
+  int iVar5;
+  char cVar6;
+  char cVar7;
+  char *pcVar8;
+  int iVar9;
+  int *piVar10;
+  undefined8 uVar11;
+  char local_28 [40];
+  
+  uVar11 = FUN_80286834();
+  uVar1 = (ulonglong)uVar11 >> 0x20;
+  piVar2 = (int *)uVar11;
+  cVar7 = '\0';
+  while( true ) {
+    iVar9 = (int)((ulonglong)uVar11 >> 0x20);
+    if ('\a' < cVar7) break;
+    iVar5 = *(int *)uVar11;
+    if (iVar5 != 0) {
+      FUN_8004b498((int *)(iVar9 + 0x538),iVar5,*(int *)((int)uVar1 + 0x28),param_4,
+                   *(byte *)(param_3 + cVar7));
+    }
+    uVar11 = CONCAT44(iVar9 + 0x30,(int *)uVar11 + 1);
+    cVar7 = cVar7 + '\x01';
+  }
+  for (cVar7 = '\0'; cVar7 < 'd'; cVar7 = cVar7 + '\x01') {
+    cVar4 = '\0';
+    pcVar8 = local_28;
+    piVar10 = piVar2;
+    for (cVar6 = '\0'; cVar6 < '\b'; cVar6 = cVar6 + '\x01') {
+      if (*piVar10 == 0) {
+        *pcVar8 = -1;
+      }
+      else {
+        cVar3 = FUN_8004b394();
+        *pcVar8 = cVar3;
+      }
+      cVar3 = *pcVar8;
+      if (cVar3 != '\0') {
+        if (cVar3 < '\0') {
+          if (-2 < cVar3) {
+            *piVar10 = 0;
+            cVar4 = cVar4 + '\x01';
+          }
+        }
+        else if (cVar3 < '\x02') goto LAB_8013ad38;
+      }
+      piVar10 = piVar10 + 1;
+      pcVar8 = pcVar8 + 1;
+    }
+    if (cVar4 == '\b') break;
+    if ((cVar4 < '\b') && ('\x06' < cVar4)) {
+      cVar7 = '\0';
+      goto LAB_8013ad10;
+    }
+  }
+LAB_8013ad38:
+  FUN_80286880();
+  return;
+LAB_8013ad10:
+  if ('\a' < cVar7) goto LAB_8013ad38;
+  if (*piVar2 != 0) {
+    cVar4 = FUN_8004b394();
+    local_28[cVar7] = cVar4;
+    goto LAB_8013ad38;
+  }
+  piVar2 = piVar2 + 1;
+  cVar7 = cVar7 + '\x01';
+  goto LAB_8013ad10;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_8013ad50
  * EN v1.0 Address: 0x8013AD50
  * EN v1.0 Size: 388b
  * EN v1.1 Address: TODO
@@ -531,6 +658,7 @@ void FUN_8013ad50(int param_1,int param_2,byte param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_8013aed4
  * EN v1.0 Address: 0x8013AED4
  * EN v1.0 Size: 688b
  * EN v1.1 Address: TODO
@@ -650,6 +778,7 @@ LAB_8013b140:
 /*
  * --INFO--
  *
+ * Function: FUN_8013b184
  * EN v1.0 Address: 0x8013B184
  * EN v1.0 Size: 484b
  * EN v1.1 Address: TODO
@@ -713,6 +842,7 @@ void FUN_8013b184(undefined2 *param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8013b368
  * EN v1.0 Address: 0x8013B368
  * EN v1.0 Size: 512b
  * EN v1.1 Address: TODO
@@ -830,6 +960,7 @@ void FUN_8013b368(undefined8 param_1,double param_2,undefined4 param_3,undefined
 /*
  * --INFO--
  *
+ * Function: FUN_8013b568
  * EN v1.0 Address: 0x8013B568
  * EN v1.0 Size: 392b
  * EN v1.1 Address: TODO

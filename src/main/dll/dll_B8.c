@@ -33,6 +33,7 @@ extern undefined4 DAT_803de19c;
 /*
  * --INFO--
  *
+ * Function: FUN_8010192c
  * EN v1.0 Address: 0x8010192C
  * EN v1.0 Size: 536b
  * EN v1.1 Address: TODO

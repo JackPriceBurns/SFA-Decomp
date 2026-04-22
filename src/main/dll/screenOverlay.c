@@ -4,8 +4,8 @@
  * Owner: main/dll/screenOverlay.c
  * Text span: 0x8017A3F4-0x8017AB28
  * Imported Ghidra functions: 6
- * Verbatim-safe functions: 4
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 5
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -44,6 +44,7 @@ extern f32 FLOAT_803e43a0;
 /*
  * --INFO--
  *
+ * Function: FUN_8017a3f4
  * EN v1.0 Address: 0x8017A3F4
  * EN v1.0 Size: 408b
  * EN v1.1 Address: TODO
@@ -55,11 +56,36 @@ extern f32 FLOAT_803e43a0;
  */
 void FUN_8017a3f4(int param_1)
 {
+  int iVar1;
+  undefined local_18 [8];
+  undefined4 local_10;
+  uint uStack_c;
+  
+  iVar1 = *(int *)(param_1 + 0xb8);
+  local_18[0] = 5;
+  FUN_800033a8(iVar1,0,0x2cc);
+  FUN_8002bac4();
+  *(undefined *)(iVar1 + 0x274) = 0;
+  *(float *)(iVar1 + 0x26c) = FLOAT_803e4334;
+  *(ushort *)(param_1 + 0xb0) = *(ushort *)(param_1 + 0xb0) | 0x2000;
+  uStack_c = (int)*(short *)(*(int *)(param_1 + 0x54) + 0x5a) ^ 0x80000000;
+  local_10 = 0x43300000;
+  *(float *)(iVar1 + 0x268) = (float)((double)CONCAT44(0x43300000,uStack_c) - DOUBLE_803e4370);
+  (**(code **)(*DAT_803dd728 + 4))(iVar1,0,0x40007,1);
+  (**(code **)(*DAT_803dd728 + 8))(iVar1,1,&DAT_80321b80,iVar1 + 0x268,1);
+  (**(code **)(*DAT_803dd728 + 0xc))(iVar1,1,&DAT_80321b80,iVar1 + 0x268,local_18);
+  (**(code **)(*DAT_803dd728 + 0x20))(param_1,iVar1);
+  FUN_80035ff8(param_1);
+  *(undefined *)(iVar1 + 0x25b) = 0;
+  FUN_80037a5c(param_1,1);
+  FUN_800201ac(0x3f8,0);
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_8017a58c
  * EN v1.0 Address: 0x8017A58C
  * EN v1.0 Size: 152b
  * EN v1.1 Address: TODO
@@ -97,6 +123,7 @@ undefined4 FUN_8017a58c(int param_1,undefined4 param_2,int param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_8017a624
  * EN v1.0 Address: 0x8017A624
  * EN v1.0 Size: 428b
  * EN v1.1 Address: TODO
@@ -155,6 +182,7 @@ void FUN_8017a624(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017a7d0
  * EN v1.0 Address: 0x8017A7D0
  * EN v1.0 Size: 256b
  * EN v1.1 Address: TODO
@@ -173,6 +201,7 @@ void FUN_8017a7d0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 /*
  * --INFO--
  *
+ * Function: FUN_8017a8d0
  * EN v1.0 Address: 0x8017A8D0
  * EN v1.0 Size: 140b
  * EN v1.1 Address: TODO
@@ -204,6 +233,7 @@ void FUN_8017a8d0(void)
 /*
  * --INFO--
  *
+ * Function: FUN_8017a95c
  * EN v1.0 Address: 0x8017A95C
  * EN v1.0 Size: 460b
  * EN v1.1 Address: TODO

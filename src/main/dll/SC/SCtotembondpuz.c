@@ -20,6 +20,7 @@ extern undefined4 FUN_801d76c8();
 /*
  * --INFO--
  *
+ * Function: FUN_801d80f0
  * EN v1.0 Address: 0x801D80F0
  * EN v1.0 Size: 160b
  * EN v1.1 Address: TODO

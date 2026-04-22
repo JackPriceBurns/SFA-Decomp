@@ -4,8 +4,8 @@
  * Owner: main/dll/laser19F.c
  * Text span: 0x801C4B54-0x801C532C
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 2
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 3
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -58,6 +58,7 @@ extern f32 FLOAT_803e5bf8;
 /*
  * --INFO--
  *
+ * Function: FUN_801c4b54
  * EN v1.0 Address: 0x801C4B54
  * EN v1.0 Size: 196b
  * EN v1.1 Address: TODO
@@ -77,6 +78,7 @@ void FUN_801c4b54(undefined8 param_1,double param_2,double param_3,undefined8 pa
 /*
  * --INFO--
  *
+ * Function: FUN_801c4c18
  * EN v1.0 Address: 0x801C4C18
  * EN v1.0 Size: 852b
  * EN v1.1 Address: TODO
@@ -148,6 +150,7 @@ void FUN_801c4c18(ushort *param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801c4f6c
  * EN v1.0 Address: 0x801C4F6C
  * EN v1.0 Size: 344b
  * EN v1.1 Address: TODO
@@ -206,6 +209,7 @@ undefined4 FUN_801c4f6c(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801c50c4
  * EN v1.0 Address: 0x801C50C4
  * EN v1.0 Size: 616b
  * EN v1.1 Address: TODO
@@ -217,4 +221,77 @@ undefined4 FUN_801c4f6c(int param_1)
  */
 void FUN_801c50c4(undefined4 param_1,undefined4 param_2,int param_3)
 {
+  int iVar1;
+  int iVar2;
+  uint uVar3;
+  int iVar4;
+  int *piVar5;
+  
+  iVar1 = FUN_8028683c();
+  piVar5 = *(int **)(iVar1 + 0xb8);
+  iVar2 = FUN_8002bac4();
+  *(undefined2 *)(param_3 + 0x70) = 0xffff;
+  *(undefined *)(param_3 + 0x56) = 0;
+  for (iVar4 = 0; iVar4 < (int)(uint)*(byte *)(param_3 + 0x8b); iVar4 = iVar4 + 1) {
+    switch(*(undefined *)(param_3 + iVar4 + 0x81)) {
+    case 1:
+      piVar5[6] = piVar5[6] | 2;
+      break;
+    case 2:
+      piVar5[6] = piVar5[6] & 0xfffffffd;
+      if ((piVar5[6] & 0x20U) != 0) {
+        FUN_8011f9b8(0);
+        piVar5[6] = piVar5[6] & 0xffffffdf;
+      }
+      break;
+    case 3:
+      piVar5[4] = (int)FLOAT_803e5bec;
+      break;
+    case 4:
+      piVar5[4] = (int)FLOAT_803e5bf0;
+      break;
+    case 5:
+      piVar5[4] = (int)-(float)piVar5[4];
+      piVar5[3] = (int)-(float)piVar5[4];
+      break;
+    case 6:
+      piVar5[4] = (int)((float)piVar5[4] * FLOAT_803e5bf4);
+      break;
+    case 7:
+      FUN_80296c78(iVar2,4,1);
+      FUN_800201ac(0x12a,1);
+      FUN_800201ac(0xff,1);
+      (**(code **)(*DAT_803dd72c + 0x44))(0xb,3);
+      break;
+    case 8:
+      piVar5[4] = (int)((float)piVar5[4] * FLOAT_803e5bf8);
+      break;
+    case 0xe:
+      *(ushort *)(iVar1 + 6) = *(ushort *)(iVar1 + 6) | 0x4000;
+      if (*piVar5 != 0) {
+        FUN_8001dc30((double)FLOAT_803e5be8,*piVar5,'\0');
+      }
+      break;
+    case 0xf:
+      *(ushort *)(iVar1 + 6) = *(ushort *)(iVar1 + 6) & 0xbfff;
+      if (*piVar5 != 0) {
+        FUN_8001dc30((double)FLOAT_803e5be8,*piVar5,'\0');
+      }
+    }
+    *(undefined *)(param_3 + iVar4 + 0x81) = 0;
+  }
+  if (((piVar5[6] & 2U) == 0) || (uVar3 = FUN_801c4f6c(iVar1), (uVar3 & 0xff) == 0)) {
+    piVar5[6] = piVar5[6] | 1;
+  }
+  else {
+    FUN_8011f9b8(0);
+    piVar5[6] = piVar5[6] & 0xffffffdd;
+    *(undefined *)(piVar5 + 9) = 3;
+    FUN_800201ac(0xe82,0);
+    FUN_800201ac(0xe83,0);
+    FUN_800201ac(0xe84,0);
+    FUN_800201ac(0xe85,0);
+  }
+  FUN_80286888();
+  return;
 }

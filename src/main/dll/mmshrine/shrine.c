@@ -4,8 +4,8 @@
  * Owner: main/dll/mmshrine/shrine.c
  * Text span: 0x801C532C-0x801C5B9C
  * Imported Ghidra functions: 7
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 6
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -51,6 +51,7 @@ extern f32 FLOAT_803e5be8;
 /*
  * --INFO--
  *
+ * Function: FUN_801c533c
  * EN v1.0 Address: 0x801C533C
  * EN v1.0 Size: 220b
  * EN v1.1 Address: TODO
@@ -62,11 +63,34 @@ extern f32 FLOAT_803e5be8;
  */
 void FUN_801c533c(int param_1)
 {
+  uint *puVar1;
+  
+  puVar1 = *(uint **)(param_1 + 0xb8);
+  if ((puVar1[6] & 0x20) != 0) {
+    FUN_8011f9b8(0);
+    puVar1[6] = puVar1[6] & 0xffffffdf;
+  }
+  if (*puVar1 != 0) {
+    FUN_8001f448(*puVar1);
+    *puVar1 = 0;
+  }
+  FUN_8000a538((int *)0xd8,0);
+  FUN_8000a538((int *)0xd9,0);
+  FUN_8000a538((int *)0x8,0);
+  FUN_8000a538((int *)0xa,0);
+  FUN_800201ac(0xefa,0);
+  FUN_800201ac(0xcbb,1);
+  FUN_800201ac(0xe82,0);
+  FUN_800201ac(0xe83,0);
+  FUN_800201ac(0xe84,0);
+  FUN_800201ac(0xe85,0);
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_801c5418
  * EN v1.0 Address: 0x801C5418
  * EN v1.0 Size: 188b
  * EN v1.1 Address: TODO
@@ -103,6 +127,7 @@ void FUN_801c5418(void)
 /*
  * --INFO--
  *
+ * Function: FUN_801c54d4
  * EN v1.0 Address: 0x801C54D4
  * EN v1.0 Size: 952b
  * EN v1.1 Address: TODO
@@ -213,6 +238,7 @@ void FUN_801c54d4(undefined8 param_1,double param_2,double param_3,undefined8 pa
 /*
  * --INFO--
  *
+ * Function: FUN_801c588c
  * EN v1.0 Address: 0x801C588C
  * EN v1.0 Size: 216b
  * EN v1.1 Address: TODO
@@ -229,6 +255,7 @@ void FUN_801c588c(undefined2 *param_1,int param_2)
 /*
  * --INFO--
  *
+ * Function: FUN_801c5964
  * EN v1.0 Address: 0x801C5964
  * EN v1.0 Size: 144b
  * EN v1.1 Address: TODO
@@ -256,6 +283,7 @@ void FUN_801c5964(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 /*
  * --INFO--
  *
+ * Function: FUN_801c59f4
  * EN v1.0 Address: 0x801C59F4
  * EN v1.0 Size: 52b
  * EN v1.1 Address: TODO
@@ -278,6 +306,7 @@ void FUN_801c59f4(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801c5a28
  * EN v1.0 Address: 0x801C5A28
  * EN v1.0 Size: 372b
  * EN v1.1 Address: TODO

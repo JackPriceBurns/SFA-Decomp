@@ -4,8 +4,8 @@
  * Owner: main/dll/FRONT/dll_3E.c
  * Text span: 0x80118714-0x80118E30
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 1
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -72,6 +72,7 @@ extern undefined4 DAT_803de300;
 /*
  * --INFO--
  *
+ * Function: FUN_80118714
  * EN v1.0 Address: 0x80118714
  * EN v1.0 Size: 944b
  * EN v1.1 Address: TODO
@@ -88,6 +89,7 @@ void FUN_80118714(void)
 /*
  * --INFO--
  *
+ * Function: FUN_80118ac4
  * EN v1.0 Address: 0x80118AC4
  * EN v1.0 Size: 228b
  * EN v1.1 Address: TODO
@@ -99,11 +101,41 @@ void FUN_80118714(void)
  */
 void FUN_80118ac4(void)
 {
+  int iVar1;
+  int iVar2;
+  int local_18 [5];
+  
+  if ((DAT_803a6a58 != 0) && (DAT_803a6a5c != '\0')) {
+    DAT_803a6a5d = 0;
+    DAT_803a6a5c = '\0';
+    FUN_8024c910(DAT_803de2e4);
+    if (DAT_803a6a68 == 0) {
+      FUN_8024bdfc((int *)&DAT_803a69c0);
+      FUN_801198c0();
+    }
+    FUN_80119d90();
+    if (DAT_803a6a5f != '\0') {
+      FUN_801177dc();
+    }
+    do {
+      iVar2 = FUN_80244820((int *)&DAT_803a692c,local_18,0);
+      iVar1 = local_18[0];
+      if (iVar2 != 1) {
+        iVar1 = 0;
+      }
+    } while (iVar1 != 0);
+    DAT_803a6a94 = DAT_803a6a98;
+    DAT_803a6aa0 = 0;
+    DAT_803a6a60 = 0;
+    DAT_803a6a64 = 0;
+  }
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_80118ba8
  * EN v1.0 Address: 0x80118BA8
  * EN v1.0 Size: 96b
  * EN v1.1 Address: TODO
@@ -129,6 +161,7 @@ undefined4 FUN_80118ba8(void)
 /*
  * --INFO--
  *
+ * Function: FUN_80118c08
  * EN v1.0 Address: 0x80118C08
  * EN v1.0 Size: 552b
  * EN v1.1 Address: TODO

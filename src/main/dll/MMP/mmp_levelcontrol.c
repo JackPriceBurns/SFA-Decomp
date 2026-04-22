@@ -4,8 +4,8 @@
  * Owner: main/dll/MMP/mmp_levelcontrol.c
  * Text span: 0x80194688-0x801950D8
  * Imported Ghidra functions: 10
- * Verbatim-safe functions: 7
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 10
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -62,6 +62,32 @@ extern f32 FLOAT_803e4c98;
  */
 void FUN_80194688(int param_1,int param_2)
 {
+  uint uVar1;
+  int iVar2;
+  byte *pbVar3;
+  
+  pbVar3 = *(byte **)(param_1 + 0xb8);
+  *pbVar3 = *(byte *)(param_2 + 0x1c) & 1;
+  pbVar3[1] = 0;
+  uVar1 = FUN_80020078((int)*(short *)(param_2 + 0x18));
+  if ((uVar1 != 0) && (*pbVar3 = *pbVar3 ^ 1, *(char *)(param_2 + 0x1a) == '\x01')) {
+    pbVar3[1] = pbVar3[1] | 1;
+  }
+  iVar2 = FUN_8005b478((double)*(float *)(param_1 + 0xc),(double)*(float *)(param_1 + 0x10));
+  iVar2 = FUN_8005b068(iVar2);
+  if (((iVar2 != 0) && ((*(byte *)(param_2 + 0x1c) & 4) != 0)) &&
+     (*(char *)(param_2 + 0x1b) != '\0')) {
+    FUN_80194338(iVar2,param_1,(char *)pbVar3,param_2);
+  }
+  pbVar3[1] = pbVar3[1] | 2;
+  if ((*(byte *)(param_2 + 0x1c) & 4) != 0) {
+    pbVar3[1] = pbVar3[1] | 4;
+  }
+  uVar1 = FUN_80020078((int)*(short *)(param_2 + 0x18));
+  pbVar3[2] = (byte)uVar1;
+  pbVar3[3] = (byte)uVar1;
+  *(ushort *)(param_1 + 0xb0) = *(ushort *)(param_1 + 0xb0) | 0x6000;
+  return;
 }
 
 /*
@@ -78,6 +104,31 @@ void FUN_80194688(int param_1,int param_2)
  */
 void FUN_801947d4(int param_1)
 {
+  int iVar1;
+  uint uVar2;
+  int iVar3;
+  byte *pbVar4;
+  
+  iVar3 = *(int *)(param_1 + 0x4c);
+  pbVar4 = *(byte **)(param_1 + 0xb8);
+  iVar1 = FUN_8005b478((double)*(float *)(param_1 + 0xc),(double)*(float *)(param_1 + 0x10));
+  iVar1 = FUN_8005b068(iVar1);
+  if (iVar1 == 0) {
+    *pbVar4 = *pbVar4 | 1;
+  }
+  else {
+    uVar2 = FUN_80020078((int)*(short *)(iVar3 + 0x18));
+    pbVar4[2] = pbVar4[4] & (byte)uVar2;
+    if (pbVar4[3] != pbVar4[2]) {
+      pbVar4[1] = pbVar4[1] ^ 1;
+      *pbVar4 = *pbVar4 | 1;
+    }
+    pbVar4[3] = pbVar4[2];
+    if ((*pbVar4 & 1) != 0) {
+      *pbVar4 = *pbVar4 & 0xfe;
+    }
+  }
+  return;
 }
 
 /*
@@ -94,6 +145,27 @@ void FUN_801947d4(int param_1)
  */
 void FUN_801948a4(int param_1,int param_2)
 {
+  byte bVar1;
+  uint uVar2;
+  int iVar3;
+  byte *pbVar4;
+  
+  *(ushort *)(param_1 + 0xb0) = *(ushort *)(param_1 + 0xb0) | 0x6000;
+  pbVar4 = *(byte **)(param_1 + 0xb8);
+  pbVar4[1] = *(byte *)(param_2 + 0x1b);
+  pbVar4[4] = (byte)(1 << (uint)*(byte *)(param_2 + 0x1c));
+  uVar2 = FUN_80020078((int)*(short *)(param_2 + 0x18));
+  if ((pbVar4[4] & uVar2) != 0) {
+    pbVar4[1] = pbVar4[1] ^ 1;
+  }
+  iVar3 = FUN_8005b478((double)*(float *)(param_1 + 0xc),(double)*(float *)(param_1 + 0x10));
+  FUN_8005b068(iVar3);
+  uVar2 = FUN_80020078((int)*(short *)(param_2 + 0x18));
+  bVar1 = pbVar4[4] & (byte)uVar2;
+  pbVar4[2] = bVar1;
+  pbVar4[3] = bVar1;
+  *pbVar4 = *pbVar4 | 1;
+  return;
 }
 
 /*

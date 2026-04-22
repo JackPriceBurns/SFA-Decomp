@@ -16,6 +16,7 @@ DEFAULT_SPLITS_PATH = Path("config/GSAE01/splits.txt")
 DEFAULT_SRC_ROOT = Path("src")
 DEFAULT_INCLUDE_ROOT = Path("include")
 DEFAULT_CONFIGURE_PATH = Path("configure.py")
+DEFAULT_FORCE_STUB_FUNCTIONS_PATH = Path("tools/ghidra_force_stub_functions.txt")
 SUPPORTED_HELPERS = {
     "CONCAT11",
     "CONCAT12",
@@ -120,30 +121,7 @@ POINTER_ARITH_COMPARE_RE = re.compile(
 LOCAL_DECL_RE = re.compile(
     r"^\s*(?P<type>[A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)*)\s+(?P<pointer>\*+)?\s*(?P<name>[A-Za-z_]\w*)\s*(?:=\s*[^;]+)?;$"
 )
-FORCE_STUB_FUNCTIONS = {
-    "FUN_80009594",
-    "FUN_80017508",
-    "FUN_80037048",
-    "FUN_8003a328",
-    "FUN_8003d7f0",
-    "FUN_80046644",
-    "FUN_80053674",
-    "FUN_80055ea0",
-    "FUN_8003549c",
-    "FUN_8005b11c",
-    "FUN_8005be04",
-    "FUN_8005c8cc",
-    "FUN_8005e4c4",
-    "FUN_8005fa9c",
-    "FUN_8006c63c",
-    "FUN_8007ed98",
-    "FUN_80080ea4",
-    "FUN_801f55c0",
-    "FUN_8020a768",
-    "FUN_8019b4e0",
-    "FUN_8019d314",
-    "FUN_801a478c",
-}
+FORCE_STUB_FUNCTIONS: set[str] = set()
 SIGNATURE_OVERRIDES = {
     "FUN_8014e670": ("void FUN_8014e670()", "void"),
     "FUN_801ee880": ("void FUN_801ee880(ushort *param_1,int param_2)", "void"),
@@ -159,48 +137,7 @@ GLOBAL_TYPE_OVERRIDES = {
     "DAT_803de838": "void*",
     "DAT_803de7d0": "void*",
 }
-FORCE_STUB_OWNERS = {
-    "main/dll/curves.c",
-    "main/dll/dim_partfx.c",
-    "main/dll/objfsa.c",
-    "main/dll/modelfx.c",
-    "main/dll/modgfx.c",
-    "main/expgfx.c",
-    "main/light.c",
-    "main/lightmap.c",
-    "main/main.c",
-    "main/maketex.c",
-    "main/newshadows.c",
-    "main/objlib.c",
-    "main/objhits.c",
-    "main/objprint_dolphin.c",
-    "main/pi_dolphin.c",
-    "main/rcp_dolphin.c",
-    "main/shader.c",
-    "main/track_dolphin.c",
-    "track/intersect.c",
-    "main/unknown/autos/placeholder_800066E0.c",
-    "main/unknown/autos/placeholder_8001746C.c",
-    "main/unknown/autos/placeholder_80080E58.c",
-    "main/unknown/autos/placeholder_801F5184.c",
-    "main/unknown/autos/placeholder_80209FE0.c",
-    "main/unknown/autos/placeholder_80280F28.c",
-    "main/unknown/autos/placeholder_80295318.c",
-    "main/unknown/autos/placeholder_802BBC10.c",
-    "main/dll/CAM/camlockon.c",
-    "main/dll/CAM/cutCam.c",
-    "main/dll/CAM/dll_5B.c",
-    "main/dll/CAM/dll_5F.c",
-    "main/dll/moveLib.c",
-    "main/dll/pressureSwitch.c",
-    # Rebody sweep owners that still fail MWCC on raw Ghidra bodies.
-    "main/dll/CF/treasureRelated0177.c",
-    "main/dll/DF/DFlantern.c",
-    "main/dll/SC/SCtotembondpuz.c",
-    "main/dll/dll_1C5.c",
-    "main/dll/seqObj11D.c",
-    "main/dll/colrise.c",
-}
+FORCE_STUB_OWNERS: set[str] = set()
 FORCE_STUB_OWNER_PREFIXES = (
     "main/unknown/autos/",
 )
@@ -249,6 +186,18 @@ def write_text_if_changed(path: Path, text: str) -> bool:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8", newline="\n")
     return True
+
+
+def load_force_stub_functions(path: Path) -> set[str]:
+    if not path.exists():
+        return set()
+    names: set[str] = set()
+    for raw_line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        names.add(line)
+    return names
 
 
 def strip_comments(text: str) -> str:
@@ -682,32 +631,35 @@ def function_stub_reasons(
     owner: str,
     functions: list[FunctionDump],
     forced_stub_owners: set[str] | None = None,
+    forced_stub_functions: set[str] | None = None,
 ) -> dict[str, list[str]]:
     reasons: dict[str, list[str]] = {}
     conflicted_globals = detect_conflicted_pointer_globals(functions)
     void_assignment_hazards = detect_void_return_assignment_hazards(functions)
     forced_stub_owners = forced_stub_owners or set()
+    forced_stub_functions = forced_stub_functions or set()
     for function in functions:
-        function_reasons = list(function.unsafe_reasons)
+        function_reasons: list[str] = []
         if (
             owner in FORCE_STUB_OWNERS
             or owner in forced_stub_owners
             or owner.startswith(FORCE_STUB_OWNER_PREFIXES)
         ):
             function_reasons.append("forced full-owner stub for compile-first import")
-        if function.name in FORCE_STUB_FUNCTIONS:
+        if function.name in FORCE_STUB_FUNCTIONS or function.name in forced_stub_functions:
             function_reasons.append("forced stub for compile-first import")
-        conflicted_used = sorted(conflicted_globals.intersection(function.globals_used))
-        if conflicted_used:
-            function_reasons.append(
-                "conflicting local pointer bases for shared globals: "
-                + ", ".join(conflicted_used)
-            )
-        bad_void_callees = void_assignment_hazards.get(function.name)
-        if bad_void_callees:
-            function_reasons.append(
-                "uses return value from void local helper(s): " + ", ".join(bad_void_callees)
-            )
+        if function_reasons:
+            conflicted_used = sorted(conflicted_globals.intersection(function.globals_used))
+            if conflicted_used:
+                function_reasons.append(
+                    "conflicting local pointer bases for shared globals: "
+                    + ", ".join(conflicted_used)
+                )
+            bad_void_callees = void_assignment_hazards.get(function.name)
+            if bad_void_callees:
+                function_reasons.append(
+                    "uses return value from void local helper(s): " + ", ".join(bad_void_callees)
+                )
         if function_reasons:
             reasons[function.name] = function_reasons
     return reasons
@@ -905,6 +857,7 @@ def render_function_info_block(function: FunctionDump) -> str:
         "/*",
         " * --INFO--",
         " *",
+        f" * Function: {function.name}",
         f" * EN v1.0 Address: 0x{function.address:08X}",
         f" * EN v1.0 Size: {function.size}b",
         " * EN v1.1 Address: TODO",
@@ -988,13 +941,19 @@ def render_source(
     functions: list[FunctionDump],
     emit_headers: bool,
     forced_stub_owners: set[str] | None = None,
+    forced_stub_functions: set[str] | None = None,
 ) -> str:
     local_names = {function.name for function in functions}
     extern_functions = sorted({call for function in functions for call in function.called_functions if call not in local_names})
     extern_globals = sorted({symbol for function in functions for symbol in function.globals_used})
     inferred_global_types = infer_global_types(functions)
     inferred_external_function_types = infer_external_function_types(functions, local_names)
-    stub_reasons = function_stub_reasons(owner, functions, forced_stub_owners)
+    stub_reasons = function_stub_reasons(
+        owner,
+        functions,
+        forced_stub_owners,
+        forced_stub_functions,
+    )
     stubbed_names = set(stub_reasons)
     safe_count = len(functions) - len(stub_reasons)
     stubbed_count = len(stub_reasons)
@@ -1319,12 +1278,19 @@ def main() -> None:
     parser.add_argument("--force-stub-all-selected", action="store_true", help="Force every imported function in every selected owner to render as a compile-first stub")
     parser.add_argument("--emit-config-snippet", action="store_true", help="Print Object(NonMatching, ...) lines for the selected owners")
     parser.add_argument("--update-configure-main", action="store_true", help="Append selected main/* owners to the main object list in configure.py")
+    parser.add_argument(
+        "--force-stub-functions-file",
+        type=Path,
+        default=DEFAULT_FORCE_STUB_FUNCTIONS_PATH,
+        help="Optional newline-delimited list of exact function names to render as compile-first stubs.",
+    )
     args = parser.parse_args()
 
     spans = parse_splits(args.splits)
     owner_map, span_map = build_owner_function_map(args.ghidra_dir, spans)
     selected_owners = collect_selected_owners(args, spans)
     forced_stub_owners = {normalize(owner) for owner in (args.force_stub_owner or [])}
+    forced_stub_functions = load_force_stub_functions(args.force_stub_functions_file)
     if args.force_stub_all_selected:
         forced_stub_owners.update(selected_owners)
 
@@ -1340,7 +1306,12 @@ def main() -> None:
         inventory = parse_inventory_functions(source_path) if not functions else []
         header_path = args.include_root / header_relpath_for_owner(owner)
         if functions:
-            stub_reasons = function_stub_reasons(owner, functions, forced_stub_owners)
+            stub_reasons = function_stub_reasons(
+                owner,
+                functions,
+                forced_stub_owners,
+                forced_stub_functions,
+            )
             safe_count = len(functions) - len(stub_reasons)
             stubbed_count = len(stub_reasons)
             summaries.append(
@@ -1367,7 +1338,14 @@ def main() -> None:
                 skipped_existing += 1
                 should_write_source = False
             elif functions:
-                source_text = render_source(owner, span, functions, args.emit_headers, forced_stub_owners)
+                source_text = render_source(
+                    owner,
+                    span,
+                    functions,
+                    args.emit_headers,
+                    forced_stub_owners,
+                    forced_stub_functions,
+                )
             else:
                 source_text = render_inventory_source(owner, span, inventory, args.emit_headers)
 
@@ -1382,7 +1360,14 @@ def main() -> None:
                 header_text = render_header(
                     owner,
                     functions,
-                    set(function_stub_reasons(owner, functions, forced_stub_owners)),
+                    set(
+                        function_stub_reasons(
+                            owner,
+                            functions,
+                            forced_stub_owners,
+                            forced_stub_functions,
+                        )
+                    ),
                 )
             elif inventory:
                 header_text = render_inventory_header(owner, inventory)

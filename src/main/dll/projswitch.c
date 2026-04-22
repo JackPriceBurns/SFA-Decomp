@@ -4,8 +4,8 @@
  * Owner: main/dll/projswitch.c
  * Text span: 0x8014D194-0x8014E604
  * Imported Ghidra functions: 9
- * Verbatim-safe functions: 6
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 7
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -106,6 +106,7 @@ extern f32 FLOAT_803e3298;
 /*
  * --INFO--
  *
+ * Function: FUN_8014d194
  * EN v1.0 Address: 0x8014D194
  * EN v1.0 Size: 608b
  * EN v1.1 Address: TODO
@@ -177,6 +178,7 @@ void FUN_8014d194(double param_1,double param_2,ushort *param_3,int param_4,uint
 /*
  * --INFO--
  *
+ * Function: FUN_8014d3f4
  * EN v1.0 Address: 0x8014D3F4
  * EN v1.0 Size: 272b
  * EN v1.1 Address: TODO
@@ -214,6 +216,7 @@ void FUN_8014d3f4(short *param_1,undefined4 param_2,uint param_3,short param_4)
 /*
  * --INFO--
  *
+ * Function: FUN_8014d504
  * EN v1.0 Address: 0x8014D504
  * EN v1.0 Size: 128b
  * EN v1.1 Address: TODO
@@ -248,6 +251,7 @@ void FUN_8014d504(double param_1,double param_2,double param_3,undefined8 param_
 /*
  * --INFO--
  *
+ * Function: FUN_8014d584
  * EN v1.0 Address: 0x8014D584
  * EN v1.0 Size: 116b
  * EN v1.1 Address: TODO
@@ -271,6 +275,7 @@ void FUN_8014d584(int param_1,undefined4 *param_2)
 /*
  * --INFO--
  *
+ * Function: FUN_8014d5f8
  * EN v1.0 Address: 0x8014D5F8
  * EN v1.0 Size: 312b
  * EN v1.1 Address: TODO
@@ -283,11 +288,59 @@ void FUN_8014d584(int param_1,undefined4 *param_2)
 void FUN_8014d5f8(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8)
 {
+  byte bVar1;
+  short sVar2;
+  int iVar3;
+  uint uVar4;
+  uint *puVar5;
+  int iVar6;
+  int iVar7;
+  undefined8 uVar8;
+  undefined8 uVar9;
+  
+  uVar9 = FUN_80286840();
+  iVar3 = (int)((ulonglong)uVar9 >> 0x20);
+  puVar5 = *(uint **)(iVar3 + 0xb8);
+  if ((uint *)puVar5[0xdb] != (uint *)0x0) {
+    FUN_80026d4c((uint *)puVar5[0xdb]);
+  }
+  if (puVar5[0xda] != 0) {
+    FUN_8001f448(puVar5[0xda]);
+    puVar5[0xda] = 0;
+  }
+  if (*puVar5 != 0) {
+    FUN_800238c4(*puVar5);
+    *puVar5 = 0;
+  }
+  sVar2 = *(short *)(iVar3 + 0x46);
+  if (sVar2 == 0x851) {
+    uVar4 = FUN_80036d04(iVar3,0x50);
+    if (uVar4 != 0) {
+      FUN_8003709c(iVar3,0x50);
+    }
+  }
+  else if ((sVar2 < 0x851) && (sVar2 == 0x7c8)) {
+    FUN_80159d64(iVar3);
+  }
+  bVar1 = *(byte *)(iVar3 + 0xeb);
+  for (iVar6 = 0; iVar6 < (int)(uint)bVar1; iVar6 = iVar6 + 1) {
+    iVar7 = *(int *)(iVar3 + 200);
+    if ((iVar7 != 0) &&
+       ((uVar8 = FUN_80037da8(iVar3,iVar7), (int)uVar9 == 0 ||
+        ((*(ushort *)(iVar7 + 0xb0) & 0x10) == 0)))) {
+      FUN_8002cc9c(uVar8,param_2,param_3,param_4,param_5,param_6,param_7,param_8,iVar7);
+    }
+  }
+  (**(code **)(*DAT_803dd6f8 + 0x14))(iVar3);
+  FUN_8003709c(iVar3,3);
+  FUN_8028688c();
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_8014d730
  * EN v1.0 Address: 0x8014D730
  * EN v1.0 Size: 404b
  * EN v1.1 Address: TODO
@@ -346,6 +399,7 @@ void FUN_8014d730(uint param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8014d8c4
  * EN v1.0 Address: 0x8014D8C4
  * EN v1.0 Size: 192b
  * EN v1.1 Address: TODO
@@ -384,6 +438,7 @@ void FUN_8014d8c4(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8014d984
  * EN v1.0 Address: 0x8014D984
  * EN v1.0 Size: 1268b
  * EN v1.1 Address: TODO
@@ -401,6 +456,7 @@ void FUN_8014d984(undefined8 param_1,undefined8 param_2,double param_3,double pa
 /*
  * --INFO--
  *
+ * Function: FUN_8014de78
  * EN v1.0 Address: 0x8014DE78
  * EN v1.0 Size: 1932b
  * EN v1.1 Address: TODO

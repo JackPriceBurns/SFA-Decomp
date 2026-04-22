@@ -4,8 +4,8 @@
  * Owner: main/dll/FRONT/dll_40.c
  * Text span: 0x80118E30-0x80118E60
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 0
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -31,4 +31,6 @@ extern undefined4 DAT_803a694c;
  */
 void FUN_80118e30(undefined4 param_1)
 {
+  FUN_80244758((int *)&DAT_803a694c,param_1,1);
+  return;
 }

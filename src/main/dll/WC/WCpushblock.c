@@ -4,8 +4,8 @@
  * Owner: main/dll/WC/WCpushblock.c
  * Text span: 0x801EE104-0x801EE880
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 2
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 3
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -70,6 +70,7 @@ extern f32 FLOAT_803e6918;
 /*
  * --INFO--
  *
+ * Function: FUN_801ee104
  * EN v1.0 Address: 0x801EE104
  * EN v1.0 Size: 1364b
  * EN v1.1 Address: TODO
@@ -86,6 +87,7 @@ void FUN_801ee104(undefined4 param_1,undefined4 param_2,int param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_801ee658
  * EN v1.0 Address: 0x801EE658
  * EN v1.0 Size: 52b
  * EN v1.1 Address: TODO
@@ -107,6 +109,7 @@ void FUN_801ee658(void)
 /*
  * --INFO--
  *
+ * Function: FUN_801ee68c
  * EN v1.0 Address: 0x801EE68C
  * EN v1.0 Size: 108b
  * EN v1.1 Address: TODO
@@ -121,11 +124,18 @@ void FUN_801ee68c(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16)
 {
+  if (DAT_803de8e0 == 0) {
+    DAT_803de8e0 = FUN_80054ed0(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,
+                                0x186,param_10,param_11,param_12,param_13,param_14,param_15,param_16
+                               );
+  }
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_801ee6f8
  * EN v1.0 Address: 0x801EE6F8
  * EN v1.0 Size: 392b
  * EN v1.1 Address: TODO

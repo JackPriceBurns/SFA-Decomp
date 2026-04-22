@@ -4,8 +4,8 @@
  * Owner: main/dll/DR/DRhalolight.c
  * Text span: 0x801ED1FC-0x801ED5CC
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 3
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 4
+ * Auto-stubbed functions: 0
  */
 
 #include "ghidra_import.h"
@@ -46,7 +46,20 @@ extern f32 FLOAT_803e6850;
  */
 double FUN_801ed20c(int param_1,undefined4 *param_2)
 {
-    return 0.0;
+  int iVar1;
+  double dVar2;
+  double dVar3;
+  
+  iVar1 = *(int *)(param_1 + 0xb8);
+  *param_2 = FLOAT_803e6850;
+  dVar2 = FUN_80293900((double)(*(float *)(iVar1 + 0x49c) * *(float *)(iVar1 + 0x49c) +
+                               *(float *)(iVar1 + 0x494) * *(float *)(iVar1 + 0x494) +
+                               *(float *)(iVar1 + 0x498) * *(float *)(iVar1 + 0x498)));
+  dVar3 = (double)(float)(dVar2 * (double)FLOAT_803e6840);
+  if ((double)FLOAT_803e6784 < (double)(float)(dVar2 * (double)FLOAT_803e6840)) {
+    dVar3 = (double)FLOAT_803e6784;
+  }
+  return dVar3;
 }
 
 /*

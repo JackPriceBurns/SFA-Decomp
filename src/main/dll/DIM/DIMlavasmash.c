@@ -60,6 +60,7 @@ extern f32 FLOAT_803e54d4;
 /*
  * --INFO--
  *
+ * Function: FUN_801b0b58
  * EN v1.0 Address: 0x801B0B58
  * EN v1.0 Size: 204b
  * EN v1.1 Address: TODO
@@ -93,6 +94,7 @@ void FUN_801b0b58(short *param_1,int param_2)
 /*
  * --INFO--
  *
+ * Function: FUN_801b0c24
  * EN v1.0 Address: 0x801B0C24
  * EN v1.0 Size: 336b
  * EN v1.1 Address: TODO
@@ -140,6 +142,7 @@ undefined4 FUN_801b0c24(uint param_1,undefined4 param_2,int param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_801b0d74
  * EN v1.0 Address: 0x801B0D74
  * EN v1.0 Size: 136b
  * EN v1.1 Address: TODO
@@ -174,6 +177,7 @@ void FUN_801b0d74(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 /*
  * --INFO--
  *
+ * Function: FUN_801b0dfc
  * EN v1.0 Address: 0x801B0DFC
  * EN v1.0 Size: 220b
  * EN v1.1 Address: TODO
@@ -213,6 +217,7 @@ void FUN_801b0dfc(void)
 /*
  * --INFO--
  *
+ * Function: FUN_801b0ed8
  * EN v1.0 Address: 0x801B0ED8
  * EN v1.0 Size: 708b
  * EN v1.1 Address: TODO
@@ -322,6 +327,7 @@ LAB_801b10e4:
 /*
  * --INFO--
  *
+ * Function: FUN_801b119c
  * EN v1.0 Address: 0x801B119C
  * EN v1.0 Size: 508b
  * EN v1.1 Address: TODO

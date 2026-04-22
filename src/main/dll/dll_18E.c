@@ -4,8 +4,8 @@
  * Owner: main/dll/dll_18E.c
  * Text span: 0x801BEEAC-0x801BF224
  * Imported Ghidra functions: 3
- * Verbatim-safe functions: 1
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -35,6 +35,7 @@ extern f32 FLOAT_803e5960;
 /*
  * --INFO--
  *
+ * Function: FUN_801beeac
  * EN v1.0 Address: 0x801BEEAC
  * EN v1.0 Size: 324b
  * EN v1.1 Address: TODO
@@ -51,6 +52,7 @@ void FUN_801beeac(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801beff0
  * EN v1.0 Address: 0x801BEFF0
  * EN v1.0 Size: 56b
  * EN v1.1 Address: TODO
@@ -62,11 +64,14 @@ void FUN_801beeac(int param_1)
  */
 void FUN_801beff0(int param_1)
 {
+  (**(code **)(*DAT_803dd70c + 0xc))(param_1,*(undefined4 *)(param_1 + 0xb8),&DAT_803de830);
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_801bf028
  * EN v1.0 Address: 0x801BF028
  * EN v1.0 Size: 508b
  * EN v1.1 Address: TODO

@@ -30,6 +30,7 @@ extern undefined4* DAT_803dd6d4;
 /*
  * --INFO--
  *
+ * Function: FUN_8017c250
  * EN v1.0 Address: 0x8017C250
  * EN v1.0 Size: 188b
  * EN v1.1 Address: TODO
@@ -60,6 +61,7 @@ undefined4 FUN_8017c250(int param_1,undefined4 param_2,int param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_8017c30c
  * EN v1.0 Address: 0x8017C30C
  * EN v1.0 Size: 36b
  * EN v1.1 Address: TODO
@@ -78,6 +80,7 @@ void FUN_8017c30c(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017c330
  * EN v1.0 Address: 0x8017C330
  * EN v1.0 Size: 80b
  * EN v1.1 Address: TODO
@@ -105,6 +108,7 @@ void FUN_8017c330(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017c380
  * EN v1.0 Address: 0x8017C380
  * EN v1.0 Size: 848b
  * EN v1.1 Address: TODO
@@ -210,6 +214,7 @@ void FUN_8017c380(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017c6d0
  * EN v1.0 Address: 0x8017C6D0
  * EN v1.0 Size: 284b
  * EN v1.1 Address: TODO
@@ -226,6 +231,7 @@ void FUN_8017c6d0(short *param_1,int param_2)
 /*
  * --INFO--
  *
+ * Function: FUN_8017c7ec
  * EN v1.0 Address: 0x8017C7EC
  * EN v1.0 Size: 64b
  * EN v1.1 Address: TODO
@@ -246,6 +252,7 @@ void FUN_8017c7ec(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017c82c
  * EN v1.0 Address: 0x8017C82C
  * EN v1.0 Size: 308b
  * EN v1.1 Address: TODO
@@ -302,6 +309,7 @@ FUN_8017c82c(undefined8 param_1,double param_2,double param_3,undefined8 param_4
 /*
  * --INFO--
  *
+ * Function: FUN_8017c960
  * EN v1.0 Address: 0x8017C960
  * EN v1.0 Size: 36b
  * EN v1.1 Address: TODO
@@ -320,6 +328,7 @@ void FUN_8017c960(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017c984
  * EN v1.0 Address: 0x8017C984
  * EN v1.0 Size: 48b
  * EN v1.1 Address: TODO
@@ -342,6 +351,7 @@ void FUN_8017c984(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017c9b4
  * EN v1.0 Address: 0x8017C9B4
  * EN v1.0 Size: 592b
  * EN v1.1 Address: TODO
@@ -413,6 +423,7 @@ void FUN_8017c9b4(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017cc04
  * EN v1.0 Address: 0x8017CC04
  * EN v1.0 Size: 248b
  * EN v1.1 Address: TODO
@@ -429,6 +440,7 @@ void FUN_8017cc04(short *param_1,int param_2)
 /*
  * --INFO--
  *
+ * Function: FUN_8017ccfc
  * EN v1.0 Address: 0x8017CCFC
  * EN v1.0 Size: 232b
  * EN v1.1 Address: TODO
@@ -465,6 +477,7 @@ undefined4 FUN_8017ccfc(int param_1,undefined4 param_2,int param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_8017cde4
  * EN v1.0 Address: 0x8017CDE4
  * EN v1.0 Size: 44b
  * EN v1.1 Address: TODO
@@ -483,6 +496,7 @@ void FUN_8017cde4(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017ce10
  * EN v1.0 Address: 0x8017CE10
  * EN v1.0 Size: 596b
  * EN v1.1 Address: TODO
@@ -551,6 +565,7 @@ void FUN_8017ce10(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_8017d064
  * EN v1.0 Address: 0x8017D064
  * EN v1.0 Size: 200b
  * EN v1.1 Address: TODO

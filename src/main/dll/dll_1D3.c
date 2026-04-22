@@ -4,8 +4,8 @@
  * Owner: main/dll/dll_1D3.c
  * Text span: 0x801CE1A0-0x801CEFC8
  * Imported Ghidra functions: 9
- * Verbatim-safe functions: 6
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 7
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -73,6 +73,7 @@ extern f32 FLOAT_803e5ed0;
 /*
  * --INFO--
  *
+ * Function: FUN_801ce1a0
  * EN v1.0 Address: 0x801CE1A0
  * EN v1.0 Size: 140b
  * EN v1.1 Address: TODO
@@ -89,6 +90,7 @@ void FUN_801ce1a0(undefined2 *param_1,int param_2)
 /*
  * --INFO--
  *
+ * Function: FUN_801ce22c
  * EN v1.0 Address: 0x801CE22C
  * EN v1.0 Size: 216b
  * EN v1.1 Address: TODO
@@ -121,6 +123,7 @@ undefined4 FUN_801ce22c(int param_1,undefined4 param_2,int param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_801ce304
  * EN v1.0 Address: 0x801CE304
  * EN v1.0 Size: 64b
  * EN v1.1 Address: TODO
@@ -139,6 +142,7 @@ void FUN_801ce304(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801ce344
  * EN v1.0 Address: 0x801CE344
  * EN v1.0 Size: 224b
  * EN v1.1 Address: TODO
@@ -173,6 +177,7 @@ void FUN_801ce344(uint param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801ce424
  * EN v1.0 Address: 0x801CE424
  * EN v1.0 Size: 12b
  * EN v1.1 Address: TODO
@@ -190,6 +195,7 @@ int FUN_801ce424(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801ce430
  * EN v1.0 Address: 0x801CE430
  * EN v1.0 Size: 280b
  * EN v1.1 Address: TODO
@@ -228,6 +234,7 @@ undefined4 FUN_801ce430(short *param_1,undefined4 param_2,int param_3)
 /*
  * --INFO--
  *
+ * Function: FUN_801ce548
  * EN v1.0 Address: 0x801CE548
  * EN v1.0 Size: 228b
  * EN v1.1 Address: TODO
@@ -239,11 +246,31 @@ undefined4 FUN_801ce430(short *param_1,undefined4 param_2,int param_3)
  */
 void FUN_801ce548(short *param_1,int param_2,int param_3)
 {
+  if (((param_3 == 0) || (*(int *)(param_2 + 0x28) == 0)) ||
+     (FLOAT_803e5eac <= *(float *)(param_2 + 0x18))) {
+    *(undefined *)(param_2 + 0x40c) = 0;
+  }
+  else {
+    *(undefined *)(param_2 + 0x40c) = 1;
+    *(undefined4 *)(param_2 + 0x410) = *(undefined4 *)(*(int *)(param_2 + 0x28) + 0xc);
+    *(undefined4 *)(param_2 + 0x414) = *(undefined4 *)(*(int *)(param_2 + 0x28) + 0x10);
+    *(undefined4 *)(param_2 + 0x418) = *(undefined4 *)(*(int *)(param_2 + 0x28) + 0x14);
+  }
+  if (((&DAT_803274f4)[*(byte *)(param_2 + 0x408)] & 2) == 0) {
+    FUN_8003a328((double)FLOAT_803e5ea4,param_1,(char *)(param_2 + 0x40c));
+    FUN_8003b408((int)param_1,param_2 + 0x40c);
+  }
+  else {
+    FUN_8003a260((int)param_1,param_2 + 0x40c);
+    FUN_8003b320((int)param_1,param_2 + 0x40c);
+  }
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_801ce62c
  * EN v1.0 Address: 0x801CE62C
  * EN v1.0 Size: 580b
  * EN v1.1 Address: TODO
@@ -331,6 +358,7 @@ undefined4 FUN_801ce62c(uint param_1,int param_2)
 /*
  * --INFO--
  *
+ * Function: FUN_801ce870
  * EN v1.0 Address: 0x801CE870
  * EN v1.0 Size: 1880b
  * EN v1.1 Address: TODO

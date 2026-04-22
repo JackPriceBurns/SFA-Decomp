@@ -4,8 +4,8 @@
  * Owner: main/dll/flybaddie1D7.c
  * Text span: 0x801CFDB8-0x801D0494
  * Imported Ghidra functions: 7
- * Verbatim-safe functions: 4
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 6
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -53,6 +53,7 @@ extern void* PTR_LAB_80327634;
 /*
  * --INFO--
  *
+ * Function: FUN_801cfdb8
  * EN v1.0 Address: 0x801CFDB8
  * EN v1.0 Size: 852b
  * EN v1.1 Address: TODO
@@ -172,6 +173,7 @@ void FUN_801cfdb8(void)
 /*
  * --INFO--
  *
+ * Function: FUN_801d010c
  * EN v1.0 Address: 0x801D010C
  * EN v1.0 Size: 48b
  * EN v1.1 Address: TODO
@@ -190,6 +192,7 @@ void FUN_801d010c(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801d013c
  * EN v1.0 Address: 0x801D013C
  * EN v1.0 Size: 80b
  * EN v1.1 Address: TODO
@@ -206,6 +209,7 @@ void FUN_801d013c(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801d018c
  * EN v1.0 Address: 0x801D018C
  * EN v1.0 Size: 40b
  * EN v1.1 Address: TODO
@@ -224,6 +228,7 @@ void FUN_801d018c(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801d01b4
  * EN v1.0 Address: 0x801D01B4
  * EN v1.0 Size: 352b
  * EN v1.1 Address: TODO
@@ -235,11 +240,62 @@ void FUN_801d018c(int param_1)
  */
 void FUN_801d01b4(undefined2 *param_1)
 {
+  short *psVar1;
+  undefined4 *puVar2;
+  undefined4 *puVar3;
+  int iVar4;
+  int *piVar5;
+  float local_18;
+  int local_14 [3];
+  
+  local_18 = FLOAT_803e5f08;
+  piVar5 = *(int **)(param_1 + 0x5c);
+  if (*piVar5 == 0) {
+    puVar2 = FUN_80037048(0x3d,local_14);
+    iVar4 = 0;
+    puVar3 = puVar2;
+    if (0 < local_14[0]) {
+      do {
+        if ((param_1 != (undefined2 *)*puVar3) &&
+           (*(char *)(*(int *)(param_1 + 0x26) + 0x1b) ==
+            *(char *)(*(int *)((undefined2 *)*puVar3 + 0x26) + 0x1b))) {
+          *piVar5 = puVar2[iVar4];
+          return;
+        }
+        puVar3 = puVar3 + 1;
+        iVar4 = iVar4 + 1;
+        local_14[0] = local_14[0] + -1;
+      } while (local_14[0] != 0);
+    }
+  }
+  else {
+    *(undefined4 *)(param_1 + 6) = *(undefined4 *)(*piVar5 + 0xc);
+    *(undefined4 *)(param_1 + 8) = *(undefined4 *)(*piVar5 + 0x10);
+    *(undefined4 *)(param_1 + 10) = *(undefined4 *)(*piVar5 + 0x14);
+    *param_1 = *(undefined2 *)*piVar5;
+    FUN_80036e58(0x3c,param_1,&local_18);
+    if (*(byte *)(*piVar5 + 0x36) < 0xc0) {
+      FUN_80035ff8((int)param_1);
+      psVar1 = (short *)FUN_8002bac4();
+      FUN_80297480(psVar1,(int)param_1);
+    }
+    else {
+      FUN_80036018((int)param_1);
+    }
+    if ((*(byte *)(*piVar5 + 0x36) < 0xc0) || (local_18 < FLOAT_803e5f0c)) {
+      param_1[0x58] = param_1[0x58] | 0x100;
+    }
+    else {
+      param_1[0x58] = param_1[0x58] & 0xfeff;
+    }
+  }
+  return;
 }
 
 /*
  * --INFO--
  *
+ * Function: FUN_801d0314
  * EN v1.0 Address: 0x801D0314
  * EN v1.0 Size: 36b
  * EN v1.1 Address: TODO
@@ -258,6 +314,7 @@ void FUN_801d0314(int param_1)
 /*
  * --INFO--
  *
+ * Function: FUN_801d0338
  * EN v1.0 Address: 0x801D0338
  * EN v1.0 Size: 348b
  * EN v1.1 Address: TODO
@@ -269,5 +326,37 @@ void FUN_801d0314(int param_1)
  */
 undefined4 FUN_801d0338(int param_1)
 {
-    return 0;
+  int iVar1;
+  int iVar2;
+  undefined4 uVar3;
+  
+  iVar1 = FUN_8002e1ac(*(int *)(&DAT_80327638 + (uint)*(byte *)(param_1 + 0xe) * 4));
+  iVar2 = FUN_8003809c(iVar1,0x1ee);
+  if (iVar2 == 0) {
+    if (*(byte *)(param_1 + 0xe) != 0) {
+      iVar1 = FUN_8002e1ac((int)(&PTR_LAB_80327634)[*(byte *)(param_1 + 0xe)]);
+      iVar2 = FUN_8003809c(iVar1,0x1ee);
+      if (iVar2 != 0) {
+        (**(code **)(*DAT_803dd6d4 + 0x48))(0,iVar1,0xffffffff);
+        *(undefined *)(param_1 + 4) = 9;
+        *(char *)(param_1 + 0xc) =
+             (char)*(undefined4 *)(&DAT_80327650 + (uint)*(byte *)(param_1 + 0xe) * 4);
+        *(undefined *)(param_1 + 5) = 0;
+        return 2;
+      }
+    }
+    uVar3 = 0;
+  }
+  else {
+    (**(code **)(*DAT_803dd6d4 + 0x48))(0,iVar1,0xffffffff);
+    *(undefined *)(param_1 + 4) = 9;
+    *(char *)(param_1 + 0xc) =
+         (char)*(undefined4 *)(&DAT_80327654 + (uint)*(byte *)(param_1 + 0xe) * 4);
+    *(char *)(param_1 + 0xd) =
+         (char)*(undefined4 *)(&DAT_80327670 + (uint)*(byte *)(param_1 + 0xe) * 4);
+    *(char *)(param_1 + 0xe) = *(char *)(param_1 + 0xe) + '\x01';
+    *(undefined *)(param_1 + 5) = 0x1e;
+    uVar3 = 1;
+  }
+  return uVar3;
 }
