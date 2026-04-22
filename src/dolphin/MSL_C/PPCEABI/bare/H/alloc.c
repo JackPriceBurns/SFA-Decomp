@@ -211,7 +211,6 @@ _smn_5:
     blr
 }
 
-
 asm void Block_link(Block* ths, SubBlock* sb) {
 	nofralloc
 	stwu r1, -0x10(r1)
@@ -355,15 +354,6 @@ static inline __mem_pool* get_malloc_pool(void) {
     return &protopool_803DB818;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static void Block_construct(Block* block, unsigned long size) {
     SubBlock* sb;
 
@@ -379,15 +369,6 @@ static void Block_construct(Block* block, unsigned long size) {
     Block_link(block, sb);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 extern const unsigned long lbl_802C3180[6];
 extern void fn_80286F20(void*);
 
@@ -535,15 +516,6 @@ _bsb_12:
     blr
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static Block* link_new_block(__mem_pool_obj* pool_obj, unsigned long size) {
     Block* block;
     unsigned long aligned_size;
@@ -616,15 +588,6 @@ done:
     return result;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static void* soft_allocate_from_var_pools(__mem_pool_obj* pool_obj, unsigned long size, unsigned long* available_size) {
     Block* current_block;
     SubBlock* result;
@@ -831,15 +794,6 @@ static void deallocate_from_fixed_pools(__mem_pool_obj* pool_obj, void* ptr, uns
     }
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void* __pool_alloc(__mem_pool* pool, unsigned long size) {
     __mem_pool_obj* pool_obj;
 
@@ -859,15 +813,6 @@ void* __pool_alloc(__mem_pool* pool, unsigned long size) {
     return allocate_from_var_pools(pool_obj, size);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void __pool_free(__mem_pool* pool, void* ptr) {
     __mem_pool_obj* pool_obj;
     unsigned long size;
@@ -886,15 +831,6 @@ void __pool_free(__mem_pool* pool, void* ptr) {
     }
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void* malloc(size_t size) {
     void* ptr;
 

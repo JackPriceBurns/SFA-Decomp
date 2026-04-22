@@ -17,6 +17,7 @@ DEFAULT_SRC_ROOT = Path("src")
 DEFAULT_INCLUDE_ROOT = Path("include")
 DEFAULT_CONFIGURE_PATH = Path("configure.py")
 DEFAULT_FORCE_STUB_FUNCTIONS_PATH = Path("tools/ghidra_force_stub_functions.txt")
+DEFAULT_MANAGED_OWNERS_PATH = Path("tools/ghidra_managed_owners.txt")
 SUPPORTED_HELPERS = {
     "CONCAT11",
     "CONCAT12",
@@ -200,6 +201,32 @@ def load_force_stub_functions(path: Path) -> set[str]:
     return names
 
 
+def load_managed_owners(path: Path = DEFAULT_MANAGED_OWNERS_PATH) -> set[str]:
+    if not path.exists():
+        return set()
+    owners: set[str] = set()
+    for raw_line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        owners.add(normalize(line))
+    return owners
+
+
+def source_path_to_owner(path: Path, src_root: Path = DEFAULT_SRC_ROOT) -> str | None:
+    candidates = [path]
+    if not path.is_absolute():
+        candidates.append((Path.cwd() / path).resolve())
+    resolved_src_root = (Path.cwd() / src_root).resolve()
+    for candidate in candidates:
+        try:
+            relpath = candidate.relative_to(src_root if not candidate.is_absolute() else resolved_src_root)
+        except ValueError:
+            continue
+        return normalize(relpath.as_posix())
+    return None
+
+
 def strip_comments(text: str) -> str:
     text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
     text = re.sub(r"//.*", "", text)
@@ -237,6 +264,9 @@ def should_manage_existing(path: Path, overwrite_existing: bool) -> bool:
     if not path.exists():
         return True
     if overwrite_existing:
+        return True
+    owner = source_path_to_owner(path)
+    if owner is not None and owner in load_managed_owners():
         return True
     head = path.read_text(encoding="utf-8", errors="replace")[:1024]
     return (
@@ -955,28 +985,12 @@ def render_source(
         forced_stub_functions,
     )
     stubbed_names = set(stub_reasons)
-    safe_count = len(functions) - len(stub_reasons)
-    stubbed_count = len(stub_reasons)
-
-    lines: list[str] = [
-        "/*",
-        f" * {GENERATED_MARKER}",
-        " *",
-        f" * Owner: {owner}",
-        f" * Text span: 0x{span.start:08X}-0x{span.end:08X}",
-        f" * Imported Ghidra functions: {len(functions)}",
-        f" * Verbatim-safe functions: {safe_count}",
-        f" * Auto-stubbed functions: {stubbed_count}",
-        " */",
-        "",
-        '#include "ghidra_import.h"',
-    ]
+    lines: list[str] = ['#include "ghidra_import.h"']
     if emit_headers:
         lines.append(f'#include "{header_relpath_for_owner(owner)}"')
     lines.append("")
 
     if extern_functions:
-        lines.append("/* Cross-file calls lifted from the raw Ghidra output. */")
         for name in extern_functions:
             return_type = emit_external_function_return_type(
                 inferred_external_function_types.get(name, "undefined4")
@@ -985,13 +999,11 @@ def render_source(
         lines.append("")
 
     if extern_globals:
-        lines.append("/* Raw global references kept as loose externs for later cleanup. */")
         for symbol in extern_globals:
             lines.append(extern_decl_for_global(symbol, inferred_global_types.get(symbol)))
         lines.append("")
 
     if not emit_headers:
-        lines.append("/* Local declarations keep imported functions visible within the TU. */")
         for function in functions:
             if function.name in stubbed_names:
                 lines.append(make_loose_forward_declaration(function))
@@ -1001,7 +1013,6 @@ def render_source(
 
     for function in functions:
         reasons = stub_reasons.get(function.name)
-        lines.append(render_function_info_block(function).rstrip())
         if reasons is None:
             body_text = replace_signature_block(function.raw_text, function)
             body_text = normalize_empty_labels(body_text)
@@ -1023,10 +1034,6 @@ def render_header(
     guard = header_guard(relpath)
     stubbed_names = stubbed_names or set()
     lines = [
-        "/*",
-        f" * {GENERATED_MARKER}",
-        " */",
-        "",
         f"#ifndef {guard}",
         f"#define {guard}",
         "",
@@ -1067,22 +1074,9 @@ def render_inventory_source(
     inventory: list[InventoryFunction],
     emit_headers: bool,
 ) -> str:
-    lines: list[str] = [
-        "/*",
-        f" * {GENERATED_MARKER}",
-        " *",
-        f" * Owner: {owner}",
-        f" * Text span: 0x{span.start:08X}-0x{span.end:08X}",
-        " * Imported Ghidra functions: 0",
-        f" * Inventory-derived stub functions: {len(inventory)}",
-        " */",
-        "",
-        '#include "ghidra_import.h"',
-    ]
+    lines: list[str] = ['#include "ghidra_import.h"']
     if emit_headers:
         lines.append(f'#include "{header_relpath_for_owner(owner)}"')
-    lines.extend(["", "/* No raw Ghidra dump was available for this owner yet. */"])
-    lines.append("/* Split inventory stubs keep the file compiled and routable in the meantime. */")
     lines.append("")
 
     if not emit_headers:
@@ -1093,9 +1087,6 @@ def render_inventory_source(
     for function in inventory:
         lines.extend(
             [
-                f"/* Function: {function.name} */",
-                f"/* Entry: 0x{function.address:08X} */",
-                f"/* Size: 0x{function.size:X} */",
                 "undefined4",
                 f"{function.name}(void)",
                 "{",
@@ -1112,10 +1103,6 @@ def render_inventory_header(owner: str, inventory: list[InventoryFunction]) -> s
     relpath = header_relpath_for_owner(owner)
     guard = header_guard(relpath)
     lines = [
-        "/*",
-        f" * {GENERATED_MARKER}",
-        " */",
-        "",
         f"#ifndef {guard}",
         f"#define {guard}",
         "",
@@ -1132,20 +1119,8 @@ def render_empty_header(owner: str, span: SplitSpan) -> str:
     relpath = header_relpath_for_owner(owner)
     guard = header_guard(relpath)
     lines = [
-        "/*",
-        f" * {GENERATED_MARKER}",
-        " */",
-        "",
         f"#ifndef {guard}",
         f"#define {guard}",
-        "",
-        "/*",
-        f" * {GENERATED_MARKER}",
-        " *",
-        f" * Owner: {owner}",
-        f" * Text span: 0x{span.start:08X}-0x{span.end:08X}",
-        " * No raw Ghidra functions mapped into this owner yet.",
-        " */",
         "",
         '#include "ghidra_import.h"',
         "",

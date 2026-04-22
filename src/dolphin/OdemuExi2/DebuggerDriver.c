@@ -42,15 +42,6 @@ static BOOL DBGEXISync() {
     return TRUE;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static BOOL DBGEXIImm(void* buffer, s32 bytecounter, u32 write) {
     u8* tempPointer;
     u32 writeOutValue;
@@ -147,15 +138,6 @@ static BOOL DBGRead(u32 count, u32* buffer, s32 param3) {
     return !error;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static BOOL DBGWrite(u32 count, void* buffer, s32 param3) {
     BOOL total;
     u32* buf_p;

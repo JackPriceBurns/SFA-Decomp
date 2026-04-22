@@ -9,6 +9,7 @@ from pathlib import Path
 from ghidra_bulk_import import (
     CLAIM_AUTO_MARKER,
     DEFAULT_GHIDRA_DIR,
+    DEFAULT_MANAGED_OWNERS_PATH,
     DEFAULT_SPLITS_PATH,
     DEFAULT_SRC_ROOT,
     GENERATED_MARKER,
@@ -16,9 +17,11 @@ from ghidra_bulk_import import (
     SOURCE_MATERIALIZE_MARKER,
     build_owner_function_map,
     function_stub_reasons,
+    load_managed_owners,
     normalize,
     parse_splits,
     render_source,
+    source_path_to_owner,
     write_text_if_changed,
 )
 
@@ -34,6 +37,9 @@ IGNORED_OWNER_PREFIXES = (
 def classify_source_state(path: Path) -> str:
     if not path.exists():
         return "missing_file"
+    owner = source_path_to_owner(path)
+    if owner is not None and owner in load_managed_owners(DEFAULT_MANAGED_OWNERS_PATH):
+        return "ghidra_generated"
     head = path.read_text(encoding="utf-8", errors="ignore")[:1200]
     if GENERATED_MARKER in head:
         return "ghidra_generated"

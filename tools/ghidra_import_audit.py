@@ -12,17 +12,20 @@ from pathlib import Path
 from ghidra_bulk_import import (
     CLAIM_AUTO_MARKER,
     DEFAULT_GHIDRA_DIR,
+    DEFAULT_MANAGED_OWNERS_PATH,
     DEFAULT_SPLITS_PATH,
     DEFAULT_SRC_ROOT,
     GENERATED_MARKER,
     NON_BUILT_STUB_MARKER,
     SOURCE_MATERIALIZE_MARKER,
+    load_managed_owners,
     FunctionDump,
     SplitSpan,
     load_function_dump,
     normalize,
     owner_for_address,
     parse_splits,
+    source_path_to_owner,
     strip_comments,
 )
 
@@ -62,6 +65,9 @@ class GapWindow:
 def classify_source_state(path: Path) -> str:
     if not path.exists():
         return "missing_file"
+    owner = source_path_to_owner(path)
+    if owner is not None and owner in load_managed_owners(DEFAULT_MANAGED_OWNERS_PATH):
+        return "ghidra_generated"
     head = path.read_text(encoding="utf-8", errors="ignore")[:1200]
     if GENERATED_MARKER in head:
         return "ghidra_generated"

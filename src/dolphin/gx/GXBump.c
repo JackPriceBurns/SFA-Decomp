@@ -138,15 +138,6 @@ void GXSetIndTexCoordScale(GXIndTexStageID ind_state, GXIndTexScale scale_s,
     __GXData->bpSentNot = 0;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void GXSetIndTexOrder(GXIndTexStageID ind_stage, GXTexCoordID tex_coord, GXTexMapID tex_map) {
     CHECK_GXBEGIN(0x11B, "GXSetIndTexOrder");
 

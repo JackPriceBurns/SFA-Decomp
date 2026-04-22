@@ -48,15 +48,6 @@ u32 __AXGetNumVoices(void) {
     return __AXNumVoices;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void __AXServiceVPB(AXVPB* pvpb) {
     AXPB* ppbDsp;
     AXPB* ppbUser;
@@ -315,7 +306,7 @@ void __AXServiceVPB(AXVPB* pvpb) {
         *(dst) = *(src); dst+=1; src+=1;
         *(dst) = *(src); dst+=1; src+=1;
         *(dst) = *(src); dst+=1; src+=1;
-        *(dst) = *(src); 
+        *(dst) = *(src);
     } else {
         ppbUser->addr.currentAddressHi = ppbDsp->addr.currentAddressHi;
         ppbUser->addr.currentAddressLo = ppbDsp->addr.currentAddressLo;
@@ -376,8 +367,8 @@ void __AXDumpVPB(AXVPB* pvpb) {
     if (ppbDsp->state == 1) {
         __AXDepopVoice(ppbDsp);
     }
-    pvpb->pb.state = ppbDsp->state = ppbDsp->update.updNum[0] 
-        = ppbDsp->update.updNum[1] = ppbDsp->update.updNum[2] 
+    pvpb->pb.state = ppbDsp->state = ppbDsp->update.updNum[0]
+        = ppbDsp->update.updNum[1] = ppbDsp->update.updNum[2]
         = ppbDsp->update.updNum[3] = ppbDsp->update.updNum[4] = 0;
     __AXPushCallbackStack(pvpb);
 }
@@ -426,8 +417,8 @@ void __AXSyncPBs(u32 lessDlpfycles) {
             __AXDepopVoice(&__AXPB[pvpb->index]);
         }
         pvpb->depop = 0;
-        __AXPB[pvpb->index].state = __AXPB[pvpb->index].update.updNum[0] = __AXPB[pvpb->index].update.updNum[1] 
-                                  = __AXPB[pvpb->index].update.updNum[2] = __AXPB[pvpb->index].update.updNum[3] 
+        __AXPB[pvpb->index].state = __AXPB[pvpb->index].update.updNum[0] = __AXPB[pvpb->index].update.updNum[1]
+                                  = __AXPB[pvpb->index].update.updNum[2] = __AXPB[pvpb->index].update.updNum[3]
                                   = __AXPB[pvpb->index].update.updNum[4] = 0;
     }
 
@@ -586,7 +577,7 @@ void AXSetVoiceMix(AXVPB* p, AXPBMIX* mix) {
     u16 mixerCtrl;
     u16* dst;
     u16* src;
-    
+
     src = (u16*)mix;
     dst = (u16*)&p->pb.mix;
     mixerCtrl = 0;

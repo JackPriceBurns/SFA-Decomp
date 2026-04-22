@@ -293,7 +293,7 @@ void PSMTXConcatArray(const register Mtx a, const register Mtx *srcBase, registe
     ps_muls0    vd5, vb1, va4
 
     psq_l       vb5, 40(srcBase), 0, 0
-    psq_st      vd2, 16(dstBase), 0, 0    
+    psq_st      vd2, 16(dstBase), 0, 0
     ps_madds1   vd1, vb3, va0, vd1
     ps_madds1   vd3, vb3, va2, vd3
     ps_madds1   vd5, vb3, va4, vd5
@@ -397,23 +397,23 @@ void PSMTXTranspose(const register Mtx src, register Mtx xPose)
   asm
   {
     psq_l       row0a, 0(src),  0, 0
-    stfs        c_zero, 44(xPose) 
+    stfs        c_zero, 44(xPose)
     psq_l       row1a, 16(src), 0, 0
-    ps_merge00  trns0, row0a, row1a 
+    ps_merge00  trns0, row0a, row1a
     psq_l       row0b, 8(src),  1, 0
-    ps_merge11  trns1, row0a, row1a 
+    ps_merge11  trns1, row0a, row1a
     psq_l       row1b, 24(src), 1, 0
     psq_st      trns0, 0(xPose),  0, 0
     psq_l       row0a, 32(src), 0, 0
-    ps_merge00  trns2, row0b, row1b 
-    psq_st      trns1, 16(xPose), 0, 0 
-    ps_merge00  trns0, row0a, c_zero 
+    ps_merge00  trns2, row0b, row1b
+    psq_st      trns1, 16(xPose), 0, 0
+    ps_merge00  trns0, row0a, c_zero
     psq_st      trns2, 32(xPose), 0, 0
-    ps_merge10  trns1, row0a, c_zero 
-    psq_st      trns0, 8(xPose),  0, 0 
-    lfs         row0b, 40(src) 
+    ps_merge10  trns1, row0a, c_zero
+    psq_st      trns0, 8(xPose),  0, 0
+    lfs         row0b, 40(src)
     psq_st      trns1, 24(xPose), 0, 0
-    stfs        row0b, 40(xPose) 
+    stfs        row0b, 40(xPose)
   }
     // clang-format on
 }
@@ -746,15 +746,6 @@ void C_MTXRotTrig(Mtx m, char axis, f32 sinA, f32 cosA)
 }
 
 #ifdef GEKKO
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 extern const f32 lbl_803E82B0;
 extern const f32 lbl_803E82B4;
 
@@ -852,15 +843,6 @@ void C_MTXRotAxisRad(Mtx m, const Vec *axis, f32 rad)
 #ifdef GEKKO
 #define qr0 0
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void __PSMTXRotAxisRadInternal(register f32 sT, register f32 cT, register Mtx m, register const Vec *axis)
 {
     register f32 tT;
@@ -926,15 +908,6 @@ void __PSMTXRotAxisRadInternal(register f32 sT, register f32 cT, register Mtx m,
 #endif // clang-format on
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 asm void PSMTXRotAxisRad(register Mtx m, const Vec *axis, register f32 rad)
 {
     nofralloc
@@ -1079,7 +1052,7 @@ asm void PSMTXTransApply(const register Mtx src, register Mtx dst, register f32 
   psq_l       fp8, 40(src),       0, 0
   psq_st      fp4, 0(dst),        0, 0
   ps_sum1     fp5, xT, fp5, fp5
-  psq_l       fp6, 16(src),       0, 0   
+  psq_l       fp6, 16(src),       0, 0
   psq_st      fp5, 8(dst),        0, 0
   ps_sum1     fp7, yT, fp7, fp7
   psq_l       fp9, 32(src),       0, 0
@@ -1334,15 +1307,6 @@ void PSMTXReflect(register Mtx m, const register Vec *p, const register Vec *n)
 }
 #endif
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void C_MTXLookAt(Mtx m, const Point3d* camPos, const Vec* camUp, const Point3d* target)
 {
     Vec vLook, vRight, vUp;

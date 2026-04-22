@@ -120,15 +120,6 @@ void PSQUATInverse(const register Quaternion *src, register Quaternion *inv)
     }
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void C_QUATRotAxisRad(Quaternion *q, const Vec *axis, f32 rad)
 {
     f32 tmp, tmp2, tmp3;
@@ -207,15 +198,6 @@ void C_QUATLerp(const Quaternion *p, const Quaternion *q, Quaternion *r, f32 t)
     r->w = p->w + value;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 #pragma fp_contract off
 void C_QUATSlerp(const Quaternion *p, const Quaternion *q, Quaternion *r, f32 t)
 {

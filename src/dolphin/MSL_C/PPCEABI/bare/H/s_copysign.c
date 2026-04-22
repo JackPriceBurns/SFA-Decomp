@@ -5,7 +5,7 @@
  *
  * Developed at SunSoft, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
- * software is freely granted, provided that this notice 
+ * software is freely granted, provided that this notice
  * is preserved.
  * ====================================================
  */
@@ -20,13 +20,6 @@
 
 #pragma warn_implicitconv off
 
-/*
- * --INFO--
- * JP Address: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- */
 #ifdef __STDC__
 	double copysign(double x, double y)
 #else

@@ -40,15 +40,6 @@ void AXFXDelayCallback(AXFX_BUFFERUPDATE* bufferUpdate, AXFX_DELAY* delay) {
     delay->currentPos[2] = (s32) ((delay->currentPos[2] + 1) % delay->currentSize[2]);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 int AXFXDelaySettings(AXFX_DELAY* delay) {
     u32 i;
     s32* l;
@@ -101,15 +92,6 @@ int AXFXDelayInit(AXFX_DELAY* delay) {
     AXFXDelaySettings(delay);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 int AXFXDelayShutdown(AXFX_DELAY* delay) {
     BOOL old;
 

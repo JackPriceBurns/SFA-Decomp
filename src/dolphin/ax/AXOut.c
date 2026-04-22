@@ -25,15 +25,6 @@ static void __AXDSPInitCallback(void* task);
 static void __AXDSPResumeCallback(void* task);
 static void __AXDSPDoneCallback(void* task);
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void __AXOutNewFrame(u32 lessDspCycles) {
     u32 cl;
     AXPROFILE* profile;
@@ -167,15 +158,6 @@ void __AXOutInitDSP(void) {
     do {} while (__AXDSPInitFlag == 0);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void __AXOutInit(void) {
 #ifdef DEBUG
     OSReport("Initializing AXOut code module\n");
@@ -217,15 +199,6 @@ void __AXOutQuit(void) {
     OSRestoreInterrupts(old);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void AXRegisterCallback(AXCallback callback) {
     __AXUserFrameCallback = callback;
 }

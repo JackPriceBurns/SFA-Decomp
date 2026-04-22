@@ -41,15 +41,6 @@ static inline void DLdeleteDpl2(AXFX_REVHI_DELAYLINE* dl) {
     __AXFXFree(dl->inputs);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static int ReverbHICreateDpl2(AXFX_REVHI_WORK_DPL2* rv, f32 coloration, f32 time, f32 mix, f32 damping, f32 preDelay) {
     u8 i;
     u8 k;
@@ -116,15 +107,6 @@ static int ReverbHICreateDpl2(AXFX_REVHI_WORK_DPL2* rv, f32 coloration, f32 time
     return 1;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static int ReverbHIModifyDpl2(AXFX_REVHI_WORK_DPL2* rv, f32 coloration, f32 time, f32 mix, f32 damping, f32 preDelay) {
     u8 i;
 
@@ -540,7 +522,7 @@ int AXFXReverbHiShutdownDpl2(AXFX_REVERBHI_DPL2* reverb) {
     BOOL old;
 
     old = OSDisableInterrupts();
-    
+
     // Free all delay line inputs directly (24 delay lines total: 12 AP + 12 C)
     __AXFXFree(reverb->rv.AP[0].inputs);
     __AXFXFree(reverb->rv.AP[1].inputs);
@@ -566,7 +548,7 @@ int AXFXReverbHiShutdownDpl2(AXFX_REVERBHI_DPL2* reverb) {
     __AXFXFree(reverb->rv.C[9].inputs);
     __AXFXFree(reverb->rv.C[10].inputs);
     __AXFXFree(reverb->rv.C[11].inputs);
-    
+
     // Free pre-delay lines if they exist
     if (reverb->rv.preDelayTime != 0) {
         __AXFXFree(reverb->rv.preDelayLine[0]);
@@ -574,7 +556,7 @@ int AXFXReverbHiShutdownDpl2(AXFX_REVERBHI_DPL2* reverb) {
         __AXFXFree(reverb->rv.preDelayLine[2]);
         __AXFXFree(reverb->rv.preDelayLine[3]);
     }
-    
+
     OSRestoreInterrupts(old);
     return 1;
 }
