@@ -237,15 +237,11 @@ asm void fn_802BB648(void* obj, float x) {
     blr
 }
 
-asm void fn_802BB718(void) {
-    nofralloc
-    blr
+void fn_802BB718(void) {
 }
 
-asm int fn_802BB71C(void) {
-    nofralloc
-    li r3, 0x0
-    blr
+int fn_802BB71C(void) {
+    return 0;
 }
 
 asm void fn_802BB724(void* a, float* out) {

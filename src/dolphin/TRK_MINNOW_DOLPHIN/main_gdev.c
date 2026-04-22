@@ -194,16 +194,12 @@ _fb9_loop_cond:
     blr
 }
 
-asm int fn_802BBAEC(void) {
-    nofralloc
-    li r3, 0xd0c
-    blr
+int fn_802BBAEC(void) {
+    return 0xd0c;
 }
 
-asm int fn_802BBAF4(void) {
-    nofralloc
-    li r3, 0x43
-    blr
+int fn_802BBAF4(void) {
+    return 0x43;
 }
 
 asm void fn_802BBAFC(void* obj) {
