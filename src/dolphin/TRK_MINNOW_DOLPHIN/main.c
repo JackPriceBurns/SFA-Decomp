@@ -262,11 +262,9 @@ _f724_1:
     blr
 }
 
-asm void fn_802BB754(void* a, float* out, int* flag) {
-    nofralloc
-    lfs f0, lbl_803E8ECC(r0)
-    stfs f0, 0x0(r4)
-    li r0, 0x0
-    stw r0, 0x0(r5)
-    blr
+#pragma scheduling off
+void fn_802BB754(void* a, float* out, int* flag) {
+    *out = lbl_803E8ECC;
+    *flag = 0;
 }
+#pragma scheduling reset
