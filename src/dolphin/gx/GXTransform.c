@@ -195,15 +195,6 @@ void GXLoadTexMtxImm(const f32 mtx[][4], u32 id, GXTexMtxType type) {
 
 #pragma dont_inline on
 #pragma fp_contract off
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void GXSetViewportJitter(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz, u32 field) {
     f32 sx;
     f32 sy;
@@ -298,15 +289,6 @@ void GXGetScissor(u32* left, u32* top, u32* wd, u32* ht) {
     *ht = (y2 - y1) + 1;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void GXSetScissorBoxOffset(s32 x_off, s32 y_off) {
     u32 reg;
 

@@ -8,7 +8,6 @@
 #include "dolphin/os/__os.h"
 #include "dolphin/vi/__vi.h"
 
-
 typedef struct {
     u8 equ;
     u16 acv;
@@ -287,15 +286,6 @@ static VITiming* getTiming(VITVMode mode) {
 }
 #pragma dont_inline reset
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void __VIInit(VITVMode mode) {
     VITiming* tm;
     u32 ds;
@@ -687,15 +677,6 @@ static void PrintDebugPalCaution(void) {
     }
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void VIConfigure(const GXRenderModeObj* rm) {
     VITiming* tm;
     u32 regDspCfg;
@@ -730,7 +711,7 @@ void VIConfigure(const GXRenderModeObj* rm) {
 
     tvInGame = (u32)rm->viTVmode >> 2;
     tvInBootrom = *(u32*)OSPhysicalToCached(0xCC);
-    
+
     if (tvInGame == VI_DEBUG_PAL) {
         PrintDebugPalCaution();
     }
@@ -1011,7 +992,7 @@ u32 VIGetTvFormat(void) {
     default:
         ASSERTLINE(2527, FALSE);
     }
-    
+
     OSRestoreInterrupts(enabled);
     return format;
 }
@@ -1027,7 +1008,7 @@ u32 VIGetScanMode(void) {
     } else {
         scanMode = 1;
     }
-    
+
     OSRestoreInterrupts(enabled);
     return scanMode;
 }

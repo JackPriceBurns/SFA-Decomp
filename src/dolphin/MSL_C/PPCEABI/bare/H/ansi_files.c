@@ -84,15 +84,6 @@ FILE __files[4] = {
      &__files[3]},
 };
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 FILE* __find_unopened_file(void) {
     FILE* result;
     FILE* prev;
@@ -119,15 +110,6 @@ FILE* __find_unopened_file(void) {
     return result;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void __init_file(FILE* file, file_modes mode, unsigned char* buffer, unsigned long buffer_size) {
     file->handle = 0;
     file->file_mode = mode;
@@ -197,15 +179,6 @@ unsigned int __flush_all() {
     return retval;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 int __flush_line_buffered_output_files(void) {
     int result = 0;
     FILE* file = &__files[0];

@@ -140,7 +140,7 @@ void EnableEXI2Interrupts(void)
     gDBCommTable.init_interrupts_func();
 }
 
-int TRKPollUART(void) 
+int TRKPollUART(void)
 {
     return gDBCommTable.peek_func();
 }
@@ -306,15 +306,6 @@ void UnreserveEXI2Port(void) { gDBCommTable.close_func(); }
 
 void TRK_board_display(char* str) { OSReport(str); }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void InitializeProgramEndTrap(void)
 {
     static const u32 EndofProgramInstruction = 0x00454E44;

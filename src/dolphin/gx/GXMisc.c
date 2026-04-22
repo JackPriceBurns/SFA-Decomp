@@ -51,7 +51,7 @@ void GXFlush(void) {
     if (__GXData->dirtyState) {
         __GXSetDirtyState();
     }
-    
+
     GX_WRITE_U32(0);
     GX_WRITE_U32(0);
     GX_WRITE_U32(0);
@@ -208,15 +208,6 @@ void GXPokeAlphaMode(GXCompare func, u8 threshold) {
     GX_SET_PE_REG(3, reg);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void GXPokeAlphaRead(GXAlphaReadMode mode) {
     GX_SET_PE_REG(4, (mode & 0xFFFFFFFB) | 4);
 }
@@ -264,15 +255,6 @@ void GXPokeColorUpdate(GXBool update_enable) {
     *pe_reg = reg;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void GXPokeDstAlpha(GXBool enable, u8 alpha) {
     GX_SET_PE_REG(2, (u16)((u16)alpha | ((u16)enable << 8)));
 }
@@ -287,15 +269,6 @@ void GXPokeDither(GXBool dither) {
     *pe_reg = reg;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void GXPokeZMode(GXBool compare_enable, GXCompare func, GXBool update_enable) {
     u32 reg = (u32)compare_enable;
     volatile u16* pe_reg = (volatile u16*)__peReg;

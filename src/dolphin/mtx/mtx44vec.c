@@ -1,14 +1,5 @@
 #include "dolphin/mtx.h"
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 asm void PSMTX44MultVec(const register Mtx44 m, const register Vec* src, register Vec* dst) {
     nofralloc
     psq_l f0, 0(src), 0, 0

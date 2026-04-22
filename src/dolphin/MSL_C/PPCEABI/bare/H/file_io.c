@@ -107,15 +107,6 @@ FILE* fopen(const char* name, const char* mode)
     return file;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 int __get_file_modes(const char* mode, file_modes* modes)
 {
 	const char* mode_ptr;
@@ -137,7 +128,7 @@ int __get_file_modes(const char* mode, file_modes* modes)
 		case 'r':
 			open_mode = __must_exist;
 			break;
-		
+
 		case 'w':
 			open_mode = __create_or_truncate;
 			break;
@@ -145,7 +136,7 @@ int __get_file_modes(const char* mode, file_modes* modes)
 		case 'a':
 			open_mode = __create_if_necessary;
 			break;
-		
+
 		default:
 			return(0);
 	}
@@ -157,49 +148,49 @@ int __get_file_modes(const char* mode, file_modes* modes)
 	{
 		case 'b':
 			modes->binary_io = 1;
-			
+
 			if (*mode_ptr == '+')
 				mode_str = (mode_str << 8) | '+';
-			
+
 			break;
-			
+
 		case '+':
 			mode_str = (mode_str << 8) | '+';
-			
+
 			if (*mode_ptr == 'b')
 				modes->binary_io = 1;
-			
+
 			break;
 	}
-	
+
 	switch (mode_str)
 	{
 		case 'r':
 			io_mode = __read;
 			break;
-						
+
 		case 'w':
 			io_mode = __write;
 			break;
-			
+
 		case 'a':
 			io_mode = __write | __append;
 			break;
-			
+
 		case 'r+':
 			io_mode = __read_write;
 			break;
-			
+
 		case 'w+':
 			io_mode = __read_write;
 			break;
-			
+
 		case 'a+':
 			io_mode = __read_write | __append;
 			break;
 	}
-	
+
 	modes->io_mode = io_mode;
-	
+
 	return(1);
 }

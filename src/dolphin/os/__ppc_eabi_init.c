@@ -6,28 +6,10 @@ extern voidfunctionptr _ctors[];
 
 void __init_cpp(void);
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void __init_user(void) {
     __init_cpp();
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 #pragma peephole off
 void __init_cpp(void) {
     voidfunctionptr* constructor;
@@ -38,15 +20,6 @@ void __init_cpp(void) {
 }
 #pragma peephole reset
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void _ExitProcess(void) {
     PPCHalt();
 }

@@ -31,15 +31,6 @@ static u32 gTRKExceptionVectorOffsets[15] = { PPC_SystemReset,
 	                               PPC_SystemManagementInterrupt,
 	                               PPC_ThermalManagementInterrupt };
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 __declspec(section ".init") void __TRK_reset(void) { OSResetSystem(0, 0, 0); }
 
 asm void InitMetroTRK()
@@ -104,15 +95,6 @@ initCommTableSuccess:
 #endif // clang-format on
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 __declspec(weak) void InitMetroTRK_BBA(void);
 asm void InitMetroTRK_BBA(void)
 {

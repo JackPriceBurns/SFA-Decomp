@@ -53,15 +53,6 @@ static void DLdelete(AXFX_REVSTD_DELAYLINE* dl) {
     __AXFXFree(dl->inputs);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static int ReverbSTDCreate(AXFX_REVSTD_WORK* rv, f32 coloration, f32 time, f32 mix, f32 damping, f32 predelay) {
     u8 i;
     u8 k;

@@ -38,7 +38,6 @@
 #include "ghidra_import.h"
 #include "main/dll/baddie/baby_snowworm.h"
 
-/* Cross-file calls lifted from the raw Ghidra output. */
 extern undefined4 FUN_8000a538();
 extern undefined8 FUN_8000bb38();
 extern int FUN_8000cfb8();
@@ -155,7 +154,6 @@ extern undefined8 FUN_802973e4();
 extern int FUN_80297a08();
 extern uint countLeadingZeros();
 
-/* Raw global references kept as loose externs for later cleanup. */
 extern undefined4 DAT_802c2920;
 extern undefined4 DAT_802c2924;
 extern undefined4 DAT_802c2928;
@@ -488,7 +486,6 @@ extern int iRam803de4ec;
 extern undefined4* s_B8CDEFGHI_8031bca0;
 extern char s__02d__02d__02d_8031cd70[];
 
-/* Local declarations keep imported functions visible within the TU. */
 void FUN_80128260(void);
 void FUN_8012845c();
 void FUN_801287ac();
@@ -523,18 +520,6 @@ void FUN_8012e114();
 void fn_8012E250(void);
 void FUN_8012e2a4();
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x80128260
- * EN v1.0 Size: 508b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_80128260(void)
 {
   undefined uVar1;
@@ -549,7 +534,7 @@ void FUN_80128260(void)
   double dVar10;
   undefined4 uStack_9c;
   undefined4 uStack_94;
-  
+
   uVar1 = FUN_80286840();
   dVar4 = (double)FUN_802945e0();
   dVar4 = (double)(float)((double)FLOAT_803e2b98 * dVar4);
@@ -579,115 +564,31 @@ void FUN_80128260(void)
   return;
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012845C
- * EN v1.0 Size: 848b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012845c()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x801287AC
- * EN v1.0 Size: 1548b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_801287ac()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x80128DB8
- * EN v1.0 Size: 1012b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_80128db8()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x801291AC
- * EN v1.0 Size: 812b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_801291ac()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x801294D8
- * EN v1.0 Size: 1276b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_801294d8()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x801299D4
- * EN v1.0 Size: 196b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 undefined4 FUN_801299d4()
 {
     return 0;
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x80129A98
- * EN v1.0 Size: 632b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_80129a98(void)
 {
   byte bVar1;
@@ -700,7 +601,7 @@ void FUN_80129a98(void)
   double dVar8;
   double dVar9;
   double dVar10;
-  
+
   FUN_80286834();
   if (DAT_803de3f0 != 0) {
     bVar1 = (byte)DAT_803de3f0;
@@ -749,34 +650,10 @@ void FUN_80129a98(void)
   return;
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x80129D10
- * EN v1.0 Size: 672b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_80129d10()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x80129FB0
- * EN v1.0 Size: 72b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 #pragma scheduling off
 void fn_80129FB0(void)
 {
@@ -791,83 +668,23 @@ void fn_80129FB0(void)
 }
 #pragma scheduling reset
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x80129FF8
- * EN v1.0 Size: 248b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_80129ff8()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012A0F0
- * EN v1.0 Size: 300b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012a0f0()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012A21C
- * EN v1.0 Size: 5604b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012a21c()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012B800
- * EN v1.0 Size: 504b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 undefined4 FUN_8012b800()
 {
     return 0;
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012B9F8
- * EN v1.0 Size: 192b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 #pragma scheduling off
 #pragma peephole off
 int fn_8012B9F8(void)
@@ -898,57 +715,21 @@ int fn_8012B9F8(void)
 #pragma peephole reset
 #pragma scheduling reset
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012BAB8
- * EN v1.0 Size: 508b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012bab8()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012BCB4
- * EN v1.0 Size: 1292b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012bcb4()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012C1C0
- * EN v1.0 Size: 380b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012c1c0(void)
 {
   char cVar1;
   uint uVar2;
   char local_18;
   undefined auStack_17 [15];
-  
+
   cVar1 = DAT_803de3db;
   if (DAT_803de400 == '\0') {
     uVar2 = FUN_80014e9c(0);
@@ -988,50 +769,14 @@ void FUN_8012c1c0(void)
   return;
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012C33C
- * EN v1.0 Size: 1368b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012c33c()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012C894
- * EN v1.0 Size: 340b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012c894()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012C9E8
- * EN v1.0 Size: 848b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012c9e8(undefined4 param_1,undefined4 param_2,short param_3,short param_4,uint param_5,
                  uint param_6)
 {
@@ -1043,7 +788,7 @@ void FUN_8012c9e8(undefined4 param_1,undefined4 param_2,short param_3,short para
   int iVar5;
   uint uVar6;
   uint uVar7;
-  
+
   sVar1 = FUN_80286818();
   uVar2 = (uint)sVar1;
   uVar6 = uVar2 - 5;
@@ -1087,66 +832,18 @@ void FUN_8012c9e8(undefined4 param_1,undefined4 param_2,short param_3,short para
   return;
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012CD38
- * EN v1.0 Size: 3456b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012cd38()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012DAB8
- * EN v1.0 Size: 496b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012dab8()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012DCA8
- * EN v1.0 Size: 936b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012dca8()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012E050
- * EN v1.0 Size: 104b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 #pragma scheduling off
 void fn_8012E050(void)
 {
@@ -1163,18 +860,6 @@ void fn_8012E050(void)
 }
 #pragma scheduling reset
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012E0B8
- * EN v1.0 Size: 40b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 #pragma scheduling off
 #pragma peephole off
 void fn_8012E0B8(u8 param_1)
@@ -1188,86 +873,26 @@ void fn_8012E0B8(u8 param_1)
 #pragma peephole reset
 #pragma scheduling reset
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012E0E0
- * EN v1.0 Size: 8b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 u8 fn_8012E0E0(void)
 {
   return lbl_803DE3D9;
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012E0E8
- * EN v1.0 Size: 12b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 u8 fn_8012E0E8(void)
 {
   return lbl_803DE3F6 & 0xff;
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012E0F4
- * EN v1.0 Size: 32b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012e0f4(char param_1)
 {
   DAT_803de3f6 = (ushort)(param_1 != '\0');
   return;
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012E114
- * EN v1.0 Size: 316b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012e114()
 {
 }
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012E250
- * EN v1.0 Size: 84b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 #pragma scheduling off
 void fn_8012E250(void)
 {
@@ -1278,18 +903,6 @@ void fn_8012E250(void)
 }
 #pragma scheduling reset
 
-/*
- * --INFO--
- *
- * EN v1.0 Address: 0x8012E2A4
- * EN v1.0 Size: 2328b
- * EN v1.1 Address: TODO
- * EN v1.1 Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- * PAL Address: TODO
- * PAL Size: TODO
- */
 void FUN_8012e2a4()
 {
 }

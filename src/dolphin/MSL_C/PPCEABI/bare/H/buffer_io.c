@@ -86,15 +86,6 @@ int __flush_buffer(FILE* file, size_t* bytes_flushed)
 	return __no_io_error;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 int setvbuf(FILE* file, char* buffer, int mode, size_t size)
 {
 	unsigned char* file_bytes = (unsigned char*)file;

@@ -94,15 +94,6 @@ static inline void CompleteTransfer(s32 chan) {
     }
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 int EXIImm(s32 chan, void* buf, s32 len, u32 type, EXICallback callback) {
     BOOL enabled;
     EXIControl* exi;
@@ -317,7 +308,7 @@ int EXIProbe(s32 chan) {
     EXIControl* exi = &Ecb[chan];
     int rc;
     u32 id;
-    
+
     rc = __EXIProbe(chan);
     if (rc && !exi->idTime) {
         rc = EXIGetID(chan, 0, &id) ? 1 : 0;

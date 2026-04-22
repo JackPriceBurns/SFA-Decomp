@@ -121,15 +121,6 @@ reverse_copy:
 	return dst;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 void __fill_mem(void* dst, int c, size_t count)
 {
 	unsigned int alignBytes;

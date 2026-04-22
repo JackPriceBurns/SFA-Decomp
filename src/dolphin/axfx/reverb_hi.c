@@ -39,15 +39,6 @@ static void DLdelete(AXFX_REVHI_DELAYLINE* dl) {
     __AXFXFree(dl->inputs);
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static int ReverbHICreate(AXFX_REVHI_WORK* rv, f32 coloration, f32 time, f32 mix, f32 damping, f32 preDelay, f32 crosstalk) {
     u8 i;
     u8 k;
@@ -122,15 +113,6 @@ static int ReverbHICreate(AXFX_REVHI_WORK* rv, f32 coloration, f32 time, f32 mix
     return 1;
 }
 
-/*
- * --INFO--
- * PAL Address: TODO
- * PAL Size: TODO
- * EN Address: TODO
- * EN Size: TODO
- * JP Address: TODO
- * JP Size: TODO
- */
 static int ReverbHIModify(AXFX_REVHI_WORK* rv, f32 coloration, f32 time, f32 mix, f32 damping, f32 preDelay, f32 crosstalk) {
     u8 i;
 

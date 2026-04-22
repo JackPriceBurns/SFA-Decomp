@@ -1,0 +1,8 @@
+#ifndef MAIN_UNKNOWN_AUTOS_PLACEHOLDER_80283E10_H_
+#define MAIN_UNKNOWN_AUTOS_PLACEHOLDER_80283E10_H_
+
+#include "ghidra_import.h"
+
+void FUN_80283e10(int param_1,byte param_2);
+
+#endif /* MAIN_UNKNOWN_AUTOS_PLACEHOLDER_80283E10_H_ */
