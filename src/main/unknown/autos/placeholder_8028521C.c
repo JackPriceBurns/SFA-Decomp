@@ -4,15 +4,12 @@
  * Owner: main/unknown/autos/placeholder_8028521C.c
  * Text span: 0x8028521C-0x80285220
  * Imported Ghidra functions: 1
- * Verbatim-safe functions: 1
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
 #include "main/unknown/autos/placeholder_8028521C.h"
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8028521c(void);
 
 /*
  * --INFO--
@@ -27,7 +24,5 @@ void FUN_8028521c(void);
  * PAL Size: TODO
  */
 void FUN_8028521c(void)
-
 {
-  return;
 }

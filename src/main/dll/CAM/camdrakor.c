@@ -13,7 +13,7 @@
 
 /* Cross-file calls lifted from the raw Ghidra output. */
 extern undefined4 FUN_8000e054();
-extern undefined2* FUN_8000facc();
+extern void* FUN_8000facc();
 extern uint FUN_80014e9c();
 extern double FUN_80021434();
 extern uint FUN_80021884();
@@ -88,14 +88,6 @@ extern f32 FLOAT_803e25f8;
 extern f32 FLOAT_803e25fc;
 extern f32 FLOAT_803e2600;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8010c374(void);
-void FUN_8010cff8(int param_1,undefined4 param_2,undefined4 *param_3);
-void FUN_8010d160(void);
-void FUN_8010d18c(undefined2 *param_1);
-void FUN_8010d534(void);
-void FUN_8010d5dc(void);
-
 /*
  * --INFO--
  *
@@ -141,7 +133,6 @@ void FUN_8010cff8(int param_1,undefined4 param_2,undefined4 *param_3)
  * PAL Size: TODO
  */
 void FUN_8010d160(void)
-
 {
   FUN_800238c4(DAT_803de1e8);
   DAT_803de1e8 = 0;
@@ -161,7 +152,6 @@ void FUN_8010d160(void)
  * PAL Size: TODO
  */
 void FUN_8010d18c(undefined2 *param_1)
-
 {
   float fVar1;
   float fVar2;
@@ -270,7 +260,6 @@ void FUN_8010d534(void)
  * PAL Size: TODO
  */
 void FUN_8010d5dc(void)
-
 {
   FUN_800238c4(DAT_803de1f0);
   DAT_803de1f0 = 0;

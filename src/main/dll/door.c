@@ -26,9 +26,6 @@ extern undefined4 DAT_803addac;
 extern undefined4 DAT_803addb0;
 extern undefined4 DAT_803addb4;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_802085f4(undefined2 *param_1,int param_2);
-
 /*
  * --INFO--
  *

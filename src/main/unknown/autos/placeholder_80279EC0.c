@@ -29,9 +29,6 @@ extern undefined4 DAT_803def7f;
 extern undefined4 DAT_803def80;
 extern undefined4 DAT_803def81;
 
-/* Local declarations keep imported functions visible within the TU. */
-uint FUN_80279ec0(byte param_1,byte param_2,short param_3,char param_4);
-
 /*
  * --INFO--
  *

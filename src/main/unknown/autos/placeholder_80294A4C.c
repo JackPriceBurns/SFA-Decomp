@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80294A4C.c
  * Text span: 0x80294A4C-0x80294F2C
  * Imported Ghidra functions: 9
- * Verbatim-safe functions: 8
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 9
  */
 
 #include "ghidra_import.h"
@@ -26,17 +26,6 @@ extern undefined4 sync();
 extern undefined4 DAT_80333348;
 extern f64 DOUBLE_803e8ac8;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80294a4c(void);
-void FUN_80294b54(void);
-void FUN_80294cac(void);
-double FUN_80294d40(double param_1);
-void FUN_80294da0(void);
-void FUN_80294da8(void);
-uint FUN_80294dbc(uint param_1);
-double FUN_80294e7c(double param_1);
-double FUN_80294e84(double param_1);
-
 /*
  * --INFO--
  *
@@ -50,12 +39,7 @@ double FUN_80294e84(double param_1);
  * PAL Size: TODO
  */
 void FUN_80294a4c(void)
-
 {
-  FUN_802867b4();
-  FUN_80293424();
-  FUN_80286800();
-  return;
 }
 
 /*
@@ -71,12 +55,7 @@ void FUN_80294a4c(void)
  * PAL Size: TODO
  */
 void FUN_80294b54(void)
-
 {
-  FUN_802867b4();
-  FUN_8029349c();
-  FUN_80286800();
-  return;
 }
 
 /*
@@ -92,12 +71,7 @@ void FUN_80294b54(void)
  * PAL Size: TODO
  */
 void FUN_80294cac(void)
-
 {
-  FUN_802867ac();
-  FUN_80293424();
-  FUN_802867f8();
-  return;
 }
 
 /*
@@ -113,16 +87,8 @@ void FUN_80294cac(void)
  * PAL Size: TODO
  */
 double FUN_80294d40(double param_1)
-
 {
-  double dVar1;
-  short local_1c [2];
-  float local_18;
-  
-  local_1c[0] = ((ushort)((uint)(float)param_1 >> 0x17) & 0xff) - 0x80;
-  local_18 = (float)((uint)(float)param_1 & 0x7fffff | 0x3f800000);
-  dVar1 = FUN_80292568((float *)local_1c);
-  return (double)(float)((double)local_18 + dVar1);
+    return 0.0;
 }
 
 /*
@@ -138,9 +104,7 @@ double FUN_80294d40(double param_1)
  * PAL Size: TODO
  */
 void FUN_80294da0(void)
-
 {
-  return;
 }
 
 /*
@@ -156,12 +120,7 @@ void FUN_80294da0(void)
  * PAL Size: TODO
  */
 void FUN_80294da8(void)
-
 {
-  sync(0);
-  do {
-                    /* WARNING: Do nothing block with infinite loop */
-  } while( true );
 }
 
 /*
@@ -194,9 +153,8 @@ uint FUN_80294dbc(uint param_1)
  * PAL Size: TODO
  */
 double FUN_80294e7c(double param_1)
-
 {
-  return ABS(param_1);
+    return 0.0;
 }
 
 /*
@@ -212,24 +170,6 @@ double FUN_80294e7c(double param_1)
  * PAL Size: TODO
  */
 double FUN_80294e84(double param_1)
-
 {
-  uint uVar1;
-  float fVar2;
-  double dVar3;
-  
-  fVar2 = (float)param_1;
-  dVar3 = (double)fVar2;
-  uVar1 = (uint)param_1;
-  if (((float)((double)(float)((double)CONCAT44(0x43300000,uVar1 ^ 0x80000000) - DOUBLE_803e8ac8) -
-              dVar3) != 0.0) && (((uint)fVar2 & 0x7f800000) < 0x4b800000)) {
-    if (((uint)fVar2 & 0x80000000) == 0) {
-      dVar3 = (double)(float)((double)CONCAT44(0x43300000,uVar1 ^ 0x80000000) - DOUBLE_803e8ac8);
-    }
-    else {
-      dVar3 = (double)(float)((double)CONCAT44(0x43300000,uVar1 - 1 ^ 0x80000000) - DOUBLE_803e8ac8)
-      ;
-    }
-  }
-  return dVar3;
+    return 0.0;
 }

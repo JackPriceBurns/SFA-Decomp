@@ -14,7 +14,7 @@
 /* Cross-file calls lifted from the raw Ghidra output. */
 extern undefined4 FUN_800066e0();
 extern undefined4 FUN_8000bb38();
-extern undefined2* FUN_8000facc();
+extern void* FUN_8000facc();
 extern uint FUN_80020078();
 extern undefined4 FUN_800201ac();
 extern uint FUN_80022264();
@@ -47,11 +47,6 @@ extern f32 FLOAT_803e4aa8;
 extern f32 FLOAT_803e4aac;
 extern f32 FLOAT_803e4ab8;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8018de58(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 short *param_9);
-
 /*
  * --INFO--
  *
@@ -67,7 +62,6 @@ void FUN_8018de58(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 void FUN_8018de58(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  short *param_9)
-
 {
   short sVar1;
   float fVar2;

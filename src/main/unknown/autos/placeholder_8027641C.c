@@ -14,9 +14,6 @@
 /* Raw global references kept as loose externs for later cleanup. */
 extern ushort DAT_8032fa46;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8027641c(int param_1);
-
 /*
  * --INFO--
  *

@@ -18,8 +18,8 @@ extern undefined8 FUN_80014974();
 extern undefined4 FUN_80014b68();
 extern undefined4 FUN_800154d0();
 extern undefined4 FUN_800168a8();
-extern undefined* FUN_80017400();
-extern ushort* FUN_800195a8();
+extern void* FUN_80017400();
+extern void* FUN_800195a8();
 extern undefined8 FUN_80019940();
 extern undefined4 FUN_800199a8();
 extern undefined4 FUN_8001b4f8();
@@ -95,34 +95,6 @@ extern f32 FLOAT_803e2a60;
 extern f32 FLOAT_803e2a64;
 extern f32 FLOAT_803e2a70;
 extern undefined4* PTR_DAT_8031b928;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8011cd58(void);
-void FUN_8011d038(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9);
-int FUN_8011d260(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-void FUN_8011d774(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-undefined4
-FUN_8011d808(undefined8 param_1,double param_2,undefined8 param_3,undefined8 param_4,
-            undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-void FUN_8011da30(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_8011da84(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-undefined4
-FUN_8011db40(undefined8 param_1,double param_2,double param_3,undefined8 param_4,undefined8 param_5,
-            undefined8 param_6,undefined8 param_7,undefined8 param_8,undefined4 param_9,
-            undefined4 param_10,undefined4 param_11,undefined4 param_12,undefined4 param_13,
-            undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_8011dbb4(void);
-void FUN_8011dbfc(uint param_1);
 
 /*
  * --INFO--
@@ -228,7 +200,6 @@ void FUN_8011da30(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16)
-
 {
   undefined8 uVar1;
   
@@ -294,7 +265,6 @@ FUN_8011db40(undefined8 param_1,double param_2,double param_3,undefined8 param_4
  * PAL Size: TODO
  */
 void FUN_8011dbb4(void)
-
 {
   FUN_80054484();
   return;
@@ -313,7 +283,6 @@ void FUN_8011dbb4(void)
  * PAL Size: TODO
  */
 void FUN_8011dbfc(uint param_1)
-
 {
   ushort uVar1;
   

@@ -26,9 +26,6 @@ extern f32 FLOAT_803e3c8c;
 extern f32 FLOAT_803e3c94;
 extern f32 FLOAT_803e3c98;
 
-/* Local declarations keep imported functions visible within the TU. */
-undefined4 FUN_80165884(short *param_1,int param_2);
-
 /*
  * --INFO--
  *
@@ -42,7 +39,6 @@ undefined4 FUN_80165884(short *param_1,int param_2);
  * PAL Size: TODO
  */
 undefined4 FUN_80165884(short *param_1,int param_2)
-
 {
   float fVar1;
   int iVar2;

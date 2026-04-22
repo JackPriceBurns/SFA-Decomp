@@ -130,20 +130,6 @@ extern f32 FLOAT_803e470c;
 extern f32 FLOAT_803e4718;
 extern f32 FLOAT_803e471c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80184d4c();
-void FUN_80184e88();
-void FUN_80185c1c();
-void FUN_80185dc0(double param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 uint param_9);
-void FUN_80185f2c(void);
-void FUN_80185f7c(void);
-void FUN_801860cc();
-void FUN_80186824();
-void FUN_80186a04(int param_1);
-void FUN_80186a38(int param_1);
-
 /*
  * --INFO--
  *
@@ -156,7 +142,7 @@ void FUN_80186a38(int param_1);
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80184d4c()
+void FUN_80184d4c(void)
 {
 }
 
@@ -172,7 +158,8 @@ void FUN_80184d4c()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80184e88()
+void FUN_80184e88(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
+                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8)
 {
 }
 
@@ -188,7 +175,7 @@ void FUN_80184e88()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80185c1c()
+void FUN_80185c1c(int param_1,int param_2)
 {
 }
 
@@ -336,7 +323,8 @@ LAB_801860b0:
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_801860cc()
+void FUN_801860cc(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
+                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8)
 {
 }
 
@@ -352,7 +340,7 @@ void FUN_801860cc()
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80186824()
+void FUN_80186824(undefined2 *param_1,int param_2)
 {
 }
 

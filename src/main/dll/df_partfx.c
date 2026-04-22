@@ -94,36 +94,6 @@ extern f32 FLOAT_803e1220;
 extern f32 FLOAT_803e122c;
 extern f32 FLOAT_803e1230;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_800d6844(int param_1);
-void FUN_800d68ec(void);
-void FUN_800d6d5c(undefined4 param_1,undefined4 param_2,int param_3);
-void FUN_800d77f4(void);
-void FUN_800d7cfc(undefined param_1);
-void FUN_800d7d18(double param_1,uint param_2,undefined param_3);
-uint FUN_800d7d78(void);
-void FUN_800d7d90(uint param_1,undefined param_2);
-void FUN_800d7de4(uint param_1,undefined param_2);
-void FUN_800d7e58(uint param_1,undefined param_2);
-void FUN_800d7ed0(void);
-void FUN_800d82ac(double param_1,double param_2,double param_3,double param_4,double param_5,
-                 int param_6,int param_7);
-void FUN_800d83f8(double param_1,double param_2,double param_3,int param_4,uint *param_5);
-void FUN_800d8534(double param_1,ushort *param_2,uint *param_3);
-void FUN_800d86a0(ushort *param_1,int param_2);
-void FUN_800d8830(int param_1,undefined4 param_2,undefined4 param_3,int param_4,int param_5);
-void FUN_800d8938(undefined4 param_1,undefined4 param_2,int param_3,int param_4,undefined4 param_5,
-                 int param_6);
-void FUN_800d8a44(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,int param_10,uint param_11,uint param_12,undefined4 param_13,
-                 undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_800d8c10(double param_1,double param_2,int param_3,int param_4);
-void FUN_800d8e40(double param_1,int param_2,uint *param_3);
-void FUN_800d8ee8(int param_1,int param_2,undefined4 param_3);
-void FUN_800d8f48(uint param_1,int param_2,int param_3,int param_4,int param_5);
-void FUN_800d8f94(uint param_1,int param_2,int param_3,int param_4,int param_5);
-
 /*
  * --INFO--
  *
@@ -137,7 +107,6 @@ void FUN_800d8f94(uint param_1,int param_2,int param_3,int param_4,int param_5);
  * PAL Size: TODO
  */
 void FUN_800d6844(int param_1)
-
 {
   int iVar1;
   int aiStack_18 [5];
@@ -171,7 +140,6 @@ void FUN_800d6844(int param_1)
  * PAL Size: TODO
  */
 void FUN_800d68ec(void)
-
 {
   float fVar1;
   float fVar2;
@@ -386,7 +354,6 @@ void FUN_800d6d5c(undefined4 param_1,undefined4 param_2,int param_3)
  * PAL Size: TODO
  */
 void FUN_800d77f4(void)
-
 {
   uint uVar1;
   uint uVar2;
@@ -570,7 +537,6 @@ void FUN_800d7d18(double param_1,uint param_2,undefined param_3)
  * PAL Size: TODO
  */
 uint FUN_800d7d78(void)
-
 {
   return ((uint)(byte)((FLOAT_803e11d8 == FLOAT_803de0a0) << 1) << 0x1c) >> 0x1d;
 }
@@ -653,7 +619,6 @@ void FUN_800d7ed0(void)
  */
 void FUN_800d82ac(double param_1,double param_2,double param_3,double param_4,double param_5,
                  int param_6,int param_7)
-
 {
   float fVar1;
   double dVar2;
@@ -706,7 +671,6 @@ void FUN_800d82ac(double param_1,double param_2,double param_3,double param_4,do
  * PAL Size: TODO
  */
 void FUN_800d83f8(double param_1,double param_2,double param_3,int param_4,uint *param_5)
-
 {
   float fVar1;
   double dVar2;
@@ -760,7 +724,6 @@ void FUN_800d83f8(double param_1,double param_2,double param_3,int param_4,uint 
  * PAL Size: TODO
  */
 void FUN_800d8534(double param_1,ushort *param_2,uint *param_3)
-
 {
   float local_88;
   float local_84;
@@ -821,7 +784,6 @@ void FUN_800d8534(double param_1,ushort *param_2,uint *param_3)
  * PAL Size: TODO
  */
 void FUN_800d86a0(ushort *param_1,int param_2)
-
 {
   int iVar1;
   uint uVar2;
@@ -884,7 +846,6 @@ void FUN_800d86a0(ushort *param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_800d8830(int param_1,undefined4 param_2,undefined4 param_3,int param_4,int param_5)
-
 {
   while ((param_4 != 0 && (param_1 != 0))) {
     if (param_5 == 0) {
@@ -915,7 +876,6 @@ void FUN_800d8830(int param_1,undefined4 param_2,undefined4 param_3,int param_4,
  */
 void FUN_800d8938(undefined4 param_1,undefined4 param_2,int param_3,int param_4,undefined4 param_5,
                  int param_6)
-
 {
   int *piVar1;
   
@@ -951,7 +911,6 @@ void FUN_800d8a44(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9,int param_10,uint param_11,uint param_12,undefined4 param_13,
                  undefined4 param_14,undefined4 param_15,undefined4 param_16)
-
 {
   int iVar1;
   uint uVar2;
@@ -1026,7 +985,6 @@ void FUN_800d8a44(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_800d8c10(double param_1,double param_2,int param_3,int param_4)
-
 {
   float fVar1;
   double dVar2;
@@ -1091,7 +1049,6 @@ void FUN_800d8c10(double param_1,double param_2,int param_3,int param_4)
  * PAL Size: TODO
  */
 void FUN_800d8e40(double param_1,int param_2,uint *param_3)
-
 {
   int iVar1;
   
@@ -1124,7 +1081,6 @@ void FUN_800d8e40(double param_1,int param_2,uint *param_3)
  * PAL Size: TODO
  */
 void FUN_800d8ee8(int param_1,int param_2,undefined4 param_3)
-
 {
   undefined4 uVar1;
   undefined4 local_18 [5];
@@ -1150,7 +1106,6 @@ void FUN_800d8ee8(int param_1,int param_2,undefined4 param_3)
  * PAL Size: TODO
  */
 void FUN_800d8f48(uint param_1,int param_2,int param_3,int param_4,int param_5)
-
 {
   if ((*(uint *)(param_2 + 0x314) & 1 << param_3) != 0) {
     *(uint *)(param_2 + 0x314) = *(uint *)(param_2 + 0x314) & ~(1 << param_3);
@@ -1172,7 +1127,6 @@ void FUN_800d8f48(uint param_1,int param_2,int param_3,int param_4,int param_5)
  * PAL Size: TODO
  */
 void FUN_800d8f94(uint param_1,int param_2,int param_3,int param_4,int param_5)
-
 {
   if ((*(uint *)(param_2 + 0x314) & 1 << param_3) != 0) {
     *(uint *)(param_2 + 0x314) = *(uint *)(param_2 + 0x314) & ~(1 << param_3);

@@ -38,16 +38,6 @@ extern undefined4 DAT_803dcc9c;
 extern undefined4* DAT_803dd72c;
 extern f64 DOUBLE_803e60c0;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801d5afc(double param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 short *param_9,int param_10,int param_11,undefined4 param_12,undefined4 param_13,
-                 undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_801d5cb4(double param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 short *param_9,int param_10,undefined4 param_11,int param_12,undefined4 param_13,
-                 undefined4 param_14,undefined4 param_15,undefined4 param_16);
-
 /*
  * --INFO--
  *

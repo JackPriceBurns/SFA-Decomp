@@ -30,12 +30,6 @@ extern f32 FLOAT_803e29dc;
 extern f32 FLOAT_803e29e0;
 extern char s__3d__02d__02d_8031b4a4[];
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8011a07c(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,uint param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-
 /*
  * --INFO--
  *

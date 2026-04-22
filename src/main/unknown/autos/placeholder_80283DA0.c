@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80283DA0.c
  * Text span: 0x80283DA0-0x80283E10
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 5
  */
 
 #include "ghidra_import.h"
@@ -13,13 +13,6 @@
 
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4 DAT_803defc4;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80283da0(int param_1,undefined4 param_2,undefined4 param_3);
-undefined FUN_80283dc0(int param_1);
-undefined FUN_80283dd4(int param_1);
-undefined2 FUN_80283de8(int param_1);
-void FUN_80283dfc(int param_1,undefined param_2);
 
 /*
  * --INFO--
@@ -34,11 +27,7 @@ void FUN_80283dfc(int param_1,undefined param_2);
  * PAL Size: TODO
  */
 void FUN_80283da0(int param_1,undefined4 param_2,undefined4 param_3)
-
 {
-  *(undefined4 *)(DAT_803defc4 + param_1 * 0xf4 + 0x94) = param_2;
-  *(undefined4 *)(DAT_803defc4 + param_1 * 0xf4 + 0x98) = param_3;
-  return;
 }
 
 /*
@@ -54,9 +43,8 @@ void FUN_80283da0(int param_1,undefined4 param_2,undefined4 param_3)
  * PAL Size: TODO
  */
 undefined FUN_80283dc0(int param_1)
-
 {
-  return *(undefined *)(DAT_803defc4 + param_1 * 0xf4 + 0x9c);
+    return 0;
 }
 
 /*
@@ -72,9 +60,8 @@ undefined FUN_80283dc0(int param_1)
  * PAL Size: TODO
  */
 undefined FUN_80283dd4(int param_1)
-
 {
-  return *(undefined *)(DAT_803defc4 + param_1 * 0xf4 + 0x90);
+    return 0;
 }
 
 /*
@@ -90,9 +77,8 @@ undefined FUN_80283dd4(int param_1)
  * PAL Size: TODO
  */
 undefined2 FUN_80283de8(int param_1)
-
 {
-  return *(undefined2 *)(DAT_803defc4 + param_1 * 0xf4 + 0x70);
+    return 0;
 }
 
 /*
@@ -108,8 +94,5 @@ undefined2 FUN_80283de8(int param_1)
  * PAL Size: TODO
  */
 void FUN_80283dfc(int param_1,undefined param_2)
-
 {
-  *(undefined *)(DAT_803defc4 + param_1 * 0xf4 + 0xa0) = param_2;
-  return;
 }

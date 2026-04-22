@@ -22,12 +22,6 @@ extern f32 FLOAT_803e5a94;
 extern f32 FLOAT_803e5ab0;
 extern f32 FLOAT_803e5ab4;
 
-/* Local declarations keep imported functions visible within the TU. */
-double FUN_801c1c4c(double param_1,double param_2,double param_3,double param_4,double param_5,
-                   double param_6,float *param_7,float *param_8,float *param_9);
-void FUN_801c1cf4(undefined8 param_1,double param_2,double param_3,undefined4 param_4,
-                 undefined4 param_5,float *param_6,undefined *param_7);
-
 /*
  * --INFO--
  *
@@ -42,7 +36,6 @@ void FUN_801c1cf4(undefined8 param_1,double param_2,double param_3,undefined4 pa
  */
 double FUN_801c1c4c(double param_1,double param_2,double param_3,double param_4,double param_5,
                    double param_6,float *param_7,float *param_8,float *param_9)
-
 {
   double dVar1;
   double dVar2;

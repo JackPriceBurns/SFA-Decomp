@@ -92,19 +92,6 @@ extern int iRam803de2bc;
 extern char s_Fail_to_prepare_8031afec[];
 extern char s_n_attractmode_c_8031afdc[];
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80115ff0(void);
-undefined4 FUN_80116110(void);
-void FUN_8011615c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-undefined4 FUN_80116258(void);
-void FUN_8011637c(void);
-void FUN_801163b8(void);
-void FUN_801164c0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-
 /*
  * --INFO--
  *
@@ -134,7 +121,6 @@ void FUN_80115ff0(void)
  * PAL Size: TODO
  */
 undefined4 FUN_80116110(void)
-
 {
   if (DAT_803de268 != '\0') {
     DAT_803de268 = '\0';
@@ -160,7 +146,6 @@ void FUN_8011615c(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16)
-
 {
   undefined8 uVar1;
   
@@ -208,7 +193,6 @@ undefined4 FUN_80116258(void)
  * PAL Size: TODO
  */
 void FUN_8011637c(void)
-
 {
   FUN_8001406c(0);
   DAT_803de270 = 0;
@@ -232,7 +216,6 @@ void FUN_8011637c(void)
  * PAL Size: TODO
  */
 void FUN_801163b8(void)
-
 {
   undefined4 uVar1;
   

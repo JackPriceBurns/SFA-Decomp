@@ -4,8 +4,8 @@
  * Owner: main/dll/baddie/TumbleweedBush.c
  * Text span: 0x80131078-0x80132368
  * Imported Ghidra functions: 14
- * Verbatim-safe functions: 7
- * Auto-stubbed functions: 7
+ * Verbatim-safe functions: 5
+ * Auto-stubbed functions: 9
  */
 
 #include "ghidra_import.h"
@@ -88,36 +88,6 @@ extern f32 FLOAT_803e2e80;
 extern f32 FLOAT_803e2e84;
 extern f32 FLOAT_803e2e88;
 
-/* Local declarations keep imported functions visible within the TU. */
-undefined4 FUN_80131078(void);
-void FUN_80131508(void);
-void FUN_80131574(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,undefined param_11,undefined *param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16,
-                 undefined2 param_17,undefined2 param_18,undefined2 param_19,undefined2 param_20);
-void FUN_801317f4(void);
-void FUN_8013184c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_80131920(int param_1,int param_2);
-void FUN_801319a0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 short *param_9,undefined4 param_10,uint param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_80131cc8(int param_1);
-void FUN_8013207c(uint param_1);
-void FUN_8013209c(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5);
-void FUN_80132144(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5);
-void FUN_801321e8(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5,
-                 undefined2 param_6);
-void FUN_80132294(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_80132308(void);
-
 /*
  * --INFO--
  *
@@ -184,7 +154,6 @@ void FUN_80131574(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_801317f4(void)
-
 {
   int iVar1;
   
@@ -229,7 +198,6 @@ void FUN_8013184c(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_80131920(int param_1,int param_2)
-
 {
   if (param_2 == 0) {
     *(byte *)(param_1 + 4) = *(byte *)(param_1 + 4) & 0xfe;
@@ -278,7 +246,6 @@ void FUN_801319a0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
  * PAL Size: TODO
  */
 void FUN_80131cc8(int param_1)
-
 {
   byte bVar1;
   short sVar2;
@@ -412,7 +379,6 @@ LAB_80131fc8:
  * PAL Size: TODO
  */
 void FUN_8013207c(uint param_1)
-
 {
   FUN_800238c4(param_1);
   return;
@@ -431,7 +397,6 @@ void FUN_8013207c(uint param_1)
  * PAL Size: TODO
  */
 void FUN_8013209c(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5)
-
 {
   undefined2 uVar2;
   int iVar1;
@@ -470,30 +435,7 @@ void FUN_8013209c(undefined4 param_1,undefined4 param_2,short param_3,short para
  * PAL Size: TODO
  */
 void FUN_80132144(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5)
-
 {
-  undefined2 uVar2;
-  undefined2 *puVar1;
-  undefined2 extraout_r4;
-  
-  uVar2 = FUN_80286840();
-  if (param_5 < param_3) {
-    param_5 = param_3;
-  }
-  if (param_4 < param_5) {
-    param_5 = param_4;
-  }
-  puVar1 = (undefined2 *)FUN_80023d8c(0xe,5);
-  *(undefined *)((int)puVar1 + 5) = 1;
-  puVar1[6] = param_5;
-  puVar1[4] = param_3;
-  puVar1[5] = param_4;
-  *puVar1 = uVar2;
-  puVar1[1] = extraout_r4;
-  *(undefined *)(puVar1 + 2) = 0;
-  *(undefined *)(puVar1 + 3) = 4;
-  FUN_8028688c();
-  return;
 }
 
 /*
@@ -510,31 +452,7 @@ void FUN_80132144(undefined4 param_1,undefined4 param_2,short param_3,short para
  */
 void FUN_801321e8(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5,
                  undefined2 param_6)
-
 {
-  undefined2 uVar2;
-  undefined2 *puVar1;
-  undefined2 extraout_r4;
-  
-  uVar2 = FUN_8028683c();
-  if (param_5 < param_3) {
-    param_5 = param_3;
-  }
-  if (param_4 < param_5) {
-    param_5 = param_4;
-  }
-  puVar1 = (undefined2 *)FUN_80023d8c(0x10,5);
-  *(undefined *)((int)puVar1 + 5) = 0;
-  puVar1[6] = param_5;
-  puVar1[4] = param_3;
-  puVar1[5] = param_4;
-  *puVar1 = uVar2;
-  puVar1[1] = extraout_r4;
-  *(undefined *)(puVar1 + 2) = 0;
-  *(undefined *)(puVar1 + 3) = 4;
-  puVar1[7] = param_6;
-  FUN_80286888();
-  return;
 }
 
 /*

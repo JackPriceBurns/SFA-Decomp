@@ -12,7 +12,7 @@
 #include "main/dll/sfxplayer.h"
 
 /* Cross-file calls lifted from the raw Ghidra output. */
-extern undefined2* FUN_8002becc();
+extern void* FUN_8002becc();
 extern int FUN_8002e088();
 extern uint FUN_8002e144();
 extern undefined8 FUN_80286840();
@@ -25,10 +25,6 @@ extern undefined4* DAT_803dd72c;
 extern undefined4 DAT_803e70e8;
 extern undefined4 DAT_803e70ec;
 extern f32 FLOAT_803e7110;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80207f80(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
 
 /*
  * --INFO--

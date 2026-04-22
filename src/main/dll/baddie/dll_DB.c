@@ -4,8 +4,8 @@
  * Owner: main/dll/baddie/dll_DB.c
  * Text span: 0x8012FD0C-0x801309A8
  * Imported Ghidra functions: 18
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 13
+ * Verbatim-safe functions: 4
+ * Auto-stubbed functions: 14
  */
 
 #include "ghidra_import.h"
@@ -91,37 +91,6 @@ extern f32 FLOAT_803de56c;
 extern f32 FLOAT_803e2abc;
 extern f32 FLOAT_803e2e68;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8012fd0c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,short param_10);
-void FUN_8012fdc8(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9);
-undefined4
-FUN_8012fe84(undefined8 param_1,double param_2,double param_3,undefined8 param_4,undefined8 param_5,
-            undefined8 param_6,undefined8 param_7,undefined8 param_8);
-void FUN_8012fef4(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-void FUN_80130044(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-void FUN_80130110(undefined param_1);
-void FUN_80130118(void);
-void FUN_80130124(undefined2 param_1);
-void FUN_8013012c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-int FUN_80130240(int *param_1);
-void FUN_801303fc(undefined4 param_1,undefined2 param_2);
-undefined2 FUN_8013047c(void);
-void FUN_8013049c(int param_1);
-void FUN_80130618(void);
-void FUN_801307d4(undefined param_1);
-void FUN_801307dc(void);
-void FUN_801307e8(void);
-void FUN_801307f4(void);
-
 /*
  * --INFO--
  *
@@ -173,7 +142,6 @@ void FUN_8012fdc8(undefined8 param_1,double param_2,double param_3,undefined8 pa
 undefined4
 FUN_8012fe84(undefined8 param_1,double param_2,double param_3,undefined8 param_4,undefined8 param_5,
             undefined8 param_6,undefined8 param_7,undefined8 param_8)
-
 {
   undefined8 uVar1;
   
@@ -253,7 +221,6 @@ void FUN_80130110(undefined param_1)
  * PAL Size: TODO
  */
 void FUN_80130118(void)
-
 {
   DAT_803de408 = 0x3c;
   return;
@@ -307,46 +274,8 @@ void FUN_8013012c(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 int FUN_80130240(int *param_1)
-
 {
-  int iVar1;
-  uint uVar2;
-  uint uVar3;
-  char local_18;
-  undefined auStack_17 [19];
-  
-  iVar1 = FUN_80020800();
-  if (iVar1 != 0) {
-    return -1;
-  }
-  FLOAT_803de56c = FLOAT_803de56c + FLOAT_803dc074;
-  if (FLOAT_803e2e68 < FLOAT_803de56c) {
-    FLOAT_803de56c = FLOAT_803de56c - FLOAT_803e2e68;
-  }
-  FUN_80014ba4(0,auStack_17,&local_18);
-  if (local_18 < '\0') {
-    *param_1 = *param_1 + 1;
-  }
-  else if ('\0' < local_18) {
-    *param_1 = *param_1 + -1;
-  }
-  if (*param_1 < 0) {
-    *param_1 = DAT_803de570 + -1;
-  }
-  if ((int)DAT_803de570 <= *param_1) {
-    *param_1 = 0;
-  }
-  if (DAT_803de568 != '\0') {
-    uVar2 = FUN_80014e9c(0);
-    if (((uVar2 & 0x1100) != 0) && (uVar3 = FUN_80020078(0x44f), uVar3 == 0)) {
-      return (int)DAT_803de575;
-    }
-    if ((uVar2 & 0x200) != 0) {
-      return (int)DAT_803de574;
-    }
-  }
-  DAT_803de568 = 1;
-  return -1;
+    return 0;
 }
 
 /*
@@ -443,7 +372,6 @@ void FUN_801307d4(undefined param_1)
  * PAL Size: TODO
  */
 void FUN_801307dc(void)
-
 {
   DAT_803de579 = 0;
   return;
@@ -462,7 +390,6 @@ void FUN_801307dc(void)
  * PAL Size: TODO
  */
 void FUN_801307e8(void)
-
 {
   DAT_803de579 = 1;
   return;

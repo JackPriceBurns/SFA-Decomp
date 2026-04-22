@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_8027A940.c
  * Text span: 0x8027A940-0x8027AC80
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 1
- * Auto-stubbed functions: 4
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 5
  */
 
 #include "ghidra_import.h"
@@ -79,13 +79,6 @@ extern undefined4 DAT_803cb7ee;
 extern undefined4 DAT_803cb7ef;
 extern f64 DOUBLE_803e84b8;
 extern f32 FLOAT_803e84b0;
-
-/* Local declarations keep imported functions visible within the TU. */
-undefined4 FUN_8027a940(int param_1);
-void FUN_8027a9bc(int param_1);
-void FUN_8027aa18(int param_1);
-void FUN_8027aa94(void);
-int FUN_8027ac44(uint param_1);
 
 /*
  * --INFO--
@@ -165,8 +158,6 @@ void FUN_8027aa94(void)
  * PAL Size: TODO
  */
 int FUN_8027ac44(uint param_1)
-
 {
-  return (int)(FLOAT_803e84b0 *
-              (float)((double)CONCAT44(0x43300000,param_1 & 0xffff) - DOUBLE_803e84b8));
+    return 0;
 }

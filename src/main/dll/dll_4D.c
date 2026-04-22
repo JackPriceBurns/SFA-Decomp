@@ -32,9 +32,6 @@ extern undefined4 DAT_803de384;
 extern undefined4 DAT_803de385;
 extern f32 FLOAT_803e2a50;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8011c5fc(int param_1,int param_2);
-
 /*
  * --INFO--
  *

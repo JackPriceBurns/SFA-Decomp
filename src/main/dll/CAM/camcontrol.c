@@ -4,8 +4,8 @@
  * Owner: main/dll/CAM/camcontrol.c
  * Text span: 0x801024E8-0x80103648
  * Imported Ghidra functions: 8
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 4
+ * Auto-stubbed functions: 4
  */
 
 #include "ghidra_import.h"
@@ -79,24 +79,6 @@ extern f32 FLOAT_803e22f8;
 extern f32 FLOAT_803e22fc;
 extern f32 FLOAT_803e2300;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801024e8(void);
-void FUN_80102bb0(double param_1,int param_2,float *param_3,float *param_4,float *param_5,
-                 float *param_6,int param_7);
-void FUN_80102d3c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,uint param_10,char param_11,undefined4 param_12,undefined4 param_13,
-                 undefined4 param_14,undefined4 param_15,undefined4 param_16);
-int FUN_80103130(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                int param_9);
-void FUN_801031a4(void);
-void FUN_801031e0(undefined4 param_1,undefined param_2);
-void FUN_80103224(undefined4 param_1,undefined4 param_2,undefined param_3,int param_4,uint param_5,
-                 undefined4 param_6,undefined param_7);
-void FUN_8010335c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-
 /*
  * --INFO--
  *
@@ -127,33 +109,7 @@ void FUN_801024e8(void)
  */
 void FUN_80102bb0(double param_1,int param_2,float *param_3,float *param_4,float *param_5,
                  float *param_6,int param_7)
-
 {
-  int iVar1;
-  double dVar2;
-  
-  iVar1 = *(int *)(DAT_803de19c + 0xa4);
-  if (param_7 == 0) {
-    *param_3 = *(float *)(param_2 + 0x18) - *(float *)(iVar1 + 0x18);
-    *param_4 = *(float *)(param_2 + 0x1c) - (float)((double)*(float *)(iVar1 + 0x1c) + param_1);
-    *param_5 = *(float *)(param_2 + 0x20) - *(float *)(iVar1 + 0x20);
-  }
-  else {
-    *param_3 = *(float *)(param_2 + 0xc) - *(float *)(iVar1 + 0xc);
-    *param_4 = *(float *)(param_2 + 0x10) - (float)((double)*(float *)(iVar1 + 0x10) + param_1);
-    *param_5 = *(float *)(param_2 + 0x14) - *(float *)(iVar1 + 0x14);
-  }
-  if (param_6 != (float *)0x0) {
-    *param_6 = *param_3 * *param_3 + *param_5 * *param_5;
-    if ((double)FLOAT_803e22b0 < (double)*param_6) {
-      dVar2 = FUN_80293900((double)*param_6);
-      *param_6 = (float)dVar2;
-    }
-    if (*param_6 < FLOAT_803e2300) {
-      *param_6 = FLOAT_803e2300;
-    }
-  }
-  return;
 }
 
 /*
@@ -190,7 +146,6 @@ void FUN_80102d3c(undefined8 param_1,double param_2,double param_3,undefined8 pa
 int FUN_80103130(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                 int param_9)
-
 {
   int iVar1;
   undefined4 in_r7;
@@ -224,7 +179,6 @@ int FUN_80103130(undefined8 param_1,double param_2,double param_3,undefined8 par
  * PAL Size: TODO
  */
 void FUN_801031a4(void)
-
 {
   if (DAT_803de194 != 0) {
     (**(code **)(**(int **)(DAT_803de194 + 4) + 0x10))();
@@ -245,7 +199,6 @@ void FUN_801031a4(void)
  * PAL Size: TODO
  */
 void FUN_801031e0(undefined4 param_1,undefined param_2)
-
 {
   if (DAT_803de16c != -1) {
     FUN_80103224(DAT_803de16c,DAT_803de168,(char)DAT_803de164,0,0,param_1,param_2);
@@ -284,7 +237,6 @@ void FUN_80103224(undefined4 param_1,undefined4 param_2,undefined param_3,int pa
  */
 void FUN_8010335c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8)
-
 {
   int iVar1;
   undefined4 uVar2;

@@ -57,10 +57,6 @@ extern undefined4 DAT_803de318;
 extern f32 FLOAT_803e2990;
 extern f32 FLOAT_803e2998;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8011722c(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-
 /*
  * --INFO--
  *

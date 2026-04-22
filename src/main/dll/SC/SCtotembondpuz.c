@@ -17,9 +17,6 @@ extern undefined4 FUN_800201ac();
 extern undefined4 FUN_80036018();
 extern undefined4 FUN_801d76c8();
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801d80f0(short *param_1,int param_2);
-
 /*
  * --INFO--
  *

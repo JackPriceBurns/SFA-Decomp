@@ -26,9 +26,6 @@ extern undefined4 FUN_80296c78();
 extern undefined4* DAT_803dd72c;
 extern f32 FLOAT_803e5d70;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801c9470(undefined4 param_1,undefined4 param_2,int param_3);
-
 /*
  * --INFO--
  *
@@ -42,7 +39,6 @@ void FUN_801c9470(undefined4 param_1,undefined4 param_2,int param_3);
  * PAL Size: TODO
  */
 void FUN_801c9470(undefined4 param_1,undefined4 param_2,int param_3)
-
 {
   byte bVar1;
   int iVar2;

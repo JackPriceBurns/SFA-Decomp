@@ -21,9 +21,6 @@ extern undefined4 DAT_803dc5f0;
 extern undefined4 DAT_803de190;
 extern undefined4 DAT_803de19c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801023a8(void);
-
 /*
  * --INFO--
  *
@@ -37,7 +34,6 @@ void FUN_801023a8(void);
  * PAL Size: TODO
  */
 void FUN_801023a8(void)
-
 {
   int iVar1;
   

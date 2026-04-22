@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80284698.c
  * Text span: 0x80284698-0x80284704
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 4
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 5
  */
 
 #include "ghidra_import.h"
@@ -20,13 +20,6 @@ extern undefined4 DAT_803defc4;
 extern undefined4 DAT_803deff4;
 extern undefined4 DAT_803deff8;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80284698(void);
-void FUN_8028469c(undefined4 *param_1);
-void FUN_802846b0(void);
-undefined4 FUN_802846bc(int param_1);
-uint FUN_802846e4(int param_1);
-
 /*
  * --INFO--
  *
@@ -40,9 +33,7 @@ uint FUN_802846e4(int param_1);
  * PAL Size: TODO
  */
 void FUN_80284698(void)
-
 {
-  return;
 }
 
 /*
@@ -74,10 +65,7 @@ void FUN_8028469c(undefined4 *param_1)
  * PAL Size: TODO
  */
 void FUN_802846b0(void)
-
 {
-  DAT_803defb4 = 0;
-  return;
 }
 
 /*
@@ -93,15 +81,8 @@ void FUN_802846b0(void)
  * PAL Size: TODO
  */
 undefined4 FUN_802846bc(int param_1)
-
 {
-  int iVar1;
-  
-  iVar1 = DAT_803defc4 + param_1 * 0xf4;
-  if (*(char *)(iVar1 + 0xec) == '\0') {
-    return 0xffffffff;
-  }
-  return *(undefined4 *)(iVar1 + 0xe8);
+    return 0;
 }
 
 /*
@@ -117,10 +98,6 @@ undefined4 FUN_802846bc(int param_1)
  * PAL Size: TODO
  */
 uint FUN_802846e4(int param_1)
-
 {
-  uint uVar1;
-  
-  uVar1 = countLeadingZeros(1 - (uint)*(byte *)(DAT_803defc4 + param_1 * 0xf4 + 0xec));
-  return uVar1 >> 5;
+    return 0;
 }

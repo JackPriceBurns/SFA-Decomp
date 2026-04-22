@@ -4,8 +4,8 @@
  * Owner: main/dll/autoTransporter.c
  * Text span: 0x80178640-0x80179864
  * Imported Ghidra functions: 9
- * Verbatim-safe functions: 7
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 6
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -16,7 +16,7 @@ extern undefined4 FUN_80008cbc();
 extern bool FUN_8000b5f0();
 extern undefined4 FUN_8000b844();
 extern undefined4 FUN_8000bb38();
-extern undefined2* FUN_8000facc();
+extern void* FUN_8000facc();
 extern uint FUN_80020078();
 extern undefined4 FUN_800201ac();
 extern int FUN_8002bac4();
@@ -60,24 +60,6 @@ extern f32 FLOAT_803e4308;
 extern f32 FLOAT_803e430c;
 extern f32 FLOAT_803e431c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80178648(undefined4 param_1);
-void FUN_801786a0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9);
-void FUN_80178774(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,int param_10);
-void FUN_801787e4(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,int param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_80179480(int param_1);
-void FUN_801794e4(int param_1);
-void FUN_80179518(undefined2 *param_1);
-void FUN_8017967c(undefined2 *param_1,int param_2);
-uint FUN_80179850(int param_1);
-
 /*
  * --INFO--
  *
@@ -91,7 +73,6 @@ uint FUN_80179850(int param_1);
  * PAL Size: TODO
  */
 void FUN_80178648(undefined4 param_1)
-
 {
   float local_18;
   float local_14;
@@ -119,7 +100,6 @@ void FUN_80178648(undefined4 param_1)
 void FUN_801786a0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9)
-
 {
   int iVar1;
   float *pfVar2;
@@ -162,17 +142,7 @@ void FUN_801786a0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 void FUN_80178774(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9,int param_10)
-
 {
-  float *pfVar1;
-  
-  pfVar1 = *(float **)(param_9 + 0xb8);
-  FUN_80178508(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9,(int)pfVar1);
-  *pfVar1 = FLOAT_803e42d0 *
-            (float)((double)CONCAT44(0x43300000,(int)*(short *)(param_10 + 0x1a) ^ 0x80000000) -
-                   DOUBLE_803e42d8);
-  *(undefined *)((int)pfVar1 + 0x11) = 2;
-  return;
 }
 
 /*
@@ -207,7 +177,6 @@ void FUN_801787e4(undefined8 param_1,undefined8 param_2,double param_3,undefined
  * PAL Size: TODO
  */
 void FUN_80179480(int param_1)
-
 {
   short sVar1;
   bool bVar2;
@@ -235,7 +204,6 @@ void FUN_80179480(int param_1)
  * PAL Size: TODO
  */
 void FUN_801794e4(int param_1)
-
 {
   char in_r8;
   
@@ -258,7 +226,6 @@ void FUN_801794e4(int param_1)
  * PAL Size: TODO
  */
 void FUN_80179518(undefined2 *param_1)
-
 {
   int iVar1;
   uint uVar2;
@@ -325,7 +292,6 @@ void FUN_8017967c(undefined2 *param_1,int param_2)
  * PAL Size: TODO
  */
 uint FUN_80179850(int param_1)
-
 {
   uint uVar1;
   

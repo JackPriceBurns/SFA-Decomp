@@ -4,8 +4,8 @@
  * Owner: main/dll/seqObj11E.c
  * Text span: 0x801520FC-0x80152F40
  * Imported Ghidra functions: 8
- * Verbatim-safe functions: 6
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 5
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -21,7 +21,7 @@ extern uint FUN_80020078();
 extern undefined4 FUN_800201ac();
 extern uint FUN_80022264();
 extern int FUN_8002bac4();
-extern undefined2* FUN_8002becc();
+extern void* FUN_8002becc();
 extern undefined4 FUN_8002cc9c();
 extern undefined4 FUN_8002e088();
 extern uint FUN_8002e144();
@@ -87,25 +87,6 @@ extern f32 FLOAT_803e34e4;
 extern undefined2 uRam803dc90a;
 extern undefined4 uRam803dc90c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801520fc(int param_1,int param_2);
-void FUN_8015224c(int param_1,int param_2);
-void FUN_80152498(uint param_1,int param_2);
-void FUN_801524d4(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 uint param_9,int param_10);
-void FUN_8015278c(int param_1,int param_2);
-undefined4
-FUN_8015281c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,undefined8 param_5,
-            undefined8 param_6,undefined8 param_7,undefined8 param_8,int param_9,undefined2 param_10
-            );
-void FUN_801528ec(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 uint param_9,int param_10,undefined4 param_11,int param_12,undefined4 param_13,
-                 undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_801529c0(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-
 /*
  * --INFO--
  *
@@ -119,7 +100,6 @@ void FUN_801529c0(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_801520fc(int param_1,int param_2)
-
 {
   int iVar1;
   int iVar2;
@@ -162,7 +142,6 @@ void FUN_801520fc(int param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_8015224c(int param_1,int param_2)
-
 {
   float fVar1;
   float fVar2;
@@ -222,7 +201,6 @@ void FUN_8015224c(int param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_80152498(uint param_1,int param_2)
-
 {
   FUN_8000bb38(param_1,0x23);
   *(uint *)(param_2 + 0x2e8) = *(uint *)(param_2 + 0x2e8) | 0x10;
@@ -260,7 +238,6 @@ void FUN_801524d4(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_8015278c(int param_1,int param_2)
-
 {
   float fVar1;
   int iVar2;
@@ -303,39 +280,8 @@ undefined4
 FUN_8015281c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,undefined8 param_5,
             undefined8 param_6,undefined8 param_7,undefined8 param_8,int param_9,undefined2 param_10
             )
-
 {
-  uint uVar1;
-  undefined4 uVar2;
-  undefined2 *puVar3;
-  undefined4 in_r8;
-  undefined4 in_r9;
-  undefined4 in_r10;
-  int iVar4;
-  
-  iVar4 = *(int *)(param_9 + 0x4c);
-  FUN_8002bac4();
-  uVar1 = FUN_8002e144();
-  if ((uVar1 & 0xff) == 0) {
-    uVar2 = 0;
-  }
-  else {
-    puVar3 = FUN_8002becc(0x24,param_10);
-    *puVar3 = param_10;
-    *(undefined *)(puVar3 + 2) = *(undefined *)(iVar4 + 4);
-    *(undefined *)(puVar3 + 3) = *(undefined *)(iVar4 + 6);
-    *(undefined *)((int)puVar3 + 5) = 1;
-    *(undefined *)((int)puVar3 + 7) = *(undefined *)(iVar4 + 7);
-    *(undefined4 *)(puVar3 + 4) = *(undefined4 *)(param_9 + 0xc);
-    *(undefined4 *)(puVar3 + 6) = *(undefined4 *)(param_9 + 0x10);
-    *(undefined4 *)(puVar3 + 8) = *(undefined4 *)(param_9 + 0x14);
-    *(undefined *)((int)puVar3 + 0x19) = 0;
-    puVar3[0x10] = 0x95;
-    uVar2 = FUN_8002e088(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,puVar3,5,
-                         *(undefined *)(param_9 + 0xac),0xffffffff,*(uint **)(param_9 + 0x30),in_r8,
-                         in_r9,in_r10);
-  }
-  return uVar2;
+    return 0;
 }
 
 /*
@@ -354,7 +300,6 @@ void FUN_801528ec(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  uint param_9,int param_10,undefined4 param_11,int param_12,undefined4 param_13,
                  undefined4 param_14,undefined4 param_15,undefined4 param_16)
-
 {
   float fVar1;
   int iVar2;

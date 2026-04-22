@@ -27,7 +27,7 @@ extern undefined4 FUN_8002ba84();
 extern int FUN_8002bac4();
 extern undefined4 FUN_8002cc9c();
 extern undefined4 FUN_80035ff8();
-extern int* FUN_80037048();
+extern void* FUN_80037048();
 extern int FUN_800375e4();
 extern undefined4 FUN_800379bc();
 extern undefined4 FUN_80037a5c();
@@ -81,17 +81,6 @@ extern f32 FLOAT_803e4194;
 extern f32 FLOAT_803e41ac;
 extern f32 FLOAT_803e41c4;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80173750(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-void FUN_80173f98(int param_1,int param_2);
-void FUN_8017443c(int param_1);
-void FUN_8017445c(int param_1);
-void FUN_80174490(int param_1);
-void FUN_80174864(int param_1,int param_2);
-undefined4 FUN_801748e4(uint param_1,int param_2);
-void FUN_80174a34(int param_1,int param_2);
-
 /*
  * --INFO--
  *
@@ -106,7 +95,6 @@ void FUN_80174a34(int param_1,int param_2);
  */
 void FUN_80173750(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8)
-
 {
   float fVar1;
   short sVar2;
@@ -356,7 +344,6 @@ void FUN_80173f98(int param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_8017443c(int param_1)
-
 {
   FUN_8002b830(param_1);
   return;
@@ -375,7 +362,6 @@ void FUN_8017443c(int param_1)
  * PAL Size: TODO
  */
 void FUN_8017445c(int param_1)
-
 {
   char in_r8;
   
@@ -398,7 +384,6 @@ void FUN_8017445c(int param_1)
  * PAL Size: TODO
  */
 void FUN_80174490(int param_1)
-
 {
   byte bVar1;
   uint uVar2;
@@ -528,7 +513,6 @@ void FUN_80174490(int param_1)
  * PAL Size: TODO
  */
 void FUN_80174864(int param_1,int param_2)
-
 {
   if (*(int *)(param_1 + 0xf4) == 0) {
     FUN_8002b938(param_1);
@@ -557,7 +541,6 @@ void FUN_80174864(int param_1,int param_2)
  * PAL Size: TODO
  */
 undefined4 FUN_801748e4(uint param_1,int param_2)
-
 {
   int iVar1;
   uint uVar2;
@@ -606,7 +589,6 @@ undefined4 FUN_801748e4(uint param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_80174a34(int param_1,int param_2)
-
 {
   uint uVar1;
   undefined4 *puVar2;

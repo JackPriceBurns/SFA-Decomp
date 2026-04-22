@@ -34,16 +34,6 @@ extern f32 FLOAT_803e5940;
 extern f32 FLOAT_803e5944;
 extern f32 FLOAT_803e5948;
 
-/* Local declarations keep imported functions visible within the TU. */
-undefined4
-FUN_801be4d4(undefined8 param_1,double param_2,double param_3,undefined8 param_4,undefined8 param_5,
-            undefined8 param_6,undefined8 param_7,undefined8 param_8,undefined4 param_9,int param_10
-            ,undefined4 param_11,undefined4 param_12,undefined4 param_13,undefined4 param_14,
-            undefined4 param_15,undefined4 param_16);
-void FUN_801be530(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 uint param_9,int param_10);
-
 /*
  * --INFO--
  *
@@ -61,7 +51,6 @@ FUN_801be4d4(undefined8 param_1,double param_2,double param_3,undefined8 param_4
             undefined8 param_6,undefined8 param_7,undefined8 param_8,undefined4 param_9,int param_10
             ,undefined4 param_11,undefined4 param_12,undefined4 param_13,undefined4 param_14,
             undefined4 param_15,undefined4 param_16)
-
 {
   if (*(char *)(param_10 + 0x27a) != '\0') {
     FUN_8003042c((double)FLOAT_803e5928,param_2,param_3,param_4,param_5,param_6,param_7,param_8,

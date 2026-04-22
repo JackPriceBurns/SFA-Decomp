@@ -4,8 +4,8 @@
  * Owner: main/dll/DIM/DIM2projrock.c
  * Text span: 0x801B8980-0x801BA3CC
  * Imported Ghidra functions: 20
- * Verbatim-safe functions: 15
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 13
+ * Auto-stubbed functions: 7
  */
 
 #include "ghidra_import.h"
@@ -27,7 +27,7 @@ extern undefined4 FUN_800217c8();
 extern uint FUN_80022264();
 extern undefined4 FUN_8002ba34();
 extern int FUN_8002bac4();
-extern undefined2* FUN_8002becc();
+extern void* FUN_8002becc();
 extern undefined4 FUN_8002cc9c();
 extern undefined4 FUN_8002e088();
 extern uint FUN_8002e144();
@@ -35,7 +35,7 @@ extern undefined4 FUN_8002e1ac();
 extern undefined4 FUN_80035ff8();
 extern undefined4 FUN_80036800();
 extern int FUN_80036974();
-extern int* FUN_80037048();
+extern void* FUN_80037048();
 extern undefined4 FUN_8003709c();
 extern int FUN_800395a4();
 extern undefined4 FUN_8003b9ec();
@@ -104,35 +104,6 @@ extern f32 FLOAT_803e5838;
 extern f32 FLOAT_803e583c;
 extern undefined uRam803dcb93;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801b8980(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-void FUN_801b8d60(int param_1);
-void FUN_801b8d90(uint param_1);
-void FUN_801b8e14(int *param_1);
-void FUN_801b9138(int param_1);
-void FUN_801b916c(uint param_1);
-void FUN_801b94ac(undefined2 *param_1,int param_2);
-void FUN_801b9544(int param_1);
-void FUN_801b9578(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9);
-void FUN_801b97b8(undefined2 *param_1,int param_2);
-void FUN_801b99c4(int param_1);
-void FUN_801b99f8(uint param_1);
-void FUN_801b9d1c(undefined2 *param_1,int param_2);
-void FUN_801b9dc4(int param_1);
-void FUN_801b9e48(void);
-void FUN_801b9e80(int param_1);
-void FUN_801b9eb0(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9);
-void FUN_801ba134(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,int param_10);
-void FUN_801ba27c(int param_1);
-void FUN_801ba2b0(int param_1);
-
 /*
  * --INFO--
  *
@@ -147,7 +118,6 @@ void FUN_801ba2b0(int param_1);
  */
 void FUN_801b8980(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8)
-
 {
   byte bVar1;
   short sVar2;
@@ -289,7 +259,6 @@ LAB_801b8cb8:
  * PAL Size: TODO
  */
 void FUN_801b8d60(int param_1)
-
 {
   char in_r8;
   
@@ -312,7 +281,6 @@ void FUN_801b8d60(int param_1)
  * PAL Size: TODO
  */
 void FUN_801b8d90(uint param_1)
-
 {
   float fVar1;
   int iVar2;
@@ -359,7 +327,6 @@ void FUN_801b8e14(int *param_1)
  * PAL Size: TODO
  */
 void FUN_801b9138(int param_1)
-
 {
   char in_r8;
   
@@ -382,114 +349,7 @@ void FUN_801b9138(int param_1)
  * PAL Size: TODO
  */
 void FUN_801b916c(uint param_1)
-
 {
-  byte bVar1;
-  bool bVar2;
-  int iVar3;
-  int iVar4;
-  uint uVar5;
-  int iVar6;
-  int iVar7;
-  float *pfVar8;
-  
-  pfVar8 = *(float **)(param_1 + 0xb8);
-  iVar4 = FUN_8002bac4();
-  iVar7 = *(int *)(param_1 + 0x4c);
-  bVar2 = false;
-  iVar6 = 0;
-  iVar3 = (int)*(char *)(*(int *)(param_1 + 0x58) + 0x10f);
-  if (0 < iVar3) {
-    do {
-      if (*(int *)(*(int *)(param_1 + 0x58) + iVar6 + 0x100) == iVar4) {
-        bVar2 = true;
-        break;
-      }
-      iVar6 = iVar6 + 4;
-      iVar3 = iVar3 + -1;
-    } while (iVar3 != 0);
-  }
-  bVar1 = *(byte *)(pfVar8 + 1);
-  if (bVar1 == 3) {
-    *pfVar8 = *pfVar8 + FLOAT_803e57a8 * FLOAT_803dc074 +
-                        FLOAT_803e57ac *
-                        (float)((double)CONCAT44(0x43300000,
-                                                 ((uint)(byte)((*pfVar8 < FLOAT_803e57a4) << 3) <<
-                                                 0x1c) >> 0x1f ^ 0x80000000) - DOUBLE_803e57c0);
-    if (FLOAT_803e57b0 < *pfVar8) {
-      *pfVar8 = FLOAT_803e57b0;
-    }
-    *(float *)(param_1 + 0x10) = *pfVar8 * FLOAT_803dc074 + *(float *)(param_1 + 0x10);
-    if (*(float *)(iVar7 + 0xc) < *(float *)(param_1 + 0x10)) {
-      FUN_8000bb38(param_1,0x1f8);
-      *(undefined4 *)(param_1 + 0x10) = *(undefined4 *)(iVar7 + 0xc);
-      *(undefined *)(pfVar8 + 1) = 1;
-      if (bVar2) {
-        *(undefined *)((int)pfVar8 + 5) = 1;
-        *(undefined *)((int)pfVar8 + 6) = 0;
-      }
-    }
-  }
-  else if (bVar1 < 3) {
-    if (bVar1 == 1) {
-      FUN_8000b7dc(param_1,8);
-      if (bVar2) {
-        if ((*(char *)((int)pfVar8 + 6) != '\0') && (*(char *)((int)pfVar8 + 5) != '\0')) {
-          FUN_8000bb38(param_1,0x113);
-          *(undefined *)(pfVar8 + 1) = 4;
-          *pfVar8 = FLOAT_803e57a4;
-        }
-      }
-      else {
-        *(undefined *)((int)pfVar8 + 6) = 1;
-      }
-      uVar5 = FUN_80020078((int)*(short *)(iVar7 + 0x20));
-      if (uVar5 != 0) {
-        FUN_8000bb38(param_1,0x113);
-        *(undefined *)(pfVar8 + 1) = 4;
-        *pfVar8 = FLOAT_803e57a4;
-      }
-    }
-    else if (bVar1 != 0) {
-      FUN_8000b7dc(param_1,8);
-      if (*(char *)((int)pfVar8 + 5) == '\0') {
-        uVar5 = FUN_80020078((int)*(short *)(iVar7 + 0x20));
-        if (uVar5 == 0) {
-          FUN_8000bb38(param_1,0x113);
-          *(undefined *)(pfVar8 + 1) = 3;
-          *pfVar8 = FLOAT_803e57a4;
-          *(undefined *)((int)pfVar8 + 5) = 0;
-          FUN_800201ac((int)*(short *)(iVar7 + 0x1e),0);
-        }
-      }
-      else if (!bVar2) {
-        FUN_8000bb38(param_1,0x113);
-        *(undefined *)(pfVar8 + 1) = 3;
-        *pfVar8 = FLOAT_803e57a4;
-        *(undefined *)((int)pfVar8 + 5) = 0;
-        FUN_800201ac((int)*(short *)(iVar7 + 0x1e),0);
-      }
-    }
-  }
-  else if (bVar1 < 5) {
-    *pfVar8 = FLOAT_803e57b4 * FLOAT_803dc074 + *pfVar8;
-    if (*pfVar8 < FLOAT_803e57b8) {
-      *pfVar8 = FLOAT_803e57b8;
-    }
-    *(float *)(param_1 + 0x10) = *pfVar8 * FLOAT_803dc074 + *(float *)(param_1 + 0x10);
-    if (*(float *)(param_1 + 0x10) < *(float *)(iVar7 + 0xc) - FLOAT_803e57bc) {
-      FUN_8000bb38(param_1,0x1f8);
-      *(float *)(param_1 + 0x10) = *(float *)(iVar7 + 0xc) - FLOAT_803e57bc;
-      *(undefined *)(pfVar8 + 1) = 2;
-      FUN_800201ac((int)*(short *)(iVar7 + 0x1e),1);
-    }
-    if ((*(char *)((int)pfVar8 + 5) == '\0') &&
-       (uVar5 = FUN_80020078((int)*(short *)(iVar7 + 0x20)), uVar5 == 0)) {
-      *(undefined *)(pfVar8 + 1) = 3;
-      FUN_800201ac((int)*(short *)(iVar7 + 0x1e),0);
-    }
-  }
-  return;
 }
 
 /*
@@ -505,7 +365,6 @@ void FUN_801b916c(uint param_1)
  * PAL Size: TODO
  */
 void FUN_801b94ac(undefined2 *param_1,int param_2)
-
 {
   uint uVar1;
   int iVar2;
@@ -536,7 +395,6 @@ void FUN_801b94ac(undefined2 *param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_801b9544(int param_1)
-
 {
   char in_r8;
   
@@ -577,7 +435,6 @@ void FUN_801b9578(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
  * PAL Size: TODO
  */
 void FUN_801b97b8(undefined2 *param_1,int param_2)
-
 {
   short sVar1;
   uint uVar2;
@@ -637,7 +494,6 @@ void FUN_801b97b8(undefined2 *param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_801b99c4(int param_1)
-
 {
   char in_r8;
   
@@ -660,105 +516,7 @@ void FUN_801b99c4(int param_1)
  * PAL Size: TODO
  */
 void FUN_801b99f8(uint param_1)
-
 {
-  byte bVar1;
-  int iVar2;
-  uint uVar3;
-  int iVar4;
-  float *pfVar5;
-  int iVar6;
-  float *pfVar7;
-  int local_28 [7];
-  
-  iVar6 = *(int *)(param_1 + 0x4c);
-  pfVar7 = *(float **)(param_1 + 0xb8);
-  bVar1 = *(byte *)((int)pfVar7 + 6);
-  if (bVar1 != 2) {
-    if (bVar1 < 2) {
-      if (bVar1 == 0) {
-        iVar6 = FUN_80036974(param_1,(undefined4 *)0x0,(int *)0x0,(uint *)0x0);
-        if (iVar6 != 0xe) {
-          return;
-        }
-        uVar3 = FUN_80022264(800,0x4b0);
-        *(short *)(pfVar7 + 1) = (short)uVar3;
-        *(undefined *)((int)pfVar7 + 6) = 3;
-        *(ushort *)(*(int *)(param_1 + 0x54) + 0x60) =
-             *(ushort *)(*(int *)(param_1 + 0x54) + 0x60) & 0xfffe;
-        FUN_8000bb38(param_1,0xa4);
-        return;
-      }
-      if (*(char *)((int)pfVar7 + 7) == '\0') {
-        iVar4 = FUN_80065fcc((double)*(float *)(param_1 + 0xc),(double)*(float *)(param_1 + 0x10),
-                             (double)*(float *)(param_1 + 0x14),param_1,local_28,0,0);
-        *pfVar7 = FLOAT_803e5808;
-        for (iVar2 = 0; iVar2 < iVar4; iVar2 = iVar2 + 1) {
-          pfVar5 = *(float **)(local_28[0] + iVar2 * 4);
-          if (*(char *)(pfVar5 + 5) == '\x0e') {
-            *pfVar7 = *pfVar5;
-            iVar2 = iVar4;
-          }
-        }
-        if (FLOAT_803e5808 != *pfVar7) {
-          *(undefined *)((int)pfVar7 + 7) = 1;
-        }
-      }
-      if ((0 < *(short *)(pfVar7 + 2)) &&
-         (*(ushort *)(pfVar7 + 2) = *(short *)(pfVar7 + 2) - (ushort)DAT_803dc070,
-         *(short *)(pfVar7 + 2) < 1)) {
-        FUN_8000bb38(param_1,0xa5);
-      }
-      *(float *)(param_1 + 0x28) = -(FLOAT_803e580c * FLOAT_803dc074 - *(float *)(param_1 + 0x28));
-      if (*(float *)(param_1 + 0x28) < FLOAT_803e5810) {
-        *(float *)(param_1 + 0x28) = FLOAT_803e5810;
-      }
-      *(float *)(param_1 + 0x10) =
-           *(float *)(param_1 + 0x28) * FLOAT_803dc074 + *(float *)(param_1 + 0x10);
-      if (*pfVar7 <= *(float *)(param_1 + 0x10)) {
-        return;
-      }
-      FUN_800201ac((int)*(short *)(iVar6 + 0x1e),1);
-      *(undefined *)((int)pfVar7 + 6) = 2;
-      (**(code **)(*DAT_803dd718 + 0x10))
-                ((double)*(float *)(param_1 + 0xc),(double)*pfVar7,
-                 (double)*(float *)(param_1 + 0x14),(double)FLOAT_803e5814,param_1);
-      (**(code **)(*DAT_803dd718 + 0x14))
-                ((double)*(float *)(param_1 + 0xc),(double)*pfVar7,
-                 (double)*(float *)(param_1 + 0x14),(double)FLOAT_803e5818,0,2);
-      FUN_8000bb38(param_1,0xa6);
-      *(undefined2 *)(pfVar7 + 2) = 0x96;
-      return;
-    }
-    if (bVar1 < 4) {
-      *(undefined2 *)(param_1 + 2) = *(undefined2 *)(pfVar7 + 1);
-      *(short *)(pfVar7 + 1) =
-           (short)(int)((float)((double)CONCAT44(0x43300000,(int)*(short *)(pfVar7 + 1) ^ 0x80000000
-                                                ) - DOUBLE_803e5820) * FLOAT_803e5804);
-      if (9 < *(short *)(param_1 + 2)) {
-        return;
-      }
-      *(undefined2 *)(param_1 + 2) = 0;
-      *(undefined *)((int)pfVar7 + 6) = 1;
-      *(undefined2 *)(pfVar7 + 2) = 0x3c;
-      return;
-    }
-  }
-  if ((0 < *(short *)(pfVar7 + 2)) &&
-     (*(ushort *)(pfVar7 + 2) = *(short *)(pfVar7 + 2) - (ushort)DAT_803dc070,
-     *(short *)(pfVar7 + 2) < 1)) {
-    FUN_8000bb38(param_1,0x155);
-  }
-  iVar2 = (uint)*(byte *)(param_1 + 0x36) + (uint)DAT_803dc070 * -8;
-  if (iVar2 < 0) {
-    iVar2 = 0;
-    *(undefined4 *)(param_1 + 0x10) = *(undefined4 *)(iVar6 + 0xc);
-    *(float *)(param_1 + 0x28) = FLOAT_803e5818;
-  }
-  *(char *)(param_1 + 0x36) = (char)iVar2;
-  *(float *)(param_1 + 0x10) =
-       *(float *)(param_1 + 0x28) * FLOAT_803dc074 + *(float *)(param_1 + 0x10);
-  return;
 }
 
 /*
@@ -774,7 +532,6 @@ void FUN_801b99f8(uint param_1)
  * PAL Size: TODO
  */
 void FUN_801b9d1c(undefined2 *param_1,int param_2)
-
 {
   uint uVar1;
   int iVar2;
@@ -824,7 +581,6 @@ void FUN_801b9dc4(int param_1)
  * PAL Size: TODO
  */
 void FUN_801b9e48(void)
-
 {
   FUN_8004c360((double)FLOAT_803e5828,0xc0);
   FUN_8000a538((int *)0xc4,0);
@@ -845,7 +601,6 @@ void FUN_801b9e48(void)
  * PAL Size: TODO
  */
 void FUN_801b9e80(int param_1)
-
 {
   char in_r8;
   
@@ -904,7 +659,6 @@ void FUN_801ba134(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_801ba27c(int param_1)
-
 {
   char in_r8;
   
@@ -927,7 +681,6 @@ void FUN_801ba27c(int param_1)
  * PAL Size: TODO
  */
 void FUN_801ba2b0(int param_1)
-
 {
   float fVar1;
   undefined uVar2;

@@ -14,9 +14,6 @@
 /* Cross-file calls lifted from the raw Ghidra output. */
 extern undefined4 FUN_8003b9ec();
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801e3a44(int param_1);
-
 /*
  * --INFO--
  *
@@ -30,7 +27,6 @@ void FUN_801e3a44(int param_1);
  * PAL Size: TODO
  */
 void FUN_801e3a44(int param_1)
-
 {
   char in_r8;
   

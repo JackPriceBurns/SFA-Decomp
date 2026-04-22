@@ -18,10 +18,6 @@ extern undefined4 FUN_8003b9ec();
 extern undefined4* DAT_803dd6f0;
 extern undefined4* DAT_803dd6fc;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801cb298(void);
-void FUN_801cb300(int param_1);
-
 /*
  * --INFO--
  *
@@ -35,7 +31,6 @@ void FUN_801cb300(int param_1);
  * PAL Size: TODO
  */
 void FUN_801cb298(void)
-
 {
   (**(code **)(*DAT_803dd6fc + 0x18))();
   (**(code **)(*DAT_803dd6f0 + 0x38))(3,0);
@@ -56,7 +51,6 @@ void FUN_801cb298(void)
  * PAL Size: TODO
  */
 void FUN_801cb300(int param_1)
-
 {
   char in_r8;
   

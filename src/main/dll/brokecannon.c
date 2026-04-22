@@ -19,11 +19,6 @@ extern undefined8 FUN_80043938();
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4* DAT_803dd72c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801d8284(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,int param_10);
-
 /*
  * --INFO--
  *
@@ -39,7 +34,6 @@ void FUN_801d8284(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 void FUN_801d8284(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9,int param_10)
-
 {
   uint uVar1;
   undefined8 uVar2;

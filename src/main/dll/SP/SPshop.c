@@ -24,13 +24,6 @@ extern uint countLeadingZeros();
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4* DAT_803dd6d8;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801d84c4(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5,
-                 int *param_6);
-void FUN_801d8650(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5,
-                 int *param_6);
-void FUN_801d86e4(uint *param_1);
-
 /*
  * --INFO--
  *
@@ -45,7 +38,6 @@ void FUN_801d86e4(uint *param_1);
  */
 void FUN_801d84c4(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5,
                  int *param_6)
-
 {
   uint uVar1;
   uint uVar2;
@@ -110,7 +102,6 @@ void FUN_801d84c4(undefined4 param_1,undefined4 param_2,short param_3,short para
  */
 void FUN_801d8650(undefined4 param_1,undefined4 param_2,short param_3,short param_4,short param_5,
                  int *param_6)
-
 {
   uint uVar1;
   uint uVar2;

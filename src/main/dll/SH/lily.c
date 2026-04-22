@@ -14,7 +14,7 @@
 /* Cross-file calls lifted from the raw Ghidra output. */
 extern undefined4 FUN_80020078();
 extern double FUN_80021794();
-extern int* FUN_80037048();
+extern void* FUN_80037048();
 extern undefined4 FUN_8014cae4();
 extern int FUN_80286834();
 extern undefined4 FUN_80286880();
@@ -30,9 +30,6 @@ extern undefined4 DAT_80327b08;
 extern undefined4 DAT_80327b18;
 extern undefined4 DAT_80327b28;
 extern f32 FLOAT_803e60ac;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801d52c0(void);
 
 /*
  * --INFO--

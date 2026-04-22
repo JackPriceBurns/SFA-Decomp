@@ -32,12 +32,6 @@ extern f32 FLOAT_803e60d0;
 extern char s_SHthorntail_c_803280c8[];
 extern char s_Thorntail_entered_an_invalid_sta_803280d8[];
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801d5764(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 short *param_9,int param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-
 /*
  * --INFO--
  *

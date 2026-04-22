@@ -29,9 +29,6 @@ extern f64 DOUBLE_803e60c0;
 extern f64 DOUBLE_803e60d8;
 extern f32 FLOAT_803e60f4;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801d6cd0(short *param_1,int param_2);
-
 /*
  * --INFO--
  *

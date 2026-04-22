@@ -49,13 +49,6 @@ extern undefined4 DAT_803de33d;
 extern undefined4 DAT_803de33e;
 extern undefined4 DAT_803de6a8;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80119cc4(void);
-void FUN_80119d90(void);
-void FUN_80119dcc(void);
-undefined4 FUN_80119e00(int param_1,int param_2);
-void FUN_80119ec8(void);
-
 /*
  * --INFO--
  *
@@ -85,7 +78,6 @@ void FUN_80119cc4(void)
  * PAL Size: TODO
  */
 void FUN_80119d90(void)
-
 {
   if (DAT_803de310 != 0) {
     FUN_80246c10(-0x7fc57058);
@@ -107,7 +99,6 @@ void FUN_80119d90(void)
  * PAL Size: TODO
  */
 void FUN_80119dcc(void)
-
 {
   if (DAT_803de310 != 0) {
     FUN_80246dcc(-0x7fc57058);

@@ -15,9 +15,6 @@
 extern undefined4 FUN_80038524();
 extern undefined4 FUN_8003b9ec();
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801d23ac(int param_1);
-
 /*
  * --INFO--
  *
@@ -31,7 +28,6 @@ void FUN_801d23ac(int param_1);
  * PAL Size: TODO
  */
 void FUN_801d23ac(int param_1)
-
 {
   char in_r8;
   int iVar1;

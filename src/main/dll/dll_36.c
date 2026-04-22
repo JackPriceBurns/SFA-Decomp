@@ -44,10 +44,6 @@ extern undefined4 DAT_803de34e;
 extern undefined4 DAT_803de34f;
 extern undefined4* PTR_DAT_8031b418;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8011b698(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-
 /*
  * --INFO--
  *

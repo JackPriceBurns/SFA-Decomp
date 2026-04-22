@@ -4,8 +4,8 @@
  * Owner: main/dll/DIM/DIMExplosion.c
  * Text span: 0x801B13F0-0x801B206C
  * Imported Ghidra functions: 8
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 3
+ * Verbatim-safe functions: 4
+ * Auto-stubbed functions: 4
  */
 
 #include "ghidra_import.h"
@@ -18,7 +18,7 @@ extern undefined4 FUN_800201ac();
 extern uint FUN_80022264();
 extern int FUN_8002ba84();
 extern int FUN_8002bac4();
-extern undefined2* FUN_8002becc();
+extern void* FUN_8002becc();
 extern undefined4 FUN_8002cc9c();
 extern undefined4 FUN_8002e088();
 extern uint FUN_8002e144();
@@ -52,20 +52,6 @@ extern f32 FLOAT_803e5518;
 extern f32 FLOAT_803e551c;
 extern f32 FLOAT_803e5520;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801b13f0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 uint param_9);
-void FUN_801b1908(int param_1,int param_2);
-void FUN_801b19b0(int param_1);
-void FUN_801b19e4(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9);
-void FUN_801b1ba8(int param_1);
-void FUN_801b1bdc(int param_1);
-void FUN_801b1d04(undefined2 *param_1);
-void FUN_801b1ddc(void);
-
 /*
  * --INFO--
  *
@@ -97,25 +83,7 @@ void FUN_801b13f0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
  * PAL Size: TODO
  */
 void FUN_801b1908(int param_1,int param_2)
-
 {
-  int iVar1;
-  int *piVar2;
-  
-  piVar2 = *(int **)(param_1 + 0xb8);
-  piVar2[1] = *(int *)(param_2 + 0x14);
-  *(undefined4 *)(param_2 + 0x14) = 0xffffffff;
-  iVar1 = FUN_8002e1ac(piVar2[1]);
-  *piVar2 = iVar1;
-  if (*(int *)(param_1 + 0x54) != 0) {
-    *(undefined *)(*(int *)(param_1 + 0x54) + 0x6a) = 0;
-  }
-  iVar1 = *(int *)(param_1 + 100);
-  if (iVar1 != 0) {
-    *(uint *)(iVar1 + 0x30) = *(uint *)(iVar1 + 0x30) | 0x810;
-  }
-  *(ushort *)(param_1 + 0xb0) = *(ushort *)(param_1 + 0xb0) | 0x4000;
-  return;
 }
 
 /*
@@ -131,7 +99,6 @@ void FUN_801b1908(int param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_801b19b0(int param_1)
-
 {
   char in_r8;
   
@@ -172,7 +139,6 @@ void FUN_801b19e4(undefined8 param_1,undefined8 param_2,double param_3,undefined
  * PAL Size: TODO
  */
 void FUN_801b1ba8(int param_1)
-
 {
   char in_r8;
   
@@ -195,7 +161,6 @@ void FUN_801b1ba8(int param_1)
  * PAL Size: TODO
  */
 void FUN_801b1bdc(int param_1)
-
 {
   char cVar1;
   bool bVar2;
@@ -271,7 +236,6 @@ void FUN_801b1d04(undefined2 *param_1)
  * PAL Size: TODO
  */
 void FUN_801b1ddc(void)
-
 {
   uint uVar1;
   int iVar2;

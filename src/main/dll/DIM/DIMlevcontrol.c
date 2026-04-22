@@ -4,8 +4,8 @@
  * Owner: main/dll/DIM/DIMlevcontrol.c
  * Text span: 0x801B2B04-0x801B367C
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 2
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 1
+ * Auto-stubbed functions: 3
  */
 
 #include "ghidra_import.h"
@@ -64,15 +64,6 @@ extern f32 FLOAT_803dcb70;
 extern f32 FLOAT_803e5584;
 extern f32 FLOAT_803e5588;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801b2b04(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,int param_11);
-void FUN_801b311c(int param_1);
-void FUN_801b3180(undefined2 *param_1);
-void FUN_801b321c(double param_1,double param_2,double param_3,double param_4,undefined8 param_5,
-                 undefined8 param_6,undefined8 param_7,undefined8 param_8,short *param_9);
-
 /*
  * --INFO--
  *
@@ -104,7 +95,6 @@ void FUN_801b2b04(undefined8 param_1,undefined8 param_2,double param_3,undefined
  * PAL Size: TODO
  */
 void FUN_801b311c(int param_1)
-
 {
   if (*(short *)(param_1 + 0x46) != 0x1d6) {
     (**(code **)(*DAT_803dd6e8 + 0x60))();
@@ -128,24 +118,7 @@ void FUN_801b311c(int param_1)
  * PAL Size: TODO
  */
 void FUN_801b3180(undefined2 *param_1)
-
 {
-  undefined2 uVar1;
-  int iVar2;
-  
-  if (param_1[0x23] == 0x1d6) {
-    FUN_8003b9ec((int)param_1);
-  }
-  else {
-    iVar2 = *(int *)(param_1 + 0x5c);
-    uVar1 = *param_1;
-    *param_1 = (short)((int)*(char *)(*(int *)(param_1 + 0x26) + 0x28) << 8);
-    FUN_8003b9ec((int)param_1);
-    *param_1 = uVar1;
-    FUN_80038524(param_1,0,(float *)(iVar2 + 0x8c),(undefined4 *)(iVar2 + 0x90),
-                 (float *)(iVar2 + 0x94),0);
-  }
-  return;
 }
 
 /*

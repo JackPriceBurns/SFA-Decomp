@@ -18,7 +18,7 @@ extern undefined4 FUN_80013e4c();
 extern undefined4 FUN_80013ee8();
 extern uint FUN_80020078();
 extern undefined8 FUN_800201ac();
-extern undefined2* FUN_8002becc();
+extern void* FUN_8002becc();
 extern int FUN_8002e088();
 extern uint FUN_8002e144();
 extern undefined4 FUN_80037a5c();
@@ -34,19 +34,6 @@ extern undefined4 DAT_803dc270;
 extern undefined4* DAT_803dd6f0;
 extern undefined4* DAT_803dd6fc;
 extern undefined4 DAT_803de860;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801cbbe8(undefined2 *param_1,int param_2);
-void FUN_801cbd70(int param_1);
-void FUN_801cbda4(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined2 *param_9);
-void FUN_801cc04c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,int param_11,undefined4 param_12,
-                 undefined4 param_13,int param_14,undefined4 param_15,undefined4 param_16);
-void FUN_801cc2d8(void);
-void FUN_801cc308(int param_1);
 
 /*
  * --INFO--
@@ -77,7 +64,6 @@ void FUN_801cbbe8(undefined2 *param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_801cbd70(int param_1)
-
 {
   char in_r8;
   
@@ -102,7 +88,6 @@ void FUN_801cbd70(int param_1)
 void FUN_801cbda4(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  undefined2 *param_9)
-
 {
   uint uVar1;
   int *piVar2;
@@ -208,7 +193,6 @@ void FUN_801cc04c(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_801cc2d8(void)
-
 {
   (**(code **)(*DAT_803dd6fc + 0x18))();
   return;
@@ -227,7 +211,6 @@ void FUN_801cc2d8(void)
  * PAL Size: TODO
  */
 void FUN_801cc308(int param_1)
-
 {
   char in_r8;
   

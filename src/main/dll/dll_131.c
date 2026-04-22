@@ -4,8 +4,8 @@
  * Owner: main/dll/dll_131.c
  * Text span: 0x801678A4-0x80167D90
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 4
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -30,15 +30,6 @@ extern f32 FLOAT_803e3c8c;
 extern f32 FLOAT_803e3ce0;
 extern f32 FLOAT_803e3cf8;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801678a4(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,int param_10,int param_11);
-void FUN_801679fc(int param_1);
-void FUN_80167a8c(int param_1,float *param_2,byte *param_3);
-void FUN_80167b80(int param_1);
-undefined4 FUN_80167c10(int param_1,int param_2);
-
 /*
  * --INFO--
  *
@@ -54,7 +45,6 @@ undefined4 FUN_80167c10(int param_1,int param_2);
 void FUN_801678a4(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9,int param_10,int param_11)
-
 {
   float fVar1;
   undefined4 uVar2;
@@ -119,7 +109,6 @@ void FUN_801678a4(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_801679fc(int param_1)
-
 {
   (**(code **)(*DAT_803dd70c + 0x14))(param_1,*(undefined4 *)(param_1 + 0xb8),2);
   return;
@@ -138,27 +127,7 @@ void FUN_801679fc(int param_1)
  * PAL Size: TODO
  */
 void FUN_80167a8c(int param_1,float *param_2,byte *param_3)
-
 {
-  double dVar1;
-  byte *pbVar2;
-  
-  dVar1 = DOUBLE_803e3ce8;
-  pbVar2 = *(byte **)(param_1 + 0xb8);
-  *param_2 = *(float *)(param_1 + 0x18) -
-             (float)((double)CONCAT44(0x43300000,(uint)*pbVar2) - DOUBLE_803e3ce8);
-  param_2[1] = *(float *)(param_1 + 0x18) +
-               (float)((double)CONCAT44(0x43300000,(uint)pbVar2[1]) - dVar1);
-  param_2[2] = *(float *)(param_1 + 0x20) +
-               (float)((double)CONCAT44(0x43300000,(uint)pbVar2[2]) - dVar1);
-  param_2[3] = *(float *)(param_1 + 0x20) -
-               (float)((double)CONCAT44(0x43300000,(uint)pbVar2[3]) - dVar1);
-  param_2[4] = *(float *)(param_1 + 0x1c) +
-               (float)((double)CONCAT44(0x43300000,(uint)pbVar2[4]) - dVar1);
-  param_2[5] = *(float *)(param_1 + 0x1c) -
-               (float)((double)CONCAT44(0x43300000,(uint)pbVar2[5]) - dVar1);
-  *param_3 = pbVar2[6];
-  return;
 }
 
 /*
@@ -174,7 +143,6 @@ void FUN_80167a8c(int param_1,float *param_2,byte *param_3)
  * PAL Size: TODO
  */
 void FUN_80167b80(int param_1)
-
 {
   char in_r8;
   
@@ -197,7 +165,6 @@ void FUN_80167b80(int param_1)
  * PAL Size: TODO
  */
 undefined4 FUN_80167c10(int param_1,int param_2)
-
 {
   uint uVar1;
   int iVar2;

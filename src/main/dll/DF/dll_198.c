@@ -18,7 +18,7 @@ extern undefined4 FUN_8000e840();
 extern uint FUN_80020078();
 extern uint FUN_80022264();
 extern undefined4 FUN_800238c4();
-extern int* FUN_80037048();
+extern void* FUN_80037048();
 extern undefined4 FUN_8003709c();
 extern undefined4 FUN_8004c460();
 extern undefined4 FUN_8005d108();
@@ -41,10 +41,6 @@ extern undefined4 DAT_803dcbb0;
 extern f32 FLOAT_803e5a90;
 extern f32 FLOAT_803e5ab0;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801c2460(int param_1);
-void FUN_801c2510(undefined4 param_1,undefined4 param_2,undefined4 param_3);
-
 /*
  * --INFO--
  *
@@ -58,7 +54,6 @@ void FUN_801c2510(undefined4 param_1,undefined4 param_2,undefined4 param_3);
  * PAL Size: TODO
  */
 void FUN_801c2460(int param_1)
-
 {
   uint uVar1;
   int iVar2;

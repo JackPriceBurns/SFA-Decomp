@@ -31,12 +31,6 @@ extern f32 FLOAT_803e4bb4;
 extern f32 FLOAT_803e4bb8;
 extern f32 FLOAT_803e4bbc;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801920f0(int param_1);
-void FUN_80192118(int param_1);
-void FUN_801921cc(short *param_1,int param_2);
-void FUN_80192298(int param_1);
-
 /*
  * --INFO--
  *
@@ -50,7 +44,6 @@ void FUN_80192298(int param_1);
  * PAL Size: TODO
  */
 void FUN_801920f0(int param_1)
-
 {
   FUN_8003b9ec(param_1);
   return;
@@ -69,7 +62,6 @@ void FUN_801920f0(int param_1)
  * PAL Size: TODO
  */
 void FUN_80192118(int param_1)
-
 {
   undefined auStack_18 [12];
   float local_c;
@@ -106,7 +98,6 @@ void FUN_80192118(int param_1)
  * PAL Size: TODO
  */
 void FUN_801921cc(short *param_1,int param_2)
-
 {
   param_1[2] = (ushort)*(byte *)(param_2 + 0x18) << 8;
   param_1[1] = (ushort)*(byte *)(param_2 + 0x19) << 8;

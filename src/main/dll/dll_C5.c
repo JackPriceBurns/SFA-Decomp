@@ -17,9 +17,6 @@ extern undefined4 FUN_8000fb0c();
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4 DAT_803de19c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80102354(int param_1,int param_2);
-
 /*
  * --INFO--
  *
@@ -33,7 +30,6 @@ void FUN_80102354(int param_1,int param_2);
  * PAL Size: TODO
  */
 void FUN_80102354(int param_1,int param_2)
-
 {
   if (*(char *)(DAT_803de19c + 0x13b) < param_1) {
     *(char *)(DAT_803de19c + 0x13b) = (char)param_1;

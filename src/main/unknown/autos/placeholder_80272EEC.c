@@ -14,9 +14,6 @@
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4 DAT_803bd8f0;
 
-/* Local declarations keep imported functions visible within the TU. */
-undefined2 FUN_80272eec(uint param_1,uint param_2);
-
 /*
  * --INFO--
  *

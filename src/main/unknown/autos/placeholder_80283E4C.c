@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80283E4C.c
  * Text span: 0x80283E4C-0x80283FA0
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 3
- * Auto-stubbed functions: 2
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 5
  */
 
 #include "ghidra_import.h"
@@ -16,13 +16,6 @@ extern undefined4 DAT_803dd280;
 extern undefined4 DAT_803dd288;
 extern undefined4 DAT_803defc4;
 extern undefined4 DAT_803deff0;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80283e4c(int param_1);
-void FUN_80283e74(int param_1,ushort param_2);
-void FUN_80283eec(int param_1,uint param_2);
-void FUN_80283f18(int param_1,uint param_2);
-void FUN_80283f44(int param_1,char param_2);
 
 /*
  * --INFO--
@@ -37,13 +30,7 @@ void FUN_80283f44(int param_1,char param_2);
  * PAL Size: TODO
  */
 void FUN_80283e4c(int param_1)
-
 {
-  int iVar1;
-  
-  iVar1 = DAT_803defc4 + param_1 * 0xf4 + (uint)DAT_803deff0 * 4;
-  *(uint *)(iVar1 + 0x24) = *(uint *)(iVar1 + 0x24) | 0x40;
-  return;
 }
 
 /*
@@ -59,26 +46,7 @@ void FUN_80283e4c(int param_1)
  * PAL Size: TODO
  */
 void FUN_80283e74(int param_1,ushort param_2)
-
 {
-  int iVar1;
-  uint uVar2;
-  int iVar3;
-  
-  uVar2 = (uint)param_2;
-  iVar3 = DAT_803defc4 + param_1 * 0xf4;
-  if (0x3fff < param_2) {
-    uVar2 = 0x3fff;
-  }
-  if ((*(byte *)(iVar3 + 0xe4) != 0xff) &&
-     (*(int *)(iVar3 + (uint)*(byte *)(iVar3 + 0xe4) * 4 + 0x38) == uVar2 << 4)) {
-    return;
-  }
-  *(uint *)(iVar3 + (uint)DAT_803deff0 * 4 + 0x38) = uVar2 << 4;
-  iVar1 = iVar3 + (uint)DAT_803deff0 * 4;
-  *(uint *)(iVar1 + 0x24) = *(uint *)(iVar1 + 0x24) | 8;
-  *(byte *)(iVar3 + 0xe4) = DAT_803deff0;
-  return;
 }
 
 /*
@@ -126,18 +94,5 @@ void FUN_80283f18(int param_1,uint param_2)
  * PAL Size: TODO
  */
 void FUN_80283f44(int param_1,char param_2)
-
 {
-  int iVar1;
-  
-  if (param_2 == '\0') {
-    iVar1 = param_1 * 0xf4;
-    *(uint *)(DAT_803defc4 + iVar1 + 0xf0) = *(uint *)(DAT_803defc4 + iVar1 + 0xf0) | 0x80000000;
-    *(undefined2 *)(DAT_803defc4 + iVar1 + 0xd0) = 0x10;
-    *(undefined2 *)(DAT_803defc4 + iVar1 + 0xd2) = 0x10;
-    return;
-  }
-  iVar1 = DAT_803defc4 + param_1 * 0xf4;
-  *(uint *)(iVar1 + 0xf0) = *(uint *)(iVar1 + 0xf0) & 0x7fffffff;
-  return;
 }

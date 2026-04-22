@@ -12,7 +12,7 @@
 #include "main/dll/dll_BC.h"
 
 /* Cross-file calls lifted from the raw Ghidra output. */
-extern undefined2* FUN_8000facc();
+extern void* FUN_8000facc();
 extern double FUN_8000fc54();
 extern undefined4 FUN_800238c4();
 extern undefined4 FUN_8010192c();
@@ -33,9 +33,6 @@ extern undefined4* DAT_803de19c;
 extern f64 DOUBLE_803e22d0;
 extern f32 FLOAT_803e22ac;
 extern f32 FLOAT_803e22b0;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80102158(void);
 
 /*
  * --INFO--

@@ -53,11 +53,6 @@ extern undefined uRam803de371;
 extern undefined2 uRam803de372;
 extern undefined uRam803de373;
 
-/* Local declarations keep imported functions visible within the TU. */
-undefined4
-FUN_8011bb4c(undefined4 param_1,undefined4 param_2,int param_3,undefined4 param_4,undefined4 param_5
-            ,undefined4 param_6,undefined4 param_7,undefined4 param_8);
-
 /*
  * --INFO--
  *

@@ -12,16 +12,13 @@
 #include "main/dll/dll_B9.h"
 
 /* Cross-file calls lifted from the raw Ghidra output. */
-extern undefined2* FUN_8000facc();
+extern void* FUN_8000facc();
 extern double FUN_8000fc54();
 
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4 DAT_803de19c;
 extern f64 DOUBLE_803e22e0;
 extern f32 FLOAT_803e22ac;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80101b44(uint param_1,undefined param_2);
 
 /*
  * --INFO--
@@ -36,7 +33,6 @@ void FUN_80101b44(uint param_1,undefined param_2);
  * PAL Size: TODO
  */
 void FUN_80101b44(uint param_1,undefined param_2)
-
 {
   float fVar1;
   undefined2 *puVar2;

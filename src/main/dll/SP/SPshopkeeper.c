@@ -31,9 +31,6 @@ extern f32 FLOAT_803dc074;
 extern f32 FLOAT_803e6148;
 extern f32 FLOAT_803e614c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801d88f8(void);
-
 /*
  * --INFO--
  *

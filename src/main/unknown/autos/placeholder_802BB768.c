@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_802BB768.c
  * Text span: 0x802BB768-0x802BB8C4
  * Imported Ghidra functions: 2
- * Verbatim-safe functions: 2
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -22,10 +22,6 @@ extern f32 FLOAT_803e8ef0;
 extern f32 FLOAT_803e8f30;
 extern f32 FLOAT_803e8f34;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_802bb780(ushort *param_1,float *param_2,float *param_3,float *param_4);
-bool FUN_802bb844(int param_1);
-
 /*
  * --INFO--
  *
@@ -39,28 +35,7 @@ bool FUN_802bb844(int param_1);
  * PAL Size: TODO
  */
 void FUN_802bb780(ushort *param_1,float *param_2,float *param_3,float *param_4)
-
 {
-  ushort local_68;
-  ushort local_66;
-  ushort local_64;
-  float local_60;
-  undefined4 local_5c;
-  undefined4 local_58;
-  undefined4 local_54;
-  float afStack_50 [17];
-  
-  local_5c = *(undefined4 *)(param_1 + 6);
-  local_58 = *(undefined4 *)(param_1 + 8);
-  local_54 = *(undefined4 *)(param_1 + 10);
-  local_68 = *param_1;
-  local_66 = param_1[1];
-  local_64 = param_1[2];
-  local_60 = FLOAT_803e8ef0;
-  FUN_80021fac(afStack_50,&local_68);
-  FUN_80022790((double)FLOAT_803e8ecc,(double)FLOAT_803e8f30,(double)FLOAT_803e8f34,afStack_50,
-               param_2,param_3,param_4);
-  return;
 }
 
 /*
@@ -76,16 +51,6 @@ void FUN_802bb780(ushort *param_1,float *param_2,float *param_3,float *param_4)
  * PAL Size: TODO
  */
 bool FUN_802bb844(int param_1)
-
 {
-  bool bVar1;
-  int iVar2;
-  
-  iVar2 = *(int *)(param_1 + 0xb8);
-  bVar1 = (*(byte *)(iVar2 + 0xa8e) & 2) != 0;
-  if (bVar1) {
-    FUN_800201ac(0x3e3,0);
-    *(byte *)(iVar2 + 0xa8e) = *(byte *)(iVar2 + 0xa8e) & 0xfd;
-  }
-  return bVar1;
+    return 0;
 }

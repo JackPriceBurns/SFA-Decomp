@@ -32,11 +32,6 @@ extern undefined4* DAT_803a6aac;
 extern undefined4 DAT_803de288;
 extern f32 FLOAT_803e29d0;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801184e8(void);
-undefined4 FUN_8011853c(undefined4 param_1,int *param_2,int param_3);
-undefined4 FUN_801185cc(void);
-
 /*
  * --INFO--
  *
@@ -50,7 +45,6 @@ undefined4 FUN_801185cc(void);
  * PAL Size: TODO
  */
 void FUN_801184e8(void)
-
 {
   if (DAT_803de288 == 2) {
     FUN_8004c928(*DAT_803a6aac,DAT_803a6aac[1],DAT_803a6aac[2],(int)(short)DAT_803a6a40,
@@ -72,7 +66,6 @@ void FUN_801184e8(void)
  * PAL Size: TODO
  */
 undefined4 FUN_8011853c(undefined4 param_1,int *param_2,int param_3)
-
 {
   int iVar1;
   undefined4 uVar2;

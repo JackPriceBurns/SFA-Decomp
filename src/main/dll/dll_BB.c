@@ -15,7 +15,7 @@
 extern undefined4 FUN_8000de08();
 extern undefined4 FUN_8000f478();
 extern undefined4 FUN_8000f584();
-extern short* FUN_8000facc();
+extern void* FUN_8000facc();
 extern int FUN_8000fb04();
 extern undefined4 FUN_8000fb0c();
 extern undefined4 FUN_8000fc5c();
@@ -36,9 +36,6 @@ extern f32 FLOAT_803e22ac;
 extern f32 FLOAT_803e22b0;
 extern f32 FLOAT_803e22e8;
 extern f32 FLOAT_803e22ec;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80101c1c(short *param_1);
 
 /*
  * --INFO--

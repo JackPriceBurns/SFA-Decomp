@@ -13,14 +13,11 @@
 
 /* Cross-file calls lifted from the raw Ghidra output. */
 extern undefined4 FUN_80021754();
-extern int* FUN_80037048();
+extern void* FUN_80037048();
 extern int FUN_80296878();
 
 /* Raw global references kept as loose externs for later cleanup. */
 extern f32 FLOAT_803e3088;
-
-/* Local declarations keep imported functions visible within the TU. */
-int FUN_8013f20c(int param_1,int param_2);
 
 /*
  * --INFO--
@@ -35,7 +32,6 @@ int FUN_8013f20c(int param_1,int param_2);
  * PAL Size: TODO
  */
 int FUN_8013f20c(int param_1,int param_2)
-
 {
   int iVar1;
   int *piVar2;

@@ -22,10 +22,6 @@ extern undefined4 FUN_801f05b4();
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4* DAT_803dd72c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801f0c0c(undefined2 *param_1,int param_2);
-void FUN_801f0d70(int param_1);
-
 /*
  * --INFO--
  *
@@ -55,7 +51,6 @@ void FUN_801f0c0c(undefined2 *param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_801f0d70(int param_1)
-
 {
   char in_r8;
   

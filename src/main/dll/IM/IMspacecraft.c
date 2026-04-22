@@ -4,8 +4,8 @@
  * Owner: main/dll/IM/IMspacecraft.c
  * Text span: 0x801A57EC-0x801A6AD0
  * Imported Ghidra functions: 12
- * Verbatim-safe functions: 7
- * Auto-stubbed functions: 5
+ * Verbatim-safe functions: 6
+ * Auto-stubbed functions: 6
  */
 
 #include "ghidra_import.h"
@@ -36,7 +36,7 @@ extern undefined4 FUN_80035eec();
 extern undefined4 FUN_80035ff8();
 extern undefined4 FUN_80036018();
 extern int FUN_80036974();
-extern int* FUN_80037048();
+extern void* FUN_80037048();
 extern undefined4 FUN_8003709c();
 extern undefined4 FUN_800372f8();
 extern int FUN_800395a4();
@@ -97,24 +97,6 @@ extern f32 FLOAT_803e5144;
 extern f32 FLOAT_803e5148;
 extern f32 FLOAT_803e514c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801a5818(int param_1);
-int FUN_801a584c(ushort *param_1,float *param_2);
-void FUN_801a5bcc(ushort *param_1);
-void FUN_801a5cb4(int param_1,int param_2,int param_3);
-void FUN_801a5dac(int param_1);
-void FUN_801a5ddc(int param_1);
-void FUN_801a5e10(void);
-void FUN_801a6224(undefined2 *param_1,int param_2,int param_3);
-void FUN_801a633c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 uint param_9);
-void FUN_801a6534(int param_1);
-void FUN_801a65c0(int param_1);
-void FUN_801a6608(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined2 *param_9);
-
 /*
  * --INFO--
  *
@@ -128,7 +110,6 @@ void FUN_801a6608(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
  * PAL Size: TODO
  */
 void FUN_801a5818(int param_1)
-
 {
   char in_r8;
   
@@ -151,7 +132,6 @@ void FUN_801a5818(int param_1)
  * PAL Size: TODO
  */
 int FUN_801a584c(ushort *param_1,float *param_2)
-
 {
   int iVar1;
   float fVar2;
@@ -285,7 +265,6 @@ void FUN_801a5bcc(ushort *param_1)
  * PAL Size: TODO
  */
 void FUN_801a5cb4(int param_1,int param_2,int param_3)
-
 {
   float *pfVar1;
   
@@ -321,7 +300,6 @@ void FUN_801a5cb4(int param_1,int param_2,int param_3)
  * PAL Size: TODO
  */
 void FUN_801a5dac(int param_1)
-
 {
   if (**(uint **)(param_1 + 0xb8) != 0) {
     FUN_8001cc00(*(uint **)(param_1 + 0xb8));
@@ -342,7 +320,6 @@ void FUN_801a5dac(int param_1)
  * PAL Size: TODO
  */
 void FUN_801a5ddc(int param_1)
-
 {
   char in_r8;
   
@@ -381,33 +358,7 @@ void FUN_801a5e10(void)
  * PAL Size: TODO
  */
 void FUN_801a6224(undefined2 *param_1,int param_2,int param_3)
-
 {
-  float fVar1;
-  uint uVar2;
-  undefined4 uVar3;
-  undefined4 *puVar4;
-  
-  puVar4 = *(undefined4 **)(param_1 + 0x5c);
-  *param_1 = (short)((int)*(char *)(param_2 + 0x18) << 8);
-  puVar4[3] = (int)*(short *)(param_2 + 0x1a);
-  puVar4[2] = 0;
-  fVar1 = (float)((double)CONCAT44(0x43300000,(int)*(char *)(param_2 + 0x19) ^ 0x80000000) -
-                 DOUBLE_803e50d0) * FLOAT_803e50e0;
-  uVar2 = countLeadingZeros(((uint)(byte)((fVar1 == FLOAT_803e50c8) << 1) << 0x1c) >> 0x1d ^ 1);
-  if (uVar2 >> 5 != 0) {
-    fVar1 = FLOAT_803e50d8;
-  }
-  *(float *)(param_1 + 4) = *(float *)(*(int *)(param_1 + 0x28) + 4) * fVar1;
-  puVar4[1] = 0;
-  FUN_80035ff8((int)param_1);
-  *(byte *)(puVar4 + 4) = *(byte *)(puVar4 + 4) & 0x7f;
-  if (param_3 == 0) {
-    *(undefined *)(param_1 + 0x1b) = 0;
-    uVar3 = FUN_8001cd60(param_1,0xff,0,0x4d,0);
-    *puVar4 = uVar3;
-  }
-  return;
 }
 
 /*
@@ -457,7 +408,6 @@ void FUN_801a6534(int param_1)
  * PAL Size: TODO
  */
 void FUN_801a65c0(int param_1)
-
 {
   char in_r8;
   

@@ -18,7 +18,7 @@ extern uint FUN_80020078();
 extern undefined4 FUN_80021b8c();
 extern uint FUN_80023d8c();
 extern undefined4 FUN_8002a8e0();
-extern undefined2* FUN_8002becc();
+extern void* FUN_8002becc();
 extern undefined4 FUN_8002e088();
 extern uint FUN_8002e144();
 extern undefined4 FUN_800372f8();
@@ -67,17 +67,6 @@ extern f32 FLOAT_803e6910;
 extern f32 FLOAT_803e6914;
 extern f32 FLOAT_803e6918;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801ee104(undefined4 param_1,undefined4 param_2,int param_3);
-void FUN_801ee658(void);
-void FUN_801ee68c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_801ee6f8(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 ushort *param_9);
-
 /*
  * --INFO--
  *
@@ -107,7 +96,6 @@ void FUN_801ee104(undefined4 param_1,undefined4 param_2,int param_3)
  * PAL Size: TODO
  */
 void FUN_801ee658(void)
-
 {
   if (DAT_803de8e0 != 0) {
     FUN_80054484();
@@ -150,7 +138,6 @@ void FUN_801ee68c(undefined8 param_1,double param_2,double param_3,undefined8 pa
 void FUN_801ee6f8(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  ushort *param_9)
-
 {
   uint uVar1;
   undefined2 *puVar2;

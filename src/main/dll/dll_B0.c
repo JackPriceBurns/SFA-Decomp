@@ -14,9 +14,6 @@
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4 DAT_803de19c;
 
-/* Local declarations keep imported functions visible within the TU. */
-undefined FUN_80100d2c(void);
-
 /*
  * --INFO--
  *
@@ -30,7 +27,6 @@ undefined FUN_80100d2c(void);
  * PAL Size: TODO
  */
 undefined FUN_80100d2c(void)
-
 {
   return *(undefined *)(DAT_803de19c + 0x138);
 }

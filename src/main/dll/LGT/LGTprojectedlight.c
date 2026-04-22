@@ -4,8 +4,8 @@
  * Owner: main/dll/LGT/LGTprojectedlight.c
  * Text span: 0x801F44C0-0x801F4C60
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 4
+ * Auto-stubbed functions: 1
  */
 
 #include "ghidra_import.h"
@@ -88,15 +88,6 @@ extern undefined2 uRam803de916;
 extern undefined uRam803de919;
 extern undefined2 uRam803de91a;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801f44c0(undefined2 *param_1,int param_2);
-void FUN_801f4550(int param_1);
-void FUN_801f4a64(int param_1);
-void FUN_801f4ab8(int param_1);
-void FUN_801f4aec(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9);
-
 /*
  * --INFO--
  *
@@ -110,7 +101,6 @@ void FUN_801f4aec(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
  * PAL Size: TODO
  */
 void FUN_801f44c0(undefined2 *param_1,int param_2)
-
 {
   float *pfVar1;
   
@@ -146,7 +136,6 @@ void FUN_801f44c0(undefined2 *param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_801f4550(int param_1)
-
 {
   float fVar1;
   float fVar2;
@@ -285,7 +274,6 @@ void FUN_801f4550(int param_1)
  * PAL Size: TODO
  */
 void FUN_801f4a64(int param_1)
-
 {
   FUN_8003709c(param_1,9);
   FUN_8000a538((int *)0xa8,0);
@@ -308,7 +296,6 @@ void FUN_801f4a64(int param_1)
  * PAL Size: TODO
  */
 void FUN_801f4ab8(int param_1)
-
 {
   char in_r8;
   
@@ -333,37 +320,5 @@ void FUN_801f4ab8(int param_1)
 void FUN_801f4aec(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9)
-
 {
-  uint uVar1;
-  int iVar2;
-  float *pfVar3;
-  undefined8 uVar4;
-  
-  FUN_8002bac4();
-  pfVar3 = *(float **)(param_9 + 0xb8);
-  if (FLOAT_803e6b08 < *pfVar3) {
-    uVar4 = FUN_80019940(0xff,0xff,0xff,0xff);
-    FUN_800168a8(uVar4,param_2,param_3,param_4,param_5,param_6,param_7,param_8,0x42c);
-    *pfVar3 = *pfVar3 - FLOAT_803dc074;
-    if (*pfVar3 < FLOAT_803e6b08) {
-      *pfVar3 = FLOAT_803e6b08;
-    }
-  }
-  if (*(char *)(pfVar3 + 5) == '\0') {
-    uVar1 = (**(code **)(*DAT_803dd72c + 0x40))((int)*(char *)(param_9 + 0xac));
-    uVar1 = countLeadingZeros(6 - (uVar1 & 0xff));
-    if (((uVar1 >> 5 == 0) || (iVar2 = FUN_80080490(), iVar2 == 0)) ||
-       (uVar1 = FUN_80020078(0xa7f), uVar1 == 0)) {
-      FUN_801d8650(pfVar3 + 4,0x10,-1,-1,0xa7f,(int *)0xa6);
-      FUN_801d84c4(pfVar3 + 4,2,-1,-1,0xa7f,(int *)0xa8);
-    }
-    if (0x3c < (uint)pfVar3[6]) {
-      FUN_801d84c4(pfVar3 + 4,1,-1,-1,0xada,(int *)0xac);
-    }
-    FUN_801d84c4(pfVar3 + 4,0x20,-1,-1,0xcbb,(int *)0xc4);
-  }
-  FUN_801f4550(param_9);
-  pfVar3[6] = (float)((int)pfVar3[6] + 1);
-  return;
 }

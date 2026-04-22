@@ -18,11 +18,6 @@ extern undefined4 FUN_800201ac();
 extern undefined4 FUN_8002bac4();
 extern int FUN_8002e1ac();
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801e167c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9);
-
 /*
  * --INFO--
  *
@@ -38,7 +33,6 @@ void FUN_801e167c(undefined8 param_1,double param_2,double param_3,undefined8 pa
 void FUN_801e167c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9)
-
 {
   undefined4 uVar1;
   uint uVar2;

@@ -21,11 +21,6 @@ extern undefined4 FUN_80191150();
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4 DAT_803ddb38;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80191a28(int param_1);
-void FUN_80191bd4(int param_1);
-void FUN_80191c1c(short *param_1,int param_2);
-
 /*
  * --INFO--
  *
@@ -39,7 +34,6 @@ void FUN_80191c1c(short *param_1,int param_2);
  * PAL Size: TODO
  */
 void FUN_80191a28(int param_1)
-
 {
   uint uVar1;
   int iVar2;
@@ -102,7 +96,6 @@ void FUN_80191a28(int param_1)
  * PAL Size: TODO
  */
 void FUN_80191bd4(int param_1)
-
 {
   if (*(char *)(*(int *)(param_1 + 0x4c) + 0x1a) != -1) {
     FUN_80190f08(param_1);

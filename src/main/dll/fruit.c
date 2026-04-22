@@ -26,16 +26,6 @@ extern f64 DOUBLE_803e7118;
 extern f32 FLOAT_803dc074;
 extern f32 FLOAT_803e7124;
 
-/* Local declarations keep imported functions visible within the TU. */
-undefined4 FUN_802086d0(int param_1,undefined4 param_2,int param_3);
-void FUN_8020882c(uint param_1);
-void FUN_802089fc(uint param_1);
-void FUN_80208a1c(undefined2 *param_1,int param_2);
-void FUN_80208ae0(void);
-void FUN_80208b0c(void);
-void FUN_80208b40(int *param_1,int param_2);
-void FUN_80208cac(int param_1);
-
 /*
  * --INFO--
  *
@@ -49,7 +39,6 @@ void FUN_80208cac(int param_1);
  * PAL Size: TODO
  */
 undefined4 FUN_802086d0(int param_1,undefined4 param_2,int param_3)
-
 {
   byte bVar1;
   short sVar2;
@@ -109,7 +98,6 @@ undefined4 FUN_802086d0(int param_1,undefined4 param_2,int param_3)
  * PAL Size: TODO
  */
 void FUN_8020882c(uint param_1)
-
 {
   short sVar1;
   uint uVar2;
@@ -169,7 +157,6 @@ void FUN_8020882c(uint param_1)
  * PAL Size: TODO
  */
 void FUN_802089fc(uint param_1)
-
 {
   FUN_8020882c(param_1);
   return;
@@ -204,7 +191,6 @@ void FUN_80208a1c(undefined2 *param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_80208ae0(void)
-
 {
   FUN_8007d858();
   return;
@@ -223,7 +209,6 @@ void FUN_80208ae0(void)
  * PAL Size: TODO
  */
 void FUN_80208b0c(void)
-
 {
   FUN_8007d858();
   return;
@@ -242,7 +227,6 @@ void FUN_80208b0c(void)
  * PAL Size: TODO
  */
 void FUN_80208b40(int *param_1,int param_2)
-
 {
   float fVar1;
   int iVar2;
@@ -298,7 +282,6 @@ void FUN_80208b40(int *param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_80208cac(int param_1)
-
 {
   int iVar1;
   

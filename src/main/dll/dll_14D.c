@@ -23,11 +23,6 @@ extern undefined4 FUN_80041110();
 extern undefined4* DAT_803dd6d4;
 extern f32 FLOAT_803e44e4;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8017f1ec(undefined2 *param_1);
-void FUN_8017f4d8(int param_1);
-void FUN_8017f508(int param_1);
-
 /*
  * --INFO--
  *
@@ -57,7 +52,6 @@ void FUN_8017f1ec(undefined2 *param_1)
  * PAL Size: TODO
  */
 void FUN_8017f4d8(int param_1)
-
 {
   char in_r8;
   
@@ -80,7 +74,6 @@ void FUN_8017f4d8(int param_1)
  * PAL Size: TODO
  */
 void FUN_8017f508(int param_1)
-
 {
   if (((*(uint *)(*(int *)(param_1 + 0x50) + 0x44) & 1) != 0) && (*(int *)(param_1 + 0x74) != 0)) {
     FUN_80041110();

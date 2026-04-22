@@ -61,22 +61,6 @@ extern f32 FLOAT_803e3188;
 extern f32 FLOAT_803e318c;
 extern f32 FLOAT_803e3190;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8013f314(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,int param_10,int param_11,undefined4 param_12,byte param_13,
-                 uint param_14,undefined4 param_15,undefined4 param_16);
-void FUN_8013f488();
-void FUN_8013fd6c(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,int *param_10,int param_11,undefined4 param_12,byte param_13,
-                 uint param_14,undefined4 param_15,undefined4 param_16);
-void FUN_8013ff6c();
-void FUN_80140248(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,int param_10,int param_11,undefined4 param_12,byte param_13,
-                 uint param_14,undefined4 param_15,undefined4 param_16);
-
 /*
  * --INFO--
  *
@@ -93,7 +77,6 @@ void FUN_8013f314(undefined8 param_1,undefined8 param_2,double param_3,undefined
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  undefined4 param_9,int param_10,int param_11,undefined4 param_12,byte param_13,
                  uint param_14,undefined4 param_15,undefined4 param_16)
-
 {
   int iVar1;
   uint uVar2;
@@ -152,7 +135,10 @@ void FUN_8013f314(undefined8 param_1,undefined8 param_2,double param_3,undefined
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8013f488()
+void FUN_8013f488(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
+                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
+                 int param_9,int *param_10,undefined4 param_11,undefined4 param_12,byte param_13,
+                 uint param_14,undefined4 param_15,undefined4 param_16)
 {
 }
 
@@ -172,7 +158,6 @@ void FUN_8013fd6c(undefined8 param_1,undefined8 param_2,double param_3,undefined
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9,int *param_10,int param_11,undefined4 param_12,byte param_13,
                  uint param_14,undefined4 param_15,undefined4 param_16)
-
 {
   short sVar1;
   int iVar2;
@@ -244,7 +229,10 @@ void FUN_8013fd6c(undefined8 param_1,undefined8 param_2,double param_3,undefined
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8013ff6c()
+void FUN_8013ff6c(undefined8 param_1,undefined8 param_2,double param_3,undefined8 param_4,
+                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
+                 int param_9,undefined4 *param_10,undefined4 param_11,undefined4 param_12,
+                 byte param_13,uint param_14,undefined4 param_15,undefined4 param_16)
 {
 }
 
@@ -264,7 +252,6 @@ void FUN_80140248(undefined8 param_1,undefined8 param_2,double param_3,undefined
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9,int param_10,int param_11,undefined4 param_12,byte param_13,
                  uint param_14,undefined4 param_15,undefined4 param_16)
-
 {
   bool bVar1;
   int iVar2;

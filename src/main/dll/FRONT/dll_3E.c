@@ -69,15 +69,6 @@ extern undefined4 DAT_803a6ab0;
 extern undefined4* DAT_803de2e4;
 extern undefined4 DAT_803de300;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80118714(void);
-void FUN_80118ac4(void);
-undefined4 FUN_80118ba8(void);
-bool FUN_80118c08(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 uint param_9,undefined param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-
 /*
  * --INFO--
  *
@@ -123,7 +114,6 @@ void FUN_80118ac4(void)
  * PAL Size: TODO
  */
 undefined4 FUN_80118ba8(void)
-
 {
   if ((DAT_803a6a58 != 0) && ((DAT_803a6a5c == '\x01' || (DAT_803a6a5c == '\x04')))) {
     DAT_803a6a5c = 2;

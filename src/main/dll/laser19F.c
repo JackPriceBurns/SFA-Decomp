@@ -4,8 +4,8 @@
  * Owner: main/dll/laser19F.c
  * Text span: 0x801C4B54-0x801C532C
  * Imported Ghidra functions: 4
- * Verbatim-safe functions: 3
- * Auto-stubbed functions: 1
+ * Verbatim-safe functions: 2
+ * Auto-stubbed functions: 2
  */
 
 #include "ghidra_import.h"
@@ -32,7 +32,7 @@ extern undefined4 FUN_80296c78();
 
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4* DAT_803dd72c;
-extern undefined4 DAT_803de838;
+extern void* DAT_803de838;
 extern f64 DOUBLE_803e5bd0;
 extern f32 FLOAT_803dc074;
 extern f32 FLOAT_803e5b58;
@@ -55,15 +55,6 @@ extern f32 FLOAT_803e5bf0;
 extern f32 FLOAT_803e5bf4;
 extern f32 FLOAT_803e5bf8;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801c4b54(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined2 *param_9,int param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_801c4c18(ushort *param_1);
-undefined4 FUN_801c4f6c(int param_1);
-void FUN_801c50c4(undefined4 param_1,undefined4 param_2,int param_3);
-
 /*
  * --INFO--
  *
@@ -80,31 +71,7 @@ void FUN_801c4b54(undefined8 param_1,double param_2,double param_3,undefined8 pa
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  undefined2 *param_9,int param_10,undefined4 param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16)
-
 {
-  uint uVar1;
-  int iVar2;
-  int *piVar3;
-  undefined8 extraout_f1;
-  undefined8 uVar4;
-  
-  piVar3 = *(int **)(param_9 + 0x5c);
-  FUN_80037a5c((int)param_9,2);
-  *param_9 = (short)((int)*(char *)(param_10 + 0x18) << 8);
-  uVar1 = FUN_80022264(0xffffffb0,0x50);
-  *(short *)(piVar3 + 0xb) = (short)uVar1 + 400;
-  *(undefined *)((int)piVar3 + 0x49) = 0;
-  uVar4 = FUN_80013ee8(0x81);
-  DAT_803de838 = (undefined4)((ulonglong)uVar4 >> 0x20);
-  piVar3[7] = (int)FLOAT_803e5b58;
-  *(undefined *)((int)piVar3 + 0x4a) = *(undefined *)(param_10 + 0x19);
-  *(undefined2 *)((int)piVar3 + 0x2e) = 0x118;
-  if (*piVar3 == 0) {
-    iVar2 = FUN_80054ed0(extraout_f1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,0x2e,
-                         (int)uVar4,param_11,param_12,param_13,param_14,param_15,param_16);
-    *piVar3 = iVar2;
-  }
-  return;
 }
 
 /*
@@ -120,7 +87,6 @@ void FUN_801c4b54(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_801c4c18(ushort *param_1)
-
 {
   int iVar1;
   uint uVar2;
@@ -192,7 +158,6 @@ void FUN_801c4c18(ushort *param_1)
  * PAL Size: TODO
  */
 undefined4 FUN_801c4f6c(int param_1)
-
 {
   float fVar1;
   float fVar2;

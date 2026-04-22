@@ -13,7 +13,7 @@
 
 /* Cross-file calls lifted from the raw Ghidra output. */
 extern undefined4 FUN_800066e0();
-extern undefined2* FUN_8000facc();
+extern void* FUN_8000facc();
 extern int FUN_800128fc();
 extern undefined8 FUN_80012d20();
 extern uint FUN_80022264();
@@ -32,13 +32,6 @@ extern f32 FLOAT_803e5e6c;
 extern f32 FLOAT_803e5e70;
 extern f32 FLOAT_803e5e74;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801cd480(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9);
-void FUN_801cd568(undefined4 param_1);
-void FUN_801cd5bc(int param_1);
-
 /*
  * --INFO--
  *
@@ -54,7 +47,6 @@ void FUN_801cd5bc(int param_1);
 void FUN_801cd480(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  int param_9)
-
 {
   char cVar1;
   undefined uVar2;
@@ -100,7 +92,6 @@ void FUN_801cd480(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Size: TODO
  */
 void FUN_801cd568(undefined4 param_1)
-
 {
   (**(code **)(*DAT_803dd6fc + 0x18))();
   (**(code **)(*DAT_803dd6f8 + 0x18))(param_1);
@@ -120,7 +111,6 @@ void FUN_801cd568(undefined4 param_1)
  * PAL Size: TODO
  */
 void FUN_801cd5bc(int param_1)
-
 {
   float fVar1;
   undefined2 *puVar2;

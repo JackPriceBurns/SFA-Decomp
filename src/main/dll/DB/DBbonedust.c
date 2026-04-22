@@ -11,9 +11,6 @@
 #include "ghidra_import.h"
 #include "main/dll/DB/DBbonedust.h"
 
-/* Local declarations keep imported functions visible within the TU. */
-int FUN_801e18cc(int param_1);
-
 /*
  * --INFO--
  *
@@ -27,7 +24,6 @@ int FUN_801e18cc(int param_1);
  * PAL Size: TODO
  */
 int FUN_801e18cc(int param_1)
-
 {
   return (int)*(char *)(*(int *)(param_1 + 0xb8) + 0x70);
 }

@@ -28,11 +28,6 @@ extern f32 FLOAT_803e4874;
 extern f32 FLOAT_803e4898;
 extern f32 FLOAT_803e489c;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8018a7dc(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 uint param_9);
-
 /*
  * --INFO--
  *
@@ -48,7 +43,6 @@ void FUN_8018a7dc(undefined8 param_1,double param_2,double param_3,undefined8 pa
 void FUN_8018a7dc(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  uint param_9)
-
 {
   int iVar1;
   byte bVar3;

@@ -192,6 +192,7 @@ FORCE_STUB_OWNERS = {
     "main/dll/CAM/dll_5B.c",
     "main/dll/CAM/dll_5F.c",
     "main/dll/moveLib.c",
+    "main/dll/pressureSwitch.c",
     # Rebody sweep owners that still fail MWCC on raw Ghidra bodies.
     "main/dll/CF/treasureRelated0177.c",
     "main/dll/DF/DFlantern.c",
@@ -200,6 +201,9 @@ FORCE_STUB_OWNERS = {
     "main/dll/seqObj11D.c",
     "main/dll/colrise.c",
 }
+FORCE_STUB_OWNER_PREFIXES = (
+    "main/unknown/autos/",
+)
 
 
 @dataclass(frozen=True)
@@ -292,6 +296,12 @@ def should_manage_existing(path: Path, overwrite_existing: bool) -> bool:
         or SOURCE_MATERIALIZE_MARKER in head
         or (NON_BUILT_STUB_MARKER in head and "#include" not in head)
     )
+
+
+def should_manage_header(path: Path, source_path: Path, overwrite_existing: bool) -> bool:
+    if should_manage_existing(path, overwrite_existing):
+        return True
+    return source_path.exists() and should_manage_existing(source_path, False)
 
 
 def parse_signature_block(raw_text: str, name: str) -> tuple[str, str]:
@@ -407,6 +417,12 @@ def make_loose_forward_declaration(function: FunctionDump) -> str:
 
 def make_loose_definition_signature(function: FunctionDump) -> str:
     return f"{normalize_type_name(function.return_type)} {function.name}()"
+
+
+def make_header_declaration(function: FunctionDump) -> str:
+    if function.safe_signature:
+        return function.signature_text + ";"
+    return make_loose_forward_declaration(function)
 
 
 def default_return_statement(return_type: str) -> str | None:
@@ -673,7 +689,11 @@ def function_stub_reasons(
     forced_stub_owners = forced_stub_owners or set()
     for function in functions:
         function_reasons = list(function.unsafe_reasons)
-        if owner in FORCE_STUB_OWNERS or owner in forced_stub_owners:
+        if (
+            owner in FORCE_STUB_OWNERS
+            or owner in forced_stub_owners
+            or owner.startswith(FORCE_STUB_OWNER_PREFIXES)
+        ):
             function_reasons.append("forced full-owner stub for compile-first import")
         if function.name in FORCE_STUB_FUNCTIONS:
             function_reasons.append("forced stub for compile-first import")
@@ -1011,13 +1031,14 @@ def render_source(
             lines.append(extern_decl_for_global(symbol, inferred_global_types.get(symbol)))
         lines.append("")
 
-    lines.append("/* Local declarations keep imported functions visible within the TU. */")
-    for function in functions:
-        if function.name in stubbed_names:
-            lines.append(make_loose_forward_declaration(function))
-        else:
-            lines.append(make_safe_forward_declaration(function))
-    lines.append("")
+    if not emit_headers:
+        lines.append("/* Local declarations keep imported functions visible within the TU. */")
+        for function in functions:
+            if function.name in stubbed_names:
+                lines.append(make_loose_forward_declaration(function))
+            else:
+                lines.append(make_safe_forward_declaration(function))
+        lines.append("")
 
     for function in functions:
         reasons = stub_reasons.get(function.name)
@@ -1028,7 +1049,7 @@ def render_source(
             body_text = normalize_null_pointer_casts(body_text, inferred_global_types)
             lines.append(strip_leading_function_prologue(body_text).rstrip())
         else:
-            lines.append(render_stub(function, use_loose_signature=True).rstrip())
+            lines.append(render_stub(function, use_loose_signature=not emit_headers).rstrip())
         lines.append("")
 
     return "\n".join(lines).rstrip() + "\n"
@@ -1054,10 +1075,7 @@ def render_header(
         "",
     ]
     for function in functions:
-        if function.name in stubbed_names:
-            lines.append(make_loose_forward_declaration(function))
-        else:
-            lines.append(make_safe_forward_declaration(function))
+        lines.append(make_header_declaration(function))
     lines.extend(["", f"#endif /* {guard} */", ""])
     return "\n".join(lines)
 
@@ -1108,9 +1126,10 @@ def render_inventory_source(
     lines.append("/* Split inventory stubs keep the file compiled and routable in the meantime. */")
     lines.append("")
 
-    for function in inventory:
-        lines.append(f"undefined4 {function.name}(void);")
-    lines.append("")
+    if not emit_headers:
+        for function in inventory:
+            lines.append(f"undefined4 {function.name}(void);")
+        lines.append("")
 
     for function in inventory:
         lines.extend(
@@ -1233,6 +1252,14 @@ def collect_selected_owners(args: argparse.Namespace, spans: list[SplitSpan]) ->
         skipped = {normalize(owner) for owner in args.skip_owner}
         selected = [owner for owner in selected if owner not in skipped]
 
+    if args.managed_existing_only:
+        selected = [
+            owner
+            for owner in selected
+            if (args.src_root / normalize(owner)).exists()
+            and should_manage_existing(args.src_root / normalize(owner), False)
+        ]
+
     deduped: list[str] = []
     seen: set[str] = set()
     for owner in selected:
@@ -1278,6 +1305,11 @@ def main() -> None:
     parser.add_argument("--owner", action="append", help="Specific split owner to materialize, e.g. main/objanim.c")
     parser.add_argument("--owner-prefix", action="append", help="Only keep selected owners with the given prefix, e.g. main/")
     parser.add_argument("--skip-owner", action="append", help="Skip a specific split owner during selection, e.g. main/dll/gameplay.c")
+    parser.add_argument(
+        "--managed-existing-only",
+        action="store_true",
+        help="Only keep owners whose current source file already exists and is tool-managed.",
+    )
     parser.add_argument("--address", action="append", help="Address to resolve to a split owner, e.g. 0x8002EC4C")
     parser.add_argument("--limit", type=int, help="Limit selected owners after filtering")
     parser.add_argument("--write", action="store_true", help="Write generated sources instead of only printing a summary")
@@ -1343,7 +1375,7 @@ def main() -> None:
             wrote_sources += 1
 
         if args.emit_headers:
-            if not should_manage_existing(header_path, args.overwrite_existing):
+            if not should_manage_header(header_path, source_path, args.overwrite_existing):
                 skipped_existing += 1
                 continue
             if functions:

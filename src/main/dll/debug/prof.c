@@ -41,11 +41,6 @@ extern undefined4 DAT_803de388;
 extern undefined4* PTR_DAT_8031b918;
 extern undefined4* PTR_DAT_8031b938;
 
-/* Local declarations keep imported functions visible within the TU. */
-undefined4 FUN_8011c800(int param_1,int param_2);
-void FUN_8011c8b0(void);
-void FUN_8011ca98(void);
-
 /*
  * --INFO--
  *
@@ -59,7 +54,6 @@ void FUN_8011ca98(void);
  * PAL Size: TODO
  */
 undefined4 FUN_8011c800(int param_1,int param_2)
-
 {
   if (param_1 == 1) {
     if (param_2 == 2) {
@@ -99,7 +93,6 @@ undefined4 FUN_8011c800(int param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_8011c8b0(void)
-
 {
   uint uVar1;
   undefined4 uVar2;
@@ -144,7 +137,6 @@ void FUN_8011c8b0(void)
  * PAL Size: TODO
  */
 void FUN_8011ca98(void)
-
 {
   uint uVar1;
   bool bVar3;

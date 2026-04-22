@@ -32,9 +32,6 @@ extern undefined4 DAT_803de384;
 extern undefined4 DAT_803de385;
 extern undefined4 DAT_803de388;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8011c2ac(int param_1,int param_2);
-
 /*
  * --INFO--
  *

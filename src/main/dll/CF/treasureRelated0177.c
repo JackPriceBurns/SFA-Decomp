@@ -16,7 +16,7 @@ extern undefined8 FUN_8000d03c();
 extern undefined4 FUN_8000d220();
 extern undefined4 FUN_8000dbb0();
 extern undefined4 FUN_8000dcdc();
-extern undefined2* FUN_8000facc();
+extern void* FUN_8000facc();
 extern undefined4 FUN_8000fc5c();
 extern undefined4 FUN_8001dc30();
 extern undefined4 FUN_8001f448();
@@ -44,7 +44,7 @@ extern undefined4 FUN_802945e0();
 extern undefined4 FUN_80294964();
 extern byte FUN_802973bc();
 extern undefined4 FUN_802973cc();
-extern undefined2* SUB42();
+extern void* SUB42();
 
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4* DAT_803dd6cc;
@@ -67,19 +67,6 @@ extern f32 FLOAT_803e4a00;
 extern f32 FLOAT_803e4a10;
 extern f32 FLOAT_803e4a14;
 extern f32 FLOAT_803e4a18;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_8018cdac(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-void FUN_8018d208(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 int param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
-                 undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_8018d2f4(int param_1);
-void FUN_8018d378(undefined2 *param_1,int param_2);
-void FUN_8018d470(int param_1);
-void FUN_8018d4bc(int param_1);
-void FUN_8018d520(void);
 
 /*
  * --INFO--

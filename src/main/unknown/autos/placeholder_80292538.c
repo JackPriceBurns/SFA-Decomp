@@ -4,8 +4,8 @@
  * Owner: main/unknown/autos/placeholder_80292538.c
  * Text span: 0x80292538-0x80292754
  * Imported Ghidra functions: 5
- * Verbatim-safe functions: 5
- * Auto-stubbed functions: 0
+ * Verbatim-safe functions: 0
+ * Auto-stubbed functions: 5
  */
 
 #include "ghidra_import.h"
@@ -27,13 +27,6 @@ extern f32 FLOAT_803e8638;
 extern f32 FLOAT_803e8644;
 extern f32 FLOAT_803e8658;
 
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_80292538(void);
-double FUN_80292568(float *param_1);
-void FUN_80292584(double param_1,float *param_2);
-void FUN_802925a0(void);
-void FUN_802926a4(void);
-
 /*
  * --INFO--
  *
@@ -47,10 +40,7 @@ void FUN_802926a4(void);
  * PAL Size: TODO
  */
 void FUN_80292538(void)
-
 {
-  FUN_80292460();
-  return;
 }
 
 /*
@@ -66,9 +56,8 @@ void FUN_80292538(void)
  * PAL Size: TODO
  */
 double FUN_80292568(float *param_1)
-
 {
-  return (double)((longlong)(double)*(short *)param_1 * 0x3ff0000000000000);
+    return 0.0;
 }
 
 /*
@@ -84,10 +73,7 @@ double FUN_80292568(float *param_1)
  * PAL Size: TODO
  */
 void FUN_80292584(double param_1,float *param_2)
-
 {
-  *(short *)param_2 = (short)(param_1 * 1.0);
-  return;
 }
 
 /*
@@ -103,29 +89,7 @@ void FUN_80292584(double param_1,float *param_2)
  * PAL Size: TODO
  */
 void FUN_802925a0(void)
-
 {
-  double dVar1;
-  double dVar2;
-  float afStack_34 [2];
-  uint uStack_2c;
-  longlong local_28;
-  
-  dVar1 = (double)FUN_802867b0();
-  dVar2 = ABS(dVar1);
-  if ((double)FLOAT_803e8638 <= dVar2) {
-    if (dVar2 < (double)FLOAT_803e8644) {
-      local_28 = (longlong)(int)dVar1;
-      uStack_2c = (int)dVar1 ^ 0x80000000;
-      afStack_34[1] = 176.0;
-    }
-  }
-  else {
-    FUN_80292444(dVar2,afStack_34);
-    FUN_80292428(afStack_34);
-  }
-  FUN_802867fc();
-  return;
 }
 
 /*
@@ -141,14 +105,5 @@ void FUN_802925a0(void)
  * PAL Size: TODO
  */
 void FUN_802926a4(void)
-
 {
-  double dVar1;
-  
-  dVar1 = (double)FUN_802867a8();
-  if ((double)FLOAT_803e8658 < ABS(dVar1)) {
-    FUN_8029388c(-(double)(float)((double)FLOAT_803e8658 * ABS(dVar1) - (double)FLOAT_803e8658));
-  }
-  FUN_802867f4();
-  return;
 }

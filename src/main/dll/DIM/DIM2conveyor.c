@@ -35,21 +35,8 @@ extern uint countLeadingZeros();
 
 /* Raw global references kept as loose externs for later cleanup. */
 extern undefined4* DAT_803dd6d4;
-extern undefined4 DAT_803de7d0;
+extern void* DAT_803de7d0;
 extern f32 FLOAT_803e5550;
-
-/* Local declarations keep imported functions visible within the TU. */
-void FUN_801b367c(undefined2 *param_1,int param_2);
-void FUN_801b38f8(undefined4 param_1,undefined4 param_2,uint param_3);
-uint FUN_801b3a0c(uint param_1,undefined4 param_2,int param_3);
-void FUN_801b3b38(int param_1);
-void FUN_801b3b7c(int param_1);
-void FUN_801b3c0c(undefined2 *param_1,int param_2);
-undefined4 FUN_801b3d1c(int param_1,undefined4 param_2,int param_3);
-void FUN_801b3d94(int param_1);
-void FUN_801b3db8(int param_1);
-void FUN_801b3dec(int param_1);
-void FUN_801b3f7c(short *param_1,int param_2);
 
 /*
  * --INFO--
@@ -80,7 +67,6 @@ void FUN_801b367c(undefined2 *param_1,int param_2)
  * PAL Size: TODO
  */
 void FUN_801b38f8(undefined4 param_1,undefined4 param_2,uint param_3)
-
 {
   int iVar1;
   uint uVar2;
@@ -134,7 +120,6 @@ void FUN_801b38f8(undefined4 param_1,undefined4 param_2,uint param_3)
  * PAL Size: TODO
  */
 uint FUN_801b3a0c(uint param_1,undefined4 param_2,int param_3)
-
 {
   uint uVar1;
   int iVar2;
@@ -181,7 +166,6 @@ uint FUN_801b3a0c(uint param_1,undefined4 param_2,int param_3)
  * PAL Size: TODO
  */
 void FUN_801b3b38(int param_1)
-
 {
   char in_r8;
   
@@ -204,7 +188,6 @@ void FUN_801b3b38(int param_1)
  * PAL Size: TODO
  */
 void FUN_801b3b7c(int param_1)
-
 {
   int iVar1;
   
@@ -251,7 +234,6 @@ void FUN_801b3c0c(undefined2 *param_1,int param_2)
  * PAL Size: TODO
  */
 undefined4 FUN_801b3d1c(int param_1,undefined4 param_2,int param_3)
-
 {
   int iVar1;
   
@@ -277,7 +259,6 @@ undefined4 FUN_801b3d1c(int param_1,undefined4 param_2,int param_3)
  * PAL Size: TODO
  */
 void FUN_801b3d94(int param_1)
-
 {
   FUN_8003709c(param_1,0xf);
   return;
@@ -296,7 +277,6 @@ void FUN_801b3d94(int param_1)
  * PAL Size: TODO
  */
 void FUN_801b3db8(int param_1)
-
 {
   char in_r8;
   
@@ -319,7 +299,6 @@ void FUN_801b3db8(int param_1)
  * PAL Size: TODO
  */
 void FUN_801b3dec(int param_1)
-
 {
   short sVar1;
   uint uVar2;
