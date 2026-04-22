@@ -147,19 +147,37 @@ extern f32 FLOAT_803e2e60;
 extern void* PTR_DAT_8031c228;
 extern void* PTR_DAT_8031c238;
 
+/* Narrowly-typed aliases for the sbss state vars this DLL owns. */
+extern s8 lbl_803DE428;
+extern s8 lbl_803DE454;
+extern u8 lbl_803DE4C0;
+extern u8 lbl_803DE439;
+extern u8 lbl_803DE538;
+extern s16 lbl_803DE50E;
+extern s16 lbl_803DE510;
+extern s16 lbl_803DE512;
+extern s16 lbl_803DE53A;
+extern s16 lbl_803DE540;
+extern s16 lbl_803DE542;
+extern u16 lbl_803DE50C;
+
 /* Local declarations keep imported functions visible within the TU. */
 void FUN_8012ebbc(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
 void FUN_8012ecb8(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8);
-int FUN_8012ee7c(void);
+s32 fn_8012EE7C(void);
+void fn_8012EE88(void);
 void FUN_8012ee94(int param_1,undefined4 param_2,undefined4 param_3,int param_4);
-int FUN_8012f000(void);
+void fn_8012EF5C(void);
+s16 fn_8012EFA0(void);
+s32 fn_8012EFA8(void);
+s32 fn_8012F000(void);
 void FUN_8012f04c(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  undefined4 param_9,undefined4 param_10,undefined4 param_11,undefined4 param_12,
                  undefined4 param_13,undefined4 param_14,undefined4 param_15,undefined4 param_16);
-void FUN_8012f288(undefined2 param_1);
+void fn_8012F288(u16 param_1);
 void FUN_8012f298(undefined8 param_1,double param_2,double param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
                  undefined4 param_9,undefined4 param_10,uint param_11,undefined4 param_12,
@@ -211,10 +229,17 @@ void FUN_8012ecb8(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
  * PAL Address: TODO
  * PAL Size: TODO
  */
-int FUN_8012ee7c(void)
-
+s32 fn_8012EE7C(void)
 {
-  return (int)DAT_803de428;
+    return lbl_803DE428;
+}
+
+/* EN v1.0 Address: 0x8012EE88  Size: 12b
+ * Clear the signed-byte state at lbl_803DE428 (companion setter to
+ * fn_8012EE7C's getter). */
+void fn_8012EE88(void)
+{
+    lbl_803DE428 = 0;
 }
 
 /*
@@ -233,6 +258,27 @@ void FUN_8012ee94(int param_1,undefined4 param_2,undefined4 param_3,int param_4)
 {
 }
 
+/* EN v1.0 Address: 0x8012EF5C  Size: 12b
+ * Latch the u8 flag at lbl_803DE4C0 to 1. */
+void fn_8012EF5C(void)
+{
+    lbl_803DE4C0 = 1;
+}
+
+/* EN v1.0 Address: 0x8012EFA0  Size: 8b
+ * Halfword getter (signed load) at lbl_803DE53A. */
+s16 fn_8012EFA0(void)
+{
+    return lbl_803DE53A;
+}
+
+/* EN v1.0 Address: 0x8012EFA8  Size: 12b
+ * Signed byte getter at lbl_803DE454 (lbz + extsb). */
+s32 fn_8012EFA8(void)
+{
+    return lbl_803DE454;
+}
+
 /*
  * --INFO--
  *
@@ -245,11 +291,24 @@ void FUN_8012ee94(int param_1,undefined4 param_2,undefined4 param_3,int param_4)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-int FUN_8012f000(void)
-
+s32 fn_8012F000(void)
 {
-  return (int)DAT_803de540;
+    return lbl_803DE540;
 }
+
+/* EN v1.0 Address: 0x8012F008  Size: 36b
+ * If arg matches lbl_803DE542, clear the byte flag at lbl_803DE538
+ * and return 1; else return 0. Classic "match and consume" helper. */
+#pragma scheduling off
+s32 fn_8012F008(s32 arg)
+{
+    if (arg == lbl_803DE542) {
+        lbl_803DE538 = 0;
+        return 1;
+    }
+    return 0;
+}
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -282,9 +341,13 @@ void FUN_8012f04c(undefined8 param_1,double param_2,double param_3,undefined8 pa
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8012f288(undefined2 param_1)
+#pragma scheduling off
+void fn_8012F288(u16 param_1)
 {
+    lbl_803DE439 = 1;
+    lbl_803DE50C = param_1;
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
