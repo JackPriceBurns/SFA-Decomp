@@ -61,16 +61,6 @@ asm void PSVECScale(register const Vec *src, register Vec *dst, register f32 sca
 #endif // clang-format on
 }
 
-void C_VECScale(const Vec *src, Vec *dst, f32 scale)
-{
-    f32 s;
-
-    s = 1.0f / sqrtf(src->z * src->z + src->x * src->x + src->y * src->y);
-    dst->x = src->x * s;
-    dst->y = src->y * s;
-    dst->z = src->z * s;
-}
-
 void PSVECNormalize(const register Vec *vec1, register Vec *ret)
 {
 #ifdef __MWERKS__ // clang-format off
@@ -182,51 +172,64 @@ asm void PSVECCrossProduct(register const Vec *a, register const Vec *b, registe
 #endif // clang-format on
 }
 
-void C_VECHalfAngle(const Vec *a, const Vec *b, Vec *half)
+extern const float lbl_803E82E8;
+
+asm void C_VECHalfAngle(const Vec *a, const Vec *b, Vec *half)
 {
-    Vec a0;
-    Vec b0;
-    Vec ab;
-
-    a0.x = -a->x;
-    a0.y = -a->y;
-    a0.z = -a->z;
-
-    b0.x = -b->x;
-    b0.y = -b->y;
-    b0.z = -b->z;
-
-    VECNormalize(&a0, &a0);
-    VECNormalize(&b0, &b0);
-    VECAdd(&a0, &b0, &ab);
-
-    if (VECDotProduct(&ab, &ab) > 0.0f) {
-        VECNormalize(&ab, half);
-    }
-    else {
-        *half = ab;
-    }
-}
-
-void C_VECReflect(const Vec *src, const Vec *normal, Vec *dst)
-{
-    Vec a0;
-    Vec b0;
-    f32 dot;
-
-    a0.x = -src->x;
-    a0.y = -src->y;
-    a0.z = -src->z;
-
-    VECNormalize(&a0, &a0);
-    VECNormalize(normal, &b0);
-
-    dot = VECDotProduct(&a0, &b0);
-    dst->x = b0.x * 2.0f * dot - a0.x;
-    dst->y = b0.y * 2.0f * dot - a0.y;
-    dst->z = b0.z * 2.0f * dot - a0.z;
-
-    VECNormalize(dst, dst);
+    nofralloc
+    mflr r0
+    stw r0, 0x4(r1)
+    stwu r1, -0x38(r1)
+    stw r31, 0x34(r1)
+    stw r30, 0x30(r1)
+    mr r30, r4
+    mr r31, r5
+    lfs f0, 0x0(r3)
+    fneg f0, f0
+    stfs f0, 0x20(r1)
+    lfs f0, 0x4(r3)
+    fneg f0, f0
+    stfs f0, 0x24(r1)
+    lfs f0, 0x8(r3)
+    addi r3, r1, 0x20
+    mr r4, r3
+    fneg f0, f0
+    stfs f0, 0x28(r1)
+    bl PSVECNormalize
+    mr r3, r30
+    addi r4, r1, 0x14
+    bl PSVECNormalize
+    addi r3, r1, 0x20
+    addi r4, r1, 0x14
+    bl PSVECDotProduct
+    lfs f3, lbl_803E82E8(r2)
+    mr r3, r31
+    lfs f2, 0x14(r1)
+    mr r4, r31
+    lfs f0, 0x20(r1)
+    fmuls f2, f3, f2
+    fmuls f2, f2, f1
+    fsubs f0, f2, f0
+    stfs f0, 0x0(r31)
+    lfs f2, 0x18(r1)
+    lfs f0, 0x24(r1)
+    fmuls f2, f3, f2
+    fmuls f2, f2, f1
+    fsubs f0, f2, f0
+    stfs f0, 0x4(r31)
+    lfs f2, 0x1c(r1)
+    lfs f0, 0x28(r1)
+    fmuls f2, f3, f2
+    fmuls f1, f2, f1
+    fsubs f0, f1, f0
+    stfs f0, 0x8(r31)
+    bl PSVECNormalize
+    lwz r0, 0x3c(r1)
+    lwz r31, 0x34(r1)
+    lwz r30, 0x30(r1)
+    mtlr r0
+    addi r1, r1, 0x38
+    blr
 }
 
 asm f32 PSVECSquareDistance(register const Vec *a, register const Vec *b) {
