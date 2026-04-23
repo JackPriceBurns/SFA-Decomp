@@ -66,7 +66,7 @@ extern void newshadows_getShadowTexture(int *textureOut);
 extern undefined4 FUN_8006c6a4();
 extern undefined4 FUN_8006c6bc();
 extern void newshadows_getShadowRampTexture(int *textureOut);
-extern undefined4 FUN_8006c760();
+extern void newshadows_getShadowNoiseTexture(int *textureOut);
 extern double FUN_8006c7ec();
 extern undefined4 FUN_8006c86c();
 extern int newshadows_getInverseShadowRampTexture(void);
@@ -3408,7 +3408,7 @@ void FUN_8004cf88(float *param_1)
   local_24 = FLOAT_803df74c;
   FUN_8025d8c4(&local_40,0x1e,1);
   FUN_80258674(1,1,0,0x1e,0,0x7d);
-  FUN_8006c760(&local_7c);
+  newshadows_getShadowNoiseTexture(&local_7c);
   if (local_7c != 0) {
     if (*(char *)(local_7c + 0x48) == '\0') {
       FUN_8025b054((uint *)(local_7c + 0x20),2);
@@ -3670,7 +3670,7 @@ void FUN_8004d854(void)
   FUN_8025bb48(DAT_803dd9fc,0,0);
   FUN_8025b9e8(2,&local_1c,-3);
   FUN_8025b94c(DAT_803dda10,DAT_803dd9fc,0,3,2,0,0,0,0,0);
-  FUN_8006c760(&local_20);
+  newshadows_getShadowNoiseTexture(&local_20);
   if (local_20 != 0) {
     if (*(char *)(local_20 + 0x48) == '\0') {
       FUN_8025b054((uint *)(local_20 + 0x20),DAT_803dda0c + 1);
@@ -3978,7 +3978,7 @@ void FUN_8004e278(void)
   FUN_8025c65c(DAT_803dda10 + 1,0,0);
   FUN_8025c2a8(DAT_803dda10 + 1,0,0,0,1,0);
   FUN_8025c368(DAT_803dda10 + 1,0,0,0,1,0);
-  FUN_8006c760(&local_208);
+  newshadows_getShadowNoiseTexture(&local_208);
   if (local_208 != 0) {
     if (*(char *)(local_208 + 0x48) == '\0') {
       FUN_8025b054((uint *)(local_208 + 0x20),DAT_803dda0c + 1);
@@ -4172,7 +4172,7 @@ void FUN_8004e974(undefined4 *param_1)
     FUN_8025c65c(DAT_803dda10 + 1,0,0);
     FUN_8025c2a8(DAT_803dda10 + 1,0,0,0,1,0);
     FUN_8025c368(DAT_803dda10 + 1,0,0,0,1,0);
-    FUN_8006c760(&local_f4);
+    newshadows_getShadowNoiseTexture(&local_f4);
     if (local_f4 != 0) {
       if (*(char *)(local_f4 + 0x48) == '\0') {
         FUN_8025b054((uint *)(local_f4 + 0x20),DAT_803dda0c + 1);

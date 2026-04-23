@@ -1134,9 +1134,9 @@ void FUN_8006c754(undefined4 *param_1)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006c760(undefined4 *param_1)
+void newshadows_getShadowNoiseTexture(int *textureOut)
 {
-  *param_1 = DAT_803ddc60;
+  *textureOut = DAT_803ddc60;
   return;
 }
 
