@@ -42,7 +42,7 @@ extern undefined4 FUN_8006c760();
 extern undefined4 FUN_8006cc38();
 extern undefined4 FUN_80070434();
 extern undefined4 FUN_8007048c();
-extern undefined4 FUN_80070540();
+extern void trackIntersect_drawColorBand(void);
 extern undefined4 FUN_802420e0();
 extern undefined4 FUN_80247618();
 extern undefined4 FUN_80247a48();

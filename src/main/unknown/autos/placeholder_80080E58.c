@@ -146,7 +146,7 @@ extern uint FUN_80070050();
 extern undefined4 FUN_80070320();
 extern undefined4 FUN_80070434();
 extern undefined4 FUN_8007048c();
-extern undefined4 FUN_80070580();
+extern void trackIntersect_updateColorBandRange(double param_1,double param_2);
 extern undefined4 FUN_8007428c();
 extern undefined4 FUN_80075ed8();
 extern undefined4 FUN_80078988();

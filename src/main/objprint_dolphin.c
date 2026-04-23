@@ -110,7 +110,7 @@ extern undefined4 FUN_8006c76c();
 extern int FUN_8006ff74();
 extern undefined4 FUN_80070434();
 extern undefined4 FUN_8007048c();
-extern undefined4 FUN_80070540();
+extern void trackIntersect_drawColorBand(void);
 extern void trackIntersect_getColorRgb();
 extern undefined4 FUN_80072f78();
 extern undefined4 FUN_80076ef4();
@@ -1776,7 +1776,7 @@ void fn_8003F8EC(undefined4 param_1,undefined4 param_2,int param_3)
   if ((DAT_803dd8aa == '\0') || (pcVar4 != (code *)0x0)) {
     FUN_8000fb20();
     if ((pcVar4 == (code *)0x0) || (cVar8 = (*pcVar4)(puVar1, piVar2, 0), cVar8 == '\0')) {
-      FUN_80070540();
+      trackIntersect_drawColorBand();
       FUN_80052a6c();
       uVar5 = FUN_8005383c(*(uint *)(*(int *)(param_3 + 0x38) + 0x24));
       FUN_80052134(uVar5, 0, 0, (char *)&local_a0, 0, 0);
