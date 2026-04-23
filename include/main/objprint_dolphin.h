@@ -12,7 +12,7 @@ void FUN_8003e2e0(undefined4 param_1,undefined4 param_2,int *param_3,float *para
 void FUN_8003e58c(int param_1,undefined4 param_2,int *param_3);
 void FUN_8003e6f4(undefined4 param_1,undefined4 param_2,int *param_3,int *param_4,uint param_5,
                  undefined *param_6,undefined *param_7);
-void FUN_8003ea84(undefined4 param_1,undefined4 param_2,int *param_3,uint param_4,int param_5,
+char FUN_8003ea84(undefined4 param_1,undefined4 param_2,int *param_3,uint param_4,int param_5,
                  int param_6);
 void FUN_8003eeec(undefined4 param_1,undefined4 param_2,int *param_3,int *param_4);
 void FUN_8003f6a4(undefined4 param_1,undefined4 param_2,int param_3);
