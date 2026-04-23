@@ -105,7 +105,7 @@ void FUN_80069798(uint *param_1,float *param_2,float *param_3,float *param_4,int
 undefined4 * fn_80069AC0(uint *param_1);
 void trackDolphin_getCurrentTrackPoint(uint **param_1);
 void FUN_80069ae4(int *param_1,undefined4 *param_2);
-void FUN_80069b0c(void);
+void trackDolphin_initIntersectionBuffers(void);
 void FUN_80069c98(undefined4 param_1,undefined4 param_2,int param_3);
 void FUN_8006a034(int param_1);
 

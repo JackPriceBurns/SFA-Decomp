@@ -62,7 +62,7 @@ extern undefined4 FUN_80060d0c();
 extern undefined4 FUN_80062a54();
 extern undefined8 FUN_80064e08();
 extern undefined4 FUN_800657f4();
-extern undefined4 FUN_80069b0c();
+extern void trackDolphin_initIntersectionBuffers(void);
 extern undefined8 FUN_8006fe48();
 extern undefined4 FUN_8007d858();
 extern undefined4 FUN_80088f20();
