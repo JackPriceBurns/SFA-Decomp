@@ -47,13 +47,13 @@ void FUN_8005d294(undefined4 param_1,undefined param_2,undefined param_3,undefin
 void FUN_8005d2c4(void);
 void FUN_8005d2c8(void);
 void FUN_8005d2cc(int param_1,int param_2,int param_3);
-void fn_8005D3EC(void);
+void lightmap_sortQueuedRenderPackets(void);
 void FUN_8005d530(int param_1,int param_2,int param_3);
 void FUN_8005d668(int param_1,int param_2,float *param_3);
 void FUN_8005d818(int param_1,int param_2,float *param_3);
 void FUN_8005da10(int param_1,int param_2,float *param_3);
 void FUN_8005dbc4(ushort *param_1);
-void FUN_8005dcb4(void);
+void lightmap_flushQueuedRenderPackets(void);
 void FUN_8005e010(undefined4 param_1,undefined4 param_2,int param_3);
 
 #endif /* MAIN_LIGHTMAP_H_ */

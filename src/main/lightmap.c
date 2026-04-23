@@ -1341,7 +1341,7 @@ void FUN_8005c2f0(void)
   FUN_8005be04();
   FUN_8005be04();
   if (DAT_803ddab0 == 1000) {
-    FUN_8005dcb4();
+    lightmap_flushQueuedRenderPackets();
     DAT_803ddab0 = 0;
   }
   iVar2 = DAT_803ddab0;
@@ -1349,14 +1349,14 @@ void FUN_8005c2f0(void)
   (&DAT_8037ed2c)[iVar2 * 4] = 8;
   DAT_803ddab0 = DAT_803ddab0 + 1;
   if (DAT_803ddab0 == 1000) {
-    FUN_8005dcb4();
+    lightmap_flushQueuedRenderPackets();
     DAT_803ddab0 = 0;
   }
   iVar2 = DAT_803ddab0;
   (&DAT_8037ed28)[DAT_803ddab0 * 4] = 0x50000000;
   (&DAT_8037ed2c)[iVar2 * 4] = 9;
   DAT_803ddab0 = DAT_803ddab0 + 1;
-  FUN_8005dcb4();
+  lightmap_flushQueuedRenderPackets();
   (**(code **)(*DAT_803dd6fc + 0x30))(auStack_278);
   (**(code **)(*DAT_803dd6fc + 0x1c))(0,0,0,0,0);
   iVar2 = FUN_8002bac4();
@@ -2156,7 +2156,7 @@ void FUN_8005d2cc(int param_1,int param_2,int param_3)
   float local_20;
   
   if (DAT_803ddab0 == 1000) {
-    FUN_8005dcb4();
+    lightmap_flushQueuedRenderPackets();
     DAT_803ddab0 = 0;
   }
   if (*(int *)(param_1 + 0x30) == 0) {
@@ -2197,7 +2197,7 @@ void FUN_8005d2cc(int param_1,int param_2,int param_3)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void fn_8005D3EC(void)
+void lightmap_sortQueuedRenderPackets(void)
 {
   int iVar1;
   undefined4 uVar2;
@@ -2274,7 +2274,7 @@ void FUN_8005d530(int param_1,int param_2,int param_3)
   float local_20;
   
   if (DAT_803ddab0 == 1000) {
-    FUN_8005dcb4();
+    lightmap_flushQueuedRenderPackets();
     DAT_803ddab0 = 0;
   }
   dVar4 = (double)FLOAT_803df8a0;
@@ -2553,7 +2553,7 @@ void FUN_8005dbc4(ushort *param_1)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8005dcb4(void)
+void lightmap_flushQueuedRenderPackets(void)
 {
   byte bVar2;
   float *pfVar1;
@@ -2570,7 +2570,7 @@ void FUN_8005dcb4(void)
   float afStack_70 [28];
   
   FUN_80286830();
-  fn_8005D3EC();
+  lightmap_sortQueuedRenderPackets();
   piVar6 = &DAT_8037ed20;
   for (iVar5 = 0; iVar5 < DAT_803ddab0; iVar5 = iVar5 + 1) {
     switch(piVar6[3]) {
@@ -2676,7 +2676,7 @@ void FUN_8005e010(undefined4 param_1,undefined4 param_2,int param_3)
   uint uVar1;
   
   if (DAT_803ddab0 == 1000) {
-    FUN_8005dcb4();
+    lightmap_flushQueuedRenderPackets();
     DAT_803ddab0 = 0;
   }
   uVar1 = (uint)-*(float *)(param_3 + 8);
