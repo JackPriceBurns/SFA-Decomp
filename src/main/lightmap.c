@@ -56,7 +56,7 @@ extern undefined4 FUN_80062614();
 extern undefined4 FUN_80062984();
 extern undefined4 FUN_80062a10();
 extern undefined4 FUN_80062a54();
-extern undefined4 FUN_8006b6d4();
+extern void newshadows_captureProjectedShadow(ushort *object);
 extern void newshadows_renderQueuedShadowCasters(void);
 extern void newshadows_queueShadowCaster(int object);
 extern void newshadows_refreshShadowCaptureTexture(void);
@@ -838,7 +838,7 @@ void FUN_8005b7d0(void)
             newshadows_queueShadowCaster((int)puVar12);
           }
           else if (sVar2 == 4) {
-            FUN_8006b6d4(puVar12);
+            newshadows_captureProjectedShadow(puVar12);
           }
         }
         if (DAT_803ddb2e < 1000) {

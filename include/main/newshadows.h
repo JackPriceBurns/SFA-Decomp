@@ -4,7 +4,7 @@
 #include "ghidra_import.h"
 
 void FUN_8006a1a4(undefined4 param_1,undefined4 param_2,uint param_3,undefined4 param_4);
-void FUN_8006b6d4(ushort *param_1);
+void newshadows_captureProjectedShadow(ushort *object);
 void newshadows_sortQueuedShadowCasters(int queueBase,int casterCount);
 void newshadows_renderQueuedShadowCasters(void);
 void newshadows_queueShadowCaster(int object);
