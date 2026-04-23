@@ -21,7 +21,7 @@ void FUN_80070088(double param_1,double param_2,double param_3,double param_4,do
                  float *param_6,short *param_7);
 void FUN_80070320(float *param_1,float *param_2,float *param_3);
 void FUN_800703b0(undefined4 *param_1);
-void FUN_80070434(uint param_1);
+void fn_80070434(u32 param_1);
 void FUN_8007048c(uint param_1,int param_2,uint param_3);
 void fn_80070528(void);
 void fn_80070538(u8 param_1);
@@ -81,8 +81,8 @@ void FUN_80079764(void);
 void FUN_8007986c(void);
 void FUN_80079980(void);
 void fn_80079B3C(void);
-void FUN_80079b60(undefined param_1,undefined param_2,undefined param_3,undefined param_4);
-void FUN_80079ba0(undefined param_1,undefined param_2,undefined param_3,undefined param_4);
+void fn_80079B60(u8 r, u8 g, u8 b, u8 a);
+void fn_80079BA0(u8 r, u8 g, u8 b, u8 a);
 void FUN_80079be0(double param_1,double param_2,byte param_3,char param_4);
 void FUN_80079fe0(double param_1,double param_2,double param_3,undefined param_4,undefined4 param_5,
                  undefined param_6,undefined param_7);

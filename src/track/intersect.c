@@ -1,5 +1,6 @@
 #include "ghidra_import.h"
 #include "dolphin/card.h"
+#include "dolphin/gx.h"
 #include "track/intersect.h"
 
 extern undefined4 ABS();
@@ -307,6 +308,7 @@ extern u32 lbl_803DDCC8;
 extern u32 lbl_803DDCCC;
 extern u32 lbl_803DDCD0;
 extern u32 lbl_803DDCD4;
+extern u8 lbl_803DDC91;
 extern undefined4 DAT_803dc364;
 extern undefined4 DAT_803dc368;
 extern undefined4* DAT_803dd6d8;
@@ -996,15 +998,16 @@ void FUN_800703b0(undefined4 *param_1)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80070434(uint param_1)
+#pragma scheduling off
+void fn_80070434(u32 param_1)
 {
-  if (((uint)DAT_803ddc91 != (param_1 & 0xff)) || (DAT_803ddc99 == '\0')) {
-    FUN_8025cee4(param_1);
-    DAT_803ddc91 = (byte)param_1;
-    DAT_803ddc99 = '\x01';
-  }
-  return;
+    if ((u32)lbl_803DDC91 != (param_1 & 0xff) || lbl_803DDC99 == 0) {
+        GXSetZCompLoc(param_1);
+        lbl_803DDC91 = (u8)param_1;
+        lbl_803DDC99 = 1;
+    }
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -2375,16 +2378,17 @@ void fn_80079B3C(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80079b60(undefined param_1,undefined param_2,undefined param_3,undefined param_4)
+#pragma scheduling off
+void fn_80079B60(u8 r, u8 g, u8 b, u8 a)
 {
-  undefined4 local_8;
-  undefined4 local_4;
-  
-  local_4 = CONCAT31(CONCAT21(CONCAT11(param_1,param_2),param_3),param_4);
-  local_8 = local_4;
-  FUN_8025c428(2,(byte *)&local_8);
-  return;
+    GXColor c;
+    c.r = r;
+    c.g = g;
+    c.b = b;
+    c.a = a;
+    GXSetTevColor(GX_TEVREG1, c);
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -2399,16 +2403,17 @@ void FUN_80079b60(undefined param_1,undefined param_2,undefined param_3,undefine
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80079ba0(undefined param_1,undefined param_2,undefined param_3,undefined param_4)
+#pragma scheduling off
+void fn_80079BA0(u8 r, u8 g, u8 b, u8 a)
 {
-  undefined4 local_8;
-  undefined4 local_4;
-  
-  local_4 = CONCAT31(CONCAT21(CONCAT11(param_1,param_2),param_3),param_4);
-  local_8 = local_4;
-  FUN_8025c428(1,(byte *)&local_8);
-  return;
+    GXColor c;
+    c.r = r;
+    c.g = g;
+    c.b = b;
+    c.a = a;
+    GXSetTevColor(GX_TEVREG0, c);
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
