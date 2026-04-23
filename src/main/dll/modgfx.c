@@ -56,7 +56,7 @@ extern undefined4 FUN_80080100();
 extern undefined4 FUN_80080404();
 extern undefined4 FUN_80080610();
 extern undefined4 FUN_80089b54();
-extern undefined4 FUN_8009b4e0();
+extern void expgfx_initialise();
 extern undefined4 FUN_80137cd0();
 extern undefined4 FUN_802420e0();
 extern undefined4 FUN_80247618();
@@ -1091,7 +1091,7 @@ void FUN_8009ff68(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
   int iVar8;
   
   piVar7 = &DAT_8039b7b8;
-  FUN_8009b4e0(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
+  expgfx_initialise(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
   puVar2 = &DAT_8039c878;
   puVar3 = &DAT_8039c828;
   puVar4 = &DAT_80310488;
@@ -1196,7 +1196,7 @@ void FUN_800a0108(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
   int iVar1;
   uint *puVar2;
   
-  FUN_8009b4e0(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
+  expgfx_initialise(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
   iVar1 = 0;
   puVar2 = &DAT_8039c9b8;
   do {

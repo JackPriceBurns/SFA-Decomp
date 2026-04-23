@@ -28,10 +28,10 @@ uint FUN_8003229c(double param_1,double param_2,double param_3,double param_4,fl
 void FUN_800323e0(int param_1,int param_2);
 void FUN_800324c8(void);
 void FUN_80032508(ushort *param_1,int param_2);
-void FUN_800326b8(undefined8 param_1,double param_2,undefined8 param_3,undefined8 param_4,
-                 undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
-                 undefined4 param_9,undefined4 param_10,int param_11,undefined4 param_12,
-                 undefined4 param_13,uint param_14,uint param_15,undefined4 param_16);
+u8 FUN_800326b8(undefined8 param_1,double param_2,undefined8 param_3,undefined8 param_4,
+                undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
+                undefined4 param_9,undefined4 param_10,int param_11,undefined4 param_12,
+                undefined4 param_13,uint param_14,uint param_15,undefined4 param_16);
 void FUN_800334c0(void);
 void FUN_800334c4(undefined8 param_1,double param_2,undefined8 param_3,undefined8 param_4,
                  undefined8 param_5,undefined8 param_6,undefined8 param_7,undefined8 param_8,
