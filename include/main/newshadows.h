@@ -7,7 +7,7 @@ void FUN_8006a1a4(undefined4 param_1,undefined4 param_2,uint param_3,undefined4 
 void FUN_8006b6d4(ushort *param_1);
 void FUN_8006b9ac(int param_1,int param_2);
 void FUN_8006badc(void);
-void FUN_8006c500(int param_1);
+void newshadows_queueShadowCaster(int object);
 void newshadows_getShadowTextureTable4x8(int *tableOut,int *columnsOut,int *rowsOut);
 void newshadows_getShadowTextureTable16(int *tableOut,int *countOut);
 void FUN_8006c674(undefined4 *param_1);
