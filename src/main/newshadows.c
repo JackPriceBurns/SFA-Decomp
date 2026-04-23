@@ -1017,9 +1017,9 @@ void FUN_8006c6b0(undefined4 *param_1)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006c6bc(undefined4 *param_1)
+void newshadows_getSoftShadowTexture(int *textureOut)
 {
-  *param_1 = DAT_803ddc40;
+  *textureOut = DAT_803ddc40;
   return;
 }
 
