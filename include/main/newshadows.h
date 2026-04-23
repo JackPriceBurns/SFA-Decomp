@@ -18,7 +18,7 @@ void FUN_8006c6a4(undefined4 *param_1);
 void FUN_8006c6b0(undefined4 *param_1);
 void FUN_8006c6bc(undefined4 *param_1);
 int FUN_8006c6c8(void);
-void FUN_8006c734(undefined4 *param_1);
+void newshadows_getShadowRampTexture(int *textureOut);
 int newshadows_getSmallShadowTexture(void);
 void FUN_8006c748(undefined4 *param_1);
 void FUN_8006c754(undefined4 *param_1);

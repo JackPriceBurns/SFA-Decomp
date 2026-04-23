@@ -1059,9 +1059,9 @@ int FUN_8006c6c8(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006c734(undefined4 *param_1)
+void newshadows_getShadowRampTexture(int *textureOut)
 {
-  *param_1 = DAT_803ddc1c;
+  *textureOut = DAT_803ddc1c;
   return;
 }
 

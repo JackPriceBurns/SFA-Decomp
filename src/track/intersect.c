@@ -50,7 +50,7 @@ extern int FUN_800658e4();
 extern undefined4 FUN_8006c674();
 extern undefined4 FUN_8006c6b0();
 extern undefined4 FUN_8006c6bc();
-extern undefined4 FUN_8006c734();
+extern void newshadows_getShadowRampTexture(int *textureOut);
 extern undefined4 FUN_8006c748();
 extern undefined4 FUN_8006c754();
 extern undefined4 FUN_8006c760();
