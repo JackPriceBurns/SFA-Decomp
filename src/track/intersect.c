@@ -2194,23 +2194,24 @@ void fn_8007904C(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80079120(void)
+#pragma scheduling off
+void fn_80079120(void)
 {
-  FUN_8025c828(DAT_803ddcb0,DAT_803ddcac,DAT_803ddca8,0xff);
-  FUN_8025be80(DAT_803ddcb0);
-  FUN_8025c1a4(DAT_803ddcb0,4,0xf,0xf,0xf);
-  FUN_8025c224(DAT_803ddcb0,7,2,4,7);
-  FUN_8025c65c(DAT_803ddcb0,0,0);
-  FUN_8025c2a8(DAT_803ddcb0,0,0,0,1,0);
-  FUN_8025c368(DAT_803ddcb0,0,0,0,1,0);
-  FUN_80258674(DAT_803ddcac,1,4,0x3c,0,0x7d);
-  DAT_803ddcb0 = DAT_803ddcb0 + 1;
-  DAT_803ddc8b = DAT_803ddc8b + '\x01';
-  DAT_803ddcac = DAT_803ddcac + 1;
-  DAT_803ddc8a = DAT_803ddc8a + '\x01';
-  DAT_803ddca8 = DAT_803ddca8 + 1;
-  return;
+    GXSetTevOrder(lbl_803DDCB0, lbl_803DDCAC, lbl_803DDCA8, 0xFF);
+    GXSetTevDirect(lbl_803DDCB0);
+    GXSetTevColorIn(lbl_803DDCB0, 4, 0xF, 0xF, 0xF);
+    GXSetTevAlphaIn(lbl_803DDCB0, 7, 2, 4, 7);
+    GXSetTevSwapMode(lbl_803DDCB0, 0, 0);
+    GXSetTevColorOp(lbl_803DDCB0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp(lbl_803DDCB0, 0, 0, 0, 1, 0);
+    GXSetTexCoordGen2(lbl_803DDCAC, 1, 4, 0x3C, 0, 0x7D);
+    lbl_803DDCB0 += 1;
+    lbl_803DDC8B += 1;
+    lbl_803DDCAC += 1;
+    lbl_803DDC8A += 1;
+    lbl_803DDCA8 += 1;
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -2312,33 +2313,34 @@ void fn_800793D0(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_800794a4(void)
+#pragma scheduling off
+void fn_800794A4(void)
 {
-  FUN_8025c828(DAT_803ddcb0,DAT_803ddcac,DAT_803ddca8,0xff);
-  FUN_8025be80(DAT_803ddcb0);
-  FUN_8025c1a4(DAT_803ddcb0,0xf,0xf,0xf,8);
-  FUN_8025c224(DAT_803ddcb0,7,7,7,4);
-  FUN_8025c65c(DAT_803ddcb0,0,0);
-  FUN_8025c2a8(DAT_803ddcb0,0,0,0,1,0);
-  FUN_8025c368(DAT_803ddcb0,0,0,0,1,0);
-  DAT_803ddcb0 = DAT_803ddcb0 + 1;
-  DAT_803ddc8b = DAT_803ddc8b + '\x01';
-  DAT_803ddca8 = DAT_803ddca8 + 1;
-  FUN_8025c828(DAT_803ddcb0,DAT_803ddcac,DAT_803ddca8,0xff);
-  FUN_8025be80(DAT_803ddcb0);
-  FUN_8025c1a4(DAT_803ddcb0,0,8,3,0xf);
-  FUN_8025c224(DAT_803ddcb0,0,4,1,7);
-  FUN_8025c65c(DAT_803ddcb0,0,0);
-  FUN_8025c2a8(DAT_803ddcb0,0,0,0,1,0);
-  FUN_8025c368(DAT_803ddcb0,0,0,0,1,0);
-  FUN_80258674(DAT_803ddcac,1,4,0x3c,0,0x7d);
-  DAT_803ddcb0 = DAT_803ddcb0 + 1;
-  DAT_803ddc8b = DAT_803ddc8b + '\x01';
-  DAT_803ddcac = DAT_803ddcac + 1;
-  DAT_803ddc8a = DAT_803ddc8a + '\x01';
-  DAT_803ddca8 = DAT_803ddca8 + 1;
-  return;
+    GXSetTevOrder(lbl_803DDCB0, lbl_803DDCAC, lbl_803DDCA8, 0xFF);
+    GXSetTevDirect(lbl_803DDCB0);
+    GXSetTevColorIn(lbl_803DDCB0, 0xF, 0xF, 0xF, 8);
+    GXSetTevAlphaIn(lbl_803DDCB0, 7, 7, 7, 4);
+    GXSetTevSwapMode(lbl_803DDCB0, 0, 0);
+    GXSetTevColorOp(lbl_803DDCB0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp(lbl_803DDCB0, 0, 0, 0, 1, 0);
+    lbl_803DDCB0 += 1;
+    lbl_803DDC8B += 1;
+    lbl_803DDCA8 += 1;
+    GXSetTevOrder(lbl_803DDCB0, lbl_803DDCAC, lbl_803DDCA8, 0xFF);
+    GXSetTevDirect(lbl_803DDCB0);
+    GXSetTevColorIn(lbl_803DDCB0, 0, 8, 3, 0xF);
+    GXSetTevAlphaIn(lbl_803DDCB0, 0, 4, 1, 7);
+    GXSetTevSwapMode(lbl_803DDCB0, 0, 0);
+    GXSetTevColorOp(lbl_803DDCB0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp(lbl_803DDCB0, 0, 0, 0, 1, 0);
+    GXSetTexCoordGen2(lbl_803DDCAC, 1, 4, 0x3C, 0, 0x7D);
+    lbl_803DDCB0 += 1;
+    lbl_803DDC8B += 1;
+    lbl_803DDCAC += 1;
+    lbl_803DDC8A += 1;
+    lbl_803DDCA8 += 1;
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
