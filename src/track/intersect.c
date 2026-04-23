@@ -1580,10 +1580,53 @@ void FUN_80075b98(double param_1,double param_2,double param_3,double param_4,do
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80075ed8(undefined8 param_1,double param_2,double param_3,double param_4,undefined4 param_5
-                 ,undefined4 param_6,undefined2 param_7,undefined2 param_8,undefined2 param_9)
+#pragma peephole off
+#pragma scheduling off
+void fn_80075ED8(int x1, int y1, int x2, int y2, int z, f32 u1, f32 v1, f32 u2, f32 v2)
 {
+    extern void fn_8000FB20(void);
+    extern Mtx lbl_803974E0;
+
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_PNMTXIDX, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+    GXSetCullMode(GX_CULL_NONE);
+    GXSetProjection(lbl_803974E0, GX_ORTHOGRAPHIC);
+    GXBegin(GX_QUADS, GX_VTXFMT1, 4);
+
+    GXWGFifo.u8 = 0x3C;
+    GXWGFifo.s16 = x1;
+    GXWGFifo.s16 = y1;
+    GXWGFifo.s16 = z;
+    GXWGFifo.f32 = u1;
+    GXWGFifo.f32 = v1;
+
+    GXWGFifo.u8 = 0x3C;
+    GXWGFifo.s16 = x2;
+    GXWGFifo.s16 = y1;
+    GXWGFifo.s16 = z;
+    GXWGFifo.f32 = u2;
+    GXWGFifo.f32 = v1;
+
+    GXWGFifo.u8 = 0x3C;
+    GXWGFifo.s16 = x2;
+    GXWGFifo.s16 = y2;
+    GXWGFifo.s16 = z;
+    GXWGFifo.f32 = u2;
+    GXWGFifo.f32 = v2;
+
+    GXWGFifo.u8 = 0x3C;
+    GXWGFifo.s16 = x1;
+    GXWGFifo.s16 = y2;
+    GXWGFifo.s16 = z;
+    GXWGFifo.f32 = u1;
+    GXWGFifo.f32 = v2;
+
+    fn_8000FB20();
 }
+#pragma scheduling reset
+#pragma peephole reset
 
 /*
  * --INFO--

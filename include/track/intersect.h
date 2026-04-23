@@ -47,8 +47,7 @@ void FUN_80075800(double param_1,double param_2,double param_3,double param_4,do
                  double param_6,double param_7,double param_8,undefined4 *param_9);
 void FUN_80075b98(double param_1,double param_2,double param_3,double param_4,double param_5,
                  double param_6,undefined4 *param_7);
-void FUN_80075ed8(undefined8 param_1,double param_2,double param_3,double param_4,undefined4 param_5
-                 ,undefined4 param_6,undefined2 param_7,undefined2 param_8,undefined2 param_9);
+void fn_80075ED8(int x1, int y1, int x2, int y2, int z, f32 u1, f32 v1, f32 u2, f32 v2);
 void fn_80076008(int x1, int y1, int x2, int y2, f32 u1, f32 v1, f32 u2, f32 v2);
 void FUN_80076144(undefined8 param_1,double param_2,undefined4 param_3,undefined4 param_4,
                  uint param_5,int param_6,int param_7,int param_8,int param_9);
