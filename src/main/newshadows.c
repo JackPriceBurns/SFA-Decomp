@@ -1356,7 +1356,7 @@ void newshadows_bindShadowCaptureTexture(int textureSlot)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006c924(void)
+void newshadows_refreshShadowCaptureTexture(void)
 {
   FUN_80077318((double)FLOAT_803df9a8,(double)FLOAT_803df9a8,DAT_803ddbfc,0xff,0x40);
   FUN_80259400(0,0,0x50,0x3c);
@@ -1381,7 +1381,7 @@ void FUN_8006c924(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006c9ac(void)
+void newshadows_flushShadowRenderTargets(void)
 {
   FUN_80259400(0,0,0x280,0x1e0);
   FUN_80259504(0x140,0xf0,4,1);

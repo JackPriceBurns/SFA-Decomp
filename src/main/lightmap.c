@@ -59,8 +59,8 @@ extern undefined4 FUN_80062a54();
 extern undefined4 FUN_8006b6d4();
 extern undefined4 FUN_8006badc();
 extern undefined4 FUN_8006c500();
-extern undefined4 FUN_8006c924();
-extern undefined4 FUN_8006c9ac();
+extern void newshadows_refreshShadowCaptureTexture(void);
+extern void newshadows_flushShadowRenderTargets(void);
 extern void newshadows_updateFrameState(void);
 extern undefined4 FUN_8006f67c();
 extern void trackIntersect_setColorRgb();
@@ -1271,7 +1271,7 @@ void FUN_8005c2f0(void)
   DAT_803ddb2e = 1;
   DAT_803ddb2c = 0;
   DAT_803dda86 = 0;
-  FUN_8006c924();
+  newshadows_refreshShadowCaptureTexture();
   DAT_803ddab0 = 0;
   FUN_8005b7d0();
   FUN_80053078();
@@ -1322,7 +1322,7 @@ void FUN_8005c2f0(void)
   }
   iVar2 = FUN_80020800();
   if (iVar2 == 0) {
-    FUN_8006c9ac();
+    newshadows_flushShadowRenderTargets();
   }
   if (DAT_803dda74 != '\0') {
     FUN_8007b198((double)FLOAT_803ddad0,(double)FLOAT_803ddacc,(double)FLOAT_803ddac8,DAT_803dda75,
@@ -1372,7 +1372,7 @@ void FUN_8005c2f0(void)
   FUN_8016e0a0();
   (**(code **)(*DAT_803dd6e0 + 0x14))(0);
   if (DAT_803dda76 != '\0') {
-    FUN_8006c9ac();
+    newshadows_flushShadowRenderTargets();
     FUN_8007242c((double)FLOAT_803ddac4,(double)FLOAT_803ddabc,(float *)&DAT_80382e28,&DAT_803ddac0)
     ;
   }
