@@ -31,7 +31,7 @@ extern undefined4 FUN_80035ff8();
 extern int FUN_80036974();
 extern int FUN_80036f50();
 extern void* FUN_80037048();
-extern int FUN_80037b60();
+extern int fn_80037B60();
 extern undefined4 FUN_80037da8();
 extern undefined4 FUN_80037e24();
 extern int FUN_8003809c();
@@ -876,7 +876,7 @@ LAB_801ab118:
   }
   else {
     pfVar7 = local_54 + 2;
-    iVar8 = FUN_80037b60((int)psVar2,(float *)&DAT_803de7b8,(undefined4 *)0x0,pfVar7);
+    iVar8 = fn_80037B60((int)psVar2,(float *)&DAT_803de7b8,(undefined4 *)0x0,pfVar7);
     if (iVar8 != 0) {
       dVar11 = FUN_80021730((float *)(psVar2 + 0xc),(float *)(piVar10[1] + 0x18));
       if (dVar11 < (double)FLOAT_803e5328) {

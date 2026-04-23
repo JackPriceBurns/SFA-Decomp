@@ -18,7 +18,7 @@ extern undefined4 FUN_8003042c();
 extern undefined4 FUN_80035c48();
 extern undefined4 FUN_80035ff8();
 extern void* FUN_80037048();
-extern int FUN_80037b60();
+extern int fn_80037B60();
 extern undefined4 FUN_8003b9ec();
 extern undefined4 FUN_80097228();
 extern undefined4 FUN_801615dc();

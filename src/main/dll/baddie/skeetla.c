@@ -12,7 +12,7 @@ extern int FUN_8002bac4();
 extern int FUN_8002e1f4();
 extern int FUN_80036f50();
 extern void* FUN_80037048();
-extern int FUN_80037b60();
+extern int fn_80037B60();
 extern undefined4 FUN_800394f0();
 extern undefined4 FUN_8004b294();
 extern undefined4 FUN_8004b2c4();
@@ -184,7 +184,7 @@ void FUN_80139724(uint param_1)
     }
   }
   *(int *)(iVar3 + 0x360) = local_34;
-  iVar2 = FUN_80037b60(param_1,(float *)(iVar3 + 0x370),&local_34,afStack_20);
+  iVar2 = fn_80037B60(param_1,(float *)(iVar3 + 0x370),&local_34,afStack_20);
   *(int *)(iVar3 + 0x368) = iVar2;
   switch(*(undefined4 *)(iVar3 + 0x368)) {
   case 1:

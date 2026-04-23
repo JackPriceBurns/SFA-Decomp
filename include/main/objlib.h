@@ -68,7 +68,7 @@ uint FUN_800379bc(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 void FUN_80037a5c(int param_1,int param_2);
 undefined4 FUN_80037ad4(int param_1);
 bool FUN_80037afc(int param_1);
-int FUN_80037b60(int param_1,float *param_2,undefined4 *param_3,float *param_4);
+int fn_80037B60(int param_1,float *param_2,undefined4 *param_3,float *param_4);
 void FUN_80037c38(undefined4 param_1,undefined4 param_2,uint param_3,uint param_4,uint param_5,
                  uint param_6,float *param_7);
 void FUN_80037da8(int param_1,int param_2);
