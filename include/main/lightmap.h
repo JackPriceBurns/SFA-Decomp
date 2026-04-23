@@ -46,7 +46,7 @@ void FUN_8005d294(undefined4 param_1,undefined param_2,undefined param_3,undefin
                  undefined param_5);
 void FUN_8005d2c4(void);
 void FUN_8005d2c8(void);
-void FUN_8005d2cc(int param_1,int param_2,int param_3);
+void lightmap_queueObjectRenderEntry(int object,int sortGroup,int depthBias);
 void lightmap_sortQueuedRenderPackets(void);
 void FUN_8005d530(int param_1,int param_2,int param_3);
 void FUN_8005d668(int param_1,int param_2,float *param_3);

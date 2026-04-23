@@ -856,7 +856,7 @@ void FUN_8005b7d0(void)
             DAT_803ddb2e = DAT_803ddb2e + 1;
             if ((((*(byte *)(*(int *)(puVar12 + 0x28) + 0x5f) & 0x20) != 0) &&
                 ((puVar12[0x58] & 0x400) == 0)) && ((puVar12[3] & 0x4000) == 0)) {
-              FUN_8005d2cc((int)puVar12,7,0x50);
+              lightmap_queueObjectRenderEntry((int)puVar12,7,0x50);
               (&DAT_8037ed2c)[DAT_803ddab0 * 4] = 1;
               DAT_803ddab0 = DAT_803ddab0 + 1;
             }
@@ -869,12 +869,12 @@ void FUN_8005b7d0(void)
             else {
               iVar9 = 0x1f;
             }
-            FUN_8005d2cc((int)puVar12,iVar9,0);
+            lightmap_queueObjectRenderEntry((int)puVar12,iVar9,0);
             (&DAT_8037ed2c)[DAT_803ddab0 * 4] = 0;
             DAT_803ddab0 = DAT_803ddab0 + 1;
             if (((*(byte *)(*(int *)(puVar12 + 0x28) + 0x5f) & 0x20) != 0) &&
                ((puVar12[3] & 0x4000) == 0)) {
-              FUN_8005d2cc((int)puVar12,7,0x50);
+              lightmap_queueObjectRenderEntry((int)puVar12,7,0x50);
               (&DAT_8037ed2c)[DAT_803ddab0 * 4] = 1;
               DAT_803ddab0 = DAT_803ddab0 + 1;
             }
@@ -932,13 +932,13 @@ void FUN_8005bc3c(void)
       if ((iVar5 == 0) || (*(int *)(iVar5 + 0xc) == 0)) {
         if ((*(short *)(*(int *)(iVar6 + 0x50) + 0x48) == 3) &&
            (((*(ushort *)(iVar6 + 6) & 0x4000) == 0 && ((*(uint *)(iVar5 + 0x30) & 4) != 0)))) {
-          FUN_8005d2cc(iVar6,0x13,0);
+          lightmap_queueObjectRenderEntry(iVar6,0x13,0);
           (&DAT_8037ed2c)[DAT_803ddab0 * 4] = 3;
           DAT_803ddab0 = DAT_803ddab0 + 1;
         }
       }
       else {
-        FUN_8005d2cc(iVar6,0x13,0);
+        lightmap_queueObjectRenderEntry(iVar6,0x13,0);
         (&DAT_8037ed2c)[DAT_803ddab0 * 4] = 2;
         DAT_803ddab0 = DAT_803ddab0 + 1;
       }
@@ -2146,7 +2146,7 @@ void FUN_8005d2c8(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8005d2cc(int param_1,int param_2,int param_3)
+void lightmap_queueObjectRenderEntry(int object,int sortGroup,int depthBias)
 {
   int iVar1;
   uint uVar2;
@@ -2159,28 +2159,28 @@ void FUN_8005d2cc(int param_1,int param_2,int param_3)
     lightmap_flushQueuedRenderPackets();
     DAT_803ddab0 = 0;
   }
-  if (*(int *)(param_1 + 0x30) == 0) {
-    local_28 = *(float *)(param_1 + 0x18) - FLOAT_803dda58;
-    local_24 = *(undefined4 *)(param_1 + 0x1c);
-    local_20 = *(float *)(param_1 + 0x20) - FLOAT_803dda5c;
+  if (*(int *)(object + 0x30) == 0) {
+    local_28 = *(float *)(object + 0x18) - FLOAT_803dda58;
+    local_24 = *(undefined4 *)(object + 0x1c);
+    local_20 = *(float *)(object + 0x20) - FLOAT_803dda5c;
   }
   else {
-    local_28 = *(float *)(param_1 + 0x18);
-    local_24 = *(undefined4 *)(param_1 + 0x1c);
-    local_20 = *(float *)(param_1 + 0x20);
+    local_28 = *(float *)(object + 0x18);
+    local_24 = *(undefined4 *)(object + 0x1c);
+    local_20 = *(float *)(object + 0x20);
   }
   pfVar3 = (float *)FUN_8000f56c();
   FUN_80247bf8(pfVar3,&local_28,&local_28);
   iVar1 = DAT_803ddab0;
-  uVar2 = (int)-local_20 + param_3;
+  uVar2 = (int)-local_20 + depthBias;
   if ((int)uVar2 < 0) {
     uVar2 = 0;
   }
   else if (0x7ffffff < (int)uVar2) {
     uVar2 = 0x7ffffff;
   }
-  (&DAT_8037ed20)[DAT_803ddab0 * 4] = param_1;
-  (&DAT_8037ed28)[iVar1 * 4] = uVar2 | param_2 << 0x1b;
+  (&DAT_8037ed20)[DAT_803ddab0 * 4] = object;
+  (&DAT_8037ed28)[iVar1 * 4] = uVar2 | sortGroup << 0x1b;
   return;
 }
 
