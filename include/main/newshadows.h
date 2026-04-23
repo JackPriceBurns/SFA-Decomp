@@ -20,7 +20,7 @@ void FUN_8006c6bc(undefined4 *param_1);
 int FUN_8006c6c8(void);
 void newshadows_getShadowRampTexture(int *textureOut);
 int newshadows_getSmallShadowTexture(void);
-void FUN_8006c748(undefined4 *param_1);
+void newshadows_getShadowDiskTexture(int *textureOut);
 void FUN_8006c754(undefined4 *param_1);
 void newshadows_getShadowNoiseTexture(int *textureOut);
 void FUN_8006c76c(int param_1,undefined4 *param_2,undefined4 *param_3,int *param_4,int *param_5);

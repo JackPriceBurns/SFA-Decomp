@@ -40,7 +40,7 @@ extern undefined4 FUN_80054484();
 extern undefined4 FUN_80054ed0();
 extern char FUN_80055218();
 extern int FUN_8005b128();
-extern undefined4 FUN_8006c748();
+extern void newshadows_getShadowDiskTexture(int *textureOut);
 extern undefined4 FUN_8006ff74();
 extern undefined4 FUN_80070434();
 extern undefined4 FUN_8007048c();
@@ -610,7 +610,7 @@ undefined4 FUN_8011e3bc(int param_1,int *param_2,int param_3)
   local_7c = FLOAT_803e2ae8;
   FUN_8025d8c4(&local_a8,0x24,1);
   FUN_80258674(2,1,1,0x24,0,0x7d);
-  FUN_8006c748(&local_f4);
+  newshadows_getShadowDiskTexture(&local_f4);
   FUN_8004c460(local_f4,1);
   FUN_8025c5f0(2,0x1c);
   local_100 = DAT_803dc778;

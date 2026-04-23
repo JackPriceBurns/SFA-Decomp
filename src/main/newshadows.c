@@ -1096,9 +1096,9 @@ int newshadows_getSmallShadowTexture(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006c748(undefined4 *param_1)
+void newshadows_getShadowDiskTexture(int *textureOut)
 {
-  *param_1 = DAT_803ddc58;
+  *textureOut = DAT_803ddc58;
   return;
 }
 
