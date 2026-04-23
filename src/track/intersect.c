@@ -1015,6 +1015,7 @@ void FUN_800703b0(undefined4 *param_1)
 #pragma scheduling off
 void fn_80070434(u32 param_1)
 {
+    extern void GXSetZCompLoc();
     if ((u32)lbl_803DDC91 != (param_1 & 0xff) || lbl_803DDC99 == 0) {
         GXSetZCompLoc(param_1);
         lbl_803DDC91 = (u8)param_1;
@@ -2718,10 +2719,11 @@ undefined4 FUN_8007d8a8(void)
  */
 #pragma scheduling off
 #pragma peephole off
-void fn_8007DADC(u8 param_1)
+void fn_8007DADC(u32 param_1)
 {
-    lbl_803DDCD9 = param_1;
-    if (param_1 != 0) {
+    u8 v = (u8)param_1;
+    lbl_803DDCD9 = v;
+    if (v != 0) {
         return;
     }
     lbl_803DDCCC = 0;

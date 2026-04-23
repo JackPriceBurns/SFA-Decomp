@@ -97,7 +97,7 @@ void FUN_8007d0f8(void);
 void fn_8007D7EC(void);
 void FUN_8007d858(void);
 undefined4 FUN_8007d8a8(void);
-void fn_8007DADC(u8 param_1);
+void fn_8007DADC(u32 param_1);
 void fn_8007DB04(void);
 s32 fn_8007DB10(void);
 undefined4
