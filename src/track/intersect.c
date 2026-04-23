@@ -995,9 +995,31 @@ void fn_80070320(f32* x, f32* y, f32* z)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_800703b0(undefined4 *param_1)
+extern f32 lbl_803DFB18;
+extern f32 lbl_803DFB1C;
+
+/* EN v1.0 Size: 132b - 74% match. 4x4 identity fill. Remaining diff:
+ * target uses 'li r0, N; cmpw r4, r0' per column, mine uses 'cmpwi
+ * r4, N' — MWCC always folds the integer literal into the compare
+ * immediate form. The +4 extra li instructions explain the 116 vs
+ * 132 byte discrepancy. Not crackable without materializing the
+ * comparison indices via a global/volatile, which would break other
+ * matches. */
+#pragma optimize_for_size on
+void fn_800703B0(f32* param_1)
 {
+    int i;
+    f32 zero = lbl_803DFB1C;
+    f32 one = lbl_803DFB18;
+    for (i = 0; i < 4; i++) {
+        if (i == 0) param_1[0] = one; else param_1[0] = zero;
+        if (i == 1) param_1[1] = one; else param_1[1] = zero;
+        if (i == 2) param_1[2] = one; else param_1[2] = zero;
+        if (i == 3) param_1[3] = one; else param_1[3] = zero;
+        param_1 += 4;
+    }
 }
+#pragma optimize_for_size reset
 
 /*
  * --INFO--
