@@ -70,7 +70,7 @@ extern undefined4 FUN_8006c760();
 extern double FUN_8006c7ec();
 extern undefined4 FUN_8006c86c();
 extern int newshadows_getInverseShadowRampTexture(void);
-extern int FUN_8006c8d0();
+extern int newshadows_getRadialFalloffTexture(void);
 extern undefined4 FUN_8006c8d8();
 extern undefined4 FUN_8006cc38();
 extern undefined4 FUN_80070434();
@@ -3504,7 +3504,7 @@ void FUN_8004d3ac(void)
   float local_4c;
   float afStack_48 [17];
   
-  iVar1 = FUN_8006c8d0();
+  iVar1 = newshadows_getRadialFalloffTexture();
   dVar3 = (double)FLOAT_803df75c;
   FUN_80247b70((double)FLOAT_803df774,(double)FLOAT_803df778,(double)FLOAT_803df778,
                (double)FLOAT_803df774,dVar3,dVar3,dVar3,dVar3,afStack_48);

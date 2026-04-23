@@ -1314,7 +1314,7 @@ int newshadows_getInverseShadowRampTexture(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-undefined4 FUN_8006c8d0(void)
+int newshadows_getRadialFalloffTexture(void)
 {
   return DAT_803ddc10;
 }
