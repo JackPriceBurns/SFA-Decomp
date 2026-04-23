@@ -7,6 +7,8 @@
 extern Mtx lbl_80397420;
 extern Mtx lbl_80397480;
 extern Mtx lbl_803974B0;
+extern f32 lbl_803DFB10;
+extern f32 fn_80293900(f32 x);
 
 extern undefined4 ABS();
 extern undefined4 FUN_8000bb00();
@@ -964,18 +966,21 @@ void FUN_80070088(double param_1,double param_2,double param_3,double param_4,do
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80070320(float *param_1,float *param_2,float *param_3)
+#pragma peephole off
+#pragma scheduling off
+void fn_80070320(f32* x, f32* y, f32* z)
 {
-  float fVar1;
-  double dVar2;
-  
-  dVar2 = FUN_80293900((double)(*param_3 * *param_3 + *param_1 * *param_1 + *param_2 * *param_2));
-  fVar1 = (float)((double)FLOAT_803dfb10 / dVar2);
-  *param_1 = *param_1 * fVar1;
-  *param_2 = *param_2 * fVar1;
-  *param_3 = *param_3 * fVar1;
-  return;
+    f32 scale;
+    f32 len;
+
+    len = fn_80293900(*z * *z + (*x * *x + *y * *y));
+    scale = lbl_803DFB10 / len;
+    *x = *x * scale;
+    *y = *y * scale;
+    *z = *z * scale;
 }
+#pragma scheduling reset
+#pragma peephole reset
 
 /*
  * --INFO--

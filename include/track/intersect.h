@@ -19,7 +19,7 @@ void fn_80070074(u32 param_1);
 void fn_8007007C(void);
 void FUN_80070088(double param_1,double param_2,double param_3,double param_4,double param_5,
                  float *param_6,short *param_7);
-void FUN_80070320(float *param_1,float *param_2,float *param_3);
+void fn_80070320(f32* x, f32* y, f32* z);
 void FUN_800703b0(undefined4 *param_1);
 void fn_80070434(u32 param_1);
 void FUN_8007048c(uint param_1,int param_2,uint param_3);
