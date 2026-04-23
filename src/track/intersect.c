@@ -523,48 +523,51 @@ void* fn_8006F504(u32 i)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006f57c(double param_1)
+/* EN v1.0 Size: 256b - 77% match. Per-iteration byte decrement:
+ *   if (b != 0) {
+ *     v = (f32)(u32)b - step;
+ *     if (v <= 0) b = 0; else b = (u8)v;
+ *   }
+ * for 256 rows in two parallel arrays. MWCC CSEs the conversion
+ * expression (v) between the compare and the store, emitting a
+ * single fctiwz on cached f2. Target recomputes the full
+ * stw/lfd/fsubs sequence before the second use, which suggests
+ * retail source had a variable reassignment between the two uses
+ * (see Ghidra: local_18 reassigned before the else-branch store).
+ * Can't reproduce the re-store without __asm. */
+#pragma peephole off
+#pragma scheduling off
+void fn_8006F57C(f32 step)
 {
-  undefined *puVar1;
-  undefined4 *puVar2;
-  uint uVar3;
-  int iVar4;
-  undefined8 local_18;
-  undefined8 local_10;
-  
-  puVar2 = &DAT_80393a40;
-  puVar1 = &DAT_80392a40;
-  iVar4 = 0x100;
-  do {
-    uVar3 = (uint)*(byte *)((int)puVar2 + 0x33);
-    if (uVar3 != 0) {
-      local_18 = (double)CONCAT44(0x43300000,uVar3);
-      if (FLOAT_803dfaa0 < (float)((double)(float)(local_18 - DOUBLE_803dfab0) - param_1)) {
-        local_18 = (double)CONCAT44(0x43300000,uVar3);
-        *(char *)((int)puVar2 + 0x33) =
-             (char)(int)((double)(float)(local_18 - DOUBLE_803dfab0) - param_1);
-      }
-      else {
-        *(undefined *)((int)puVar2 + 0x33) = 0;
-      }
+    int i;
+    u8* a;
+    u8* b;
+    extern u8 lbl_80393A40[];
+    extern u8 lbl_80392A40[];
+
+    a = lbl_80393A40;
+    b = lbl_80392A40;
+    for (i = 0; i < 256; i++) {
+        if (a[0x33] != 0) {
+            if ((f32)(u32)a[0x33] - step <= 0.0f) {
+                a[0x33] = 0;
+            } else {
+                a[0x33] = (u8)(s32)((f32)(u32)a[0x33] - step);
+            }
+        }
+        if (b[0x0E] != 0) {
+            if ((f32)(u32)b[0x0E] - step <= 0.0f) {
+                b[0x0E] = 0;
+            } else {
+                b[0x0E] = (u8)(s32)((f32)(u32)b[0x0E] - step);
+            }
+        }
+        a += 0x38;
+        b += 0x10;
     }
-    uVar3 = (uint)(byte)puVar1[0xe];
-    if (uVar3 != 0) {
-      local_10 = (double)CONCAT44(0x43300000,uVar3);
-      if (FLOAT_803dfaa0 < (float)((double)(float)(local_10 - DOUBLE_803dfab0) - param_1)) {
-        local_10 = (double)CONCAT44(0x43300000,uVar3);
-        puVar1[0xe] = (char)(int)((double)(float)(local_10 - DOUBLE_803dfab0) - param_1);
-      }
-      else {
-        puVar1[0xe] = 0;
-      }
-    }
-    puVar2 = puVar2 + 0xe;
-    puVar1 = puVar1 + 0x10;
-    iVar4 = iVar4 + -1;
-  } while (iVar4 != 0);
-  return;
 }
+#pragma scheduling reset
+#pragma peephole reset
 
 /*
  * --INFO--
