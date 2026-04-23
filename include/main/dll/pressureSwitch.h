@@ -3,8 +3,8 @@
 
 #include "ghidra_import.h"
 
-void FUN_8014e604(void);
-void FUN_8014e638(void);
+void pressureSwitch_freeSharedResource(void);
+void pressureSwitch_ensureSharedResource(void);
 void FUN_8014e670();
 void FUN_8014ebd8(int param_1);
 void FUN_8014ec38(int param_1);

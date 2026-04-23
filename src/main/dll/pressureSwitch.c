@@ -96,8 +96,13 @@ extern f32 FLOAT_803e3364;
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8014e604(void)
+void pressureSwitch_freeSharedResource(void)
 {
+  if (DAT_803de6d0 != 0) {
+    FUN_80013e4c(DAT_803de6d0);
+    DAT_803de6d0 = 0;
+  }
+  return;
 }
 
 /*
@@ -113,7 +118,7 @@ void FUN_8014e604(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8014e638(void)
+void pressureSwitch_ensureSharedResource(void)
 {
   if (DAT_803de6d0 == 0) {
     DAT_803de6d0 = FUN_80013ee8(0x5a);
