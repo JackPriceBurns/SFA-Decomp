@@ -1236,13 +1236,13 @@ void FUN_8006c820(int param_1)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006c86c(int param_1)
+void newshadows_bindShadowRenderTexture(int textureSlot)
 {
   if (*(char *)(DAT_803ddbfc + 0x48) == '\0') {
-    FUN_8025b054((uint *)(DAT_803ddbfc + 0x20),param_1);
+    FUN_8025b054((uint *)(DAT_803ddbfc + 0x20),textureSlot);
   }
   else {
-    FUN_8025aeac((uint *)(DAT_803ddbfc + 0x20),*(uint **)(DAT_803ddbfc + 0x40),param_1);
+    FUN_8025aeac((uint *)(DAT_803ddbfc + 0x20),*(uint **)(DAT_803ddbfc + 0x40),textureSlot);
   }
   return;
 }
@@ -1332,13 +1332,13 @@ int newshadows_getRadialFalloffTexture(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006c8d8(int param_1)
+void newshadows_bindShadowCaptureTexture(int textureSlot)
 {
   if (*(char *)(DAT_803ddc64 + 0x48) == '\0') {
-    FUN_8025b054((uint *)(DAT_803ddc64 + 0x20),param_1);
+    FUN_8025b054((uint *)(DAT_803ddc64 + 0x20),textureSlot);
   }
   else {
-    FUN_8025aeac((uint *)(DAT_803ddc64 + 0x20),*(uint **)(DAT_803ddc64 + 0x40),param_1);
+    FUN_8025aeac((uint *)(DAT_803ddc64 + 0x20),*(uint **)(DAT_803ddc64 + 0x40),textureSlot);
   }
   return;
 }

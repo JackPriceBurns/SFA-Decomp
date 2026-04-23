@@ -56,7 +56,7 @@ extern undefined4 FUN_8006c754();
 extern void newshadows_getShadowNoiseTexture(int *textureOut);
 extern undefined4 FUN_8006c7f4();
 extern undefined4 FUN_8006c820();
-extern undefined4 FUN_8006c86c();
+extern void newshadows_bindShadowRenderTexture(int textureSlot);
 extern int newshadows_getShadowRenderTexture(void);
 extern int FUN_8006c8c0();
 extern undefined4 FUN_8006c9ac();
@@ -2511,7 +2511,7 @@ void FUN_8007c54c(char param_1)
   float local_10;
   float local_c;
   
-  FUN_8006c86c(1);
+  newshadows_bindShadowRenderTexture(1);
   FUN_80258674(1,0,0,0x24,0,0x7d);
   FUN_80258674(0,1,4,0x3c,0,0x7d);
   local_20 = FLOAT_803dfb5c;

@@ -27,12 +27,12 @@ void FUN_8006c76c(int param_1,undefined4 *param_2,undefined4 *param_3,int *param
 double FUN_8006c7ec(void);
 void FUN_8006c7f4(int param_1);
 void FUN_8006c820(int param_1);
-void FUN_8006c86c(int param_1);
+void newshadows_bindShadowRenderTexture(int textureSlot);
 int newshadows_getShadowRenderTexture(void);
 undefined4 FUN_8006c8c0(void);
 int newshadows_getInverseShadowRampTexture(void);
 int newshadows_getRadialFalloffTexture(void);
-void FUN_8006c8d8(int param_1);
+void newshadows_bindShadowCaptureTexture(int textureSlot);
 void FUN_8006c924(void);
 void FUN_8006c9ac(void);
 void newshadows_updateFrameState(void);
