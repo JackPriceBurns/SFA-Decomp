@@ -24,7 +24,7 @@ void newshadows_getShadowDiskTexture(int *textureOut);
 void FUN_8006c754(undefined4 *param_1);
 void newshadows_getShadowNoiseTexture(int *textureOut);
 void FUN_8006c76c(int param_1,undefined4 *param_2,undefined4 *param_3,int *param_4,int *param_5);
-double FUN_8006c7ec(void);
+double newshadows_getShadowNoiseScale(void);
 void FUN_8006c7f4(int param_1);
 void FUN_8006c820(int param_1);
 void newshadows_bindShadowRenderTexture(int textureSlot);

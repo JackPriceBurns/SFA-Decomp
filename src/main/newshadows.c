@@ -1175,7 +1175,7 @@ void FUN_8006c76c(int param_1,undefined4 *param_2,undefined4 *param_3,int *param
  * PAL Address: TODO
  * PAL Size: TODO
  */
-double FUN_8006c7ec(void)
+double newshadows_getShadowNoiseScale(void)
 {
   return (double)FLOAT_803ddc24;
 }
