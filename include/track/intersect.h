@@ -54,8 +54,8 @@ void FUN_80076998(undefined8 param_1,double param_2,undefined4 param_3,undefined
 void FUN_80076ef4(undefined4 param_1,undefined4 param_2,int param_3,undefined4 *param_4,uint param_5
                  ,uint param_6);
 void FUN_80077318(double param_1,double param_2,int param_3,uint param_4,uint param_5);
-void FUN_80077780(float *param_1,undefined4 *param_2,float *param_3);
-void FUN_80077a08(float *param_1,undefined4 *param_2,float *param_3);
+void fn_80077780(f32* obj, u32* colorPtr, Mtx mtx);
+void fn_80077A08(f32* obj, u32* colorPtr, Mtx mtx);
 void FUN_80077c54(double param_1,float *param_2,int param_3,float *param_4);
 void FUN_80078074(undefined4 param_1,undefined4 param_2,float *param_3);
 void FUN_800788bc(void);

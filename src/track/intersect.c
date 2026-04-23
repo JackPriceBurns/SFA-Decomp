@@ -1772,53 +1772,57 @@ void FUN_80077318(double param_1,double param_2,int param_3,uint param_4,uint pa
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80077780(float *param_1,undefined4 *param_2,float *param_3)
+#pragma scheduling off
+void fn_80077780(f32* obj, u32* colorPtr, Mtx mtx)
 {
-  undefined4 local_48;
-  undefined4 local_44;
-  float afStack_40 [13];
-  
-  FUN_8025c6b4(1,3,0,3,0);
-  FUN_80247618(param_1,param_3,afStack_40);
-  FUN_8025d8c4(afStack_40,0x1e,1);
-  FUN_80258674(0,1,0,0x1e,0,0x7d);
-  FUN_8004c460((int)param_1[0x18],0);
-  local_44 = *param_2;
-  FUN_8025c510(0,(byte *)&local_44);
-  FUN_8025c5f0(0,0x1c);
-  FUN_8025c584(0,0xc);
-  local_48 = DAT_803dc308;
-  FUN_8025c428(2,(byte *)&local_48);
-  FUN_8025c828(0,0,0,0xff);
-  FUN_8025be80(0);
-  FUN_8025c1a4(0,0xf,0xf,0xf,0xe);
-  FUN_8025c224(0,2,4,6,7);
-  FUN_8025c65c(0,0,1);
-  FUN_8025c2a8(0,0,0,0,0,1);
-  FUN_8025c368(0,0xe,0,0,1,0);
-  FUN_8025cce8(1,4,5,5);
-  FUN_8025be54(0);
-  FUN_8025a608(4,0,0,0,0,0,2);
-  FUN_8025a608(5,0,0,0,0,0,2);
-  FUN_8025a5bc(0);
-  FUN_80258944(1);
-  FUN_8025ca04(1);
-  if ((((DAT_803ddc98 != '\x01') || (DAT_803ddc94 != 3)) || (DAT_803ddc92 != '\0')) ||
-     (DAT_803ddc9a == '\0')) {
-    FUN_8025ce6c(1,3,0);
-    DAT_803ddc98 = '\x01';
-    DAT_803ddc94 = 3;
-    DAT_803ddc92 = '\0';
-    DAT_803ddc9a = '\x01';
-  }
-  if ((DAT_803ddc91 != '\x01') || (DAT_803ddc99 == '\0')) {
-    FUN_8025cee4(1);
-    DAT_803ddc91 = '\x01';
-    DAT_803ddc99 = '\x01';
-  }
-  FUN_8025c754(7,0,0,7,0);
-  return;
+    extern void fn_8004C460(int, int);
+    extern GXColor lbl_803DC308;
+    extern void GXSetZMode();
+    extern void GXSetZCompLoc();
+    extern u8 lbl_803DDC92;
+    extern int lbl_803DDC94;
+    extern u8 lbl_803DDC98;
+    Mtx tmp;
+
+    GXSetTevSwapModeTable(1, 3, 0, 3, 0);
+    PSMTXConcat((float(*)[4])obj, mtx, tmp);
+    GXLoadTexMtxImm(tmp, 0x1E, 1);
+    GXSetTexCoordGen2(0, 1, 0, 0x1E, 0, 0x7D);
+    fn_8004C460(*(int*)(obj + 0x18), 0);
+    GXSetTevKColor(0, *(GXColor*)colorPtr);
+    GXSetTevKAlphaSel(0, 0x1C);
+    GXSetTevKColorSel(0, 0xC);
+    GXSetTevColor(2, lbl_803DC308);
+    GXSetTevOrder(0, 0, 0, 0xFF);
+    GXSetTevDirect(0);
+    GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xE);
+    GXSetTevAlphaIn(0, 2, 4, 6, 7);
+    GXSetTevSwapMode(0, 0, 1);
+    GXSetTevColorOp(0, 0, 0, 0, 0, 1);
+    GXSetTevAlphaOp(0, 0xE, 0, 0, 1, 0);
+    GXSetBlendMode(1, 4, 5, 5);
+    GXSetNumIndStages(0);
+    GXSetChanCtrl(4, 0, 0, 0, 0, 0, 2);
+    GXSetChanCtrl(5, 0, 0, 0, 0, 0, 2);
+    GXSetNumChans(0);
+    GXSetNumTexGens(1);
+    GXSetNumTevStages(1);
+    if ((u32)lbl_803DDC98 != 1 || lbl_803DDC94 != 3 ||
+        (u32)lbl_803DDC92 != 0 || lbl_803DDC9A == 0) {
+        GXSetZMode(1, 3, 0);
+        lbl_803DDC98 = 1;
+        lbl_803DDC94 = 3;
+        lbl_803DDC92 = 0;
+        lbl_803DDC9A = 1;
+    }
+    if ((u32)lbl_803DDC91 != 1 || lbl_803DDC99 == 0) {
+        GXSetZCompLoc(1);
+        lbl_803DDC91 = 1;
+        lbl_803DDC99 = 1;
+    }
+    GXSetAlphaCompare(7, 0, 0, 7, 0);
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
@@ -1833,49 +1837,54 @@ void FUN_80077780(float *param_1,undefined4 *param_2,float *param_3)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80077a08(float *param_1,undefined4 *param_2,float *param_3)
+#pragma scheduling off
+void fn_80077A08(f32* obj, u32* colorPtr, Mtx mtx)
 {
-  undefined4 local_48;
-  float afStack_44 [15];
-  
-  FUN_80247618(param_1,param_3,afStack_44);
-  FUN_8025d8c4(afStack_44,0x1e,1);
-  FUN_80258674(0,1,0,0x1e,0,0x7d);
-  FUN_8004c460((int)param_1[0x18],0);
-  local_48 = *param_2;
-  FUN_8025c510(0,(byte *)&local_48);
-  FUN_8025c5f0(0,0x1c);
-  FUN_8025c584(0,0xc);
-  FUN_8025c828(0,0,0,0xff);
-  FUN_8025be80(0);
-  FUN_8025c1a4(0,0xf,0xf,0xf,0xe);
-  FUN_8025c224(0,7,4,6,7);
-  FUN_8025c65c(0,0,0);
-  FUN_8025c2a8(0,0,0,0,1,0);
-  FUN_8025c368(0,0,0,0,1,0);
-  FUN_8025cce8(1,4,5,5);
-  FUN_8025be54(0);
-  FUN_8025a608(4,0,0,0,0,0,2);
-  FUN_8025a608(5,0,0,0,0,0,2);
-  FUN_8025a5bc(0);
-  FUN_80258944(1);
-  FUN_8025ca04(1);
-  if ((((DAT_803ddc98 != '\x01') || (DAT_803ddc94 != 3)) || (DAT_803ddc92 != '\0')) ||
-     (DAT_803ddc9a == '\0')) {
-    FUN_8025ce6c(1,3,0);
-    DAT_803ddc98 = '\x01';
-    DAT_803ddc94 = 3;
-    DAT_803ddc92 = '\0';
-    DAT_803ddc9a = '\x01';
-  }
-  if ((DAT_803ddc91 != '\x01') || (DAT_803ddc99 == '\0')) {
-    FUN_8025cee4(1);
-    DAT_803ddc91 = '\x01';
-    DAT_803ddc99 = '\x01';
-  }
-  FUN_8025c754(7,0,0,7,0);
-  return;
+    extern void fn_8004C460(int, int);
+    extern void GXSetZMode();
+    extern void GXSetZCompLoc();
+    extern u8 lbl_803DDC92;
+    extern int lbl_803DDC94;
+    extern u8 lbl_803DDC98;
+    Mtx tmp;
+
+    PSMTXConcat((float(*)[4])obj, mtx, tmp);
+    GXLoadTexMtxImm(tmp, 0x1E, 1);
+    GXSetTexCoordGen2(0, 1, 0, 0x1E, 0, 0x7D);
+    fn_8004C460(*(int*)(obj + 0x18), 0);
+    GXSetTevKColor(0, *(GXColor*)colorPtr);
+    GXSetTevKAlphaSel(0, 0x1C);
+    GXSetTevKColorSel(0, 0xC);
+    GXSetTevOrder(0, 0, 0, 0xFF);
+    GXSetTevDirect(0);
+    GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xE);
+    GXSetTevAlphaIn(0, 7, 4, 6, 7);
+    GXSetTevSwapMode(0, 0, 0);
+    GXSetTevColorOp(0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
+    GXSetBlendMode(1, 4, 5, 5);
+    GXSetNumIndStages(0);
+    GXSetChanCtrl(4, 0, 0, 0, 0, 0, 2);
+    GXSetChanCtrl(5, 0, 0, 0, 0, 0, 2);
+    GXSetNumChans(0);
+    GXSetNumTexGens(1);
+    GXSetNumTevStages(1);
+    if ((u32)lbl_803DDC98 != 1 || lbl_803DDC94 != 3 ||
+        (u32)lbl_803DDC92 != 0 || lbl_803DDC9A == 0) {
+        GXSetZMode(1, 3, 0);
+        lbl_803DDC98 = 1;
+        lbl_803DDC94 = 3;
+        lbl_803DDC92 = 0;
+        lbl_803DDC9A = 1;
+    }
+    if ((u32)lbl_803DDC91 != 1 || lbl_803DDC99 == 0) {
+        GXSetZCompLoc(1);
+        lbl_803DDC91 = 1;
+        lbl_803DDC99 = 1;
+    }
+    GXSetAlphaCompare(7, 0, 0, 7, 0);
 }
+#pragma scheduling reset
 
 /*
  * --INFO--
