@@ -136,7 +136,7 @@ extern undefined4 FUN_80058210();
 extern undefined4 FUN_80059024();
 extern undefined4 FUN_800597c0();
 extern undefined8 FUN_80059bcc();
-extern undefined4 FUN_8005c8cc();
+extern void fn_8005C8CC();
 extern undefined8 FUN_8005c964();
 extern undefined4 FUN_8005c968();
 extern undefined4 FUN_8005cbc8();

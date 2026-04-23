@@ -10,7 +10,7 @@ extern undefined4 FUN_800238c4();
 extern void* FUN_80037048();
 extern undefined4 FUN_8003709c();
 extern undefined4 FUN_8004c460();
-extern undefined4 FUN_8005d108();
+extern void fn_8005D108();
 extern undefined4 FUN_8005d294();
 extern undefined4 FUN_800788bc();
 extern undefined4 FUN_80078cc8();
@@ -168,7 +168,7 @@ void FUN_801c2510(undefined4 param_1,undefined4 param_2,undefined4 param_3)
     pfVar7 = *(float **)piVar9[0xb];
     for (sVar5 = 0; (int)sVar5 < (int)(*(byte *)(piVar9[0xb] + 8) - 1); sVar5 = sVar5 + 1) {
       FUN_801c11ac(&DAT_80326a40,(int)*(short *)(piVar9 + 6),pfVar7,pfVar7 + 0xd,asStack_90);
-      FUN_8005d108((int)asStack_90,-0x7fd3d528,6);
+      fn_8005D108((int)asStack_90,-0x7fd3d528,6);
       pfVar7 = pfVar7 + 0xd;
     }
     if (*(char *)(iVar8 + 0x1b) == '\x01') {
@@ -179,7 +179,7 @@ void FUN_801c2510(undefined4 param_1,undefined4 param_2,undefined4 param_3)
       pfVar7 = *(float **)piVar9[0xb];
       for (sVar5 = 0; (int)sVar5 < (int)(*(byte *)(piVar9[0xb] + 8) - 1); sVar5 = sVar5 + 1) {
         FUN_801c11ac(&DAT_80326aa0,(int)*(short *)(piVar9 + 6),pfVar7,pfVar7 + 0xd,asStack_90);
-        FUN_8005d108((int)asStack_90,-0x7fd3d528,6);
+        fn_8005D108((int)asStack_90,-0x7fd3d528,6);
         pfVar7 = pfVar7 + 0xd;
       }
     }

@@ -35,7 +35,7 @@ extern undefined4 FUN_80054328();
 extern undefined4 FUN_80054470();
 extern undefined4 FUN_80054484();
 extern undefined4 FUN_80054ed0();
-extern undefined4 FUN_8005d108();
+extern void fn_8005D108();
 extern undefined4 FUN_8005d264();
 extern undefined4 FUN_8005d294();
 extern undefined4 FUN_8006933c();
@@ -2922,7 +2922,7 @@ void FUN_800a45c8(undefined4 param_1,undefined4 param_2,uint param_3)
   FUN_80078cc8();
   iVar13 = 0;
   do {
-    FUN_8005d108(*local_ac,-0x7fcef318,0x20);
+    fn_8005D108(*local_ac,-0x7fcef318,0x20);
     local_ac = local_ac + 1;
     iVar13 = iVar13 + 1;
   } while (iVar13 < 7);

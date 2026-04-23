@@ -1399,7 +1399,7 @@ void FUN_8005c2f0(void)
 /*
  * --INFO--
  *
- * Function: FUN_8005c8cc
+ * Function: fn_8005C8CC
  * EN v1.0 Address: 0x8005C8CC
  * EN v1.0 Size: 152b
  * EN v1.1 Address: TODO
@@ -1409,8 +1409,24 @@ void FUN_8005c2f0(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8005c8cc(void)
+void fn_8005C8CC(void)
 {
+  DAT_803dda68 = DAT_803dda68 | 0x21;
+  if ((DAT_803ddb24 == '\x01') || (DAT_803ddb24 == '\x03')) {
+    DAT_803dda68 = DAT_803dda68 & 0xfffffffe;
+  }
+  FUN_8000f11c();
+  FUN_8005acec();
+  FUN_8005ab2c();
+  FUN_8000faf8();
+  FUN_8000f584();
+  FUN_8000fb20();
+  FUN_8001f0c0();
+  DAT_803ddb28 = (int)FUN_8000facc();
+  FUN_8005c2f0();
+  FUN_8000e964();
+  DAT_803dda68 = DAT_803dda68 & 0xfffffffd;
+  return;
 }
 
 /*
@@ -1788,7 +1804,7 @@ void FUN_8005d0e4(int param_1)
 /*
  * --INFO--
  *
- * Function: FUN_8005d108
+ * Function: fn_8005D108
  * EN v1.0 Address: 0x8005D108
  * EN v1.0 Size: 304b
  * EN v1.1 Address: TODO
@@ -1798,8 +1814,49 @@ void FUN_8005d0e4(int param_1)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8005d108(int param_1,int param_2,int param_3)
+void fn_8005D108(int param_1,int param_2,int param_3)
 {
+  volatile byte *fifo8;
+  volatile ushort *fifo16;
+  undefined2 *puVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  
+  fifo8 = (volatile byte *)&DAT_cc008000;
+  fifo16 = (volatile ushort *)&DAT_cc008000;
+  FUN_80257b5c();
+  FUN_802570dc(0,1);
+  FUN_802570dc(9,1);
+  FUN_802570dc(0xb,1);
+  FUN_802570dc(0xd,1);
+  FUN_80259000(0x90,0,param_3 * 3 & 0xffff);
+  for (iVar4 = 0; iVar4 < param_3; iVar4 = iVar4 + 1) {
+    iVar5 = 0;
+    iVar6 = 3;
+    do {
+      *fifo8 = 0;
+      iVar2 = iVar5 + 1;
+      puVar1 = (undefined2 *)(param_1 + (uint)*(byte *)(param_2 + iVar2) * 0x10);
+      *fifo16 = *puVar1;
+      *fifo16 = puVar1[1];
+      *fifo16 = puVar1[2];
+      iVar3 = param_1 + (uint)*(byte *)(param_2 + iVar2) * 0x10;
+      *fifo8 = *(undefined *)(iVar3 + 0xc);
+      *fifo8 = *(undefined *)(iVar3 + 0xd);
+      *fifo8 = *(undefined *)(iVar3 + 0xe);
+      *fifo8 = *(undefined *)(iVar3 + 0xf);
+      iVar2 = param_1 + (uint)*(byte *)(param_2 + iVar2) * 0x10;
+      *fifo16 = *(undefined2 *)(iVar2 + 8);
+      *fifo16 = *(undefined2 *)(iVar2 + 10);
+      iVar5 = iVar5 + 1;
+      iVar6 = iVar6 + -1;
+    } while (iVar6 != 0);
+    param_2 = param_2 + 0x10;
+  }
+  return;
 }
 
 /*
@@ -1951,7 +2008,7 @@ void FUN_8005d2cc(int param_1,int param_2,int param_3)
 /*
  * --INFO--
  *
- * Function: FUN_8005d3ec
+ * Function: fn_8005D3EC
  * EN v1.0 Address: 0x8005D3EC
  * EN v1.0 Size: 324b
  * EN v1.1 Address: TODO
@@ -1961,8 +2018,57 @@ void FUN_8005d2cc(int param_1,int param_2,int param_3)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8005d3ec(void)
+void fn_8005D3EC(void)
 {
+  int iVar1;
+  undefined4 uVar2;
+  undefined4 uVar3;
+  undefined4 uVar4;
+  int iVar5;
+  int iVar6;
+  int iVar7;
+  undefined4 uVar8;
+  uint uVar9;
+  int iVar10;
+  undefined4 *puVar11;
+  undefined4 *puVar12;
+  int iVar12;
+  
+  puVar12 = &DAT_8037ed10;
+  iVar1 = (DAT_803ddab0 + -1) / 9 + (DAT_803ddab0 + -1 >> 0x1f);
+  for (iVar7 = 1; iVar7 <= iVar1 - (iVar1 >> 0x1f); iVar7 = iVar7 * 3 + 1) {
+  }
+  for (; 0 < iVar7; iVar7 = iVar7 / 3) {
+    iVar6 = iVar7 + 1;
+    iVar1 = iVar6 * 0x10;
+    puVar11 = puVar12 + iVar6 * 4;
+    for (; iVar6 <= DAT_803ddab0; iVar6 = iVar6 + 1) {
+      uVar8 = puVar11[-4];
+      uVar2 = puVar11[-3];
+      uVar9 = puVar11[-2];
+      uVar3 = puVar11[-1];
+      iVar10 = (int)(puVar12 + iVar6 * 4);
+      iVar12 = iVar6;
+      while ((iVar7 < iVar12 &&
+             (iVar5 = iVar12 - iVar7, (uint)puVar12[iVar5 * 4 + 2] < uVar9))) {
+        uVar4 = puVar12[iVar5 * 4 + 1];
+        *(undefined4 *)(iVar10 + -0x10) = puVar12[iVar5 * 4];
+        *(undefined4 *)(iVar10 + -0xc) = uVar4;
+        uVar4 = puVar12[iVar5 * 4 + 3];
+        *(undefined4 *)(iVar10 + -8) = puVar12[iVar5 * 4 + 2];
+        *(undefined4 *)(iVar10 + -4) = uVar4;
+        iVar10 = iVar10 + iVar7 * -0x10;
+        iVar12 = iVar12 - iVar7;
+      }
+      puVar12[iVar12 * 4] = uVar8;
+      puVar12[iVar12 * 4 + 1] = uVar2;
+      puVar12[iVar12 * 4 + 2] = uVar9;
+      puVar12[iVar12 * 4 + 3] = uVar3;
+      puVar11 = puVar11 + 4;
+      iVar1 = iVar1 + 0x10;
+    }
+  }
+  return;
 }
 
 /*
@@ -2285,7 +2391,7 @@ void FUN_8005dcb4(void)
   float afStack_70 [28];
   
   FUN_80286830();
-  FUN_8005d3ec();
+  fn_8005D3EC();
   piVar6 = &DAT_8037ed20;
   for (iVar5 = 0; iVar5 < DAT_803ddab0; iVar5 = iVar5 + 1) {
     switch(piVar6[3]) {

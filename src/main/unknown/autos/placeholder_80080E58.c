@@ -133,7 +133,7 @@ extern uint FUN_8005cf44();
 extern uint FUN_8005d00c();
 extern undefined4 FUN_8005d048();
 extern undefined4 FUN_8005d06c();
-extern undefined4 FUN_8005d108();
+extern void fn_8005D108();
 extern undefined4 FUN_8005d238();
 extern undefined4 FUN_8005d294();
 extern undefined4 FUN_8006060c();
