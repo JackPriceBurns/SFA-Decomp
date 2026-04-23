@@ -2730,54 +2730,54 @@ void FUN_8007bf08(int param_1,int param_2)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8007c54c(char param_1)
+#pragma peephole off
+#pragma scheduling off
+void fn_8007C54C(u8 flag)
 {
-  float local_20;
-  float local_1c;
-  float local_18;
-  float local_14;
-  float local_10;
-  float local_c;
-  
-  newshadows_bindShadowRenderTexture(1);
-  FUN_80258674(1,0,0,0x24,0,0x7d);
-  FUN_80258674(0,1,4,0x3c,0,0x7d);
-  local_20 = FLOAT_803dfb5c;
-  local_1c = FLOAT_803dfb78;
-  local_18 = FLOAT_803dfb5c;
-  local_14 = FLOAT_803dfb5c;
-  local_10 = FLOAT_803dfb5c;
-  local_c = FLOAT_803dfb78;
-  FUN_8025bd1c(0,0,0);
-  FUN_8025bb48(0,0,0);
-  FUN_8025b9e8(1,&local_20,-2);
-  FUN_8025b94c(1,0,0,7,1,0,0,0,0,1);
-  FUN_8025be54(1);
-  FUN_80258944(2);
-  FUN_8025ca04(2);
-  FUN_8025a608(0,0,0,1,0,0,2);
-  FUN_8025a608(2,0,0,1,0,0,2);
-  FUN_8025a5bc(1);
-  FUN_8025be80(0);
-  FUN_8025c828(0,0xff,0xff,4);
-  FUN_8025c1a4(0,0xf,0xf,0xf,10);
-  FUN_8025c224(0,7,7,7,5);
-  FUN_8025c65c(0,0,0);
-  FUN_8025c2a8(0,0,0,0,1,0);
-  FUN_8025c368(0,0,0,0,1,0);
-  if (param_1 == '\0') {
-    FUN_8025c1a4(1,0xf,8,0,0xf);
-  }
-  else {
-    FUN_8025c1a4(1,8,0xf,0xf,0);
-  }
-  FUN_8025c828(1,1,1,8);
-  FUN_8025c224(1,7,5,0,7);
-  FUN_8025c65c(1,0,0);
-  FUN_8025c2a8(1,0,0,0,1,0);
-  FUN_8025c368(1,0,0,0,1,0);
-  return;
+    extern f32 lbl_803DFB5C;
+    extern f32 lbl_803DFB78;
+    extern void fn_8006C86C(int);
+    f32 mtx[6];
+
+    fn_8006C86C(1);
+    GXSetTexCoordGen2(1, 0, 0, 0x24, 0, 0x7D);
+    GXSetTexCoordGen2(0, 1, 4, 0x3C, 0, 0x7D);
+    mtx[0] = lbl_803DFB5C;
+    mtx[1] = lbl_803DFB78;
+    mtx[2] = lbl_803DFB5C;
+    mtx[3] = lbl_803DFB5C;
+    mtx[4] = lbl_803DFB5C;
+    mtx[5] = lbl_803DFB78;
+    GXSetIndTexOrder(0, 0, 0);
+    GXSetIndTexCoordScale(0, 0, 0);
+    GXSetIndTexMtx(1, (void*)mtx, -2);
+    GXSetTevIndirect(1, 0, 0, 7, 1, 0, 0, 0, 0, 1);
+    GXSetNumIndStages(1);
+    GXSetNumTexGens(2);
+    GXSetNumTevStages(2);
+    GXSetChanCtrl(0, 0, 0, 1, 0, 0, 2);
+    GXSetChanCtrl(2, 0, 0, 1, 0, 0, 2);
+    GXSetNumChans(1);
+    GXSetTevDirect(0);
+    GXSetTevOrder(0, 0xFF, 0xFF, 4);
+    GXSetTevColorIn(0, 0xF, 0xF, 0xF, 0xA);
+    GXSetTevAlphaIn(0, 7, 7, 7, 5);
+    GXSetTevSwapMode(0, 0, 0);
+    GXSetTevColorOp(0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp(0, 0, 0, 0, 1, 0);
+    if (flag != 0) {
+        GXSetTevColorIn(1, 8, 0xF, 0xF, 0);
+    } else {
+        GXSetTevColorIn(1, 0xF, 8, 0, 0xF);
+    }
+    GXSetTevOrder(1, 1, 1, 8);
+    GXSetTevAlphaIn(1, 7, 5, 0, 7);
+    GXSetTevSwapMode(1, 0, 0);
+    GXSetTevColorOp(1, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp(1, 0, 0, 0, 1, 0);
 }
+#pragma scheduling reset
+#pragma peephole reset
 
 /*
  * --INFO--

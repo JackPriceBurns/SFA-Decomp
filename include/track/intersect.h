@@ -86,7 +86,7 @@ void FUN_8007a898(uint param_1);
 void FUN_8007ae8c(double param_1);
 void FUN_8007b198(double param_1,double param_2,double param_3,char param_4,char param_5);
 void FUN_8007bf08(int param_1,int param_2);
-void FUN_8007c54c(char param_1);
+void fn_8007C54C(u8 flag);
 void FUN_8007c7e0(int param_1);
 void FUN_8007cc70(void);
 void FUN_8007d0f8(void);
