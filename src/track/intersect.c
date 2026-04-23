@@ -1,7 +1,12 @@
 #include "ghidra_import.h"
 #include "dolphin/card.h"
 #include "dolphin/gx.h"
+#include "dolphin/mtx.h"
 #include "track/intersect.h"
+
+extern Mtx lbl_80397420;
+extern Mtx lbl_80397480;
+extern Mtx lbl_803974B0;
 
 extern undefined4 ABS();
 extern undefined4 FUN_8000bb00();
@@ -2648,15 +2653,13 @@ void FUN_8007d0f8(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8007d7ec(void)
+void fn_8007D7EC(void)
 {
-  float afStack_38 [13];
-  
-  FUN_80247618((float *)&DAT_803974b0,(float *)&DAT_80397420,afStack_38);
-  FUN_8025d8c4(afStack_38,0x1e,0);
-  FUN_80247618((float *)&DAT_80397480,(float *)&DAT_80397420,afStack_38);
-  FUN_8025d8c4(afStack_38,0x24,0);
-  return;
+    Mtx tmp;
+    PSMTXConcat(lbl_803974B0, lbl_80397420, tmp);
+    GXLoadTexMtxImm(tmp, 0x1E, GX_MTX3x4);
+    PSMTXConcat(lbl_80397480, lbl_80397420, tmp);
+    GXLoadTexMtxImm(tmp, 0x24, GX_MTX3x4);
 }
 
 /*

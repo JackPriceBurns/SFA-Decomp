@@ -94,7 +94,7 @@ void FUN_8007c54c(char param_1);
 void FUN_8007c7e0(int param_1);
 void FUN_8007cc70(void);
 void FUN_8007d0f8(void);
-void FUN_8007d7ec(void);
+void fn_8007D7EC(void);
 void FUN_8007d858(void);
 undefined4 FUN_8007d8a8(void);
 void fn_8007DADC(u8 param_1);
