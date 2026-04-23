@@ -1260,7 +1260,7 @@ void FUN_8006c86c(int param_1)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-undefined4 FUN_8006c8b8(void)
+int newshadows_getShadowRenderTexture(void)
 {
   return DAT_803ddbfc;
 }

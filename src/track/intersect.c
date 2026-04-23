@@ -57,7 +57,7 @@ extern undefined4 FUN_8006c760();
 extern undefined4 FUN_8006c7f4();
 extern undefined4 FUN_8006c820();
 extern undefined4 FUN_8006c86c();
-extern undefined4 FUN_8006c8b8();
+extern int newshadows_getShadowRenderTexture(void);
 extern int FUN_8006c8c0();
 extern undefined4 FUN_8006c9ac();
 extern undefined4 FUN_8006cc38();

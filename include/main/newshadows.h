@@ -28,7 +28,7 @@ double FUN_8006c7ec(void);
 void FUN_8006c7f4(int param_1);
 void FUN_8006c820(int param_1);
 void FUN_8006c86c(int param_1);
-undefined4 FUN_8006c8b8(void);
+int newshadows_getShadowRenderTexture(void);
 undefined4 FUN_8006c8c0(void);
 int newshadows_getInverseShadowRampTexture(void);
 int newshadows_getRadialFalloffTexture(void);

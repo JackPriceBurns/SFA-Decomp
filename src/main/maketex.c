@@ -32,7 +32,7 @@ extern int FUN_800396d0();
 extern undefined4 FUN_8003b9ec();
 extern undefined4 FUN_8004a5b8();
 extern undefined4 FUN_8004a9e4();
-extern undefined4 FUN_8006c8b8();
+extern int newshadows_getShadowRenderTexture(void);
 extern undefined4 FUN_8007668c();
 extern undefined4 FUN_80076ef4();
 extern int FUN_8007df88();
@@ -161,7 +161,7 @@ void FUN_8007e7a0(undefined8 param_1,double param_2,undefined8 param_3,undefined
     uVar1 = FUN_8001fe4c(local_24);
     if ((uVar1 & 0xff) == 0) {
       local_28 = DAT_803dc368;
-      uVar2 = FUN_8006c8b8();
+      uVar2 = newshadows_getShadowRenderTexture();
       FUN_80076ef4(uVar2,0,0,&local_28,0x200,0);
     }
     else {
