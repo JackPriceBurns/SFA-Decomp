@@ -48,7 +48,7 @@ extern uint FUN_8005383c();
 extern undefined4 FUN_80054ed0();
 extern int FUN_800658e4();
 extern undefined4 FUN_8006c674();
-extern undefined4 FUN_8006c6b0();
+extern void newshadows_getShadowDirectionTexture(int *textureOut);
 extern void newshadows_getSoftShadowTexture(int *textureOut);
 extern void newshadows_getShadowRampTexture(int *textureOut);
 extern void newshadows_getShadowDiskTexture(int *textureOut);

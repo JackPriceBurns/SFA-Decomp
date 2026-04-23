@@ -998,9 +998,9 @@ void newshadows_getBlankShadowTexture(int *textureOut)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006c6b0(undefined4 *param_1)
+void newshadows_getShadowDirectionTexture(int *textureOut)
 {
-  *param_1 = DAT_803ddc3c;
+  *textureOut = DAT_803ddc3c;
   return;
 }
 
@@ -1544,7 +1544,7 @@ void FUN_8006cc4c(undefined *param_1)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006cca0(void)
+void newshadows_freeShadowDirectionTexture(void)
 {
   FUN_800238c4(DAT_803ddc3c);
   DAT_803ddc3c = 0;
@@ -1564,7 +1564,7 @@ void FUN_8006cca0(void)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_8006cccc(void)
+void newshadows_buildShadowDirectionTexture(void)
 {
   float fVar1;
   float fVar2;
