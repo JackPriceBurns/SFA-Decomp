@@ -102,9 +102,9 @@ void FUN_80068748(undefined4 param_1,undefined4 param_2,int param_3,int param_4,
                  int param_6,int param_7,uint param_8,char param_9);
 void FUN_8006933c(undefined4 param_1,undefined4 param_2,uint param_3,char param_4);
 void FUN_80069798(uint *param_1,float *param_2,float *param_3,float *param_4,int param_5);
-undefined4 * fn_80069AC0(uint *param_1);
+undefined4 * trackDolphin_getIntersectionDescriptorTable(uint *currentIndexOut);
 void trackDolphin_getCurrentTrackPoint(uint **param_1);
-void FUN_80069ae4(int *param_1,undefined4 *param_2);
+void trackDolphin_getCurrentIntersectionList(int *entryCountOut,undefined4 *entryListOut);
 void trackDolphin_initIntersectionBuffers(void);
 void FUN_80069c98(undefined4 param_1,undefined4 param_2,int param_3);
 void FUN_8006a034(int param_1);

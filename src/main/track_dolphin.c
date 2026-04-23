@@ -3674,9 +3674,9 @@ void FUN_80069798(uint *param_1,float *param_2,float *param_3,float *param_4,int
  * PAL Address: TODO
  * PAL Size: TODO
  */
-undefined4 * fn_80069AC0(uint *param_1)
+undefined4 * trackDolphin_getIntersectionDescriptorTable(uint *currentIndexOut)
 {
-  *param_1 = (uint)DAT_803ddbec;
+  *currentIndexOut = (uint)DAT_803ddbec;
   return (undefined4 *)&DAT_8038e8c4;
 }
 
@@ -3712,10 +3712,10 @@ void trackDolphin_getCurrentTrackPoint(uint **param_1)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-void FUN_80069ae4(int *param_1,undefined4 *param_2)
+void trackDolphin_getCurrentIntersectionList(int *entryCountOut,undefined4 *entryListOut)
 {
-  *param_1 = (int)(short)(&DAT_8038e8c8)[(uint)DAT_803ddbec * 0xc];
-  *param_2 = DAT_803ddbb0;
+  *entryCountOut = (int)(short)(&DAT_8038e8c8)[(uint)DAT_803ddbec * 0xc];
+  *entryListOut = DAT_803ddbb0;
   return;
 }
 

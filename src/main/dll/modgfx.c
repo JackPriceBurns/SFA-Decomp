@@ -41,7 +41,7 @@ extern undefined4 FUN_8005d294();
 extern undefined4 FUN_8006933c();
 extern undefined4 FUN_80069798();
 extern void trackDolphin_getCurrentTrackPoint(uint **param_1);
-extern undefined4 FUN_80069ae4();
+extern void trackDolphin_getCurrentIntersectionList(int *entryCountOut,undefined4 *entryListOut);
 extern undefined4 FUN_80078bf8();
 extern undefined4 FUN_80078cc8();
 extern undefined4 FUN_80078f78();
@@ -2671,7 +2671,7 @@ void FUN_800a43a8(int param_1)
     local_28 = local_7c;
     FUN_80069798(auStack_9c,&local_84,&local_54,&local_ac,4);
     FUN_8006933c(param_1,auStack_9c,0x84,'\0');
-    FUN_80069ae4(&local_b8,&local_b4);
+    trackDolphin_getCurrentIntersectionList(&local_b8,&local_b4);
     uVar1 = local_b4;
     trackDolphin_getCurrentTrackPoint(&local_b0);
     uStack_1c = *local_b0 ^ 0x80000000;
