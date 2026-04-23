@@ -26,7 +26,7 @@ extern int FUN_8002e1f4();
 extern undefined4 FUN_80032508();
 extern undefined4 FUN_800490c4();
 extern undefined4 FUN_800550f0();
-extern void* FUN_8005b11c();
+extern int * fn_8005B11C();
 extern undefined8 FUN_80137c30();
 extern undefined4 FUN_80247618();
 extern double FUN_802480c0();
@@ -2837,7 +2837,7 @@ void FUN_800387b4(void)
   int iVar6;
   
   FUN_8028683c();
-  piVar2 = FUN_8005b11c();
+  piVar2 = fn_8005B11C();
   iVar4 = 0;
   do {
     iVar6 = *piVar2;

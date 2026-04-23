@@ -7,7 +7,7 @@ void FUN_8005acec(void);
 undefined4 FUN_8005b068(int param_1);
 undefined4 FUN_8005b094(int param_1);
 undefined4 FUN_8005b0a8(int param_1,int param_2,int param_3);
-undefined4 * FUN_8005b11c(void);
+int * fn_8005B11C(void);
 int FUN_8005b128(void);
 void FUN_8005b224(float *param_1,float *param_2);
 undefined4 FUN_8005b2e8(void);

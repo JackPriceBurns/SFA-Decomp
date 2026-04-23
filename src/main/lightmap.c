@@ -435,7 +435,7 @@ undefined4 FUN_8005b0a8(int param_1,int param_2,int param_3)
 /*
  * --INFO--
  *
- * Function: FUN_8005b11c
+ * Function: fn_8005B11C
  * EN v1.0 Address: 0x8005B11C
  * EN v1.0 Size: 12b
  * EN v1.1 Address: TODO
@@ -445,9 +445,9 @@ undefined4 FUN_8005b0a8(int param_1,int param_2,int param_3)
  * PAL Address: TODO
  * PAL Size: TODO
  */
-undefined4 * FUN_8005b11c(void)
+int * fn_8005B11C(void)
 {
-    return 0;
+  return &DAT_803870c8;
 }
 
 /*
